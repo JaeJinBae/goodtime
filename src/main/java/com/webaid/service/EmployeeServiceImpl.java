@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.webaid.domain.EmployeeVO;
-import com.webaid.domain.IdPwVO;
 import com.webaid.persistence.EmployeeDao;
 
 @Service

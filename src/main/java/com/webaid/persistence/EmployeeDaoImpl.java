@@ -1,24 +1,22 @@
 package com.webaid.persistence;
 
-import java.util.List;
-
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.webaid.domain.FkTestVO;
+import com.webaid.domain.EmployeeVO;
 
 @Repository
-public class FkTestDaoImpl implements FkTestDao {
+public class EmployeeDaoImpl implements EmployeeDao {
 
-	private static final String namespace="com.webaid.mappers.FkTestMapper";
+	private static final String namespace="com.webaid.mappers.EmployeeMapper";
 	
 	@Autowired
 	private SqlSession session;
 	
 	@Override
-	public List<FkTestVO> selectAll() {
-		return session.selectList(namespace+".selectAll");
+	public EmployeeVO selectOneById(String id) {
+		return session.selectOne(namespace+".selectOneById", id);
 	}
 
 }

@@ -7,7 +7,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.webaid.domain.NoticeVO;
-import com.webaid.persistence.FkTestDao;
+import com.webaid.persistence.EmployeeDao;
 import com.webaid.persistence.NoticeDao;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -18,11 +18,13 @@ public class NoticeDaoTest {
 	private NoticeDao dao;
 	
 	@Autowired
-	private FkTestDao dao2;
+	private EmployeeDao dao1;
+		
 	
-	@Test
+	
+	//@Test
 	public void selectAll(){
-		dao2.selectAll();
+		dao.selectAll();
 	}
 	
 	//@Test

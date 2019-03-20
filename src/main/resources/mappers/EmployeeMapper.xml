@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.webaid.mappers.EmployeeMapper">
+
+	<select id="selectAll" resultType="EmployeeVO">
+		select * from employee order by eno desc
+	</select>
+	
+	<select id="selectOne" resultType="EmployeeVO">
+		select * from employee where eno=#{eno}
+	</select>
+	
+	<select id="selectOneById" resultType="EmployeeVO">
+		select * from employee where id=#{id}
+	</select>
+</mapper>

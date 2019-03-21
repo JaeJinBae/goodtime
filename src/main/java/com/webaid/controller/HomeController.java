@@ -3,6 +3,7 @@ package com.webaid.controller;
 import java.util.Locale;
 
 import javax.lang.model.type.ErrorType;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +36,7 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value="/login_idpw_check", method=RequestMethod.POST)
-	public ResponseEntity<String> idpw_check(IdPwVO user){
+	public ResponseEntity<String> idpw_check(IdPwVO user, HttpSession session){
 		logger.info("idpw_chk post");
 		logger.info("id= "+user.getId()+", pw= "+user.getPw());
 		
@@ -44,6 +45,7 @@ public class HomeController {
 		try {
 			EmployeeVO vo = empService.selectOneById(user.getId());
 			if(vo.getId().equals(user.getId()) && vo.getPw().equals(user.getPw())){ 
+				session.setAttribute("id", user.getId());
 				entity = new ResponseEntity<String>("ok", HttpStatus.OK);
 				
 			}else{
@@ -59,15 +61,12 @@ public class HomeController {
 		return entity;
 	}
 	
-	@RequestMapping(value = "/test1", method = RequestMethod.GET)
-	public String test1(Locale locale, Model model) {
+	@RequestMapping(value = "/sub_main", method = RequestMethod.GET)
+	public String sub_main(Locale locale, Model model) {
 		logger.info("main GET");
 		
-		/*List<FkTestVO> list = fService.selectAll();
 		
-		model.addAttribute("list", list);*/
-		
-		return "test/test1";
+		return "sub/sub_main";
 	}
 	
 }

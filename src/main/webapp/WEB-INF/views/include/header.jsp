@@ -14,8 +14,11 @@
 </script>
 <div class="header_wrap">
 	<input id="session_value" type="hidden" value="${sessionScope.id}">
-	<c:if test="${sessionScope.id != null}">
-		<a href="${pageContext.request.contextPath}/userInfo">${sessionScope.name}(${sessionScope.id})</a>님 반갑습니다.<br><br>
-		<a href="${pageContext.request.contextPath}/logout">로그아웃</a>
-	</c:if>
+	<div class="header_div">
+		<c:if test="${sessionScope.id != null}">
+			<a href="${pageContext.request.contextPath}/employeeInfo">${sessionScope.name}(${sessionScope.id})</a>님 반갑습니다.
+			<a href="${pageContext.request.contextPath}/logout">로그아웃</a>
+		</c:if>
+	</div>
+	
 </div>

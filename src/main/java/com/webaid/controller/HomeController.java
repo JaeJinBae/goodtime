@@ -45,7 +45,10 @@ public class HomeController {
 		try {
 			EmployeeVO vo = empService.selectOneById(user.getId());
 			if(vo.getId().equals(user.getId()) && vo.getPw().equals(user.getPw())){ 
+				
+				session.setAttribute("name", vo.getName());
 				session.setAttribute("id", user.getId());
+				logger.info("이름= "+session.getAttribute("name")+", 아이디= "+session.getAttribute("id"));
 				entity = new ResponseEntity<String>("ok", HttpStatus.OK);
 				
 			}else{
@@ -61,10 +64,19 @@ public class HomeController {
 		return entity;
 	}
 	
-	@RequestMapping(value = "/sub_main", method = RequestMethod.GET)
-	public String sub_main(Locale locale, Model model) {
-		logger.info("main GET");
+	@RequestMapping(value="/logout")
+	public String logout(HttpSession session){
+		logger.info("logout Get");
 		
+		session.invalidate();
+		return "redirect:/";
+	}
+	
+	@RequestMapping(value = "/sub_main", method = RequestMethod.GET)
+	public String sub_main(Model model, HttpSession session) {
+		logger.info("sub_main GET");
+		
+		logger.info("이름= "+session.getAttribute("name")+", 아이디= "+session.getAttribute("id"));
 		
 		return "sub/sub_main";
 	}

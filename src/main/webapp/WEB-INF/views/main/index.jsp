@@ -11,7 +11,15 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <style>
-
+	.all_wrap{
+		width:300px;
+		margin: 200px auto;
+		text-align:center;
+		font-size:20px;
+	}
+	#btn_login{
+		background: #efefef; 
+	}
 </style>
 <script>
 	$(function(){
@@ -44,7 +52,7 @@
 </script>
 </head>
 <body>
-	<div class="bodyWrap">
+	<div class="all_wrap">
 		<div class="logo">
 			<%-- <a href="${pageContext.request.contextPath}/"><img src="${pageContext.request.contextPath}/resources/images/"></a> --%>
 		</div>
@@ -52,6 +60,7 @@
 			<ul>
 				<li><input type="text" name="id" placeholder="아이디"></li>
 				<li><input type="password" name="pw" placeholder="비밀번호"></li>
+				<br>
 				<li id="btn_login">Login</li>
 			</ul>
 		</div>

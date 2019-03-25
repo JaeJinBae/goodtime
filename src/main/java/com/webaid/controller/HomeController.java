@@ -1,8 +1,5 @@
 package com.webaid.controller;
 
-import java.util.Locale;
-
-import javax.lang.model.type.ErrorType;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;

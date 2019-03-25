@@ -220,7 +220,7 @@ a:active, a:active code {
 
 a:hover, a:hover code, a:focus, a:focus code {
 	text-decoration: none;
-	color: #4c22a3; /*마우스오버시 자연스럽게*/
+	color: #4374D9; /*마우스오버시 자연스럽게*/
 	transition-duration: 300ms;
 	transition-property: color, border-color, background-color;
 	transition-timing-function: ease;

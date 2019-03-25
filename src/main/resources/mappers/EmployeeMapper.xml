@@ -8,11 +8,11 @@
 		select * from employee order by eno desc
 	</select>
 	
-	<select id="selectOne" resultType="EmployeeVO">
-		select * from employee where eno=#{eno}
-	</select>
-	
 	<select id="selectOneById" resultType="EmployeeVO">
 		select * from employee where id=#{id}
+	</select>
+	
+	<select id="selectByType" resultType="EmployeeVO">
+		select * from employee where type=#{type}
 	</select>
 </mapper>

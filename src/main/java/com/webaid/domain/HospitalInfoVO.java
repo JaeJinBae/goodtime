@@ -3,8 +3,8 @@ package com.webaid.domain;
 public class HospitalInfoVO {
 	private int no;
 	private String day;
-	private String start_time;
-	private String end_time;
+	private int start_time;
+	private int end_time;
 	private int lunch;
 	private int dinner;
 
@@ -28,19 +28,19 @@ public class HospitalInfoVO {
 		this.day = day;
 	}
 
-	public String getStart_time() {
+	public int getStart_time() {
 		return start_time;
 	}
 
-	public void setStart_time(String start_time) {
+	public void setStart_time(int start_time) {
 		this.start_time = start_time;
 	}
 
-	public String getEnd_time() {
+	public int getEnd_time() {
 		return end_time;
 	}
 
-	public void setEnd_time(String end_time) {
+	public void setEnd_time(int end_time) {
 		this.end_time = end_time;
 	}
 
@@ -65,5 +65,7 @@ public class HospitalInfoVO {
 		return "HospitalInfoVO [no=" + no + ", day=" + day + ", start_time=" + start_time + ", end_time=" + end_time
 				+ ", lunch=" + lunch + ", dinner=" + dinner + "]";
 	}
+
+	
 
 }

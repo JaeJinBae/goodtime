@@ -1,5 +1,7 @@
 package com.webaid.persistence;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -13,10 +15,20 @@ public class EmployeeDaoImpl implements EmployeeDao {
 	
 	@Autowired
 	private SqlSession session;
-	
+
+	@Override
+	public List<EmployeeVO> selectAll() {
+		return session.selectList(namespace+".selectAll");
+	}
+
 	@Override
 	public EmployeeVO selectOneById(String id) {
 		return session.selectOne(namespace+".selectOneById", id);
+	}
+	
+	@Override
+	public List<EmployeeVO> selectByType(String type) {
+		return session.selectList(namespace+".selectByType", type);
 	}
 
 }

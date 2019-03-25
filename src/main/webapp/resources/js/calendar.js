@@ -76,7 +76,7 @@ var today = new Date();//오늘 날짜//내 컴퓨터 로컬을 기준으로 tod
                  && today.getMonth() == date.getMonth()
                  && i == date.getDate()) {
                   //달력에 있는 년,달과 내 컴퓨터의 로컬 년,달이 같고, 일이 오늘의 일과 같으면
-                cell.bgColor = "#21d558";//셀의 배경색을 노랑으로 
+                cell.bgColor = "#21d558";//셀의 배경색을 Green으로 
                }
              }
         }

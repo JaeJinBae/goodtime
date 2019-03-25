@@ -1,5 +1,7 @@
 package com.webaid.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -13,8 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.webaid.domain.EmployeeVO;
+import com.webaid.domain.HospitalInfoVO;
 import com.webaid.domain.IdPwVO;
 import com.webaid.service.EmployeeService;
+import com.webaid.service.HospitalInfoService;
+import com.webaid.util.DayGetUtil;
 
 
 @Controller
@@ -24,6 +29,9 @@ public class HomeController {
 	
 	@Autowired
 	private EmployeeService empService;
+	
+	@Autowired
+	private HospitalInfoService hService;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model) {
@@ -45,7 +53,8 @@ public class HomeController {
 				
 				session.setAttribute("name", vo.getName());
 				session.setAttribute("id", user.getId());
-				logger.info("이름= "+session.getAttribute("name")+", 아이디= "+session.getAttribute("id"));
+				session.setAttribute("type", vo.getType());
+				logger.info("이름= "+session.getAttribute("name")+", 아이디= "+session.getAttribute("id")+", 타입= "+session.getAttribute("type"));
 				entity = new ResponseEntity<String>("ok", HttpStatus.OK);
 				
 			}else{
@@ -74,6 +83,15 @@ public class HomeController {
 		logger.info("sub_main GET");
 		
 		logger.info("이름= "+session.getAttribute("name")+", 아이디= "+session.getAttribute("id"));
+		
+		DayGetUtil dg=new DayGetUtil();
+		String day = dg.getDay();
+		logger.info("오늘은 "+day+"요일 입니다.");
+		HospitalInfoVO vo = hService.selectOne(day); 
+		List<EmployeeVO> doctorList = empService.selectByType("의사");
+		
+		model.addAttribute("info", vo);
+		model.addAttribute("doctorList", doctorList);
 		
 		return "sub/sub_main";
 	}

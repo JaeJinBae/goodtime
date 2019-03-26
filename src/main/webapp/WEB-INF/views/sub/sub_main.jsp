@@ -207,6 +207,7 @@ $(function(){
 			</div><!-- aside_left end -->
 			<div class="aside_right">
 				<div class="tbl_wrap_2">
+					<h1>${hospitalInfo.start_tiem-1}</h1>
 					<%-- <table>
 						<tr>
 							<td></td>

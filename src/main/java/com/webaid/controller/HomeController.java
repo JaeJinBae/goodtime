@@ -114,9 +114,9 @@ public class HomeController {
 		logger.info(getDay);
 		
 		try {
-			HospitalInfoVO vo = hService.selectOne(getDay);
-			logger.info(vo.toString());
-			model.addAttribute("hospitalInfo", vo);
+			HospitalInfoVO hospitalInfo = hService.selectOne(getDay);
+			logger.info(hospitalInfo.toString());
+			model.addAttribute("hospitalInfo", hospitalInfo);
 			entity = new ResponseEntity<String>("ok", HttpStatus.OK);
 			
 		} catch (Exception e) {

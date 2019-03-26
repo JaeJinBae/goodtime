@@ -12,6 +12,9 @@ public class ReservationVO {
 	private String main_therapist;
 	private String rtype;
 	private String normal_day;
+	private String normal_rtime;
+	private String fix_day;
+	private String fix_rtime;
 	private String fix_day_start;
 	private String fix_day_end;
 
@@ -107,6 +110,30 @@ public class ReservationVO {
 		this.normal_day = normal_day;
 	}
 
+	public String getNormal_rtime() {
+		return normal_rtime;
+	}
+
+	public void setNotmal_rtime(String notmal_rtime) {
+		this.normal_rtime = notmal_rtime;
+	}
+
+	public String getFix_day() {
+		return fix_day;
+	}
+
+	public void setFix_day(String fix_day) {
+		this.fix_day = fix_day;
+	}
+
+	public String getFix_rtime() {
+		return fix_rtime;
+	}
+
+	public void setFix_rtime(String fix_rtime) {
+		this.fix_rtime = fix_rtime;
+	}
+
 	public String getFix_day_start() {
 		return fix_day_start;
 	}
@@ -127,8 +154,9 @@ public class ReservationVO {
 	public String toString() {
 		return "ReservationVO [rno=" + rno + ", cno=" + cno + ", name=" + name + ", phone=" + phone + ", birth=" + birth
 				+ ", gender=" + gender + ", memo=" + memo + ", main_doctor=" + main_doctor + ", main_therapist="
-				+ main_therapist + ", rtype=" + rtype + ", normal_day=" + normal_day + ", fix_day_start="
-				+ fix_day_start + ", fix_day_end=" + fix_day_end + "]";
+				+ main_therapist + ", rtype=" + rtype + ", normal_day=" + normal_day + ", notmal_rtime=" + normal_rtime
+				+ ", fix_day=" + fix_day + ", fix_rtime=" + fix_rtime + ", fix_day_start=" + fix_day_start
+				+ ", fix_day_end=" + fix_day_end + "]";
 	}
 
 }

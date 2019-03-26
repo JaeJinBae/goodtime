@@ -1,8 +1,11 @@
 package com.webaid.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
+import javax.swing.text.html.parser.Entity;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,14 +14,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.webaid.domain.EmployeeVO;
 import com.webaid.domain.HospitalInfoVO;
 import com.webaid.domain.IdPwVO;
+import com.webaid.domain.ReservationVO;
 import com.webaid.service.EmployeeService;
 import com.webaid.service.HospitalInfoService;
+import com.webaid.service.ReservationService;
 import com.webaid.util.DayGetUtil;
 
 
@@ -32,6 +38,9 @@ public class HomeController {
 	
 	@Autowired
 	private HospitalInfoService hService;
+	
+	@Autowired
+	private ReservationService rService;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model) {
@@ -54,6 +63,7 @@ public class HomeController {
 				session.setAttribute("name", vo.getName());
 				session.setAttribute("id", user.getId());
 				session.setAttribute("type", vo.getType());
+				session.setAttribute("eno", vo.getEno());
 				logger.info("이름= "+session.getAttribute("name")+", 아이디= "+session.getAttribute("id")+", 타입= "+session.getAttribute("type"));
 				entity = new ResponseEntity<String>("ok", HttpStatus.OK);
 				
@@ -78,6 +88,47 @@ public class HomeController {
 		return "redirect:/";
 	}
 	
+	@RequestMapping(value="/reservationInfoGet/{date}", method=RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> reservationInfo(@PathVariable("date") String date){
+		logger.info("reservationInfo GET");
+		ResponseEntity<Map<String,Object>> entity=null;
+		HashMap<String, Object> map=new HashMap<>();
+		
+		List<ReservationVO> reservationList = rService.selectByDate(date);
+		
+		map.put("reservationList", reservationList);
+		
+		entity=new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		
+		return entity;
+	}
+	
+	@RequestMapping(value="/dayInfoGet/{day}", method=RequestMethod.GET)
+	public ResponseEntity<String> dayInfoGet(@PathVariable("day") String day, Model model){
+		logger.info("day info get");
+		
+		ResponseEntity<String> entity=null;
+		
+		DayGetUtil dg=new DayGetUtil();
+		String getDay = dg.getSelectDay(day);
+		logger.info(getDay);
+		
+		try {
+			HospitalInfoVO vo = hService.selectOne(getDay);
+			logger.info(vo.toString());
+			model.addAttribute("hospitalInfo", vo);
+			entity = new ResponseEntity<String>("ok", HttpStatus.OK);
+			
+		} catch (Exception e) {
+			entity = new ResponseEntity<String>("no", HttpStatus.OK);
+		}
+		
+		return entity;
+		
+		
+		
+	}
+	
 	@RequestMapping(value = "/sub_main", method = RequestMethod.GET)
 	public String sub_main(Model model, HttpSession session) {
 		logger.info("sub_main GET");
@@ -87,10 +138,11 @@ public class HomeController {
 		DayGetUtil dg=new DayGetUtil();
 		String day = dg.getDay();
 		logger.info("오늘은 "+day+"요일 입니다.");
-		HospitalInfoVO vo = hService.selectOne(day); 
-		List<EmployeeVO> doctorList = empService.selectByType("의사");
 		
-		model.addAttribute("info", vo);
+		//HospitalInfoVO hospitalInfo = hService.selectOne(day); 
+		List<EmployeeVO> doctorList = empService.selectByType("doctor");
+		
+		//model.addAttribute("hospitalInfo", hospitalInfo);
 		model.addAttribute("doctorList", doctorList);
 		
 		return "sub/sub_main";

@@ -45,6 +45,7 @@
 		height:30px;
 		font-size:15px;
 		font-weight: bold;
+		border: 1px solid lightgray;
 		text-align: center;
 		cursor: pointer;
 	}
@@ -77,102 +78,12 @@
 </style> 
 <script>
 $(function(){
-	//달력 생성
-	buildCalendar();
-	
-	//오늘 요일 정보 GET
-	get_hospital_day_info();
-	
-	//오늘 정보GET
-	get_today_reservation();
-	
-	//날짜 클릭 시 해당 정보GET
-	$(document).on("click", "#calendar td:not(.tr_not > td)", function(){
-		//클릭한 td 붉은색 네모
-		$("#calendar td").css("border","0");
-		$(this).not(".tr_not > td").css("border","1px solid red");
-		
-		//클릭한 날짜 정보 GET
-		var date = $(this).text();
-		var year_month=$("#select_year_month").val();
-		var fulldate=year_month+"-"+date;
-		
-		get_select_date_reservation(fulldate);
+	buildCalendar(); 
+	$(document).on("click", "#calendar td", function(){
+		var txt = $(this).text(); 
+		//alert(txt); 
 	 });
-	
-	//오늘날짜 예약정보 GET
-	function get_today_reservation(){
-		var today=new Date();
-		var today_month=(today.getMonth()+1)+"";
-		var today_date=today.getDate()+"";
-		var update_month="";
-		var update_date="";
-		
-		//날짜 월이 한자리면 앞에 숫자0 추가
-		if(today_month.length <= 1){
-			update_month="0"+today_month;
-		}else{
-			update_month=today_month;
-		}
-		//날짜 일이 한자리면 앞에 숫자0 추가
-		if(today_date.length <= 1){
-			today_date="0"+today_date;
-		}else{
-			update_date=today_date;
-		}
-		
-		get_select_date_reservation(today.getFullYear()+"-"+update_month+"-"+update_date);
-	}
-	
-	
-	
-	
-	//달력에서 선택한 날짜 예약정보 GET
-	function get_select_date_reservation(date){
-		
-		$.ajax({
-			url:"${pageContext.request.contextPath}/reservationInfoGet/"+date,
-			type: "get",
-			dataType:"json", 
-			success:function(json){
-				console.log(json);
-				var target_tag="";
-				var txt="";				
-				$(".timetable_inner_content").html("");
-				for(i=0;i<json.reservationList.length;i++){
-					target_tag = ".doctor_"+json.reservationList[i].main_doctor+"_"+json.reservationList[i].normal_rtime;
-					
-					txt = "<p>"+json.reservationList[i].name+"</p>";
-					
-					$(target_tag).append(txt);
-				}
-			}
-		});
-	}
-	
-	function get_hospital_day_info(){
-		var date=new Date();
-		var day=date.getDay()+"";
-		console.log(day);
-		$.ajax({
-			url:"${pageContext.request.contextPath}/dayInfoGet/"+day,
-			type: "get",
-			dataType:"text", 
-			success:function(json){
-				console.log(json);
-				/* var target_tag="";
-				var txt="";				
-				$(".timetable_inner_content").html("");
-				for(i=0;i<json.reservationList.length;i++){
-					target_tag = ".doctor_"+json.reservationList[i].main_doctor+"_"+json.reservationList[i].normal_rtime;
-					
-					txt = "<p>"+json.reservationList[i].name+"</p>";
-					
-					$(target_tag).append(txt);
-				} */
-			}
-		});
-	}
+	 
 });
 </script>
 </head>
@@ -185,15 +96,15 @@ $(function(){
 			<div class="aside_left">
 				<div class="tbl_wrap_1">
 					<table id="calendar" border="3" align="center" style="border-color:#3333FF ">
-					    <tr class="tr_not"><!-- label은 마우스로 클릭을 편하게 해줌 -->
+					    <tr><!-- label은 마우스로 클릭을 편하게 해줌 -->
 					        <td><label onclick="prevCalendar()"><</label></td>
-					        <td align="center" id="tbCalendarYM" colspan="5"> 
+					        <td align="center" id="tbCalendarYM" colspan="5">
 					        yyyy년 m월</td>
 					        <td><label onclick="nextCalendar()">>
 					            
 					        </label></td>
 					    </tr>
-					    <tr class="tr_not">
+					    <tr>
 					        <td align="center" style="color:red;">일</td>
 					        <td align="center">월</td>
 					        <td align="center">화</td>
@@ -207,7 +118,7 @@ $(function(){
 			</div><!-- aside_left end -->
 			<div class="aside_right">
 				<div class="tbl_wrap_2">
-					<%-- <table>
+					<table>
 						<tr>
 							<td></td>
 							<c:forEach begin="${hospitalInfo.start_time}" end="${hospitalInfo.end_time-1}" var="idx">
@@ -215,21 +126,33 @@ $(function(){
 							</c:forEach>
 						</tr>
 						<c:forEach var="item" items="${doctorList}">
-							<tr class="${item.type}_${item.eno}">
+							<tr>
 								<td class="doctor_name">${item.name}</td>
 								<c:forEach begin="${hospitalInfo.start_time}" end="${hospitalInfo.end_time-1}" var="idx">
-									<c:choose> 
-										<c:when test="${idx==hospitalInfo.lunch}">
-											<td class="${item.type}_${item.eno}_${idx}" style="background:gray; text-align:center;">점심시간</td>
-										</c:when>										
-										<c:otherwise>	
-											<td class="${item.type}_${item.eno}_${idx} timetable_inner_content"></td>
-										</c:otherwise>
-									</c:choose>
+									<c:set var="val" value="false"></c:set>
+									
+									<c:forEach var="rList" items="${reservationList}">
+										<c:choose>
+											<c:when test="${item.name == rList.main_doctor && idx == rList.normal_rtime}">
+												<td class="${item.type}_${item.eno}_${idx}">${rList.name}</td>
+												<c:set var="val" value="true"></c:set>
+											</c:when>
+										</c:choose>
+									</c:forEach>
+									<c:if test="${val == false}">
+										<c:choose> 
+											<c:when test="${idx==hospitalInfo.lunch}">
+												<td style="background:gray; text-align:center;">점심시간</td>
+											</c:when>										
+											<c:otherwise>	
+												<td class="${item.type}_${item.eno}_${idx}"></td>
+											</c:otherwise>
+										</c:choose>
+									</c:if>
 								</c:forEach>
 							</tr>
 						</c:forEach>
-					</table> --%>
+					</table>
 				</div><!-- tbl_wrap_2 end-->
 			</div><!-- aside_right end -->
 		</div><!-- section end -->

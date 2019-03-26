@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.webaid.mappers.ReservationMapper">
+
+	<select id="selectAll" resultType="ReservationVO">
+		select * from reservation order by rno desc
+	</select>
+	
+	<select id="selectByDate" resultType="ReservationVO">
+		select * from reservation where normal_date=#{normal_date}
+	</select>
+	
+</mapper>

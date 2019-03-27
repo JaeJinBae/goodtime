@@ -90,7 +90,7 @@ public class HomeController {
 	
 	@RequestMapping(value="/reservationInfoGet/{date}", method=RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> reservationInfo(@PathVariable("date") String date){
-		logger.info("reservationInfo GET");
+		logger.info("reservationInfo GET start");
 		ResponseEntity<Map<String,Object>> entity=null;
 		HashMap<String, Object> map=new HashMap<>();
 		
@@ -99,11 +99,11 @@ public class HomeController {
 		map.put("reservationList", reservationList);
 		
 		entity=new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
-		
+		logger.info("reservationInfo GET end");
 		return entity;
 	}
 	
-	@RequestMapping(value="/dayInfoGet/{day}", method=RequestMethod.GET)
+	/*@RequestMapping(value="/dayInfoGet/{day}", method=RequestMethod.GET)
 	public ResponseEntity<String> dayInfoGet(@PathVariable("day") String day, Model model){
 		logger.info("day info get");
 		
@@ -124,20 +124,42 @@ public class HomeController {
 		}
 		
 		return entity;
+
+	}*/
+	
+	@RequestMapping(value="/dayInfoGet/{day}", method=RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> dayInfoGet(@PathVariable("day") String day, Model model){
+		logger.info("day info get start");
+		ResponseEntity<Map<String,Object>> entity=null;
+		HashMap<String, Object> map=new HashMap<>();
 		
+		DayGetUtil dg=new DayGetUtil();
+		String getDay = dg.getSelectDay(day);
 		
-		
+		try {
+			HospitalInfoVO hospitalInfo = hService.selectOne(getDay);
+			List<EmployeeVO> doctorList = empService.selectByType("doctor");
+			
+			map.put("hospitalInfo", hospitalInfo);
+			map.put("doctorList", doctorList);
+
+			entity=new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+			
+			logger.info("day info get end");
+			return entity;
+		} catch (Exception e) {
+			
+		}
+		logger.info("day info get end");
+		return entity;
 	}
 	
 	@RequestMapping(value = "/sub_main", method = RequestMethod.GET)
 	public String sub_main(Model model, HttpSession session) {
 		logger.info("sub_main GET");
 		
-		logger.info("이름= "+session.getAttribute("name")+", 아이디= "+session.getAttribute("id"));
+		//logger.info("이름= "+session.getAttribute("name")+", 아이디= "+session.getAttribute("id"));
 		
-		DayGetUtil dg=new DayGetUtil();
-		String day = dg.getDay();
-		logger.info("오늘은 "+day+"요일 입니다.");
 		
 		//HospitalInfoVO hospitalInfo = hService.selectOne(day); 
 		List<EmployeeVO> doctorList = empService.selectByType("doctor");

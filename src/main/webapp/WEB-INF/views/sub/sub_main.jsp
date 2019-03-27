@@ -11,7 +11,6 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/calendar.js"></script>
-
 <style>
 	.all_wrap{
 		width: 100%;
@@ -32,15 +31,14 @@
 		float:left;
 		border-right: 1px solid lightgray;
 		padding-top:50px;
-		background: lightgray;
 	}
-	.aside_left > .tbl_wrap_1{
+	.aside_left > .al_tbl_wrap_1{
 		width: 100%;
 	}
-	.aside_left > .tbl_wrap_1 > #calendar{
+	.aside_left > .al_tbl_wrap_1 > #calendar{
 		margin: 0 auto;
 	}
-	.aside_left > .tbl_wrap_1 > #calendar td{
+	.aside_left > .al_tbl_wrap_1 > #calendar td{
 		width:30px;
 		height:30px;
 		font-size:15px;
@@ -48,7 +46,7 @@
 		text-align: center;
 		cursor: pointer;
 	}
-	.aside_left > .tbl_wrap_1 > #calendar td > label{
+	.aside_left > .al_tbl_wrap_1 > #calendar td > label{
 		display:block;
 		line-height: 29px;
 		width:100%;
@@ -62,32 +60,46 @@
 		height:100%;
 		background: #efefef;
 	}
-	.tbl_wrap_2 {
+	.ar_tbl_wrap_1 {
 		width:100%;
 	}
-	.tbl_wrap_2 > table{
+	.ar_tbl_wrap_1 > table{
 		width:100%;
 	}
-	.tbl_wrap_2 table td{
+	.ar_tbl_wrap_1 table td{
 		border: 1px solid black;
 	}
 	.doctor_name{
 		text-align: center;
 	}
+	.al_tbl_wrap2{
+		width:100%;
+	}
+	.al_tbl_wrap2 > table{
+		width:100%;
+		border: 1px solid lightgray;
+	}
 </style> 
 <script>
 $(function(){
+	
 	//달력 생성
 	buildCalendar();
 	
+	//날짜마다 요일 표시
+	write_yoil();
+	
 	//오늘 요일 정보 GET
-	get_hospital_day_info();
+	get_hospital_day_info(get_today());
 	
 	//오늘 정보GET
-	get_today_reservation();
+	setTimeout(function(){get_today_reservation()},100);
 	
 	//날짜 클릭 시 해당 정보GET
 	$(document).on("click", "#calendar td:not(.tr_not > td)", function(){
+		//날짜마다 요일 표시
+		write_yoil();
+		
 		//클릭한 td 붉은색 네모
 		$("#calendar td").css("border","0");
 		$(this).not(".tr_not > td").css("border","1px solid red");
@@ -96,86 +108,122 @@ $(function(){
 		var date = $(this).text();
 		var year_month=$("#select_year_month").val();
 		var fulldate=year_month+"-"+date;
+		var day = $(this).find("input[type='hidden']").val();
 		
-		get_select_date_reservation(fulldate);
+		get_hospital_day_info(day);
+		setTimeout(function(){get_select_date_reservation(fulldate)},100);
+		
 	 });
 	
-	//오늘날짜 예약정보 GET
-	function get_today_reservation(){
-		var today=new Date();
-		var today_month=(today.getMonth()+1)+"";
-		var today_date=today.getDate()+"";
-		var update_month="";
-		var update_date="";
-		
-		//날짜 월이 한자리면 앞에 숫자0 추가
-		if(today_month.length <= 1){
-			update_month="0"+today_month;
-		}else{
-			update_month=today_month;
-		}
-		//날짜 일이 한자리면 앞에 숫자0 추가
-		if(today_date.length <= 1){
-			today_date="0"+today_date;
-		}else{
-			update_date=today_date;
-		}
-		
-		get_select_date_reservation(today.getFullYear()+"-"+update_month+"-"+update_date);
-	}
 	
 	
-	
-	
-	//달력에서 선택한 날짜 예약정보 GET
-	function get_select_date_reservation(date){
-		
-		$.ajax({
-			url:"${pageContext.request.contextPath}/reservationInfoGet/"+date,
-			type: "get",
-			dataType:"json", 
-			success:function(json){
-				console.log(json);
-				var target_tag="";
-				var txt="";				
-				$(".timetable_inner_content").html("");
-				for(i=0;i<json.reservationList.length;i++){
-					target_tag = ".doctor_"+json.reservationList[i].main_doctor+"_"+json.reservationList[i].normal_rtime;
-					
-					txt = "<p>"+json.reservationList[i].name+"</p>";
-					
-					$(target_tag).append(txt);
-				}
-			}
-		});
-	}
-	
-	function get_hospital_day_info(){
-		var date=new Date();
-		var day=date.getDay()+"";
-		console.log(day);
-		$.ajax({
-			url:"${pageContext.request.contextPath}/dayInfoGet/"+day,
-			type: "get",
-			dataType:"text", 
-			success:function(json){
-				console.log(json);
-				/* var target_tag="";
-				var txt="";				
-				$(".timetable_inner_content").html("");
-				for(i=0;i<json.reservationList.length;i++){
-					target_tag = ".doctor_"+json.reservationList[i].main_doctor+"_"+json.reservationList[i].normal_rtime;
-					
-					txt = "<p>"+json.reservationList[i].name+"</p>";
-					
-					$(target_tag).append(txt);
-				} */
-			}
-		});
-	}
 });
-</script>
-</head>
+//달력에 각 일마다 요일 표시
+function write_yoil(){
+	var idx=1;
+	for(var i=0; i < $("#calendar tr:not(.tr_not) td").length; i++){
+		if(idx == 8){
+			idx = 1;
+		} 
+		$("#calendar tr:not(.tr_not) td").eq(i).append("<input type='hidden' value='"+idx+"'>");
+		idx++;
+	}
+}
+
+//오늘날짜 예약정보 GET
+function get_today_reservation(){
+	var today=new Date();
+	var today_month=(today.getMonth()+1)+"";
+	var today_date=today.getDate()+"";
+	var update_month="";
+	var update_date="";
+	
+	//날짜 월이 한자리면 앞에 숫자0 추가
+	if(today_month.length <= 1){
+		update_month="0"+today_month;
+	}else{
+		update_month=today_month;
+	}
+	//날짜 일이 한자리면 앞에 숫자0 추가
+	if(today_date.length <= 1){
+		today_date="0"+today_date;
+	}else{
+		update_date=today_date;
+	}
+	
+	get_select_date_reservation(today.getFullYear()+"-"+update_month+"-"+update_date);
+}
+
+
+//달력에서 선택한 날짜 예약정보 GET
+function get_select_date_reservation(date){
+	console.log("reservationInfo GET");
+	$.ajax({
+		url:"${pageContext.request.contextPath}/reservationInfoGet/"+date,
+		type: "get",
+		dataType:"json", 
+		success:function(json){
+			
+			var target_tag="";
+			var txt="";				
+			//$(".timetable_inner_content").html("");
+			
+			for(i=0;i<json.reservationList.length;i++){
+				target_tag = ".doctor_"+json.reservationList[i].main_doctor+"_"+json.reservationList[i].normal_rtime;
+				
+				txt = "<p style='background:yellow;border:1px solid gray;'>"+json.reservationList[i].name+"</p>";
+				
+				$(target_tag).append(txt);
+			}
+		}
+	});
+}
+
+function get_today(){
+	var date=new Date();
+	var day=(date.getDay()+1)+"";
+	return day;
+}
+
+//요일 별 병원 정보 및 의사 정보GET해서 표 만들기
+function get_hospital_day_info(day){
+	console.log("dayInfo GET");
+	var txt= "";
+	
+	$.ajax({
+		url:"${pageContext.request.contextPath}/dayInfoGet/"+day,
+		type: "get",
+		dataType:"json", 
+		success:function(json){				
+			var starttime=Number(json.hospitalInfo.start_time);
+			var endtime=Number(json.hospitalInfo.end_time);
+			var lunch=Number(json.hospitalInfo.lunch);
+			
+			txt = "<table><tr><td></td>";
+			for(var i=starttime; i < endtime; i++){
+				txt+="<td>"+i+"시</td>";
+			}
+			txt+="</tr>";
+			$(json.doctorList).each(function(){
+				txt += "<tr class='"+this.type+"_"+this.eno+"'><td>"+this.name+"</td>";
+				for(var i=starttime; i < endtime; i++){
+					if(i == lunch){
+						txt += "<td class='"+this.type+"_"+this.eno+"_"+i+"' style='background:gray; text-align:center;'>점심시간</td>";
+					}else{
+						txt += "<td class='"+this.type+"_"+this.eno+"_"+i+" timetable_inner_content'></td>"
+					}
+				}
+				txt += "</tr>";
+			});
+			
+			txt+="</table>";				
+			
+			$(".ar_tbl_wrap_1").html(txt);
+		}
+	});
+}
+</script> 
+</head> 
 <body>
 	<div class="all_wrap">
 		<div class="header">
@@ -183,7 +231,7 @@ $(function(){
 		</div>
 		<div class="section">
 			<div class="aside_left">
-				<div class="tbl_wrap_1">
+				<div class="al_tbl_wrap_1">
 					<table id="calendar" border="3" align="center" style="border-color:#3333FF ">
 					    <tr class="tr_not"><!-- label은 마우스로 클릭을 편하게 해줌 -->
 					        <td><label onclick="prevCalendar()"><</label></td>
@@ -204,33 +252,45 @@ $(function(){
 					    </tr>  
 					</table>
 				</div><!-- tbl_wrap_1 end -->
-			</div><!-- aside_left end -->
-			<div class="aside_right">
-				<div class="tbl_wrap_2">
-					<h1>${hospitalInfo.start_tiem-1}</h1>
-					<%-- <table>
+				<div class="al_tbl_wrap2">
+					<table>
+						<tr>
+							<th style="background:skyblue;">일반예약</th>
+						</tr>
 						<tr>
 							<td></td>
-							<c:forEach begin="${hospitalInfo.start_time}" end="${hospitalInfo.end_time-1}" var="idx">
-								<td>${idx}시&nbsp;&nbsp;&nbsp;</td>
-							</c:forEach>
 						</tr>
-						<c:forEach var="item" items="${doctorList}">
-							<tr class="${item.type}_${item.eno}">
-								<td class="doctor_name">${item.name}</td>
-								<c:forEach begin="${hospitalInfo.start_time}" end="${hospitalInfo.end_time-1}" var="idx">
-									<c:choose> 
-										<c:when test="${idx==hospitalInfo.lunch}">
-											<td class="${item.type}_${item.eno}_${idx}" style="background:gray; text-align:center;">점심시간</td>
-										</c:when>										
-										<c:otherwise>	
-											<td class="${item.type}_${item.eno}_${idx} timetable_inner_content"></td>
-										</c:otherwise>
-									</c:choose>
-								</c:forEach>
-							</tr>
-						</c:forEach>
-					</table> --%>
+						<tr>
+							<th>-예약일시</th>
+						</tr>
+						<tr>
+							<td></td>
+						</tr>
+						<tr>
+							<th>-진료종류</th>
+						</tr>
+						<tr>
+							<td></td>
+						</tr>
+						<tr>
+							<th>-등록정보</th>
+						</tr>
+						<tr>
+							<td></td>
+						</tr>
+						<tr>
+							<th>-변경처리</th>
+						</tr>
+						<tr>
+							<td></td>
+						</tr>
+					</table>
+				</div>
+			</div><!-- aside_left end -->
+			<div class="aside_right">
+				<div class="ar_tbl_wrap_1">
+					
+					
 				</div><!-- tbl_wrap_2 end-->
 			</div><!-- aside_right end -->
 		</div><!-- section end -->

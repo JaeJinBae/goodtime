@@ -74,10 +74,46 @@
 	}
 	.al_tbl_wrap2{
 		width:100%;
+		margin-top:50px;
+		display:none;
 	}
-	.al_tbl_wrap2 > table{
-		width:100%;
+	.al_tbl_wrap2_title{
+		width: 95%;
+		margin: 0 auto;
+		background: #057be8;
+		color: #fff;
+		font-size:18px;
+		font-weight: bold;
+		text-align: center;
+		padding: 15px 0;
+		letter-spacing: 5px;
+	}
+	.al_tbl_wrap2 > #tbl_simple_reservation{
+		width:95%;
+		margin: 0 auto;
 		border: 1px solid lightgray;
+		display:block;
+		padding:15px;
+		background: #d3e5f6;
+	}
+	#tbl_simple_reservation tr{
+		
+	}
+	#tbl_simple_reservation th, #tbl_simple_reservation td{
+		font-size:15px;
+		font-weight: bold;
+	}
+	#tbl_simple_reservation .tbl_content_title{
+		text-align: left;
+		padding-top:15px;
+	}
+	#tbl_simple_reservation .tbl_content {
+		padding-left:20px;
+		padding-top:5px;
+	}
+	#tbl_simple_reservation .tbl_content_pName{
+		padding:0;
+		font-size:17px;
 	}
 </style> 
 <script>
@@ -95,7 +131,7 @@ $(function(){
 	//오늘 정보GET
 	setTimeout(function(){get_today_reservation()},100);
 	
-	//날짜 클릭 시 해당 정보GET
+	//달력 날짜 클릭 시 해당 정보GET
 	$(document).on("click", "#calendar td:not(.tr_not > td)", function(){
 		//날짜마다 요일 표시
 		write_yoil();
@@ -114,6 +150,12 @@ $(function(){
 		setTimeout(function(){get_select_date_reservation(fulldate)},100);
 		
 	 });
+	
+	$(document).on({
+		mouseenter:function(){$(".al_tbl_wrap2").css("display","block");},
+		mouseleave:function(){$(".al_tbl_wrap2").css("display","none");}
+		}, ".patient_p_tag");
+		
 	
 	
 	
@@ -171,7 +213,7 @@ function get_select_date_reservation(date){
 			for(i=0;i<json.reservationList.length;i++){
 				target_tag = ".doctor_"+json.reservationList[i].main_doctor+"_"+json.reservationList[i].normal_rtime;
 				
-				txt = "<p style='background:yellow;border:1px solid gray;'>"+json.reservationList[i].name+"</p>";
+				txt = "<p class='patient_p_tag' style='background:yellow;border:1px solid gray;'>"+json.reservationList[i].name+"</p>";
 				
 				$(target_tag).append(txt);
 			}
@@ -253,36 +295,34 @@ function get_hospital_day_info(day){
 					</table>
 				</div><!-- tbl_wrap_1 end -->
 				<div class="al_tbl_wrap2">
-					<table>
+					<p class="al_tbl_wrap2_title">일반예약</p>
+					<table id="tbl_simple_reservation">
 						<tr>
-							<th style="background:skyblue;">일반예약</th>
+							<td class="tbl_content_pName">김길동(68255)님 ▶ 김정훈</td>
 						</tr>
 						<tr>
-							<td></td>
+							<th class="tbl_content_title">-예약일시</th>
 						</tr>
 						<tr>
-							<th>-예약일시</th>
+							<td class="tbl_content">2019-03-27 09:00</td>
 						</tr>
 						<tr>
-							<td></td>
+							<th class="tbl_content_title">-진료종류</th>
 						</tr>
 						<tr>
-							<th>-진료종류</th>
+							<td class="tbl_content">주사-MP 30분</td>
 						</tr>
 						<tr>
-							<td></td>
+							<th class="tbl_content_title">-등록정보</th>
 						</tr>
 						<tr>
-							<th>-등록정보</th>
+							<td class="tbl_content">2019-03-20 by 정은비</td>
 						</tr>
 						<tr>
-							<td></td>
+							<th class="tbl_content_title">-변경처리</th>
 						</tr>
 						<tr>
-							<th>-변경처리</th>
-						</tr>
-						<tr>
-							<td></td>
+							<td class="tbl_content">2019-03-27 by 조수빈</td>
 						</tr>
 					</table>
 				</div>

@@ -127,9 +127,11 @@ $(function(){
 	//날짜마다 요일 표시
 	write_yoil();
 	
-	//오늘 요일 및 날짜에 해당하는 병원 정보, 예약 정보 GET 
-	get_day_reservation_info(get_today());
+	//오늘 요일 정보 GET
+	get_hospital_day_info(get_today());
 	
+	//오늘 정보GET
+	setTimeout(function(){get_today_reservation()},100);
 	
 	//달력 날짜 클릭 시 해당 정보GET
 	$(document).on("click", "#calendar td:not(.tr_not > td)", function(){
@@ -146,15 +148,14 @@ $(function(){
 		var fulldate=year_month+"-"+date;
 		var day = $(this).find("input[type='hidden']").val();
 		
-		//get_hospital_day_info(day);
-		//setTimeout(function(){get_select_date_reservation(fulldate)},100);
+		get_hospital_day_info(day);
+		setTimeout(function(){get_select_date_reservation(fulldate)},100);
 		
-		get_day_reservation_info(fulldate);
 	 });
 	
 	$(document).on({
 		mouseenter:function(){
-			var rno=$(this).find("input[type='hidden']").val(); 
+			var rno=$(this).find("input[type='hidden']").val();
 
 			$.ajax({
 				url:"${pageContext.request.contextPath}/reservationInfoByRno/"+rno,
@@ -196,13 +197,25 @@ $(function(){
 	
 	
 });
-function get_today(){
+//달력에 각 일마다 요일 표시
+function write_yoil(){
+	var idx=1;
+	for(var i=0; i < $("#calendar tr:not(.tr_not) td").length; i++){
+		if(idx == 8){
+			idx = 1;
+		} 
+		$("#calendar tr:not(.tr_not) td").eq(i).append("<input type='hidden' value='"+idx+"'>");
+		idx++;
+	}
+}
+
+//오늘날짜 예약정보 GET
+function get_today_reservation(){
 	var today=new Date();
 	var today_month=(today.getMonth()+1)+"";
 	var today_date=today.getDate()+"";
 	var update_month="";
 	var update_date="";
-	var fullDate="";
 	
 	//날짜 월이 한자리면 앞에 숫자0 추가
 	if(today_month.length <= 1){
@@ -217,19 +230,48 @@ function get_today(){
 		update_date=today_date;
 	}
 	
-	fulldate = today.getFullYear()+"-"+update_month+"-"+update_date;
-	return fulldate;
+	get_select_date_reservation(today.getFullYear()+"-"+update_month+"-"+update_date);
 }
 
-function get_day_reservation_info(date){
-	var txt = "";
+
+//달력에서 선택한 날짜 예약정보 GET
+function get_select_date_reservation(date){
 	$.ajax({
-		url:"${pageContext.request.contextPath}/dayAndReservationInfo/"+date,
+		url:"${pageContext.request.contextPath}/reservationInfoGet/"+date,
 		type: "get",
 		dataType:"json", 
 		success:function(json){
-			console.log(json);
 			
+			var target_tag="";
+			var txt="";				
+			//$(".timetable_inner_content").html("");
+			
+			for(i=0;i<json.reservationList.length;i++){
+				target_tag = ".doctor_"+json.reservationList[i].main_doctor+"_"+(Number(json.reservationList[i].normal_rtime)/60);
+				
+				txt = "<p class='patient_p_tag' style='background:yellow;border:1px solid gray;'>"+json.reservationList[i].name+"<input type='hidden' value='"+json.reservationList[i].rno+"'></p>";
+				
+				$(target_tag).append(txt);
+			}
+		}
+	});
+}
+
+function get_today(){
+	var date=new Date();
+	var day=(date.getDay()+1)+"";
+	return day;
+}
+
+//요일 별 병원 정보 및 의사 정보GET해서 표 만들기
+function get_hospital_day_info(day){
+	var txt= "";
+	
+	$.ajax({
+		url:"${pageContext.request.contextPath}/dayInfoGet/"+day,
+		type: "get",
+		dataType:"json", 
+		success:function(json){				
 			var starttime=Number(json.hospitalInfo.start_time)/60;
 			var endtime=Number(json.hospitalInfo.end_time)/60;
 			var lunch=Number(json.hospitalInfo.lunch)/60;
@@ -254,41 +296,9 @@ function get_day_reservation_info(date){
 			txt+="</table>";				
 			
 			$(".ar_tbl_wrap_1").html(txt);
-			
-			var target_tag="";
-							
-			$(json.reservationListNormal).each(function(){
-				
-				target_tag = ".doctor_"+this.main_doctor+"_"+(Number(this.normal_rtime)/60);
-				
-				txt = "<p class='patient_p_tag' style='background:yellow;border:1px solid gray;'>"+this.name+"<input type='hidden' value='"+this.rno+"'></p>";
-				
-				$(target_tag).append(txt);
-			});
-			
-			$(json.reservationListFix).each(function(){
-				target_tag = ".doctor_"+this.main_doctor+"_"+(Number(this.fix_rtime)/60);
-				
-				txt = "<p class='patient_p_tag' style='background:pink;border:1px solid gray;'>"+this.name+"<input type='hidden' value='"+this.rno+"'></p>";
-				
-				$(target_tag).append(txt);
-			});
 		}
 	});
 }
-
-//달력에 각 일마다 요일 표시
-function write_yoil(){
-	var idx=1;
-	for(var i=0; i < $("#calendar tr:not(.tr_not) td").length; i++){
-		if(idx == 8){
-			idx = 1;
-		} 
-		$("#calendar tr:not(.tr_not) td").eq(i).append("<input type='hidden' value='"+idx+"'>");
-		idx++;
-	}
-}
-
 </script> 
 </head> 
 <body>

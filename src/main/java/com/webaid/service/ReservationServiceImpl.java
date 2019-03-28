@@ -29,4 +29,9 @@ public class ReservationServiceImpl implements ReservationService {
 		return dao.selectByRno(rno);
 	}
 
+	@Override
+	public List<ReservationVO> selectByFixDay(String day) {
+		return dao.selectByFixDay(day);
+	}
+
 }

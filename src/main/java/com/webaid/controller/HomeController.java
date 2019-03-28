@@ -156,6 +156,53 @@ public class HomeController {
 		return entity;
 	}
 	
+	@RequestMapping(value="/dayAndReservationInfo/{date}", method=RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> dayAndReservationInfoGET(@PathVariable("date") String date){
+		logger.info("day And Reservation Info GET");
+		ResponseEntity<Map<String,Object>> entity=null;
+		HashMap<String, Object> map=new HashMap<>();
+		
+		try {
+			DayGetUtil getDay = new DayGetUtil();
+			String day = getDay.getDay(date);
+			
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			Date selectDate = format.parse(date);
+			
+			List<ReservationVO> reservationListNormal = rService.selectByDate(date);
+			List<ReservationVO> reservationListFix = rService.selectByFixDay(day);
+			System.out.println("선택한 날짜 밀리세컨드 = "+selectDate.getTime());
+			for(int i=0; i < reservationListFix.size(); i++){
+				
+				reservationListFix.get(i).getFix_day_start();
+				Date getStartDate = format.parse(reservationListFix.get(i).getFix_day_start());
+				Date getEndDate = format.parse(reservationListFix.get(i).getFix_day_end());
+				System.out.println(getStartDate.getTime());
+				if(selectDate.getTime() >= getStartDate.getTime() || selectDate.getTime() <= getEndDate.getTime()){
+					
+				}else{
+					reservationListFix.remove(i);
+				}
+				
+			}
+			HospitalInfoVO hospitalInfo = hService.selectOne(day);
+			List<EmployeeVO> doctorList = empService.selectByType("doctor");
+			
+			map.put("reservationListNormal", reservationListNormal);
+			map.put("reservationListFix", reservationListFix);
+			map.put("hospitalInfo", hospitalInfo);
+			map.put("doctorList", doctorList);
+
+			entity=new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+			
+			return entity;
+		} catch (Exception e) {
+			
+		}
+		
+		return entity;
+	}
+	
 	@RequestMapping(value="/reservationInfoByRno/{rno}", method=RequestMethod.GET)
 	public ResponseEntity<ReservationVO> rservationInfoByRno(@PathVariable("rno") int rno){
 		logger.info("reservationInfoByRno GET");

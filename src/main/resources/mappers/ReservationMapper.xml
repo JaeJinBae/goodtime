@@ -12,12 +12,12 @@
 		select * from reservation where normal_date=#{normal_date}
 	</select>
 	
-	<select id="selectByFixRes" resultType="ReservationVO">
+	<select id="selectByFixDay" resultType="ReservationVO">
 		select * from reservation where fix_day=#{fix_day}
 	</select>
 	
 	<select id="selectByRno" resultType="ReservationVO">
 		select * from reservation where rno=#{rno}
-	</select>
+	</select>	
 	
 </mapper>

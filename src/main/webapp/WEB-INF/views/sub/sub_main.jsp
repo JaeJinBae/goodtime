@@ -118,6 +118,8 @@
 </style> 
 <script>
 $(function(){
+	var num=130;
+	console.log(parseInt(num/60)+", "+num%60);
 	
 	//달력 생성
 	buildCalendar();
@@ -165,7 +167,7 @@ $(function(){
 					str="<p class='al_tbl_wrap2_title'>일반예약</p><table id='tbl_simple_reservation'>"
 						+"<tr><td class='tbl_content_pName'>"+json.name+"("+json.cno+")님 ▶"+ json.main_doctor+"</td></tr>"
 						+"<tr><th class='tbl_content_title'>- 예약일시</th></tr>"
-						+"<tr><td class='tbl_content'>"+json.normal_date+" "+json.normal_rtime+"시</td></tr>"
+						+"<tr><td class='tbl_content'>"+json.normal_date+" "+(Number(json.normal_rtime)/60)+"시</td></tr>"
 						+"<tr><th class='tbl_content_title'>- 진료종류</th></tr>"
 						+"<tr><td class='tbl_content'>"+json.clinic+"</td></tr>"
 						+"<tr><th class='tbl_content_title'>- 등록정보</th></tr>"
@@ -245,7 +247,7 @@ function get_select_date_reservation(date){
 			//$(".timetable_inner_content").html("");
 			
 			for(i=0;i<json.reservationList.length;i++){
-				target_tag = ".doctor_"+json.reservationList[i].main_doctor+"_"+json.reservationList[i].normal_rtime;
+				target_tag = ".doctor_"+json.reservationList[i].main_doctor+"_"+(Number(json.reservationList[i].normal_rtime)/60);
 				
 				txt = "<p class='patient_p_tag' style='background:yellow;border:1px solid gray;'>"+json.reservationList[i].name+"<input type='hidden' value='"+json.reservationList[i].rno+"'></p>";
 				
@@ -270,18 +272,18 @@ function get_hospital_day_info(day){
 		type: "get",
 		dataType:"json", 
 		success:function(json){				
-			var starttime=Number(json.hospitalInfo.start_time);
-			var endtime=Number(json.hospitalInfo.end_time);
-			var lunch=Number(json.hospitalInfo.lunch);
+			var starttime=Number(json.hospitalInfo.start_time)/60;
+			var endtime=Number(json.hospitalInfo.end_time)/60;
+			var lunch=Number(json.hospitalInfo.lunch)/60;
 			
 			txt = "<table><tr><td></td>";
-			for(var i=starttime; i < endtime; i+60){
-				txt+="<td>"+(i/60)+"시</td>";
+			for(var i=starttime; i < endtime; i++){
+				txt+="<td>"+i+"시</td>";
 			}
 			txt+="</tr>";
 			$(json.doctorList).each(function(){
 				txt += "<tr class='"+this.type+"_"+this.eno+"'><td>"+this.name+"</td>";
-				for(var i=starttime; i < endtime; i+60){
+				for(var i=starttime; i < endtime; i++){
 					if(i == lunch){
 						txt += "<td class='"+this.type+"_"+this.eno+"_"+i+"' style='background:gray; text-align:center;'>점심시간</td>";
 					}else{

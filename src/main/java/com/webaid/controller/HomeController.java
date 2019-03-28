@@ -1,11 +1,14 @@
 package com.webaid.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
-import javax.swing.text.html.parser.Entity;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -105,13 +108,20 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value="/reservationInfoGet/{date}", method=RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> reservationInfo(@PathVariable("date") String date){
+	public ResponseEntity<Map<String, Object>> reservationInfo(@PathVariable("date") String date) throws ParseException{
 		logger.info("reservationInfo GET start");
+		logger.info("받아온 날짜는 "+date);
+		
 		ResponseEntity<Map<String,Object>> entity=null;
 		HashMap<String, Object> map=new HashMap<>();
 		
+		DayGetUtil getDay = new DayGetUtil();
+		String day = getDay.getDay(date);
+		
 		List<ReservationVO> reservationList = rService.selectByDate(date);
 		
+		
+		logger.info(day);
 		map.put("reservationList", reservationList);
 		
 		entity=new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
@@ -126,10 +136,10 @@ public class HomeController {
 		HashMap<String, Object> map=new HashMap<>();
 		
 		DayGetUtil dg=new DayGetUtil();
-		String getDay = dg.getSelectDay(day);
+		String selectDay = dg.getSelectDay(day);
 		
 		try {
-			HospitalInfoVO hospitalInfo = hService.selectOne(getDay);
+			HospitalInfoVO hospitalInfo = hService.selectOne(selectDay);
 			List<EmployeeVO> doctorList = empService.selectByType("doctor");
 			
 			map.put("hospitalInfo", hospitalInfo);

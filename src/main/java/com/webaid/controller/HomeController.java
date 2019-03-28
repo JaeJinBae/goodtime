@@ -171,16 +171,17 @@ public class HomeController {
 			
 			List<ReservationVO> reservationListNormal = rService.selectByDate(date);
 			List<ReservationVO> reservationListFix = rService.selectByFixDay(day);
-			System.out.println("선택한 날짜 밀리세컨드 = "+selectDate.getTime());
+			
 			for(int i=0; i < reservationListFix.size(); i++){
 				
 				reservationListFix.get(i).getFix_day_start();
 				Date getStartDate = format.parse(reservationListFix.get(i).getFix_day_start());
 				Date getEndDate = format.parse(reservationListFix.get(i).getFix_day_end());
-				System.out.println(getStartDate.getTime());
-				if(selectDate.getTime() >= getStartDate.getTime() || selectDate.getTime() <= getEndDate.getTime()){
-					
+				
+				if(selectDate.getTime() >= getStartDate.getTime() && selectDate.getTime() <= getEndDate.getTime()){
+					System.out.println("조건맞음"+reservationListFix.get(i));
 				}else{
+					System.out.println("조건틀림"+reservationListFix.get(i));
 					reservationListFix.remove(i);
 				}
 				

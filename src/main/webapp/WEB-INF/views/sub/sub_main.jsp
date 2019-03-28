@@ -163,14 +163,18 @@ $(function(){
 				success:function(json){
 					console.log(json);
 					var str="";
-					str="<p class='al_tbl_wrap2_title'>일반예약</p><table id='tbl_simple_reservation'>"
+					str="<p class='al_tbl_wrap2_title'>"+json.rtype+" 예약</p><table id='tbl_simple_reservation'>"
 						+"<tr><td class='tbl_content_pName'>"+json.name+"("+json.cno+")님 ▶"+ json.main_doctor+"</td></tr>"
-						+"<tr><th class='tbl_content_title'>- 예약일시</th></tr>"
-						+"<tr><td class='tbl_content'>"+json.normal_date+" "+(Number(json.normal_rtime)/60)+"시</td></tr>"
-						+"<tr><th class='tbl_content_title'>- 진료종류</th></tr>"
-						+"<tr><td class='tbl_content'>"+json.clinic+"</td></tr>"
-						+"<tr><th class='tbl_content_title'>- 등록정보</th></tr>"
-						+"<tr><td class='tbl_content'>"+json.regdate+" by "+json.writer+"</td></tr>";
+						+"<tr><th class='tbl_content_title'>- 예약일시</th></tr>";
+						if(json.rtype == '일반'){
+							str += "<tr><td class='tbl_content'>"+json.normal_date+" "+(Number(json.normal_rtime)/60)+"시</td></tr>";
+						}else if(json.rtype == '고정'){
+							str += "<tr><td class='tbl_content'>"+json.fix_day+"요일 "+(Number(json.fix_rtime)/60)+"시</td></tr>";
+						}
+						str += "<tr><th class='tbl_content_title'>- 진료종류</th></tr>"
+							+"<tr><td class='tbl_content'>"+json.clinic+"</td></tr>"
+							+"<tr><th class='tbl_content_title'>- 등록정보</th></tr>"
+							+"<tr><td class='tbl_content'>"+json.regdate+" by "+json.writer+"</td></tr>";
 						
 					if(json.updatedate != ""){
 						str += "<tr><th class='tbl_content_title'>- 변경처리</th></tr>"

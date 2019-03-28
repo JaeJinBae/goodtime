@@ -1,6 +1,7 @@
 package com.webaid.domain;
 
 public class PatientVO {
+	private int pno;
 	private int cno;
 	private String name;
 	private String phone;
@@ -15,6 +16,14 @@ public class PatientVO {
 
 	public PatientVO() {
 		super();
+	}
+
+	public int getPno() {
+		return pno;
+	}
+
+	public void setPno(int pno) {
+		this.pno = pno;
 	}
 
 	public int getCno() {
@@ -107,9 +116,12 @@ public class PatientVO {
 
 	@Override
 	public String toString() {
-		return "PatientVO [cno=" + cno + ", name=" + name + ", phone=" + phone + ", birth=" + birth + ", gender="
-				+ gender + ", mail=" + mail + ", main_doctor=" + main_doctor + ", main_therapist=" + main_therapist
-				+ ", sub_therapist=" + sub_therapist + ", memo=" + memo + ", activation=" + activation + "]";
+		return "PatientVO [pno=" + pno + ", cno=" + cno + ", name=" + name + ", phone=" + phone + ", birth=" + birth
+				+ ", gender=" + gender + ", mail=" + mail + ", main_doctor=" + main_doctor + ", main_therapist="
+				+ main_therapist + ", sub_therapist=" + sub_therapist + ", memo=" + memo + ", activation=" + activation
+				+ "]";
 	}
+
+	
 
 }

@@ -108,7 +108,7 @@
 		padding-top:15px;
 	}
 	#tbl_simple_reservation .tbl_content {
-		padding-left:20px;
+		padding-left:10px;
 		padding-top:5px;
 	}
 	#tbl_simple_reservation .tbl_content_pName{
@@ -152,7 +152,42 @@ $(function(){
 	 });
 	
 	$(document).on({
-		mouseenter:function(){$(".al_tbl_wrap2").css("display","block");},
+		mouseenter:function(){
+			var rno=$(this).find("input[type='hidden']").val();
+
+			$.ajax({
+				url:"${pageContext.request.contextPath}/reservationInfoByRno/"+rno,
+				type: "get",
+				dataType:"json", 
+				success:function(json){
+					console.log(json);
+					var str="";
+					str="<p class='al_tbl_wrap2_title'>일반예약</p><table id='tbl_simple_reservation'>"
+						+"<tr><td class='tbl_content_pName'>"+json.name+"("+json.cno+")님 ▶"+ json.main_doctor+"</td></tr>"
+						+"<tr><th class='tbl_content_title'>- 예약일시</th></tr>"
+						+"<tr><td class='tbl_content'>"+json.normal_date+" "+json.normal_rtime+"시</td></tr>"
+						+"<tr><th class='tbl_content_title'>- 진료종류</th></tr>"
+						+"<tr><td class='tbl_content'>"+json.clinic+"</td></tr>"
+						+"<tr><th class='tbl_content_title'>- 등록정보</th></tr>"
+						+"<tr><td class='tbl_content'>"+json.regdate+" by "+json.writer+"</td></tr>";
+						
+					if(json.updatedate != ""){
+						str += "<tr><th class='tbl_content_title'>- 변경처리</th></tr>"
+							+"<tr><td class='tbl_content'>"+json.updatedate+" by "+json.updatewriter+"</td></tr>";
+					}
+					if(json.memo != ""){
+						str +=  "<tr><th class='tbl_content_title'>- 메모</th></tr>"
+							+"<tr><td class='tbl_content'>"+json.memo+"</td></tr>";
+					}
+					
+					str+="</table>";
+						
+					$(".al_tbl_wrap2").html(str);
+				}
+			});
+			$(".al_tbl_wrap2").css("display","block");
+			
+		},
 		mouseleave:function(){$(".al_tbl_wrap2").css("display","none");}
 		}, ".patient_p_tag");
 		
@@ -199,7 +234,6 @@ function get_today_reservation(){
 
 //달력에서 선택한 날짜 예약정보 GET
 function get_select_date_reservation(date){
-	console.log("reservationInfo GET");
 	$.ajax({
 		url:"${pageContext.request.contextPath}/reservationInfoGet/"+date,
 		type: "get",
@@ -213,7 +247,7 @@ function get_select_date_reservation(date){
 			for(i=0;i<json.reservationList.length;i++){
 				target_tag = ".doctor_"+json.reservationList[i].main_doctor+"_"+json.reservationList[i].normal_rtime;
 				
-				txt = "<p class='patient_p_tag' style='background:yellow;border:1px solid gray;'>"+json.reservationList[i].name+"</p>";
+				txt = "<p class='patient_p_tag' style='background:yellow;border:1px solid gray;'>"+json.reservationList[i].name+"<input type='hidden' value='"+json.reservationList[i].rno+"'></p>";
 				
 				$(target_tag).append(txt);
 			}
@@ -229,7 +263,6 @@ function get_today(){
 
 //요일 별 병원 정보 및 의사 정보GET해서 표 만들기
 function get_hospital_day_info(day){
-	console.log("dayInfo GET");
 	var txt= "";
 	
 	$.ajax({
@@ -242,13 +275,13 @@ function get_hospital_day_info(day){
 			var lunch=Number(json.hospitalInfo.lunch);
 			
 			txt = "<table><tr><td></td>";
-			for(var i=starttime; i < endtime; i++){
-				txt+="<td>"+i+"시</td>";
+			for(var i=starttime; i < endtime; i+60){
+				txt+="<td>"+(i/60)+"시</td>";
 			}
 			txt+="</tr>";
 			$(json.doctorList).each(function(){
 				txt += "<tr class='"+this.type+"_"+this.eno+"'><td>"+this.name+"</td>";
-				for(var i=starttime; i < endtime; i++){
+				for(var i=starttime; i < endtime; i+60){
 					if(i == lunch){
 						txt += "<td class='"+this.type+"_"+this.eno+"_"+i+"' style='background:gray; text-align:center;'>점심시간</td>";
 					}else{
@@ -295,7 +328,7 @@ function get_hospital_day_info(day){
 					</table>
 				</div><!-- tbl_wrap_1 end -->
 				<div class="al_tbl_wrap2">
-					<p class="al_tbl_wrap2_title">일반예약</p>
+					<!-- <p class="al_tbl_wrap2_title">일반예약</p>
 					<table id="tbl_simple_reservation">
 						<tr>
 							<td class="tbl_content_pName">김길동(68255)님 ▶ 김정훈</td>
@@ -324,8 +357,8 @@ function get_hospital_day_info(day){
 						<tr>
 							<td class="tbl_content">2019-03-27 by 조수빈</td>
 						</tr>
-					</table>
-				</div>
+					</table> -->
+				</div><!-- al_tbl_wrap2 end -->
 			</div><!-- aside_left end -->
 			<div class="aside_right">
 				<div class="ar_tbl_wrap_1">

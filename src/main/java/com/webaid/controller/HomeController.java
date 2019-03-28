@@ -88,6 +88,22 @@ public class HomeController {
 		return "redirect:/";
 	}
 	
+	@RequestMapping(value = "/sub_main", method = RequestMethod.GET)
+	public String sub_main(Model model, HttpSession session) {
+		logger.info("sub_main GET");
+		
+		//logger.info("이름= "+session.getAttribute("name")+", 아이디= "+session.getAttribute("id"));
+		
+		
+		//HospitalInfoVO hospitalInfo = hService.selectOne(day); 
+		List<EmployeeVO> doctorList = empService.selectByType("doctor");
+		
+		//model.addAttribute("hospitalInfo", hospitalInfo);
+		model.addAttribute("doctorList", doctorList);
+		
+		return "sub/sub_main";
+	}
+	
 	@RequestMapping(value="/reservationInfoGet/{date}", method=RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> reservationInfo(@PathVariable("date") String date){
 		logger.info("reservationInfo GET start");
@@ -102,30 +118,6 @@ public class HomeController {
 		logger.info("reservationInfo GET end");
 		return entity;
 	}
-	
-	/*@RequestMapping(value="/dayInfoGet/{day}", method=RequestMethod.GET)
-	public ResponseEntity<String> dayInfoGet(@PathVariable("day") String day, Model model){
-		logger.info("day info get");
-		
-		ResponseEntity<String> entity=null;
-		
-		DayGetUtil dg=new DayGetUtil();
-		String getDay = dg.getSelectDay(day);
-		logger.info(getDay);
-		
-		try {
-			HospitalInfoVO hospitalInfo = hService.selectOne(getDay);
-			logger.info(hospitalInfo.toString());
-			model.addAttribute("hospitalInfo", hospitalInfo);
-			entity = new ResponseEntity<String>("ok", HttpStatus.OK);
-			
-		} catch (Exception e) {
-			entity = new ResponseEntity<String>("no", HttpStatus.OK);
-		}
-		
-		return entity;
-
-	}*/
 	
 	@RequestMapping(value="/dayInfoGet/{day}", method=RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> dayInfoGet(@PathVariable("day") String day, Model model){
@@ -154,20 +146,32 @@ public class HomeController {
 		return entity;
 	}
 	
-	@RequestMapping(value = "/sub_main", method = RequestMethod.GET)
-	public String sub_main(Model model, HttpSession session) {
-		logger.info("sub_main GET");
+	@RequestMapping(value="/reservationInfoByRno/{rno}", method=RequestMethod.GET)
+	public ResponseEntity<ReservationVO> rservationInfoByRno(@PathVariable("rno") int rno){
+		logger.info("reservationInfoByRno GET");
+		ResponseEntity<ReservationVO> entity=null;
 		
-		//logger.info("이름= "+session.getAttribute("name")+", 아이디= "+session.getAttribute("id"));
+		try {
+			ReservationVO vo=rService.selectByRno(rno);
+			entity = new ResponseEntity<ReservationVO>(vo, HttpStatus.OK);
+			return entity;
+		} catch (Exception e) {
+			
+		}
 		
 		
-		//HospitalInfoVO hospitalInfo = hService.selectOne(day); 
-		List<EmployeeVO> doctorList = empService.selectByType("doctor");
-		
-		//model.addAttribute("hospitalInfo", hospitalInfo);
-		model.addAttribute("doctorList", doctorList);
-		
-		return "sub/sub_main";
+		return entity;
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }

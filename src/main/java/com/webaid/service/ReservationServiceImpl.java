@@ -24,4 +24,9 @@ public class ReservationServiceImpl implements ReservationService {
 		return dao.selectByDate(date);
 	}
 
+	@Override
+	public ReservationVO selectByRno(int rno) {
+		return dao.selectByRno(rno);
+	}
+
 }

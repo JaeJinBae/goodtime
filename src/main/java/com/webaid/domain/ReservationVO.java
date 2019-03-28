@@ -8,15 +8,20 @@ public class ReservationVO {
 	private String birth;
 	private String gender;
 	private String memo;
+	private String clinic;
 	private String main_doctor;
 	private String main_therapist;
 	private String rtype;
-	private String normal_day;
+	private String normal_date;
 	private String normal_rtime;
 	private String fix_day;
 	private String fix_rtime;
 	private String fix_day_start;
 	private String fix_day_end;
+	private String writer;
+	private String regdate;
+	private String updatedate;
+	private String updatewriter;
 
 	public ReservationVO() {
 		super();
@@ -78,6 +83,14 @@ public class ReservationVO {
 		this.memo = memo;
 	}
 
+	public String getClinic() {
+		return clinic;
+	}
+
+	public void setClinic(String clinic) {
+		this.clinic = clinic;
+	}
+
 	public String getMain_doctor() {
 		return main_doctor;
 	}
@@ -102,20 +115,20 @@ public class ReservationVO {
 		this.rtype = rtype;
 	}
 
-	public String getNormal_day() {
-		return normal_day;
+	public String getNormal_date() {
+		return normal_date;
 	}
 
-	public void setNormal_day(String normal_day) {
-		this.normal_day = normal_day;
+	public void setNormal_date(String normal_date) {
+		this.normal_date = normal_date;
 	}
 
 	public String getNormal_rtime() {
 		return normal_rtime;
 	}
 
-	public void setNotmal_rtime(String notmal_rtime) {
-		this.normal_rtime = notmal_rtime;
+	public void setNormal_rtime(String normal_rtime) {
+		this.normal_rtime = normal_rtime;
 	}
 
 	public String getFix_day() {
@@ -150,13 +163,46 @@ public class ReservationVO {
 		this.fix_day_end = fix_day_end;
 	}
 
+	public String getWriter() {
+		return writer;
+	}
+
+	public void setWriter(String writer) {
+		this.writer = writer;
+	}
+
+	public String getRegdate() {
+		return regdate;
+	}
+
+	public void setRegdate(String regdate) {
+		this.regdate = regdate;
+	}
+
+	public String getUpdatedate() {
+		return updatedate;
+	}
+
+	public void setUpdatedate(String updatedate) {
+		this.updatedate = updatedate;
+	}
+
+	public String getUpdatewriter() {
+		return updatewriter;
+	}
+
+	public void setUpdatewriter(String updatewriter) {
+		this.updatewriter = updatewriter;
+	}
+
 	@Override
 	public String toString() {
 		return "ReservationVO [rno=" + rno + ", cno=" + cno + ", name=" + name + ", phone=" + phone + ", birth=" + birth
-				+ ", gender=" + gender + ", memo=" + memo + ", main_doctor=" + main_doctor + ", main_therapist="
-				+ main_therapist + ", rtype=" + rtype + ", normal_day=" + normal_day + ", notmal_rtime=" + normal_rtime
-				+ ", fix_day=" + fix_day + ", fix_rtime=" + fix_rtime + ", fix_day_start=" + fix_day_start
-				+ ", fix_day_end=" + fix_day_end + "]";
+				+ ", gender=" + gender + ", memo=" + memo + ", clinic=" + clinic + ", main_doctor=" + main_doctor
+				+ ", main_therapist=" + main_therapist + ", rtype=" + rtype + ", normal_date=" + normal_date
+				+ ", normal_rtime=" + normal_rtime + ", fix_day=" + fix_day + ", fix_rtime=" + fix_rtime
+				+ ", fix_day_start=" + fix_day_start + ", fix_day_end=" + fix_day_end + ", writer=" + writer
+				+ ", regdate=" + regdate + ", updatedate=" + updatedate + ", updatewriter=" + updatewriter + "]";
 	}
 
 }

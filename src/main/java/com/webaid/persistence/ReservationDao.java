@@ -7,4 +7,5 @@ import com.webaid.domain.ReservationVO;
 public interface ReservationDao {
 	public List<ReservationVO> selectAll();
 	public List<ReservationVO> selectByDate(String date);
+	public ReservationVO selectByRno(int rno);
 }

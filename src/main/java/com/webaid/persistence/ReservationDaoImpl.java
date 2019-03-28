@@ -26,4 +26,9 @@ public class ReservationDaoImpl implements ReservationDao {
 		return session.selectList(namespace+".selectByDate", date);
 	}
 
+	@Override
+	public ReservationVO selectByRno(int rno) {
+		return session.selectOne(namespace+".selectByRno", rno);
+	}
+
 }

@@ -171,28 +171,39 @@ public class HomeController {
 			
 			List<ReservationVO> reservationListNormal = rService.selectByDate(date);
 			List<ReservationVO> reservationListFix = rService.selectByFixDay(day);
+			System.out.println(date);
+			System.out.println(reservationListNormal.size());
+			System.out.println(reservationListFix.size());
+			Date getStartDate;
+			Date getEndDate;
 			
-			for(int i=0; i < reservationListFix.size(); i++){
-				
+			for(int i=reservationListFix.size()-1; i >= 0; i--){
+				//list에 담긴 내용 체크하고 지우는 과정인데 앞에서부터 지우면 하나 지워지면 뒤에내용이 자동으로 당겨지므로 뒤에서부터 반복문돌면서 조건에 따라 remove
 				reservationListFix.get(i).getFix_day_start();
-				Date getStartDate = format.parse(reservationListFix.get(i).getFix_day_start());
-				Date getEndDate = format.parse(reservationListFix.get(i).getFix_day_end());
+				getStartDate = format.parse(reservationListFix.get(i).getFix_day_start());
+				getEndDate = format.parse(reservationListFix.get(i).getFix_day_end());
 				
 				if(selectDate.getTime() >= getStartDate.getTime() && selectDate.getTime() <= getEndDate.getTime()){
-					System.out.println("조건맞음"+reservationListFix.get(i));
+					//System.out.println("조건맞음"+reservationListFix.get(i));
+				}else if(selectDate.getTime() <= getStartDate.getTime() || selectDate.getTime() >= getEndDate.getTime()){
+					//System.out.println("조건틀림"+reservationListFix.get(i));
+					reservationListFix.remove(i);
 				}else{
-					System.out.println("조건틀림"+reservationListFix.get(i));
+					System.out.println("조건틀림2"+reservationListFix.get(i));
 					reservationListFix.remove(i);
 				}
-				
+				getStartDate = null;
+				getEndDate = null;
 			}
 			HospitalInfoVO hospitalInfo = hService.selectOne(day);
 			List<EmployeeVO> doctorList = empService.selectByType("doctor");
+			List<EmployeeVO> therapistList = empService.selectByType("therapist");
 			
 			map.put("reservationListNormal", reservationListNormal);
 			map.put("reservationListFix", reservationListFix);
 			map.put("hospitalInfo", hospitalInfo);
 			map.put("doctorList", doctorList);
+			map.put("therapistList", therapistList);
 
 			entity=new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
 			

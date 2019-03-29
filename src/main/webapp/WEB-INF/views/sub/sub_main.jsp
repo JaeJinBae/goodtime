@@ -53,25 +53,6 @@
 		height:100%;
 		cursor: pointer;
 	}
-	.aside_right {
-		float:left;
-		width:80%;
-		min-width:1000px;
-		height:100%;
-		background: #efefef;
-	}
-	.ar_tbl_wrap_1 {
-		width:100%;
-	}
-	.ar_tbl_wrap_1 > table{
-		width:100%;
-	}
-	.ar_tbl_wrap_1 table td{
-		border: 1px solid black;
-	}
-	.doctor_name{
-		text-align: center;
-	}
 	.al_tbl_wrap2{
 		width:100%;
 		margin-top:50px;
@@ -115,6 +96,38 @@
 		padding:0;
 		font-size:17px;
 	}
+	.aside_right {
+		float:left;
+		width:80%;
+		min-width:1000px;
+		height:100%;
+		background: #efefef;
+	}
+	.ar_tbl_wrap_1 {
+		width:100%;
+	}
+	.ar_tbl_wrap_1 > table{
+		width:100%;
+	}
+	.ar_tbl_wrap_1 table td{
+		border: 1px solid black;
+	}
+	.doctor_name{
+		text-align: center;
+	}
+	.ar_tbl_wrap_2 {
+		width:100%;
+		margin-top: 100px;
+	}
+	.ar_tbl_wrap_2 > table{
+		width:100%;
+	}
+	.ar_tbl_wrap_2 table td{
+		border: 1px solid black;
+	}
+	.therapist_name{
+		text-align: center;
+	}
 </style> 
 <script>
 $(function(){
@@ -127,9 +140,8 @@ $(function(){
 	//날짜마다 요일 표시
 	write_yoil();
 	
-	//오늘 요일 및 날짜에 해당하는 병원 정보, 예약 정보 GET 
+	//오늘 요일 및 날짜에 해당하는 병원 정보, 진료 예약 정보 GET 
 	get_day_reservation_info(get_today());
-	
 	
 	//달력 날짜 클릭 시 해당 정보GET
 	$(document).on("click", "#calendar td:not(.tr_not > td)", function(){
@@ -142,8 +154,18 @@ $(function(){
 		
 		//클릭한 날짜 정보 GET
 		var date = $(this).text();
-		var year_month=$("#select_year_month").val();
-		var fulldate=year_month+"-"+date;
+		var update_date = "";
+		var year_month = $("#select_year_month").val();
+		var fulldate = "";
+		
+		//날짜 일이 한자리면 앞에 숫자0 추가
+		if(date.length <= 1){
+			update_date = "0"+date;
+		}else{
+			update_date=date;
+		}
+		
+		fulldate = year_month+"-"+update_date;
 		var day = $(this).find("input[type='hidden']").val();
 		
 		//get_hospital_day_info(day);
@@ -163,12 +185,12 @@ $(function(){
 				success:function(json){
 					console.log(json);
 					var str="";
-					str="<p class='al_tbl_wrap2_title'>"+json.rtype+" 예약</p><table id='tbl_simple_reservation'>"
+					str="<p class='al_tbl_wrap2_title'>"+json.rtype+"예약</p><table id='tbl_simple_reservation'>"
 						+"<tr><td class='tbl_content_pName'>"+json.name+"("+json.cno+")님 ▶"+ json.main_doctor+"</td></tr>"
 						+"<tr><th class='tbl_content_title'>- 예약일시</th></tr>";
-						if(json.rtype == '일반'){
+						if(json.rtype == '일반진료'){
 							str += "<tr><td class='tbl_content'>"+json.normal_date+" "+(Number(json.normal_rtime)/60)+"시</td></tr>";
-						}else if(json.rtype == '고정'){
+						}else if(json.rtype == '고정진료'){
 							str += "<tr><td class='tbl_content'>"+json.fix_day+"요일 "+(Number(json.fix_rtime)/60)+"시</td></tr>";
 						}
 						str += "<tr><th class='tbl_content_title'>- 진료종류</th></tr>"
@@ -200,6 +222,11 @@ $(function(){
 	
 	
 });
+
+function test(date){
+	
+}
+
 function get_today(){
 	var today=new Date();
 	var today_month=(today.getMonth()+1)+"";
@@ -237,7 +264,7 @@ function get_day_reservation_info(date){
 			var starttime=Number(json.hospitalInfo.start_time)/60;
 			var endtime=Number(json.hospitalInfo.end_time)/60;
 			var lunch=Number(json.hospitalInfo.lunch)/60;
-			
+			//진료 테이블 생성
 			txt = "<table><tr><td></td>";
 			for(var i=starttime; i < endtime; i++){
 				txt+="<td>"+i+"시</td>";
@@ -254,29 +281,59 @@ function get_day_reservation_info(date){
 				}
 				txt += "</tr>";
 			});
-			
 			txt+="</table>";				
-			
 			$(".ar_tbl_wrap_1").html(txt);
 			
+			//치료 테이블 생성
+			txt = "<table><tr><td></td>";
+			for(var i=starttime; i < endtime; i++){
+				txt+="<td>"+i+"시</td>";
+			}
+			txt+="</tr>";
+			$(json.therapistList).each(function(){
+				txt += "<tr class='"+this.type+"_"+this.eno+"'><td>"+this.name+"</td>";
+				for(var i=starttime; i < endtime; i++){
+					if(i == lunch){
+						txt += "<td class='"+this.type+"_"+this.eno+"_"+i+"' style='background:gray; text-align:center;'>점심시간</td>";
+					}else{
+						txt += "<td class='"+this.type+"_"+this.eno+"_"+i+" timetable_inner_content'></td>"
+					}
+				}
+				txt += "</tr>";
+			});
+			txt+="</table>";				
+			$(".ar_tbl_wrap_2").html(txt);
+			
+			//예약정보 생성
 			var target_tag="";
 							
 			$(json.reservationListNormal).each(function(){
+				if(this.rtype == '일반진료'){
+					target_tag = ".doctor_"+this.main_doctor+"_"+(Number(this.normal_rtime)/60);
+					txt = "<p class='patient_p_tag' style='background:yellow;border:1px solid gray;'>"+this.name+"<input type='hidden' value='"+this.rno+"'></p>";
+					$(target_tag).append(txt);
+				}else if(this.rtype == '일반치료'){
+					target_tag = ".therapist_"+this.main_therapist+"_"+(Number(this.normal_rtime)/60);
+					txt = "<p class='patient_p_tag' style='background:yellow;border:1px solid gray;'>"+this.name+"<input type='hidden' value='"+this.rno+"'></p>";
+					$(target_tag).append(txt);
+				}
 				
-				target_tag = ".doctor_"+this.main_doctor+"_"+(Number(this.normal_rtime)/60);
-				
-				txt = "<p class='patient_p_tag' style='background:yellow;border:1px solid gray;'>"+this.name+"<input type='hidden' value='"+this.rno+"'></p>";
-				
-				$(target_tag).append(txt);
 			});
 			
 			$(json.reservationListFix).each(function(){
-				target_tag = ".doctor_"+this.main_doctor+"_"+(Number(this.fix_rtime)/60);
+				if(this.rtype == '고정진료'){
+					target_tag = ".doctor_"+this.main_doctor+"_"+(Number(this.fix_rtime)/60);
+					txt = "<p class='patient_p_tag' style='background:pink;border:1px solid gray;'>"+this.name+"<input type='hidden' value='"+this.rno+"'></p>";
+					$(target_tag).append(txt);
+				}else if(this.rtype == '고정치료'){
+					target_tag = ".therapist_"+this.main_therapist+"_"+(Number(this.fix_rtime)/60);
+					txt = "<p class='patient_p_tag' style='background:pink;border:1px solid gray;'>"+this.name+"<input type='hidden' value='"+this.rno+"'></p>";
+					$(target_tag).append(txt);
+				}
 				
-				txt = "<p class='patient_p_tag' style='background:pink;border:1px solid gray;'>"+this.name+"<input type='hidden' value='"+this.rno+"'></p>";
-				
-				$(target_tag).append(txt);
 			});
+			
+			
 		}
 	});
 }
@@ -361,6 +418,9 @@ function write_yoil(){
 					
 					
 				</div><!-- tbl_wrap_2 end-->
+				<div class="ar_tbl_wrap_2">
+				
+				</div>
 			</div><!-- aside_right end -->
 		</div><!-- section end -->
 		<div class="footer">

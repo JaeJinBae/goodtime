@@ -24,7 +24,17 @@
 <script>
 	$(function(){
 		$("#btn_login").click(function(){
-			//alert("btn_login click!!");
+			login();
+		});
+		
+		$("#pw_input").keyup(function(e){
+			if(e.keyCode == 13){
+				login();
+			}
+		});
+		
+		
+		function login(){
 			var userId= $("input[name='id']").val();
 			var userPw= $("input[name='pw']").val();
 			var user={
@@ -47,7 +57,7 @@
 					}
 				}
 			});
-		});
+		}
 	});
 </script>
 </head>
@@ -59,7 +69,7 @@
 		<div class="login_wrap">
 			<ul>
 				<li><input type="text" name="id" placeholder="아이디"></li>
-				<li><input type="password" name="pw" placeholder="비밀번호"></li>
+				<li><input id="pw_input" type="password" name="pw" placeholder="비밀번호"></li>
 				<br>
 				<li id="btn_login">Login</li>
 			</ul>

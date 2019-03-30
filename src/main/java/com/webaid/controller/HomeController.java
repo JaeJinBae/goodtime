@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,8 +24,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.webaid.domain.EmployeeVO;
 import com.webaid.domain.HospitalInfoVO;
 import com.webaid.domain.IdPwVO;
+import com.webaid.domain.PageMaker;
 import com.webaid.domain.PatientVO;
 import com.webaid.domain.ReservationVO;
+import com.webaid.domain.SearchCriteria;
 import com.webaid.service.EmployeeService;
 import com.webaid.service.HospitalInfoService;
 import com.webaid.service.PatientService;
@@ -235,13 +238,26 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value="patientAllGet", method=RequestMethod.GET)
-	public ResponseEntity<List<PatientVO>> patientAllGet(){
+	public ResponseEntity<Map<String, Object>> patientAllGet(@ModelAttribute("cri") SearchCriteria cri){
 		logger.info("patient all Get");
 		
-		ResponseEntity<List<PatientVO>> entity = null;
+		ResponseEntity<Map<String, Object>> entity = null;
+		HashMap<String, Object> map=new HashMap<>();
 		
 		List<PatientVO> patientListAll = pService.selectAll();
-		entity = new ResponseEntity<>(patientListAll, HttpStatus.OK);
+		
+		cri.setKeyword(null);
+		cri.setSearchType("n");
+		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.makeSearch(cri.getPage());
+		pageMaker.setTotalCount(pService.listSearchCount(cri));
+				
+		map.put("patientListAll", patientListAll);
+		map.put("pageMaker", pageMaker);
+		
+		entity = new ResponseEntity<Map<String,Object>>(map, HttpStatus.OK);
 		return entity;
 	}
 	

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.webaid.domain.PatientVO;
+import com.webaid.domain.SearchCriteria;
 import com.webaid.persistence.PatientDao;
 
 @Service
@@ -27,6 +28,11 @@ public class PatientServiceImpl implements PatientService {
 	@Override
 	public PatientVO selectByPhone(String phone) {
 		return dao.selectByPhone(phone);
+	}
+
+	@Override
+	public int listSearchCount(SearchCriteria cri) {
+		return dao.listSearchCount(cri);
 	}
 
 }

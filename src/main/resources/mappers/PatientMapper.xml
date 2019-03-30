@@ -15,4 +15,20 @@
 	<select id="selectByPhone" resultType="PatientVO">
 		select * from patient where phone=#{phone}
 	</select>
+	
+	<sql id="search">
+		<if test="searchType=='name'.toString()">
+			where name like concat('%',#{keyword},'%')
+		</if>
+		<if test="searchType=='phone'.toString()">
+			where phone like concat('%',#{keyword},'%') 
+		</if>
+		<if test="searchType=='cno'.toString()">
+			where cno like concat('%',#{keyword},'%')
+		</if>
+	</sql>
+	
+	<select id="listSearchCount" resultType="int">
+		select count(pno) from patient <include refid="search"></include>
+	</select>
 </mapper>

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.webaid.domain.PatientVO;
+import com.webaid.domain.SearchCriteria;
 
 @Repository
 public class PatientDaoImpl implements PatientDao {
@@ -29,6 +30,11 @@ public class PatientDaoImpl implements PatientDao {
 	@Override
 	public PatientVO selectByPhone(String phone) {
 		return session.selectOne(namespace+".selectByPhone", phone);
+	}
+
+	@Override
+	public int listSearchCount(SearchCriteria cri) {
+		return session.selectOne(namespace+".listSearchCount", cri);
 	}
 
 }

@@ -101,7 +101,6 @@
 		width:80%;
 		min-width:1000px;
 		height:100%;
-		background: #efefef;
 	}
 	.ar_tbl_wrap_1 {
 		width:100%;
@@ -127,6 +126,26 @@
 	}
 	.therapist_name{
 		text-align: center;
+	}
+	.ar_tbl_wrap_3{
+		width:100%;
+		margin-top:100px;
+	}
+	.ar_tbl_wrap_3 > table {
+		width:100%;
+		border-top: 2px solid gray;
+	}
+	.ar_tbl_wrap_3 > table tr th{
+		font-size:15px;
+		text-align: center;
+		font-weight: bold;
+		border-bottom: 2px solid #efefef;
+		padding: 10px 0;
+	}
+	.ar_tbl_wrap_3 > table tr td{
+		font-size: 15px;
+		text-align: center;
+		border-bottom: 1px solid lightgray;
 	}
 </style> 
 <script>
@@ -231,7 +250,24 @@ function get_patient(){
 		type: "get",
 		dataType:"json", 
 		success:function(json){
+			var str = "";
+			
 			console.log(json);
+			
+			console.log(json.patientListAll.length);
+			str ="<table><tr><th>이름</th><th>설정</th><th>예약</th><th>담당의사</th><th>담당치료사</th><th>회원등급</th><th>생년월일</th><th>연락처</th><th>차트번호</th><th>메모</th><th>문자</th></tr>";
+			
+			if(json.patientListAll.length == 0){
+				str += "<tr><td colspan='11'>등록된 회원이 없습니다.</td></tr>";
+			}else{
+				$(json.patientListAll).each(function(){
+					str += "<tr><td>"+this.name+"</td><td>설정</td><td>예약</td><td>"+this.main_doctor+"</td><td>"+this.main_therapist+"</td><td>회원등급</td><td>"+this.birth+"</td><td>"+this.phone+"</td><td>"+this.cno+"</td><td>"+this.memo+"</td><td>문자</td></tr>";
+					
+				});
+			}
+			str += "</table>";
+			$(".ar_tbl_wrap_3").append(str);
+			
 		}
 	});
 }
@@ -399,6 +435,9 @@ function write_yoil(){
 					
 				</div><!-- tbl_wrap_2 end-->
 				<div class="ar_tbl_wrap_2">
+				
+				</div>
+				<div class="ar_tbl_wrap_3">
 				
 				</div>
 			</div><!-- aside_right end -->

@@ -137,6 +137,8 @@ $(function(){
 	//달력 생성
 	buildCalendar();
 	
+	get_patient();
+	
 	//날짜마다 요일 표시
 	write_yoil();
 	
@@ -223,8 +225,15 @@ $(function(){
 	
 });
 
-function test(date){
-	
+function get_patient(){
+	$.ajax({
+		url:"${pageContext.request.contextPath}/patientAllGet",
+		type: "get",
+		dataType:"json", 
+		success:function(json){
+			console.log(json);
+		}
+	});
 }
 
 function get_today(){
@@ -381,36 +390,7 @@ function write_yoil(){
 					</table>
 				</div><!-- tbl_wrap_1 end -->
 				<div class="al_tbl_wrap2">
-					<!-- <p class="al_tbl_wrap2_title">일반예약</p>
-					<table id="tbl_simple_reservation">
-						<tr>
-							<td class="tbl_content_pName">김길동(68255)님 ▶ 김정훈</td>
-						</tr>
-						<tr>
-							<th class="tbl_content_title">-예약일시</th>
-						</tr>
-						<tr>
-							<td class="tbl_content">2019-03-27 09:00</td>
-						</tr>
-						<tr>
-							<th class="tbl_content_title">-진료종류</th>
-						</tr>
-						<tr>
-							<td class="tbl_content">주사-MP 30분</td>
-						</tr>
-						<tr>
-							<th class="tbl_content_title">-등록정보</th>
-						</tr>
-						<tr>
-							<td class="tbl_content">2019-03-20 by 정은비</td>
-						</tr>
-						<tr>
-							<th class="tbl_content_title">-변경처리</th>
-						</tr>
-						<tr>
-							<td class="tbl_content">2019-03-27 by 조수빈</td>
-						</tr>
-					</table> -->
+									
 				</div><!-- al_tbl_wrap2 end -->
 			</div><!-- aside_left end -->
 			<div class="aside_right">

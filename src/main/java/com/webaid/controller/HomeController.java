@@ -2,7 +2,6 @@ package com.webaid.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -24,9 +23,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.webaid.domain.EmployeeVO;
 import com.webaid.domain.HospitalInfoVO;
 import com.webaid.domain.IdPwVO;
+import com.webaid.domain.PatientVO;
 import com.webaid.domain.ReservationVO;
 import com.webaid.service.EmployeeService;
 import com.webaid.service.HospitalInfoService;
+import com.webaid.service.PatientService;
 import com.webaid.service.ReservationService;
 import com.webaid.util.DayGetUtil;
 
@@ -44,6 +45,9 @@ public class HomeController {
 	
 	@Autowired
 	private ReservationService rService;
+	
+	@Autowired
+	private PatientService pService;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model) {
@@ -227,12 +231,19 @@ public class HomeController {
 		} catch (Exception e) {
 			
 		}
-		
-		
 		return entity;
 	}
 	
-	
+	@RequestMapping(value="patientAllGet", method=RequestMethod.GET)
+	public ResponseEntity<List<PatientVO>> patientAllGet(){
+		logger.info("patient all Get");
+		
+		ResponseEntity<List<PatientVO>> entity = null;
+		
+		List<PatientVO> patientListAll = pService.selectAll();
+		entity = new ResponseEntity<>(patientListAll, HttpStatus.OK);
+		return entity;
+	}
 	
 	
 	

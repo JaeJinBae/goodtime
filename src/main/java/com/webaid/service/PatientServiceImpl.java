@@ -31,8 +31,15 @@ public class PatientServiceImpl implements PatientService {
 	}
 
 	@Override
+	public List<PatientVO> listSearch(SearchCriteria cri) throws Exception {
+		return dao.listSearch(cri);
+	}
+	
+	@Override
 	public int listSearchCount(SearchCriteria cri) {
 		return dao.listSearchCount(cri);
 	}
+
+	
 
 }

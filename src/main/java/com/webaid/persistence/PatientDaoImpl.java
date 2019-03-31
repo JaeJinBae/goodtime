@@ -37,4 +37,9 @@ public class PatientDaoImpl implements PatientDao {
 		return session.selectOne(namespace+".listSearchCount", cri);
 	}
 
+	@Override
+	public List<PatientVO> listSearch(SearchCriteria cri) throws Exception {
+		return session.selectList(namespace+".listSearch", cri);
+	}
+
 }

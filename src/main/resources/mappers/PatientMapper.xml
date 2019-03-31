@@ -16,6 +16,10 @@
 		select * from patient where phone=#{phone}
 	</select>
 	
+	<select id="listSearch" resultType="PatientVO">
+		select * from patient <include refid="search"></include> order by pno desc limit #{pageStart},#{perPageNum}  
+	</select>
+	
 	<sql id="search">
 		<if test="searchType=='name'.toString()">
 			where name like concat('%',#{keyword},'%')

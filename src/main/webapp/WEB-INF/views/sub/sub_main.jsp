@@ -14,7 +14,8 @@
 <style>
 	.all_wrap{
 		width: 100%;
-		height: 100%;
+		/* height: 100%; */
+		padding-bottom:50px;
 	}
 	.header{
 		width:100%;
@@ -147,6 +148,35 @@
 		text-align: center;
 		border-bottom: 1px solid lightgray;
 	}
+	.page{
+		clear:both;
+		width:626px; 
+		margin:70px auto;
+		margin-bottom:50px;
+	}
+	.page > ul{
+		text-align: center;
+	}
+	.page ul li{
+		width:45px;
+		height:40px;
+		margin:0 auto;
+		list-style: none;
+		display: inline-block;
+		text-align:center;
+		border:1px solid #e9e9e9;
+	}
+	.active1{
+		background: #ed1c24;
+	}
+	.active2{
+		font-weight: bold;
+		color:white;
+	}
+	.page ul li a{
+		font-size:1.1em;
+		line-height: 40px;
+	}
 </style> 
 <script>
 $(function(){
@@ -240,20 +270,27 @@ $(function(){
 		}, ".patient_p_tag");
 		
 	
-	
+	$(document).on("click", ".page > ul > li > a", function(e){
+		e.preventDefault();
+		get_patient($(this).attr("href"));
+		
+		
+		
+	});
 	
 });
 
-function get_patient(){
+function get_patient(info){
 	$.ajax({
 		url:"${pageContext.request.contextPath}/patientAllGet",
 		type: "get",
-		dataType:"json", 
+		data:info,
+		dataType:"json",
 		success:function(json){
 			var str = "";
 			
 			console.log(json);
-			
+			$(".ar_tbl_wrap_3").empty();
 			console.log(json.patientListAll.length);
 			str ="<table><tr><th>이름</th><th>설정</th><th>예약</th><th>담당의사</th><th>담당치료사</th><th>회원등급</th><th>생년월일</th><th>연락처</th><th>차트번호</th><th>메모</th><th>문자</th></tr>";
 			
@@ -266,6 +303,24 @@ function get_patient(){
 				});
 			}
 			str += "</table>";
+			
+			str += "<div class='page'><ul>";
+			if(json.pageMaker.prev){
+				str += "<li><a href='page="+(json.pageMaker.startPage-1)+"&perPageNum=10&searchType=n&keyword'>&laquo;</a></li>";
+			}
+			for(var i=json.pageMaker.startPage; i<=json.pageMaker.endPage; i++){
+				
+				if(json.pageMaker.cri.page == i){
+					str += "<li class='active1'><a class='active2' href='page="+i+"&perPageNum=10&searchType=n&keyword'>"+i+"</a></li>";
+				}else{
+					str += "<li><a href='page="+i+"&perPageNum=10&searchType=n&keyword'>"+i+"</a></li>"
+				}
+				
+			}
+			if(json.pageMaker.next){
+				str += "<li><a href='page="+(json.pageMaker.endPage+1)+"&perPageNum=10&searchType=n&keyword'>&raquo;</a></li>";
+			}
+			str += "</ul></div>";	
 			$(".ar_tbl_wrap_3").append(str);
 			
 		}

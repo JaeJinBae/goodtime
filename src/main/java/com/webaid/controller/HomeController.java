@@ -238,14 +238,14 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value="patientAllGet", method=RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> patientAllGet(@ModelAttribute("cri") SearchCriteria cri){
+	public ResponseEntity<Map<String, Object>> patientAllGet(@ModelAttribute("cri") SearchCriteria cri) throws Exception{
 		logger.info("patient all Get");
 		
 		ResponseEntity<Map<String, Object>> entity = null;
 		HashMap<String, Object> map=new HashMap<>();
 		
-		List<PatientVO> patientListAll = pService.selectAll();
-		
+		List<PatientVO> patientListAll = pService.listSearch(cri);
+		System.out.println("넘겨받은 페이지는 "+cri.getPage());
 		cri.setKeyword(null);
 		cri.setSearchType("n");
 		
@@ -253,7 +253,7 @@ public class HomeController {
 		pageMaker.setCri(cri);
 		pageMaker.makeSearch(cri.getPage());
 		pageMaker.setTotalCount(pService.listSearchCount(cri));
-				
+		System.out.println(pageMaker.makeSearch(cri.getPage()));
 		map.put("patientListAll", patientListAll);
 		map.put("pageMaker", pageMaker);
 		

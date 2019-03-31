@@ -9,5 +9,6 @@ public interface PatientService {
 	public List<PatientVO> selectAll();
 	public List<PatientVO> selectByName(String name);
 	public PatientVO selectByPhone(String phone);
+	public List<PatientVO> listSearch(SearchCriteria cri) throws Exception;
 	public int listSearchCount(SearchCriteria cri);
 }

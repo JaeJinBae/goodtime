@@ -12,6 +12,31 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/calendar.js"></script>
 <style>
+	.popup_wrap{
+		width:100%;
+		position:fixed;
+		top:0;
+		left:0;
+		display:none;
+	}
+	.popup_bg{
+		position: fixed;
+		top:0;
+		left:0;
+		width:100%;
+		height:100%;
+		background: #111;
+		opacity: 0.5;
+	}
+	.popup_content{
+		width:600px;
+		height:700px;
+		background:#fff;
+		margin:0 auto;
+		margin-top:100px;
+		position: relative;
+		z-index: 999;
+	}
 	.all_wrap{
 		width: 100%;
 		/* height: 100%; */
@@ -103,50 +128,70 @@
 		min-width:1000px;
 		height:100%;
 	}
-	.ar_tbl_wrap_1 {
-		width:100%;
-	}
-	.ar_tbl_wrap_1 > table{
-		width:100%;
-	}
-	.ar_tbl_wrap_1 table td{
-		border: 1px solid black;
-	}
-	.doctor_name{
-		text-align: center;
-	}
-	.ar_tbl_wrap_2 {
-		width:100%;
-		margin-top: 100px;
-	}
-	.ar_tbl_wrap_2 > table{
-		width:100%;
-	}
-	.ar_tbl_wrap_2 table td{
-		border: 1px solid black;
-	}
-	.therapist_name{
-		text-align: center;
-	}
-	.ar_tbl_wrap_3{
+	.ar_tbl_wrap_1{
 		width:100%;
 		margin-top:100px;
 	}
-	.ar_tbl_wrap_3 > table {
+	.ar_tbl_wrap_1 > #inner_tbl_wrap > table {
 		width:100%;
 		border-top: 2px solid gray;
 	}
-	.ar_tbl_wrap_3 > table tr th{
+	.ar_tbl_wrap_1 > #inner_tbl_wrap > table tr th{
 		font-size:15px;
 		text-align: center;
 		font-weight: bold;
 		border-bottom: 2px solid #efefef;
 		padding: 10px 0;
 	}
-	.ar_tbl_wrap_3 > table tr td{
+	.ar_tbl_wrap_1 > #inner_tbl_wrap > table tr:first-child > th:first-child{
+		width:0;
+	}
+	.ar_tbl_wrap_1 > #inner_tbl_wrap > table tr:first-child > th:nth-child(2){
+		width:90px;
+	}
+	.ar_tbl_wrap_1 > #inner_tbl_wrap > table tr:first-child > th:nth-child(3){
+		width:60px;
+	}
+	.ar_tbl_wrap_1 > #inner_tbl_wrap > table tr:first-child > th:nth-child(4){
+		width:60px;
+	}
+	.ar_tbl_wrap_1 > #inner_tbl_wrap > table tr:first-child > th:nth-child(5){
+		width:80px;
+	}
+	.ar_tbl_wrap_1 > #inner_tbl_wrap > table tr:first-child > th:nth-child(6){
+		width:75px;
+	}
+	.ar_tbl_wrap_1 > #inner_tbl_wrap > table tr:first-child > th:nth-child(7){
+		width:70px;
+	}
+	.ar_tbl_wrap_1 > #inner_tbl_wrap > table tr:first-child > th:nth-child(8){
+		width:110px;
+	}
+	.ar_tbl_wrap_1 > #inner_tbl_wrap > table tr:first-child > th:nth-child(9){
+		width:130px;
+	}
+	.ar_tbl_wrap_1 > #inner_tbl_wrap > table tr:first-child > th:nth-child(10){
+		width:70px;
+	}
+	.ar_tbl_wrap_1 > #inner_tbl_wrap > table tr:first-child > th:last-child{
+		width:60px;
+	}
+	.ar_tbl_wrap_1 > #inner_tbl_wrap > table tr td{
 		font-size: 15px;
 		text-align: center;
 		border-bottom: 1px solid lightgray;
+		padding: 5px 0;
+	}
+	.patient_update_btn, .sms_open_btn, .reservation_select_btn{
+		width:40px;
+		margin: 0 auto;
+		padding: 4px 0;
+		font-size:15px;
+		background: gray;
+		color: #fff;
+		cursor: pointer;
+		border-radius: 4px;
+		text-align: center;
 	}
 	.page{
 		clear:both;
@@ -177,15 +222,42 @@
 		font-size:1.1em;
 		line-height: 40px;
 	}
+	.ar_tbl_wrap_2 {
+		width:100%;
+	}
+	.ar_tbl_wrap_2 > table{
+		width:100%;
+	}
+	.ar_tbl_wrap_2 table td{
+		border: 1px solid black;
+	}
+	.doctor_name{
+		text-align: center;
+	}
+	.ar_tbl_wrap_3 {
+		width:100%;
+		margin-top: 100px;
+	}
+	.ar_tbl_wrap_3 > table{
+		width:100%;
+	}
+	.ar_tbl_wrap_3 table td{
+		border: 1px solid black;
+	}
+	.therapist_name{
+		text-align: center;
+	}
+	
 </style> 
 <script>
 $(function(){
-	var num=130;
-	console.log(parseInt(num/60)+", "+num%60);
+	/* var num=130;
+	console.log(parseInt(num/60)+", "+num%60); */
 	
 	//달력 생성
 	buildCalendar();
 	
+	//환자 list 생성
 	get_patient();
 	
 	//날짜마다 요일 표시
@@ -193,6 +265,15 @@ $(function(){
 	
 	//오늘 요일 및 날짜에 해당하는 병원 정보, 진료 예약 정보 GET 
 	get_day_reservation_info(get_today());
+	
+	$(document).on("click", ".patient_update_btn", function(){
+		var pno=$(this).parent().parent().find("input[type='hidden']").val()
+		alert(pno);
+		
+	});
+	
+	
+	
 	
 	//달력 날짜 클릭 시 해당 정보GET
 	$(document).on("click", "#calendar td:not(.tr_not > td)", function(){
@@ -218,9 +299,6 @@ $(function(){
 		
 		fulldate = year_month+"-"+update_date;
 		var day = $(this).find("input[type='hidden']").val();
-		
-		//get_hospital_day_info(day);
-		//setTimeout(function(){get_select_date_reservation(fulldate)},100);
 		
 		get_day_reservation_info(fulldate);
 	 });
@@ -273,8 +351,14 @@ $(function(){
 	$(document).on("click", ".page > ul > li > a", function(e){
 		e.preventDefault();
 		get_patient($(this).attr("href"));
-		
-		
+	});
+	
+	$("#searchBtn").click(function(){
+    	var s=$("select[name='searchType']").val();
+		var searchType = encodeURIComponent(s);
+		var k=$("input[name='keyword']").val();
+		var keyword = encodeURIComponent(k);
+		get_patient("page=1&perPageNum=10&searchType="+searchType+"&keyword="+keyword);
 		
 	});
 	
@@ -290,38 +374,36 @@ function get_patient(info){
 			var str = "";
 			
 			console.log(json);
-			$(".ar_tbl_wrap_3").empty();
+			$("#inner_tbl_wrap").empty();
 			console.log(json.patientListAll.length);
-			str ="<table><tr><th>이름</th><th>설정</th><th>예약</th><th>담당의사</th><th>담당치료사</th><th>회원등급</th><th>생년월일</th><th>연락처</th><th>차트번호</th><th>메모</th><th>문자</th></tr>";
+			str ="<table><tr><th></th><th>이름</th><th>설정</th><th>예약</th><th>담당의사</th><th>담당치료사</th><th>회원등급</th><th>생년월일</th><th>연락처</th><th>차트번호</th><th>메모</th><th>문자</th></tr>";
 			
 			if(json.patientListAll.length == 0){
-				str += "<tr><td colspan='11'>등록된 회원이 없습니다.</td></tr>";
+				str += "<tr><td colspan='12'>등록된 회원이 없습니다.</td></tr>";
 			}else{
 				$(json.patientListAll).each(function(){
-					str += "<tr><td>"+this.name+"</td><td>설정</td><td>예약</td><td>"+this.main_doctor+"</td><td>"+this.main_therapist+"</td><td>회원등급</td><td>"+this.birth+"</td><td>"+this.phone+"</td><td>"+this.cno+"</td><td>"+this.memo+"</td><td>문자</td></tr>";
-					
+					str += "<tr><td><input type='hidden' value='"+this.pno+"'></td><td>"+this.name+"</td><td><p class='patient_update_btn'>수정</p></td><td><p class='reservation_select_btn'>선택</p></td><td>"+this.main_doctor_name+"</td><td>"+this.main_therapist+"</td><td>환자</td><td>"+this.birth+"</td><td>"+this.phone+"</td><td>"+this.cno+"</td><td>"+this.memo+"</td><td><p class='sms_open_btn'>열기</p></td></tr>";
 				});
 			}
 			str += "</table>";
 			
 			str += "<div class='page'><ul>";
 			if(json.pageMaker.prev){
-				str += "<li><a href='page="+(json.pageMaker.startPage-1)+"&perPageNum=10&searchType=n&keyword'>&laquo;</a></li>";
+				str += "<li><a href='page="+(json.pageMaker.startPage-1)+"&perPageNum=10&searchType="+json.pageMaker.cri.searchType+"&keyword="+json.pageMaker.cri.keyword+"'>&laquo;</a></li>";
 			}
 			for(var i=json.pageMaker.startPage; i<=json.pageMaker.endPage; i++){
 				
 				if(json.pageMaker.cri.page == i){
-					str += "<li class='active1'><a class='active2' href='page="+i+"&perPageNum=10&searchType=n&keyword'>"+i+"</a></li>";
+					str += "<li class='active1'><a class='active2' href='page="+i+"&perPageNum=10&searchType="+json.pageMaker.cri.searchType+"&keyword="+json.pageMaker.cri.keyword+"'>"+i+"</a></li>";
 				}else{
-					str += "<li><a href='page="+i+"&perPageNum=10&searchType=n&keyword'>"+i+"</a></li>"
+					str += "<li><a href='page="+i+"&perPageNum=10&searchType="+json.pageMaker.cri.searchType+"&keyword="+json.pageMaker.cri.keyword+"'>"+i+"</a></li>"
 				}
-				
 			}
 			if(json.pageMaker.next){
-				str += "<li><a href='page="+(json.pageMaker.endPage+1)+"&perPageNum=10&searchType=n&keyword'>&raquo;</a></li>";
+				str += "<li><a href='page="+(json.pageMaker.endPage+1)+"&perPageNum=10&searchType="+json.pageMaker.cri.searchType+"&keyword="+json.pageMaker.cri.keyword+"'>&raquo;</a></li>";
 			}
 			str += "</ul></div>";	
-			$(".ar_tbl_wrap_3").append(str);
+			$("#inner_tbl_wrap").append(str);
 			
 		}
 	});
@@ -382,7 +464,7 @@ function get_day_reservation_info(date){
 				txt += "</tr>";
 			});
 			txt+="</table>";				
-			$(".ar_tbl_wrap_1").html(txt);
+			$(".ar_tbl_wrap_2").html(txt);
 			
 			//치료 테이블 생성
 			txt = "<table><tr><td></td>";
@@ -402,7 +484,7 @@ function get_day_reservation_info(date){
 				txt += "</tr>";
 			});
 			txt+="</table>";				
-			$(".ar_tbl_wrap_2").html(txt);
+			$(".ar_tbl_wrap_3").html(txt);
 			
 			//예약정보 생성
 			var target_tag="";
@@ -453,6 +535,61 @@ function write_yoil(){
 </script> 
 </head> 
 <body>
+	<div class="popup_wrap">
+		<div class="popup_bg">
+		</div>
+		<div class="popup_content popup_patientUpdate">
+			<h2>회원정보수정</h2>
+			<table>
+				<tr>
+					<th>차트번호</th>
+					<td></td>
+				</tr>
+				<tr>
+					<th>이름</th>
+					<td></td>
+				</tr>
+				<tr>
+					<th>연락처</th>
+					<td></td>
+				</tr>
+				<tr>
+					<th>생년월일</th>
+					<td></td>
+				</tr>
+				<tr>
+					<th>성별</th>
+					<td></td>
+				</tr>
+				<tr>
+					<th>담당의사</th>
+					<td>
+						<select>
+							<option></option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<th>담당치료사</th>
+					<td>
+						<select>
+							<option></option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<th>이메일</th>
+					<td></td>
+				</tr>
+				<tr>
+					<th>메모</th>
+					<td></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	
+	
 	<div class="all_wrap">
 		<div class="header">
 			<jsp:include page="../include/header.jsp"></jsp:include>
@@ -486,15 +623,28 @@ function write_yoil(){
 			</div><!-- aside_left end -->
 			<div class="aside_right">
 				<div class="ar_tbl_wrap_1">
+					<div class="search_wrap">
+						<select name="searchType">
+							<option value="name" ${cri.searchType=='t'?'selected':''}>이름</option>
+							<option value="cno" ${cri.searchType=='c'?'selected':''}>차트번호</option>
+							<option value="maindoctor" ${cri.searchType=='r'?'selected':''}>담당의사</option>
+							<option value="maintherapist" ${cri.searchType=='t'?'selected':''}>담당치료사</option>
+							<option value="phone" ${cri.searchType=='c'?'selected':''}>연락처</option>
+						</select> 
+						<input type="text" name="keyword" id="keywordInput" value="">
+						<button id="searchBtn">검색</button>
+					</div><!-- search_wrap end -->
+					<div id="inner_tbl_wrap">
 					
+					</div>
 					
-				</div><!-- tbl_wrap_2 end-->
+				</div><!-- ar_tbl_wrap_1 end-->
 				<div class="ar_tbl_wrap_2">
 				
-				</div>
+				</div><!-- ar_tbl_wrap_2 end -->
 				<div class="ar_tbl_wrap_3">
-				
-				</div>
+					
+				</div><!-- ar_tbl_wrap_3 end -->
 			</div><!-- aside_right end -->
 		</div><!-- section end -->
 		<div class="footer">

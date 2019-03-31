@@ -9,6 +9,7 @@ public class PatientVO {
 	private String gender;
 	private String mail;
 	private String main_doctor;
+	private String main_doctor_name;
 	private String main_therapist;
 	private String sub_therapist;
 	private String memo;
@@ -82,6 +83,14 @@ public class PatientVO {
 		this.main_doctor = main_doctor;
 	}
 
+	public String getMain_doctor_name() {
+		return main_doctor_name;
+	}
+
+	public void setMain_doctor_name(String main_doctor_name) {
+		this.main_doctor_name = main_doctor_name;
+	}
+
 	public String getMain_therapist() {
 		return main_therapist;
 	}
@@ -117,10 +126,12 @@ public class PatientVO {
 	@Override
 	public String toString() {
 		return "PatientVO [pno=" + pno + ", cno=" + cno + ", name=" + name + ", phone=" + phone + ", birth=" + birth
-				+ ", gender=" + gender + ", mail=" + mail + ", main_doctor=" + main_doctor + ", main_therapist="
-				+ main_therapist + ", sub_therapist=" + sub_therapist + ", memo=" + memo + ", activation=" + activation
-				+ "]";
+				+ ", gender=" + gender + ", mail=" + mail + ", main_doctor=" + main_doctor + ", main_doctor_name="
+				+ main_doctor_name + ", main_therapist=" + main_therapist + ", sub_therapist=" + sub_therapist
+				+ ", memo=" + memo + ", activation=" + activation + "]";
 	}
+
+	
 
 	
 

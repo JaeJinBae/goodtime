@@ -246,8 +246,6 @@ public class HomeController {
 		
 		List<PatientVO> patientListAll = pService.listSearch(cri);
 		System.out.println("넘겨받은 페이지는 "+cri.getPage());
-		cri.setKeyword(null);
-		cri.setSearchType("n");
 		
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);

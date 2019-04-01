@@ -289,7 +289,7 @@ $(function(){
 		if(idx == 0){
 			var selectDate = $("#popup_reservation_register_date").text();
 			var split_date = selectDate.split(" ");			
-			console.log(selectDate);
+			
 			var cno = $("#reservation_view_btn > input[name='cno']");
 			var name = $("#reservation_view_btn").text();
 			var rtype = $(".popup_reservation_register > table tr td > select[name='rtype']").val();
@@ -300,12 +300,13 @@ $(function(){
 			
 			console.log(normal_rtime);
 			
-			//var patient={pno:pno, cno:cno, name:name, phone:phone, birth:birth, gender:gender, main_doctor:main_doctor, main_doctor_name:main_doctor_name, main_therapist:main_therapist, mail:mail, memo:memo};
+			var vo={cno:cno, name:name, rtype:rtype, normal_date:normal_date, normal_rtime:normal_rtime, clinic:clinic, memo:memo};
 			
 			$.ajax({
 				url:"${pageContext.request.contextPath}/reservationRegister",
 				type:"post",
 				dataType:"text",
+				data:vo,
 				success:function(json){
 					console.log(json);
 				}

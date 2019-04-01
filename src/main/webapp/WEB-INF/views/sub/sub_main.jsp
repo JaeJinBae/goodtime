@@ -425,7 +425,7 @@ function get_today(){
 	}
 	//날짜 일이 한자리면 앞에 숫자0 추가
 	if(today_date.length <= 1){
-		today_date="0"+today_date;
+		update_date="0"+today_date;
 	}else{
 		update_date=today_date;
 	}

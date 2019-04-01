@@ -268,13 +268,61 @@ $(function(){
 	
 	$(document).on("click", ".patient_update_btn", function(){
 		var pno=$(this).parent().parent().find("input[type='hidden']").val()
-		alert(pno);
+		
+		$.ajax({
+			url:"${pageContext.request.contextPath}/patientByPno/"+pno,
+			type:"get",
+			dataType:"json",
+			success:function(json){
+				console.log(json);
+				$(".popup_patientUpdate > input[name='pno']").val(json.pno);
+				$(".popup_patientUpdate > table tr td > input[name='cno']").val(json.cno);
+				$(".popup_patientUpdate > table tr td > input[name='name']").val(json.name);
+				$(".popup_patientUpdate > table tr td > input[name='phone']").val(json.phone);
+				$(".popup_patientUpdate > table tr td > input[name='birth']").val(json.birth);
+				$(".popup_patientUpdate > table tr td > select[name='gender'] option[value='"+json.gender+"']").prop("selected", true);
+				$(".popup_patientUpdate > table tr > td > select[name='main_doctor'] option[value='"+json.main_doctor+"']").prop("selected", true);
+				$(".popup_patientUpdate > table tr > td > select[name='main_therapist'] option[value='"+json.main_therapist+"']").prop("selected", true);
+				$(".popup_patientUpdate > table tr td > input[name='mail']").val(json.mail);
+				$(".popup_patientUpdate > table tr td > input[name='memo']").val(json.memo);
+				
+				$(".popup_wrap").css("display","block");
+			}
+		})
 		
 	});
 	
-	
-	
-	
+	$(".patient_update_submit_wrap > p").click(function(){
+		var idx = $(this).index();
+		if(idx == 0){
+			var pno = $(".popup_patientUpdate > input[name='pno']").val();
+			var cno = $(".popup_patientUpdate > table tr td > input[name='cno']").val();
+			var name =  $(".popup_patientUpdate > table tr td > input[name='name']").val();
+			var phone = $(".popup_patientUpdate > table tr td > input[name='phone']").val();
+			var birth = $(".popup_patientUpdate > table tr td > input[name='birth']").val();
+			var gender = $(".popup_patientUpdate > table tr td > select[name='gender']").val();
+			var main_doctor = $(".popup_patientUpdate > table tr td > select[name='main_doctor']").val();
+			var main_doctor_name = $(".popup_patientUpdate > table tr td > select[name='main_doctor'] option:selected").html();
+			var main_therapist = $(".popup_patientUpdate > table tr td > select[name='main_therapist']").val();
+			var mail = $(".popup_patientUpdate > table tr td > input[name='mail']").val();
+			var memo = $(".popup_patientUpdate > table tr td > input[name='memo']").val();
+			var patient={pno:pno, cno:cno, name:name, phone:phone, birth:birth, gender:gender, main_doctor:main_doctor, main_doctor_name:main_doctor_name, main_therapist:main_therapist, mail:mail, memo:memo};
+			$.ajax({
+				url:"${pageContext.request.contextPath}/patientUpdate",
+				type:"post",
+				dataType:"text",
+				data:patient,
+				success:function(json){
+					console.log("update resutl= "+json);
+					$(".popup_wrap").css("display","none");
+					get_patient();
+				}
+			});
+		}else{
+			$(".popup_wrap").css("display","none");
+		}
+	});
+		
 	//달력 날짜 클릭 시 해당 정보GET
 	$(document).on("click", "#calendar td:not(.tr_not > td)", function(){
 		//날짜마다 요일 표시
@@ -540,52 +588,68 @@ function write_yoil(){
 		</div>
 		<div class="popup_content popup_patientUpdate">
 			<h2>회원정보수정</h2>
+			<input name="pno" type="hidden" value="">
 			<table>
 				<tr>
 					<th>차트번호</th>
-					<td></td>
+					<td><input type="text" name="cno" value=""></td>
 				</tr>
 				<tr>
 					<th>이름</th>
-					<td></td>
+					<td><input type="text" name="name" value=""></td>
 				</tr>
 				<tr>
 					<th>연락처</th>
-					<td></td>
+					<td><input type="text" name="phone" value=""></td>
 				</tr>
 				<tr>
 					<th>생년월일</th>
-					<td></td>
+					<td><input type="text" name="birth" value=""></td>
 				</tr>
 				<tr>
 					<th>성별</th>
-					<td></td>
+					<td>
+						<select name="gender">
+							<option value="남">남</option>
+							<option value="여">여</option>
+						</select>
+					</td>
 				</tr>
 				<tr>
 					<th>담당의사</th>
 					<td>
-						<select>
-							<option></option>
+						<select name="main_doctor">
+							<option value="">선택해주세요.</option>
+							<c:forEach var="list" items="${doctorList}">
+								<option value="${list.eno}">${list.name}</option>
+							</c:forEach>
 						</select>
 					</td>
 				</tr>
 				<tr>
 					<th>담당치료사</th>
 					<td>
-						<select>
-							<option></option>
+						<select name="main_therapist">
+							<option value="">선택해주세요.</option>
+							<c:forEach var="list" items="${therapistList}">
+								<option value="${list.eno}">${list.name}</option>
+							</c:forEach>
 						</select>
 					</td>
 				</tr>
 				<tr>
 					<th>이메일</th>
-					<td></td>
+					<td><input type="text" name="mail" value=""></td>
 				</tr>
 				<tr>
 					<th>메모</th>
-					<td></td>
+					<td><input type="text" name="memo" value=""></td>
 				</tr>
 			</table>
+			<div class="patient_update_submit_wrap">
+				<p>저장</p>
+				<p>취소</p>
+			</div>
 		</div>
 	</div>
 	

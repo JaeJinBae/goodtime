@@ -42,4 +42,14 @@ public class PatientDaoImpl implements PatientDao {
 		return session.selectList(namespace+".listSearch", cri);
 	}
 
+	@Override
+	public PatientVO selectByPno(String pno) {
+		return session.selectOne(namespace+".selectByPno", pno);
+	}
+
+	@Override
+	public void update(PatientVO vo) {
+		session.update(namespace+".update", vo);
+	}
+
 }

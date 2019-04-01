@@ -19,7 +19,12 @@ public class PatientServiceImpl implements PatientService {
 	public List<PatientVO> selectAll() {
 		return dao.selectAll();
 	}
-
+	
+	@Override
+	public PatientVO selectByPno(String pno) {
+		return dao.selectByPno(pno);
+	}
+	
 	@Override
 	public List<PatientVO> selectByName(String name) {
 		return dao.selectByName(name);
@@ -39,6 +44,13 @@ public class PatientServiceImpl implements PatientService {
 	public int listSearchCount(SearchCriteria cri) {
 		return dao.listSearchCount(cri);
 	}
+
+	@Override
+	public void update(PatientVO vo) {
+		dao.update(vo);
+	}
+
+	
 
 	
 

@@ -8,6 +8,10 @@
 		select * from patient order by name desc
 	</select>
 	
+	<select id="selectByPno" resultType="PatientVO">
+		select * from patient where pno=#{pno}
+	</select>
+	
 	<select id="selectByName" resultType="PatientVO">
 		select * from patient where name=#{name}
 	</select>
@@ -35,4 +39,8 @@
 	<select id="listSearchCount" resultType="int">
 		select count(pno) from patient <include refid="search"></include>
 	</select>
+	
+	<update id="update">
+		update patient set cno=#{cno}, name=#{name}, phone=#{phone}, birth=#{birth}, gender=#{gender}, mail=#{mail}, main_doctor=#{main_doctor}, main_doctor_name=#{main_doctor_name}, main_therapist=#{main_therapist}, memo=#{memo} where pno=#{pno} 
+	</update>
 </mapper>

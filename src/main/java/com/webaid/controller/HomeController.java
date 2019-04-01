@@ -107,9 +107,11 @@ public class HomeController {
 		
 		//HospitalInfoVO hospitalInfo = hService.selectOne(day); 
 		List<EmployeeVO> doctorList = empService.selectByType("doctor");
+		List<EmployeeVO> therapistList = empService.selectByType("therapist");
 		
 		//model.addAttribute("hospitalInfo", hospitalInfo);
 		model.addAttribute("doctorList", doctorList);
+		model.addAttribute("therapistList", therapistList);
 		
 		return "sub/sub_main";
 	}
@@ -259,7 +261,31 @@ public class HomeController {
 		return entity;
 	}
 	
+	@RequestMapping(value="/patientByPno/{pno}", method=RequestMethod.GET)
+	public ResponseEntity<PatientVO> patientByPno(@PathVariable("pno") String pno){
+		ResponseEntity<PatientVO> entity = null;
+		
+		PatientVO vo = pService.selectByPno(pno);
+		entity= new ResponseEntity<PatientVO>(vo, HttpStatus.OK);
+		
+		return entity;
+	}
 	
+	@RequestMapping(value="/patientUpdate", method=RequestMethod.POST)
+	public ResponseEntity<String> patientUpdate(PatientVO patient){
+		logger.info("paitent update Post");
+		
+		ResponseEntity<String> entity = null;
+		
+		try {
+			pService.update(patient);
+			entity = new ResponseEntity<>(HttpStatus.OK);
+		} catch (Exception e) {
+			entity = new ResponseEntity<>("no",HttpStatus.OK);
+		}
+		
+		return entity;
+	}
 	
 	
 	

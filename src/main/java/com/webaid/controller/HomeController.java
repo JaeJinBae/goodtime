@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.webaid.domain.ClinicVO;
 import com.webaid.domain.EmployeeVO;
 import com.webaid.domain.HospitalInfoVO;
 import com.webaid.domain.IdPwVO;
@@ -28,6 +29,7 @@ import com.webaid.domain.PageMaker;
 import com.webaid.domain.PatientVO;
 import com.webaid.domain.ReservationVO;
 import com.webaid.domain.SearchCriteria;
+import com.webaid.service.ClinicService;
 import com.webaid.service.EmployeeService;
 import com.webaid.service.HospitalInfoService;
 import com.webaid.service.PatientService;
@@ -51,6 +53,9 @@ public class HomeController {
 	
 	@Autowired
 	private PatientService pService;
+	
+	@Autowired
+	private ClinicService cService;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model) {
@@ -102,16 +107,15 @@ public class HomeController {
 	public String sub_main(Model model, HttpSession session) {
 		logger.info("sub_main GET");
 		
-		//logger.info("이름= "+session.getAttribute("name")+", 아이디= "+session.getAttribute("id"));
-		
-		
 		//HospitalInfoVO hospitalInfo = hService.selectOne(day); 
 		List<EmployeeVO> doctorList = empService.selectByType("doctor");
 		List<EmployeeVO> therapistList = empService.selectByType("therapist");
+		List<ClinicVO> clinicList = cService.selectAll();
 		
 		//model.addAttribute("hospitalInfo", hospitalInfo);
 		model.addAttribute("doctorList", doctorList);
 		model.addAttribute("therapistList", therapistList);
+		model.addAttribute("clinicList", clinicList);
 		
 		return "sub/sub_main";
 	}

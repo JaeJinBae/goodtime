@@ -18,6 +18,10 @@
 		float:left;
 	}
 	.header_inner2{
+		float:left;
+		margin-left:80px;
+	}
+	.header_inner3{
 		float: right;
 	}
 	.header_inner, .header_inner > a{
@@ -26,7 +30,20 @@
 	.header_inner1 > a{
 		font-weight:bold;
 	}
-	.header_inner2 > a{
+	.header_inner2 > p{
+		cursor: pointer;
+		display:inline-block;
+		font-size:15px;
+		background: gray;
+		color: #fff;
+		border-radius: 3px;
+		padding:5px;
+		margin-right:10px;
+	}
+	#reservation_view_btn{
+		display:none;
+	}
+	.header_inner3 > a{
 		margin-right:15px;
 	}
 </style>
@@ -47,6 +64,12 @@
 				<a href="#none">${sessionScope.name}(${sessionScope.type})</a>님 반갑습니다.
 			</div>
 			<div class="header_inner header_inner2">
+				<p id="patient_view_btn">환자VIEW</p>
+				<p id="doctor_view_btn">진료VIEW</p>
+				<p id="therapist_view_btn">치료VIEW</p>
+				<p id="reservation_view_btn"></p>
+			</div>
+			<div class="header_inner header_inner3">
 				<a href="${pageContext.request.contextPath}/">마이페이지</a>
 				<a href="${pageContext.request.contextPath}/logout">로그아웃</a>
 			</div>

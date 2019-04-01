@@ -37,6 +37,12 @@
 		position: relative;
 		z-index: 999;
 	}
+	.popup_patientUpdate{
+		display:none;
+	}
+	.popup_reservation_register{
+		display:none;
+	}
 	.all_wrap{
 		width: 100%;
 		/* height: 100%; */
@@ -247,7 +253,17 @@
 	.therapist_name{
 		text-align: center;
 	}
-	
+	.reservation_register_btn{
+		display:none;
+		width:20px;
+		height:20px;
+		color:#fff;
+		text-align:center;
+		font-size:20px;
+		background:gray;
+		border:1px solid lightgray;
+		cursor:pointer;
+	}
 </style> 
 <script>
 $(function(){
@@ -266,10 +282,28 @@ $(function(){
 	//오늘 요일 및 날짜에 해당하는 병원 정보, 진료 예약 정보 GET 
 	get_day_reservation_info(get_today());
 	
+	//환자 리스트에서 예약선택 버튼 클릭해서 헤더에 환자이름 뷰버튼 생성
 	$(document).on("click", ".reservation_select_btn", function(){
-		alert($(this).parent().parent().find("input[type='hidden']").val());
-		/* $(".timetable_inner_content").append() */
+		var reservation_click_pno = $(this).parent().parent().find("input[type='hidden']").val();
 		
+		$("#reservation_view_btn").html($(this).parent().parent().find("td").eq(1).html()+"<input type='hidden' name='pno' value='"+reservation_click_pno+"'>");
+		$("#reservation_view_btn").css("display", "inline-block");
+		$(".reservation_register_btn").css("display", "block");
+	});
+	
+	$(document).on("click", ".reservation_register_btn", function(){
+		var select_doctor_time = $(this).parent().prop("class");
+		$(".popup_wrap").css("display", "block");
+		$(".popup_reservation_register").css("display", "block");
+		alert(select_doctor_time);
+		
+	});
+	
+	//헤더에 있는 환자이름 버튼
+	$("#reservation_view_btn").click(function(){
+		$(this).css("display", "none");
+		$("#reservation_view_btn").html("");
+		$(".reservation_register_btn").css("display", "none");
 	});
 	
 	//환자 정보 수정
@@ -294,6 +328,7 @@ $(function(){
 				$(".popup_patientUpdate > table tr td > input[name='memo']").val(json.memo);
 				
 				$(".popup_wrap").css("display","block");
+				$(".popup_patientUpdate").css("display", "block");
 			}
 		})
 		
@@ -321,11 +356,13 @@ $(function(){
 				data:patient,
 				success:function(json){
 					console.log("update resutl= "+json);
+					$(".popup_patientUpdate").css("display", "none");
 					$(".popup_wrap").css("display","none");
 					get_patient();
 				}
 			});
 		}else{
+			$(".popup_patientUpdate").css("display", "none");
 			$(".popup_wrap").css("display","none");
 		}
 	});
@@ -510,11 +547,14 @@ function get_day_reservation_info(date){
 			$(json.doctorList).each(function(){
 				txt += "<tr class='"+this.type+"_"+this.eno+"'><td>"+this.name+"</td>";
 				for(var i=starttime; i < endtime; i++){
-					if(i == lunch){
+					//점심시간에 진료 및 치료 하지않는 병원
+					/* if(i == lunch){
 						txt += "<td class='"+this.type+"_"+this.eno+"_"+i+"' style='background:gray; text-align:center;'>점심시간</td>";
 					}else{
-						txt += "<td class='"+this.type+"_"+this.eno+"_"+i+" timetable_inner_content'><p class='reservation_register_btn' style='border:1px solid lightgray;width:20px;text-align:center;height:20px;font-size:20px;background:gray;color:#fff;cursor:pointer;'>+</p></td>"
-					}
+						txt += "<td class='"+this.type+"_"+this.eno+"_"+i+" timetable_inner_content'><p class='reservation_register_btn' style='border:1px solid lightgray;width:20px;text-align:center;height:20px;font-size:20px;background:gray;color:#fff;cursor:pointer;'>+</p></td>";
+					} */
+					//점심시간에도 진료 및 치료하는 병원
+					txt += "<td class='"+this.type+"_"+this.eno+"_"+i+" timetable_inner_content'><p class='reservation_register_btn'>+</p></td>";
 				}
 				txt += "</tr>";
 			});
@@ -530,11 +570,15 @@ function get_day_reservation_info(date){
 			$(json.therapistList).each(function(){
 				txt += "<tr class='"+this.type+"_"+this.eno+"'><td>"+this.name+"</td>";
 				for(var i=starttime; i < endtime; i++){
-					if(i == lunch){
+					//점심시간에 진료하는 병원
+					/* if(i == lunch){
 						txt += "<td class='"+this.type+"_"+this.eno+"_"+i+"' style='background:gray; text-align:center;'>점심시간</td>";
 					}else{
-						txt += "<td class='"+this.type+"_"+this.eno+"_"+i+" timetable_inner_content'></td>"
-					}
+						txt += "<td class='"+this.type+"_"+this.eno+"_"+i+" timetable_inner_content'><p class='reservation_register_btn'>+</p></td>";
+					} */
+					
+					//점심시간에 진료하지 않는 병원
+					txt += "<td class='"+this.type+"_"+this.eno+"_"+i+" timetable_inner_content'><p class='reservation_register_btn'>+</p></td>";
 				}
 				txt += "</tr>";
 			});
@@ -593,7 +637,7 @@ function write_yoil(){
 	<div class="popup_wrap">
 		<div class="popup_bg">
 		</div>
-		<div class="popup_content popup_patientUpdate">
+		<div class="popup_patientUpdate popup_content">
 			<h2>회원정보수정</h2>
 			<input name="pno" type="hidden" value="">
 			<table>
@@ -657,8 +701,55 @@ function write_yoil(){
 				<p>저장</p>
 				<p>취소</p>
 			</div>
-		</div>
-	</div>
+		</div><!-- popup_patientUpdate end -->
+		<div class="popup_reservation_register popup_content">
+			<h2>진료일정등록</h2>
+			<table>
+				<tr>
+					<th>예약시간</th>
+					<td>
+						<select>
+							<option value="0">00분</option>
+							<option value="10">10분</option>
+							<option value="20">20분</option>
+							<option value="30">30분</option>
+							<option value="40">40분</option>
+							<option value="50">50분</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<th>예약구분</th>
+					<td></td>
+				</tr>
+				<tr>
+					<th>담당의사</th>
+					<td>
+						<select>
+							<c:forEach var="item" items="${doctorList}">
+								<option value="${item.eno}">${item.name}</option>
+							</c:forEach>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<th>진료종류</th>
+					<td>
+						<select>
+							<c:forEach var="item" items="${clinicList}">
+								<option value="${item.cno}">${item.code_name}</option>
+							</c:forEach>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<th>메모</th>
+					<td></td>
+				</tr>
+			</table>
+		</div><!-- popup_reservation_register -->
+		
+	</div><!-- popup_wrap end -->
 	
 	
 	<div class="all_wrap">

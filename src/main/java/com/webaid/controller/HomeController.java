@@ -243,6 +243,14 @@ public class HomeController {
 		return entity;
 	}
 	
+	@RequestMapping(value="/reservationRegister", method=RequestMethod.POST)
+	public ResponseEntity<String> reservationRegisterPost(ReservationVO vo){
+		logger.info("reservationRegister Post");
+		ResponseEntity<String> entity= null;
+		System.out.println(vo);
+		return entity;
+	}
+	
 	@RequestMapping(value="patientAllGet", method=RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> patientAllGet(@ModelAttribute("cri") SearchCriteria cri) throws Exception{
 		logger.info("patient all Get");

@@ -266,8 +266,15 @@ $(function(){
 	//오늘 요일 및 날짜에 해당하는 병원 정보, 진료 예약 정보 GET 
 	get_day_reservation_info(get_today());
 	
+	$(document).on("click", ".reservation_select_btn", function(){
+		alert($(this).parent().parent().find("input[type='hidden']").val());
+		/* $(".timetable_inner_content").append() */
+		
+	});
+	
+	//환자 정보 수정
 	$(document).on("click", ".patient_update_btn", function(){
-		var pno=$(this).parent().parent().find("input[type='hidden']").val()
+		var pno=$(this).parent().parent().find("input[type='hidden']").val();
 		
 		$.ajax({
 			url:"${pageContext.request.contextPath}/patientByPno/"+pno,
@@ -506,7 +513,7 @@ function get_day_reservation_info(date){
 					if(i == lunch){
 						txt += "<td class='"+this.type+"_"+this.eno+"_"+i+"' style='background:gray; text-align:center;'>점심시간</td>";
 					}else{
-						txt += "<td class='"+this.type+"_"+this.eno+"_"+i+" timetable_inner_content'></td>"
+						txt += "<td class='"+this.type+"_"+this.eno+"_"+i+" timetable_inner_content'><p class='reservation_register_btn' style='border:1px solid lightgray;width:20px;text-align:center;height:20px;font-size:20px;background:gray;color:#fff;cursor:pointer;'>+</p></td>"
 					}
 				}
 				txt += "</tr>";

@@ -299,18 +299,8 @@ $(function(){
 			var mail = $(".popup_patientUpdate > table tr td > input[name='mail']").val();
 			var memo = $(".popup_patientUpdate > table tr td > input[name='memo']").val();
 			var patient={pno:pno, cno:cno, name:name, phone:phone, birth:birth, gender:gender, main_doctor:main_doctor, main_doctor_name:main_doctor_name, main_therapist:main_therapist, mail:mail, memo:memo};
-			$.ajax({
-				url:"${pageContext.request.contextPath}/patientUpdate",
-				type:"post",
-				dataType:"text",
-				data:patient,
-				success:function(json){
-					console.log("update resutl= "+json);
-					$(".popup_patientUpdate").css("display", "none");
-					$(".popup_wrap").css("display","none");
-					get_patient();
-				}
-			});
+			
+			
 		}else if(idx == 2){
 			$(".popup_reservation_register").css("display", "none");
 			$(".popup_wrap").css("display","none");
@@ -357,28 +347,7 @@ $(function(){
 	$(document).on("click", ".patient_update_btn", function(){
 		var pno=$(this).parent().parent().find("input[type='hidden']").val();
 		
-		$.ajax({
-			url:"${pageContext.request.contextPath}/patientByPno/"+pno,
-			type:"get",
-			dataType:"json",
-			success:function(json){
-				console.log(json);
-				$(".popup_patientUpdate > input[name='pno']").val(json.pno);
-				$(".popup_patientUpdate > table tr td > input[name='cno']").val(json.cno);
-				$(".popup_patientUpdate > table tr td > input[name='name']").val(json.name);
-				$(".popup_patientUpdate > table tr td > input[name='phone']").val(json.phone);
-				$(".popup_patientUpdate > table tr td > input[name='birth']").val(json.birth);
-				$(".popup_patientUpdate > table tr td > select[name='gender'] option[value='"+json.gender+"']").prop("selected", true);
-				$(".popup_patientUpdate > table tr > td > select[name='main_doctor'] option[value='"+json.main_doctor+"']").prop("selected", true);
-				$(".popup_patientUpdate > table tr > td > select[name='main_therapist'] option[value='"+json.main_therapist+"']").prop("selected", true);
-				$(".popup_patientUpdate > table tr td > input[name='mail']").val(json.mail);
-				$(".popup_patientUpdate > table tr td > input[name='memo']").val(json.memo);
-				
-				$(".popup_wrap").css("display","block");
-				$(".popup_patientUpdate").css("display", "block");
-			}
-		})
-		
+		update_patient_info_get(pno);
 	});
 	
 	//환자정보수정 view에서 버튼 클릭
@@ -397,18 +366,8 @@ $(function(){
 			var mail = $(".popup_patientUpdate > table tr td > input[name='mail']").val();
 			var memo = $(".popup_patientUpdate > table tr td > input[name='memo']").val();
 			var patient={pno:pno, cno:cno, name:name, phone:phone, birth:birth, gender:gender, main_doctor:main_doctor, main_doctor_name:main_doctor_name, main_therapist:main_therapist, mail:mail, memo:memo};
-			$.ajax({
-				url:"${pageContext.request.contextPath}/patientUpdate",
-				type:"post",
-				dataType:"text",
-				data:patient,
-				success:function(json){
-					console.log("update resutl= "+json);
-					$(".popup_patientUpdate").css("display", "none");
-					$(".popup_wrap").css("display","none");
-					get_patient();
-				}
-			});
+			
+			update_patient_info_post(patient);
 		}else{
 			$(".popup_patientUpdate").css("display", "none");
 			$(".popup_wrap").css("display","none");
@@ -447,43 +406,7 @@ $(function(){
 	$(document).on({
 		mouseenter:function(){
 			var rno=$(this).find("input[type='hidden']").val(); 
-
-			$.ajax({
-				url:"${pageContext.request.contextPath}/reservationInfoByRno/"+rno,
-				type: "get",
-				dataType:"json", 
-				success:function(json){
-					console.log(json);
-					var str="";
-					str="<p class='al_tbl_wrap2_title'>"+json.rtype+"예약</p><table id='tbl_simple_reservation'>"
-						+"<tr><td class='tbl_content_pName'>"+json.name+"("+json.cno+")님 ▶"+ json.main_doctor+"</td></tr>"
-						+"<tr><th class='tbl_content_title'>- 예약일시</th></tr>";
-						if(json.rtype == '일반진료' || json.rtype == '일반치료'){
-							str += "<tr><td class='tbl_content'>"+json.normal_date+" "+(Number(json.normal_rtime)/60)+"시</td></tr>";
-						}else if(json.rtype == '고정진료' || json.rtype == '고정치료'){
-							str += "<tr><td class='tbl_content'>"+json.fix_day+"요일 "+(Number(json.fix_rtime)/60)+"시</td></tr>";
-						}
-						str += "<tr><th class='tbl_content_title'>- 진료종류</th></tr>"
-							+"<tr><td class='tbl_content'>"+json.clinic+"</td></tr>"
-							+"<tr><th class='tbl_content_title'>- 등록정보</th></tr>"
-							+"<tr><td class='tbl_content'>"+json.regdate+" by "+json.writer+"</td></tr>";
-						
-					if(json.updatedate != ""){
-						str += "<tr><th class='tbl_content_title'>- 변경처리</th></tr>"
-							+"<tr><td class='tbl_content'>"+json.updatedate+" by "+json.updatewriter+"</td></tr>";
-					}
-					if(json.memo != ""){
-						str +=  "<tr><th class='tbl_content_title'>- 메모</th></tr>"
-							+"<tr><td class='tbl_content'>"+json.memo+"</td></tr>";
-					}
-					
-					str+="</table>";
-						
-					$(".al_tbl_wrap2").html(str);
-				}
-			});
-			$(".al_tbl_wrap2").css("display","block");
-			
+			draw_simple_reservation_view(rno);
 		},
 		mouseleave:function(){$(".al_tbl_wrap2").css("display","none");}
 		}, ".patient_p_tag");
@@ -504,6 +427,47 @@ $(function(){
 	});
 	
 });
+
+function update_patient_info_post(patient){
+	
+	$.ajax({
+		url:"${pageContext.request.contextPath}/patientUpdate",
+		type:"post",
+		dataType:"text",
+		data:patient,
+		success:function(json){
+			console.log("update resutl= "+json);
+			$(".popup_patientUpdate").css("display", "none");
+			$(".popup_wrap").css("display","none");
+			get_patient();
+		}
+	});
+}
+
+//환자 정보 수정에 들어갈 정보 get
+function update_patient_info_get(pno){
+	$.ajax({
+		url:"${pageContext.request.contextPath}/patientByPno/"+pno,
+		type:"get",
+		dataType:"json",
+		success:function(json){
+			console.log(json);
+			$(".popup_patientUpdate > input[name='pno']").val(json.pno);
+			$(".popup_patientUpdate > table tr td > input[name='cno']").val(json.cno);
+			$(".popup_patientUpdate > table tr td > input[name='name']").val(json.name);
+			$(".popup_patientUpdate > table tr td > input[name='phone']").val(json.phone);
+			$(".popup_patientUpdate > table tr td > input[name='birth']").val(json.birth);
+			$(".popup_patientUpdate > table tr td > select[name='gender'] option[value='"+json.gender+"']").prop("selected", true);
+			$(".popup_patientUpdate > table tr > td > select[name='main_doctor'] option[value='"+json.main_doctor+"']").prop("selected", true);
+			$(".popup_patientUpdate > table tr > td > select[name='main_therapist'] option[value='"+json.main_therapist+"']").prop("selected", true);
+			$(".popup_patientUpdate > table tr td > input[name='mail']").val(json.mail);
+			$(".popup_patientUpdate > table tr td > input[name='memo']").val(json.memo);
+			
+			$(".popup_wrap").css("display","block");
+			$(".popup_patientUpdate").css("display", "block");
+		}
+	})
+}
 
 function get_patient(info){
 	$.ajax({
@@ -574,6 +538,45 @@ function get_today(){
 	fulldate = today.getFullYear()+"-"+update_month+"-"+update_date;
 	$(".calendar_select_date").val(fulldate);
 	return fulldate;
+}
+
+//진료, 치료 테이블에서 예약된환자 이름에 마우스 올리면 좌측하단에 예약정보 나타내는 함수
+function draw_simple_reservation_view(rno){
+	$.ajax({
+		url:"${pageContext.request.contextPath}/reservationInfoByRno/"+rno,
+		type: "get",
+		dataType:"json", 
+		success:function(json){
+			console.log(json);
+			var str="";
+			str="<p class='al_tbl_wrap2_title'>"+json.rtype+"예약</p><table id='tbl_simple_reservation'>"
+				+"<tr><td class='tbl_content_pName'>"+json.name+"("+json.cno+")님 ▶"+ json.main_doctor+"</td></tr>"
+				+"<tr><th class='tbl_content_title'>- 예약일시</th></tr>";
+				if(json.rtype == '일반진료' || json.rtype == '일반치료'){
+					str += "<tr><td class='tbl_content'>"+json.normal_date+" "+(Number(json.normal_rtime)/60)+"시</td></tr>";
+				}else if(json.rtype == '고정진료' || json.rtype == '고정치료'){
+					str += "<tr><td class='tbl_content'>"+json.fix_day+"요일 "+(Number(json.fix_rtime)/60)+"시</td></tr>";
+				}
+				str += "<tr><th class='tbl_content_title'>- 진료종류</th></tr>"
+					+"<tr><td class='tbl_content'>"+json.clinic+"</td></tr>"
+					+"<tr><th class='tbl_content_title'>- 등록정보</th></tr>"
+					+"<tr><td class='tbl_content'>"+json.regdate+" by "+json.writer+"</td></tr>";
+				
+			if(json.updatedate != ""){
+				str += "<tr><th class='tbl_content_title'>- 변경처리</th></tr>"
+					+"<tr><td class='tbl_content'>"+json.updatedate+" by "+json.updatewriter+"</td></tr>";
+			}
+			if(json.memo != ""){
+				str +=  "<tr><th class='tbl_content_title'>- 메모</th></tr>"
+					+"<tr><td class='tbl_content'>"+json.memo+"</td></tr>";
+			}
+			
+			str+="</table>";
+				
+			$(".al_tbl_wrap2").html(str);
+		}
+	});
+	$(".al_tbl_wrap2").css("display","block");
 }
 
 function get_day_reservation_info(date){

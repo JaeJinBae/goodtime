@@ -5,7 +5,7 @@
 <mapper namespace="com.webaid.mappers.ClinicMapper">
 
 	<select id="selectAll" resultType="ClinicVO">
-		select * from clinic order by cno asc
+		select * from clinic order by code_name asc
 	</select>
 	
 	<select id="selectOneByCno" resultType="ClinicVO">

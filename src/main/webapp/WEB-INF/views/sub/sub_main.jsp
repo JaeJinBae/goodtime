@@ -43,6 +43,7 @@
 	.popup_reservation_register{
 		display:none;
 	}
+	
 	.all_wrap{
 		width: 100%;
 		/* height: 100%; */
@@ -282,7 +283,41 @@ $(function(){
 	//오늘 요일 및 날짜에 해당하는 병원 정보, 진료 예약 정보 GET 
 	get_day_reservation_info(get_today());
 	
-	//환자 리스트에서 예약선택 버튼 클릭해서 헤더에 환자이름 뷰버튼 생성
+	//예약과정에서 예약등록, 예약접수, 취소 버튼 기능
+	$(".popup_reservation_register_btn_wrap > p").click(function(){
+		var idx = $(this).index();
+		if(idx == 0){
+			var pno = $(".popup_patientUpdate > input[name='pno']").val();
+			var cno = $(".popup_patientUpdate > table tr td > input[name='cno']").val();
+			var name =  $(".popup_patientUpdate > table tr td > input[name='name']").val();
+			var phone = $(".popup_patientUpdate > table tr td > input[name='phone']").val();
+			var birth = $(".popup_patientUpdate > table tr td > input[name='birth']").val();
+			var gender = $(".popup_patientUpdate > table tr td > select[name='gender']").val();
+			var main_doctor = $(".popup_patientUpdate > table tr td > select[name='main_doctor']").val();
+			var main_doctor_name = $(".popup_patientUpdate > table tr td > select[name='main_doctor'] option:selected").html();
+			var main_therapist = $(".popup_patientUpdate > table tr td > select[name='main_therapist']").val();
+			var mail = $(".popup_patientUpdate > table tr td > input[name='mail']").val();
+			var memo = $(".popup_patientUpdate > table tr td > input[name='memo']").val();
+			var patient={pno:pno, cno:cno, name:name, phone:phone, birth:birth, gender:gender, main_doctor:main_doctor, main_doctor_name:main_doctor_name, main_therapist:main_therapist, mail:mail, memo:memo};
+			$.ajax({
+				url:"${pageContext.request.contextPath}/patientUpdate",
+				type:"post",
+				dataType:"text",
+				data:patient,
+				success:function(json){
+					console.log("update resutl= "+json);
+					$(".popup_patientUpdate").css("display", "none");
+					$(".popup_wrap").css("display","none");
+					get_patient();
+				}
+			});
+		}else if(idx == 2){
+			$(".popup_reservation_register").css("display", "none");
+			$(".popup_wrap").css("display","none");
+		}
+	});
+	
+	//환자 리스트에서 예약-선택 버튼 클릭
 	$(document).on("click", ".reservation_select_btn", function(){
 		var reservation_click_pno = $(this).parent().parent().find("input[type='hidden']").val();
 		
@@ -291,11 +326,23 @@ $(function(){
 		$(".reservation_register_btn").css("display", "block");
 	});
 	
+	//진료테이블에서 + 클릭
 	$(document).on("click", ".reservation_register_btn", function(){
 		var select_doctor_time = $(this).parent().prop("class");
+		var split_className = select_doctor_time.split(" ");//class가 2개라서 공백으로 걸러내면 첫번째 배열에는 doctor_의사번호_시간 걸러짐
+		var split_doctor_time=split_className[0].split("_");
+		
+		var eno=split_doctor_time[1];
+		var time=split_doctor_time[2];
+		
+		$(this).parent().parent().find("td").eq(0).html();
+		
+		$(".popup_reservation_register > table td > select[name='main_doctor'] > option[value='"+eno+"']").prop("selected", true);
+		
 		$(".popup_wrap").css("display", "block");
 		$(".popup_reservation_register").css("display", "block");
-		alert(select_doctor_time);
+		$("#popup_reservation_register_date").append($(".calendar_select_date").val()+"&nbsp;&nbsp;"+time+"시");
+		//alert(select_doctor_time);
 		
 	});
 	
@@ -306,7 +353,7 @@ $(function(){
 		$(".reservation_register_btn").css("display", "none");
 	});
 	
-	//환자 정보 수정
+	//환자테이블에서 정보 수정 클릭했을 때
 	$(document).on("click", ".patient_update_btn", function(){
 		var pno=$(this).parent().parent().find("input[type='hidden']").val();
 		
@@ -334,7 +381,8 @@ $(function(){
 		
 	});
 	
-	$(".patient_update_submit_wrap > p").click(function(){
+	//환자정보수정 view에서 버튼 클릭
+	$(".popup_patient_update_submit_wrap > p").click(function(){
 		var idx = $(this).index();
 		if(idx == 0){
 			var pno = $(".popup_patientUpdate > input[name='pno']").val();
@@ -391,10 +439,11 @@ $(function(){
 		
 		fulldate = year_month+"-"+update_date;
 		var day = $(this).find("input[type='hidden']").val();
-		
+		$(".calendar_select_date").val(fulldate);
 		get_day_reservation_info(fulldate);
 	 });
 	
+	//진료, 치료 테이블에서 예약에 마우스 올리고 치웠을때
 	$(document).on({
 		mouseenter:function(){
 			var rno=$(this).find("input[type='hidden']").val(); 
@@ -523,6 +572,7 @@ function get_today(){
 	}
 	
 	fulldate = today.getFullYear()+"-"+update_month+"-"+update_date;
+	$(".calendar_select_date").val(fulldate);
 	return fulldate;
 }
 
@@ -697,7 +747,7 @@ function write_yoil(){
 					<td><input type="text" name="memo" value=""></td>
 				</tr>
 			</table>
-			<div class="patient_update_submit_wrap">
+			<div class="popup_patient_update_submit_wrap">
 				<p>저장</p>
 				<p>취소</p>
 			</div>
@@ -708,6 +758,7 @@ function write_yoil(){
 				<tr>
 					<th>예약시간</th>
 					<td>
+						<span id="popup_reservation_register_date"></span>
 						<select>
 							<option value="0">00분</option>
 							<option value="10">10분</option>
@@ -720,12 +771,17 @@ function write_yoil(){
 				</tr>
 				<tr>
 					<th>예약구분</th>
-					<td></td>
+					<td>
+						<select>
+							<option value="일반예약">일반예약</option>
+							<option value="희망예약">희망예약</option>
+						</select>
+					</td>
 				</tr>
 				<tr>
 					<th>담당의사</th>
 					<td>
-						<select>
+						<select name="main_doctor">
 							<c:forEach var="item" items="${doctorList}">
 								<option value="${item.eno}">${item.name}</option>
 							</c:forEach>
@@ -736,6 +792,7 @@ function write_yoil(){
 					<th>진료종류</th>
 					<td>
 						<select>
+							<option value="">선택없음</option>
 							<c:forEach var="item" items="${clinicList}">
 								<option value="${item.cno}">${item.code_name}</option>
 							</c:forEach>
@@ -747,6 +804,11 @@ function write_yoil(){
 					<td></td>
 				</tr>
 			</table>
+			<div class="popup_reservation_register_btn_wrap">
+				<p>예약추가</p>
+				<p>진료접수</p>
+				<p>취소</p>
+			</div>
 		</div><!-- popup_reservation_register -->
 		
 	</div><!-- popup_wrap end -->
@@ -759,6 +821,7 @@ function write_yoil(){
 		<div class="section">
 			<div class="aside_left">
 				<div class="al_tbl_wrap_1">
+				<input class='calendar_select_date' type="hidden" value=''>
 					<table id="calendar" border="3" align="center" style="border-color:#3333FF ">
 					    <tr class="tr_not"><!-- label은 마우스로 클릭을 편하게 해줌 -->
 					        <td><label onclick="prevCalendar()"><</label></td>

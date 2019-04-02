@@ -593,26 +593,28 @@ function draw_reservation(date){
 	var patient;
 	$(json.reservationListNormal).each(function(){
 		patient = get_patient_by_pno(this.pno);
+		
 		if(this.rtype == '일반진료'){
 			target_tag = ".doctor_"+this.main_doctor+"_"+(Number(this.normal_rtime)/60);
 			txt = "<p class='patient_p_tag' style='background:yellow;border:1px solid gray;'>"+patient.name+"<input type='hidden' value='"+this.rno+"'></p>";
 			$(target_tag).append(txt);
 		}else if(this.rtype == '일반치료'){
 			target_tag = ".therapist_"+this.main_therapist+"_"+(Number(this.normal_rtime)/60);
-			txt = "<p class='patient_p_tag' style='background:yellow;border:1px solid gray;'>"+this.name+"<input type='hidden' value='"+this.rno+"'></p>";
+			txt = "<p class='patient_p_tag' style='background:yellow;border:1px solid gray;'>"+patient.name+"<input type='hidden' value='"+this.rno+"'></p>";
 			$(target_tag).append(txt);
 		}
 		
 	});
 	
 	$(json.reservationListFix).each(function(){
+		patient = get_patient_by_pno(this.pno);
 		if(this.rtype == '고정진료'){
 			target_tag = ".doctor_"+this.main_doctor+"_"+(Number(this.fix_rtime)/60);
-			txt = "<p class='patient_p_tag' style='background:pink;border:1px solid gray;'>"+this.name+"<input type='hidden' value='"+this.rno+"'></p>";
+			txt = "<p class='patient_p_tag' style='background:pink;border:1px solid gray;'>"+patient.name+"<input type='hidden' value='"+this.rno+"'></p>";
 			$(target_tag).append(txt);
 		}else if(this.rtype == '고정치료'){
 			target_tag = ".therapist_"+this.main_therapist+"_"+(Number(this.fix_rtime)/60);
-			txt = "<p class='patient_p_tag' style='background:pink;border:1px solid gray;'>"+this.name+"<input type='hidden' value='"+this.rno+"'></p>";
+			txt = "<p class='patient_p_tag' style='background:pink;border:1px solid gray;'>"+patient.name+"<input type='hidden' value='"+this.rno+"'></p>";
 			$(target_tag).append(txt);
 		}
 		
@@ -633,26 +635,56 @@ function get_reservation_byRno(rno){
 	return dt;
 }
 
+function get_clinic_by_cno(cno){
+	var dt;
+	$.ajax({
+		url:"${pageContext.request.contextPath}/clinicGetByCno/"+cno,
+		type: "get",
+		dataType:"json", 
+		async: false,
+		success:function(json){
+			dt = json;
+		}
+	});
+	return dt;
+}
+
 
 //진료, 치료 테이블에서 예약된환자 이름에 마우스 올리면 좌측하단에 예약정보 나타내는 함수
 function draw_simple_reservation_view(rno){
 	var json = get_reservation_byRno(rno);
 	var patient = get_patient_by_pno(json.pno);
-	var doctor = get_employee_byEno(json.main_doctor);
+	var clinic;
+	var doctor;
+	var therapist;
+	
+	if(json.main_doctor =="" || json.main_doctor == null){
+		therapist = get_employee_byEno(json.main_therapist);
+		clinic = get_clinic_by_cno(json.main_therapist);
+	}else{
+		doctor = get_employee_byEno(json.main_doctor);
+		clinic = get_clinic_by_cno(json.main_doctor);
+	}
 	
 	var str="";
-	str="<p class='al_tbl_wrap2_title'>"+json.rtype+"예약</p><table id='tbl_simple_reservation'>"
-		+"<tr><td class='tbl_content_pName'>"+patient.name+"("+patient.cno+")님 ▶"+ doctor.name+"</td></tr>"
-		+"<tr><th class='tbl_content_title'>- 예약일시</th></tr>";
-		if(json.rtype == '일반진료' || json.rtype == '일반치료'){
-			str += "<tr><td class='tbl_content'>"+json.normal_date+" "+(Number(json.normal_rtime)/60)+"시</td></tr>";
-		}else if(json.rtype == '고정진료' || json.rtype == '고정치료'){
-			str += "<tr><td class='tbl_content'>"+json.fix_day+"요일 "+(Number(json.fix_rtime)/60)+"시</td></tr>";
-		}
-		str += "<tr><th class='tbl_content_title'>- 진료종류</th></tr>"
-			+"<tr><td class='tbl_content'>"+json.clinic+"</td></tr>"
-			+"<tr><th class='tbl_content_title'>- 등록정보</th></tr>"
-			+"<tr><td class='tbl_content'>"+json.regdate+" by "+json.writer+"</td></tr>";
+	str="<p class='al_tbl_wrap2_title'>"+json.rtype+"예약</p><table id='tbl_simple_reservation'>";
+	if(json.main_doctor == "" || json.main_doctor == null){
+		str += "<tr><td class='tbl_content_pName'>"+patient.name+"("+patient.cno+")님 ▶"+ therapist.name+"</td></tr>";
+	}else{
+		str += "<tr><td class='tbl_content_pName'>"+patient.name+"("+patient.cno+")님 ▶"+ doctor.name+"</td></tr>"; 
+	}
+	
+	str+="<tr><th class='tbl_content_title'>- 예약일시</th></tr>";
+	if(json.rtype == '일반진료' || json.rtype == '일반치료'){
+		str += "<tr><td class='tbl_content'>"+json.normal_date+" "+(Number(json.normal_rtime)/60)+"시</td></tr>"
+			+"<tr><th class='tbl_content_title'>- 진료종류</th></tr>";
+	}else if(json.rtype == '고정진료' || json.rtype == '고정치료'){
+		str += "<tr><td class='tbl_content'>"+json.fix_day+"요일 "+(Number(json.fix_rtime)/60)+"시</td></tr>"
+			+"<tr><th class='tbl_content_title'>- 치료종류</th></tr>";
+	}
+	str += "<tr><td class='tbl_content'>"+clinic.code_name+"</td></tr>"
+		+"<tr><th class='tbl_content_title'>- 등록정보</th></tr>"
+		+"<tr><td class='tbl_content'>"+json.regdate+" by "+json.writer+"</td></tr>";
 		
 	if(json.updatedate != ""){
 		str += "<tr><th class='tbl_content_title'>- 변경처리</th></tr>"
@@ -892,11 +924,12 @@ $(function(){
 				var memo = $(".popup_reservation_register > table tr td input[name='memo']").val();
 				var writer = $("#session_login_name").val();
 				var regdate = get_today();
+				var vo = {pno:pno, main_doctor:main_doctor, rtype:rtype, normal_date:normal_date, normal_rtime:normal_rtime, clinic:clinic, memo:memo, writer:writer, regdate:regdate};
 			}else{
 				var selectDate = $(".popup_reservation_register_date").eq(1).text();
 				var split_date = selectDate.split(" ");
 				var pno = $("#reservation_view_btn > input[name='pno']").val();
-				var main_doctor = $(".popup_therapy_reservation_register > table tr td > select[name='main_doctor']").val();
+				var main_therapist = $(".popup_therapy_reservation_register > table tr td > select[name='main_therapist']").val();
 				var rtype = $(".popup_therapy_reservation_register > table tr td > select[name='rtype']").val();
 				var normal_date = split_date[0]+"";
 				var normal_rtime = (Number(split_date[1])*60)+"";
@@ -904,11 +937,10 @@ $(function(){
 				var memo = $(".popup_therapy_reservation_register > table tr td input[name='memo']").val();
 				var writer = $("#session_login_name").val();
 				var regdate = get_today();
+				var vo = {pno:pno, main_therapist:main_therapist, rtype:rtype, normal_date:normal_date, normal_rtime:normal_rtime, clinic:clinic, memo:memo, writer:writer, regdate:regdate};
 			}
 			
 			console.log(normal_rtime);
-			
-			var vo = {pno:pno, main_doctor:main_doctor, rtype:rtype, normal_date:normal_date, normal_rtime:normal_rtime, clinic:clinic, memo:memo, writer:writer, regdate:regdate};
 			
 			post_reservation_register(vo);
 			
@@ -1079,10 +1111,10 @@ $(function(){
 					</td>
 				</tr>
 				<tr>
-					<th>담당의사</th>
+					<th>치료사</th>
 					<td>
-						<select name="main_doctor">
-							<c:forEach var="item" items="${doctorList}">
+						<select name="main_therapist">
+							<c:forEach var="item" items="${therapistList}">
 								<option value="${item.eno}">${item.name}</option>
 							</c:forEach>
 						</select>
@@ -1093,7 +1125,7 @@ $(function(){
 					<td>
 						<select name="clinic">
 							<option value="">선택없음</option>
-							<c:forEach var="item" items="${therapyClinicList}">
+							<c:forEach var="item" items="${therapyList}"> 
 								<option value="${item.cno}">${item.code_name}</option>
 							</c:forEach>
 						</select>

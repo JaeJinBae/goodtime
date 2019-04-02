@@ -110,13 +110,14 @@ public class HomeController {
 		//HospitalInfoVO hospitalInfo = hService.selectOne(day); 
 		List<EmployeeVO> doctorList = empService.selectByType("doctor");
 		List<EmployeeVO> therapistList = empService.selectByType("therapist");
-		List<ClinicVO> clinicList = cService.selectAll();
+		List<ClinicVO> clinicList = cService.selectByCodeType("진료");
+		List<ClinicVO> therapyList = cService.selectByCodeType("치료");
 		
 		//model.addAttribute("hospitalInfo", hospitalInfo);
 		model.addAttribute("doctorList", doctorList);
 		model.addAttribute("therapistList", therapistList);
 		model.addAttribute("clinicList", clinicList);
-		
+		model.addAttribute("therapyList", therapyList);
 		return "sub/sub_main";
 	}
 	
@@ -147,6 +148,14 @@ public class HomeController {
 		HospitalInfoVO vo = hService.selectOne(day);
 		entity = new ResponseEntity<HospitalInfoVO>(vo, HttpStatus.OK);
 		
+		return entity;
+	}
+	
+	@RequestMapping(value="/clinicGetByCno/{cno}", method=RequestMethod.GET)
+	public ResponseEntity<ClinicVO> clinicGetByCno(@PathVariable("cno") String cno){
+		ResponseEntity<ClinicVO> entity = null;
+		ClinicVO vo = cService.selectOneByCno(Integer.parseInt(cno));
+		entity = new ResponseEntity<ClinicVO>(vo, HttpStatus.OK);
 		return entity;
 	}
 	

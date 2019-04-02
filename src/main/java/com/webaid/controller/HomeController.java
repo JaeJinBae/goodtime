@@ -127,12 +127,14 @@ public class HomeController {
 		//HospitalInfoVO hospitalInfo = hService.selectOne(day); 
 		List<EmployeeVO> doctorList = empService.selectByType("doctor");
 		List<EmployeeVO> therapistList = empService.selectByType("therapist");
-		List<ClinicVO> clinicList = cService.selectAll();
-		
+		//List<ClinicVO> clinicList = cService.selectAll();
+		List<ClinicVO> clinicList = cService.selectByCodeType("진료");
+		List<ClinicVO> therapyList = cService.selectByCodeType("치료");
 		//model.addAttribute("hospitalInfo", hospitalInfo);
 		model.addAttribute("doctorList", doctorList);
 		model.addAttribute("therapistList", therapistList);
 		model.addAttribute("clinicList", clinicList);
+		model.addAttribute("therapyList", therapyList);
 		
 		return "sub/sub_main_backup_20190402";
 	}

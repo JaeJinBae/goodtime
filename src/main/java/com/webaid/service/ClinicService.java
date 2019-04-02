@@ -7,6 +7,7 @@ import com.webaid.domain.ClinicVO;
 public interface ClinicService {
 	public List<ClinicVO> selectAll();
 	public ClinicVO selectOneByCno(int cno);
+	public List<ClinicVO> selectByCodeType(String code_type);
 	public void update(ClinicVO vo);
 	public void delete(int cno);
 }

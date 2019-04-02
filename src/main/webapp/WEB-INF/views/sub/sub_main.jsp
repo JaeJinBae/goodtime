@@ -43,7 +43,9 @@
 	.popup_reservation_register{
 		display:none;
 	}
-	
+	.popup_therapy_reservation_register{
+		display: none;
+	}
 	.all_wrap{
 		width: 100%;
 		/* height: 100%; */
@@ -497,7 +499,7 @@ function draw_total_time_table(date, type){
 	var lunch=Number(hospitalDayInfo.lunch)/60;
 	
 	//진료 테이블 생성
-	var txt = "<table><tr><td></td>";
+	var txt = "<table class='"+type+"_time_table'><tr><td></td>";
 	
 	for(var i=starttime; i < endtime; i++){
 		txt+="<td>"+i+"시</td>";
@@ -520,6 +522,66 @@ function draw_total_time_table(date, type){
 	});
 	txt+="</table>";
 	return txt;
+}
+
+function draw_time_table_by_case(idx){
+	var select_date = $(".calendar_select_date").val();
+	var table_txt;
+	console.log(select_date);
+	switch (idx){
+		case 0:
+			$(".time_table_wrap").html("");
+			table_txt = draw_total_time_table(select_date, "doctor");
+			table_txt += "<br><br><br>";
+			table_txt += draw_total_time_table(select_date, "therapist");
+			$(".time_table_wrap").append(table_txt);
+			draw_reservation(select_date);
+			storage_timetable_btn_num = 0;
+			break;
+		case 1:
+			$(".time_table_wrap").html("");
+			table_txt = draw_total_time_table(select_date, "doctor");
+			$(".time_table_wrap").append(table_txt);
+			draw_reservation(select_date);
+			storage_timetable_btn_num = 1;
+			break;
+		case 2:
+			storage_timetable_btn_num = 2;
+			break;
+		case 3:
+			storage_timetable_btn_num = 3;
+			break;
+		case 4:
+			$(".time_table_wrap").html("");
+			table_txt = draw_total_time_table(select_date, "therapist");
+			$(".time_table_wrap").append(table_txt);
+			draw_reservation(select_date);
+			storage_timetable_btn_num = 4;
+			break;
+		case 5:
+			storage_timetable_btn_num = 5;
+			break;
+		case 6:
+			storage_timetable_btn_num = 6;
+			break;
+		case 7:
+			storage_timetable_btn_num = 7;
+			break;
+		case 8:
+			storage_timetable_btn_num = 8;
+			break;
+		case 9:
+			storage_timetable_btn_num = 9;
+			break;
+		case 10:
+			storage_timetable_btn_num = 10;
+			break;
+		case 11:
+			storage_timetable_btn_num = 11;
+			break;
+		default:
+			console.log(idx);
+	}
 }
 
 function draw_reservation(date){
@@ -635,65 +697,7 @@ function post_reservation_register(vo){
 
 
 
-function draw_time_table_by_case(idx){
-	var select_date = $(".calendar_select_date").val();
-	var table_txt;
-	console.log(select_date);
-	switch (idx){
-		case 0:
-			$(".time_table_wrap").html("");
-			table_txt = draw_total_time_table(select_date, "doctor");
-			table_txt += "<br><br><br>";
-			table_txt += draw_total_time_table(select_date, "therapist");
-			$(".time_table_wrap").append(table_txt);
-			draw_reservation(select_date);
-			storage_timetable_btn_num = 0;
-			break;
-		case 1:
-			$(".time_table_wrap").html("");
-			table_txt = draw_total_time_table(select_date, "doctor");
-			$(".time_table_wrap").append(table_txt);
-			draw_reservation(select_date);
-			storage_timetable_btn_num = 1;
-			break;
-		case 2:
-			storage_timetable_btn_num = 2;
-			break;
-		case 3:
-			storage_timetable_btn_num = 3;
-			break;
-		case 4:
-			$(".time_table_wrap").html("");
-			table_txt = draw_total_time_table(select_date, "therapist");
-			$(".time_table_wrap").append(table_txt);
-			draw_reservation(select_date);
-			storage_timetable_btn_num = 4;
-			break;
-		case 5:
-			storage_timetable_btn_num = 5;
-			break;
-		case 6:
-			storage_timetable_btn_num = 6;
-			break;
-		case 7:
-			storage_timetable_btn_num = 7;
-			break;
-		case 8:
-			storage_timetable_btn_num = 8;
-			break;
-		case 9:
-			storage_timetable_btn_num = 9;
-			break;
-		case 10:
-			storage_timetable_btn_num = 10;
-			break;
-		case 11:
-			storage_timetable_btn_num = 11;
-			break;
-		default:
-			console.log(idx);
-	}
-}
+
 
 $(function(){
 	/* var num=130;
@@ -827,7 +831,7 @@ $(function(){
 	});
 	
 	//진료테이블에서 + 클릭
-	$(document).on("click", ".reservation_register_btn", function(){
+	$(document).on("click", ".doctor_time_table .reservation_register_btn", function(){
 		var select_doctor_time = $(this).parent().prop("class");
 		var split_className = select_doctor_time.split(" ");//class가 2개라서 공백으로 걸러내면 첫번째 배열에는 doctor_의사번호_시간 걸러짐
 		var split_doctor_time=split_className[0].split("_");
@@ -842,29 +846,65 @@ $(function(){
 		
 		$(".popup_wrap").css("display", "block");
 		$(".popup_reservation_register").css("display", "block");
-		$("#popup_reservation_register_date").text($(".calendar_select_date").val()+" "+time);
+		$(".popup_reservation_register_date").text($(".calendar_select_date").val()+" "+time);
+		//alert(select_doctor_time);
+		
+	});
+	
+	//치료테이블에서 + 클릭
+	$(document).on("click", ".therapist_time_table .reservation_register_btn", function(){
+		var select_doctor_time = $(this).parent().prop("class");
+		var split_className = select_doctor_time.split(" ");//class가 2개라서 공백으로 걸러내면 첫번째 배열에는 doctor_의사번호_시간 걸러짐
+		var split_doctor_time=split_className[0].split("_");
+		
+		var eno=split_doctor_time[1];
+		var time=split_doctor_time[2];
+		
+		//$(this).parent().parent().find("td").eq(0).html();
+		$(".popup_therapy_reservation_register > h2 > span").html($("#reservation_view_btn").text()+"("+$("#reservation_view_btn > input[name='cno']").val()+")님");
+		
+		$(".popup_therapy_reservation_register > table td > select[name='main_doctor'] > option[value='"+eno+"']").prop("selected", true);
+		
+		$(".popup_wrap").css("display", "block");
+		$(".popup_therapy_reservation_register").css("display", "block");
+		$(".popup_reservation_register_date").text($(".calendar_select_date").val()+" "+time);
 		//alert(select_doctor_time);
 		
 	});
 	
 	//예약view에서 예약등록, 예약접수, 취소 버튼 기능
-	$(".popup_reservation_register_btn_wrap > p").click(function(){
+	$(".popup_content .popup_reservation_register_btn_wrap > p").click(function(){
 		var idx = $(this).index();
 		
 		//예약등록
 		if(idx == 0){
-			var selectDate = $("#popup_reservation_register_date").text();
-			var split_date = selectDate.split(" ");			
-			
-			var pno = $("#reservation_view_btn > input[name='pno']").val();
-			var main_doctor = $(".popup_reservation_register > table tr td > select[name='main_doctor']").val();
-			var rtype = $(".popup_reservation_register > table tr td > select[name='rtype']").val();
-			var normal_date = split_date[0]+"";
-			var normal_rtime = (Number(split_date[1])*60)+"";
-			var clinic = $(".popup_reservation_register > table tr td > select[name='clinic']").val();
-			var memo = $(".popup_reservation_register > table tr td input[name='memo']").val();
-			var writer = $("#session_login_name").val();
-			var regdate = get_today();
+						
+			if($(".popup_reservation_register").css("display") == "block"){
+				var selectDate = $(".popup_reservation_register_date").eq(0).text();
+				var split_date = selectDate.split(" ");
+				
+				var pno = $("#reservation_view_btn > input[name='pno']").val();
+				var main_doctor = $(".popup_reservation_register > table tr td > select[name='main_doctor']").val();
+				var rtype = $(".popup_reservation_register > table tr td > select[name='rtype']").val();
+				var normal_date = split_date[0]+"";
+				var normal_rtime = (Number(split_date[1])*60)+"";
+				var clinic = $(".popup_reservation_register > table tr td > select[name='clinic']").val();
+				var memo = $(".popup_reservation_register > table tr td input[name='memo']").val();
+				var writer = $("#session_login_name").val();
+				var regdate = get_today();
+			}else{
+				var selectDate = $(".popup_reservation_register_date").eq(1).text();
+				var split_date = selectDate.split(" ");
+				var pno = $("#reservation_view_btn > input[name='pno']").val();
+				var main_doctor = $(".popup_therapy_reservation_register > table tr td > select[name='main_doctor']").val();
+				var rtype = $(".popup_therapy_reservation_register > table tr td > select[name='rtype']").val();
+				var normal_date = split_date[0]+"";
+				var normal_rtime = (Number(split_date[1])*60)+"";
+				var clinic = $(".popup_therapy_reservation_register > table tr td > select[name='clinic']").val();
+				var memo = $(".popup_therapy_reservation_register > table tr td input[name='memo']").val();
+				var writer = $("#session_login_name").val();
+				var regdate = get_today();
+			}
 			
 			console.log(normal_rtime);
 			
@@ -875,6 +915,7 @@ $(function(){
 		}else if(idx == 2){//취소
 			
 			$(".popup_reservation_register").css("display", "none");
+			$(".popup_therapy_reservation_register").css("display", "none");
 			$(".popup_wrap").css("display","none");
 		}
 	});
@@ -957,7 +998,7 @@ $(function(){
 				<tr>
 					<th>예약시간</th>
 					<td>
-						<span id="popup_reservation_register_date"></span>시
+						<span class="popup_reservation_register_date"></span>시
 						<select name="time">
 							<option value="0">00분</option>
 							<option value="10">10분</option>
@@ -972,7 +1013,8 @@ $(function(){
 					<th>예약구분</th>
 					<td>
 						<select name="rtype">
-							<option value="일반진료">일반진료</option>
+							<option value="일반진료">일반예약</option>
+							<option value="고정진료">고정예약</option>
 							<option value="희망예약">희망예약</option>
 						</select>
 					</td>
@@ -1009,7 +1051,65 @@ $(function(){
 				<p>취소</p>
 			</div>
 		</div><!-- popup_reservation_register -->
-		
+		<div class="popup_therapy_reservation_register popup_content">
+			<h2><span></span>치료일정등록</h2>
+			<table>
+				<tr>
+					<th>예약시간</th>
+					<td>
+						<span class="popup_reservation_register_date"></span>시
+						<select name="time">
+							<option value="0">00분</option>
+							<option value="10">10분</option>
+							<option value="20">20분</option>
+							<option value="30">30분</option>
+							<option value="40">40분</option>
+							<option value="50">50분</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<th>예약구분</th>
+					<td>
+						<select name="rtype">
+							<option value="일반치료">일반예약</option>
+							<option value="고정치료">고정예약</option>
+							<option value="희망예약">희망예약</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<th>담당의사</th>
+					<td>
+						<select name="main_doctor">
+							<c:forEach var="item" items="${doctorList}">
+								<option value="${item.eno}">${item.name}</option>
+							</c:forEach>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<th>치료종류</th>
+					<td>
+						<select name="clinic">
+							<option value="">선택없음</option>
+							<c:forEach var="item" items="${therapyClinicList}">
+								<option value="${item.cno}">${item.code_name}</option>
+							</c:forEach>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<th>메모</th>
+					<td><input type="text" name="memo" value=""></td>
+				</tr>
+			</table>
+			<div class="popup_reservation_register_btn_wrap">
+				<p>예약추가</p>
+				<p>진료접수</p>
+				<p>취소</p>
+			</div>
+		</div><!-- popup_reservation_register -->
 	</div><!-- popup_wrap end -->
 	
 	

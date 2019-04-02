@@ -27,6 +27,11 @@ public class ClinicDaoImpl implements ClinicDao {
 	}
 
 	@Override
+	public List<ClinicVO> selectByCodeType(String code_type) {
+		return session.selectList(namespace+".selectByCodeType", code_type);
+	}
+	
+	@Override
 	public void update(ClinicVO vo) {
 		session.update(namespace+".update", vo);
 	}
@@ -35,5 +40,7 @@ public class ClinicDaoImpl implements ClinicDao {
 	public void delete(int cno) {
 		session.delete(namespace+".delete", cno);
 	}
+
+	
 
 }

@@ -23,6 +23,11 @@ public class ClinicServiceImpl implements ClinicService {
 	public ClinicVO selectOneByCno(int cno) {
 		return dao.selectOneByCno(cno);
 	}
+	
+	@Override
+	public List<ClinicVO> selectByCodeType(String code_type) {
+		return dao.selectByCodeType(code_type);
+	}
 
 	@Override
 	public void update(ClinicVO vo) {
@@ -33,5 +38,7 @@ public class ClinicServiceImpl implements ClinicService {
 	public void delete(int cno) {
 		dao.delete(cno);
 	}
+
+	
 
 }

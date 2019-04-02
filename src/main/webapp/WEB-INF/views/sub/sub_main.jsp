@@ -648,7 +648,9 @@ $(function(){
 	
 	//달력 생성
 	buildCalendar();
-		
+	
+	$(".calendar_select_date").val(get_today());
+	
 	//날짜마다 요일 표시
 	write_yoil();
 	
@@ -746,8 +748,9 @@ $(function(){
 	//진료table 선택 버튼
 	$(".timetable_btn_wrap > ul > li").click(function(){
 		var idx = $(this).index();
-		console.log(jQuery.type(idx));
 		var select_date = $(".calendar_select_date").val();
+		var table_txt;
+		console.log(select_date);
 		switch (idx){
 			case 0:
 				console.log(idx);
@@ -756,8 +759,9 @@ $(function(){
 			case 1:
 				console.log(idx);
 				$(".time_table_wrap").html("");
-				draw_time_table(select_date, "doctor");
-				draw_reservation(get_today());
+				table_txt = draw_time_table(select_date, "doctor");
+				$(".time_table_wrap").append(table_txt);
+				draw_reservation(select_date);
 				break;
 			case 2:
 				
@@ -766,10 +770,10 @@ $(function(){
 				
 				break;
 			case 4:
-				console.log(idx);
 				$(".time_table_wrap").html("");
-				draw_time_table(select_date, "therapist");
-				draw_reservation(get_today());
+				table_txt = draw_time_table(select_date, "therapist");
+				$(".time_table_wrap").append(table_txt);
+				draw_reservation(select_date);
 				break;
 			case 5:
 				
@@ -792,6 +796,8 @@ $(function(){
 			case 11:
 				
 				break;
+			default:
+				console.log(idx);
 		}
 	});
 	

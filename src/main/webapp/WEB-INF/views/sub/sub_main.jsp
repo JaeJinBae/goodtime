@@ -488,7 +488,7 @@ function get_reservationList_byDate(date){
 	return dt;
 }
 
-function draw_time_table(date, type){
+function draw_total_time_table(date, type){
 	var hospitalDayInfo = get_hospitalInfo_byDay(date);
 	var empList = get_employeeList_byType(type);
 	
@@ -571,6 +571,7 @@ function get_reservation_byRno(rno){
 	return dt;
 }
 
+
 //진료, 치료 테이블에서 예약된환자 이름에 마우스 올리면 좌측하단에 예약정보 나타내는 함수
 function draw_simple_reservation_view(rno){
 	var json = get_reservation_byRno(rno);
@@ -613,6 +614,7 @@ function post_reservation_register(vo){
 		type:"post",
 		dataType:"text",
 		data:vo,
+		async:false,
 		success:function(json){
 			console.log(json);
 			if(json == "OK"){
@@ -623,9 +625,7 @@ function post_reservation_register(vo){
 				$(".popup_reservation_register").css("display", "none");
 				$(".popup_wrap").css("display","none");
 				
-				draw_doctor_time_table(normal_date, "doctor");
-				draw_therapist_time_table(normal_date, "therapist");
-				draw_reservation(normal_date);
+				draw_time_table_by_case(storage_timetable_btn_num);
 			}else{
 				alert("예약등록이 정상적으로 등록되지 않았습니다. 다시 한번 등록하세요.");
 			}
@@ -633,18 +633,72 @@ function post_reservation_register(vo){
 	});
 }
 
-function draw_total_time_table(date){
-	$(".time_table_wrap").html("");
-	var doctor_timetable = draw_time_table(date, "doctor");
-	var therapist_timetable = draw_time_table(date, "therapist");
-	$(".time_table_wrap").append(doctor_timetable+"<br><br><br>");
-	$(".time_table_wrap").append(therapist_timetable);
-	draw_reservation(date);
+
+
+function draw_time_table_by_case(idx){
+	var select_date = $(".calendar_select_date").val();
+	var table_txt;
+	console.log(select_date);
+	switch (idx){
+		case 0:
+			$(".time_table_wrap").html("");
+			table_txt = draw_total_time_table(select_date, "doctor");
+			table_txt += "<br><br><br>";
+			table_txt += draw_total_time_table(select_date, "therapist");
+			$(".time_table_wrap").append(table_txt);
+			draw_reservation(select_date);
+			storage_timetable_btn_num = 0;
+			break;
+		case 1:
+			$(".time_table_wrap").html("");
+			table_txt = draw_total_time_table(select_date, "doctor");
+			$(".time_table_wrap").append(table_txt);
+			draw_reservation(select_date);
+			storage_timetable_btn_num = 1;
+			break;
+		case 2:
+			storage_timetable_btn_num = 2;
+			break;
+		case 3:
+			storage_timetable_btn_num = 3;
+			break;
+		case 4:
+			$(".time_table_wrap").html("");
+			table_txt = draw_total_time_table(select_date, "therapist");
+			$(".time_table_wrap").append(table_txt);
+			draw_reservation(select_date);
+			storage_timetable_btn_num = 4;
+			break;
+		case 5:
+			storage_timetable_btn_num = 5;
+			break;
+		case 6:
+			storage_timetable_btn_num = 6;
+			break;
+		case 7:
+			storage_timetable_btn_num = 7;
+			break;
+		case 8:
+			storage_timetable_btn_num = 8;
+			break;
+		case 9:
+			storage_timetable_btn_num = 9;
+			break;
+		case 10:
+			storage_timetable_btn_num = 10;
+			break;
+		case 11:
+			storage_timetable_btn_num = 11;
+			break;
+		default:
+			console.log(idx);
+	}
 }
 
 $(function(){
 	/* var num=130;
 	console.log(parseInt(num/60)+", "+num%60); */
+	var storage_timetable_btn_num=0;
 	
 	//달력 생성
 	buildCalendar();
@@ -657,7 +711,7 @@ $(function(){
 	//환자table 생성
 	draw_patient_table();
 	
-	draw_total_time_table(get_today());
+	draw_time_table_by_case(0); 
 	
 	
 	//달력 날짜 클릭 시 해당 정보GET
@@ -687,7 +741,8 @@ $(function(){
 		$(".calendar_select_date").val(fulldate);
 		//draw_time_table(fulldate);
 		$(".time_table_wrap").html("");
-		draw_total_time_table(fulldate)
+		
+		draw_time_table_by_case(storage_timetable_btn_num);
 	 });
 	
 	//환자table에서 페이지 클릭
@@ -748,57 +803,8 @@ $(function(){
 	//진료table 선택 버튼
 	$(".timetable_btn_wrap > ul > li").click(function(){
 		var idx = $(this).index();
-		var select_date = $(".calendar_select_date").val();
-		var table_txt;
-		console.log(select_date);
-		switch (idx){
-			case 0:
-				console.log(idx);
-				draw_total_time_table(select_date);
-				break;
-			case 1:
-				console.log(idx);
-				$(".time_table_wrap").html("");
-				table_txt = draw_time_table(select_date, "doctor");
-				$(".time_table_wrap").append(table_txt);
-				draw_reservation(select_date);
-				break;
-			case 2:
-				
-				break;
-			case 3:
-				
-				break;
-			case 4:
-				$(".time_table_wrap").html("");
-				table_txt = draw_time_table(select_date, "therapist");
-				$(".time_table_wrap").append(table_txt);
-				draw_reservation(select_date);
-				break;
-			case 5:
-				
-				break;
-			case 6:
-				
-				break;
-			case 7:
-				
-				break;
-			case 8:
-				
-				break;
-			case 9:
-				
-				break;
-			case 10:
-				
-				break;
-			case 11:
-				
-				break;
-			default:
-				console.log(idx);
-		}
+		draw_time_table_by_case(idx);
+		storage_timetable_btn_num = idx;
 	});
 	
 	//진료, 치료 테이블에서 예약에 마우스 올리고 치웠을때
@@ -836,7 +842,7 @@ $(function(){
 		
 		$(".popup_wrap").css("display", "block");
 		$(".popup_reservation_register").css("display", "block");
-		$("#popup_reservation_register_date").append($(".calendar_select_date").val()+" "+time);
+		$("#popup_reservation_register_date").text($(".calendar_select_date").val()+" "+time);
 		//alert(select_doctor_time);
 		
 	});
@@ -860,7 +866,7 @@ $(function(){
 			var writer = $("#session_login_name").val();
 			var regdate = get_today();
 			
-			console.log(normal_date);
+			console.log(normal_rtime);
 			
 			var vo = {pno:pno, main_doctor:main_doctor, rtype:rtype, normal_date:normal_date, normal_rtime:normal_rtime, clinic:clinic, memo:memo, writer:writer, regdate:regdate};
 			

@@ -58,6 +58,7 @@
 </script>
 <div class="header_wrap">
 	<input id="session_value" type="hidden" value="${sessionScope.id}">
+	<input id="session_login_name" type="hidden" value="${sessionScope.name}">
 	<div class="header_div">
 		<c:if test="${sessionScope.id != null}">
 			<div class="header_inner header_inner1">

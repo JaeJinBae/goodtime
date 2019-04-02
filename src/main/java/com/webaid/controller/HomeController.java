@@ -120,6 +120,23 @@ public class HomeController {
 		return "sub/sub_main";
 	}
 	
+	@RequestMapping(value = "/sub_main2", method = RequestMethod.GET)
+	public String sub_main2(Model model, HttpSession session) {
+		logger.info("sub_main GET");
+		
+		//HospitalInfoVO hospitalInfo = hService.selectOne(day); 
+		List<EmployeeVO> doctorList = empService.selectByType("doctor");
+		List<EmployeeVO> therapistList = empService.selectByType("therapist");
+		List<ClinicVO> clinicList = cService.selectAll();
+		
+		//model.addAttribute("hospitalInfo", hospitalInfo);
+		model.addAttribute("doctorList", doctorList);
+		model.addAttribute("therapistList", therapistList);
+		model.addAttribute("clinicList", clinicList);
+		
+		return "sub/sub_main_backup_20190402";
+	}
+	
 	@RequestMapping(value="/reservationInfoGet/{date}", method=RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> reservationInfo(@PathVariable("date") String date) throws ParseException{
 		logger.info("reservationInfo GET start");
@@ -247,7 +264,17 @@ public class HomeController {
 	public ResponseEntity<String> reservationRegisterPost(ReservationVO vo){
 		logger.info("reservationRegister Post");
 		ResponseEntity<String> entity= null;
+		
+		/*try {
+			System.out.println(vo);
+			rService.register(vo);
+			entity = new ResponseEntity<String>("OK",HttpStatus.OK);
+		} catch (Exception e) {
+			entity = new ResponseEntity<String>("NO",HttpStatus.OK);
+		}*/
 		System.out.println(vo);
+		rService.register(vo);
+		entity = new ResponseEntity<String>("OK",HttpStatus.OK);
 		return entity;
 	}
 	

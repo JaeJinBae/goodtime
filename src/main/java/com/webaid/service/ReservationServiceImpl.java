@@ -34,4 +34,9 @@ public class ReservationServiceImpl implements ReservationService {
 		return dao.selectByFixDay(day);
 	}
 
+	@Override
+	public void register(ReservationVO vo) {
+		dao.register(vo);
+	}
+
 }

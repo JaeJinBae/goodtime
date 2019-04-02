@@ -21,7 +21,7 @@
 	</select>
 	
 	<insert id="register">
-		insert into reservation values(#{rno}, #{cno}, #{name}, #{phone}, #{birth}, #{gender}, #{memo}, #{clinic}, #{main_doctor}, #{main_therapist}, #{rtype}, #{normal_date}, #{normal_rtime}, #{fix_day}, #{fix_rtime}, #{fix_day_start}, #{fix_day_end}, #{writer}, #{regdate}, #{updatedate}, #{updatewriter})
+		insert into reservation values(#{rno}, #{pno}, #{memo}, #{clinic}, #{main_doctor}, #{main_therapist}, #{rtype}, #{normal_date}, #{normal_rtime}, #{fix_day}, #{fix_rtime}, #{fix_day_start}, #{fix_day_end}, #{writer}, #{regdate}, #{updatedate}, #{updatewriter})
 	</insert>
 	
 </mapper>

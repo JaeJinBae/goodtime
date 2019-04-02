@@ -31,4 +31,9 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		return session.selectList(namespace+".selectByType", type);
 	}
 
+	@Override
+	public EmployeeVO selectByEno(int eno) {
+		return session.selectOne(namespace+".selectByEno", eno);
+	}
+
 }

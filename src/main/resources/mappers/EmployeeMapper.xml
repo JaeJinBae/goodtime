@@ -15,4 +15,8 @@
 	<select id="selectByType" resultType="EmployeeVO">
 		select * from employee where type=#{type}
 	</select>
+	
+	<select id="selectByEno" resultType="EmployeeVO">
+		select * from employee where eno=#{eno}
+	</select>
 </mapper>

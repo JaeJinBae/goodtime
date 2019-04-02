@@ -27,5 +27,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public List<EmployeeVO> selectByType(String type) {
 		return dao.selectByType(type);
 	}
+	@Override
+	public EmployeeVO selectByEno(int eno) {
+		return dao.selectByEno(eno);
+	}
 
 }

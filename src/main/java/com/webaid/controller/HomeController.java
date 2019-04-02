@@ -137,58 +137,37 @@ public class HomeController {
 		return "sub/sub_main_backup_20190402";
 	}
 	
-	@RequestMapping(value="/reservationInfoGet/{date}", method=RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> reservationInfo(@PathVariable("date") String date) throws ParseException{
-		logger.info("reservationInfo GET start");
-		logger.info("받아온 날짜는 "+date);
-		
-		ResponseEntity<Map<String,Object>> entity=null;
-		HashMap<String, Object> map=new HashMap<>();
-		
+	@RequestMapping(value="/hospitalInfoGetByDay/{date}", method=RequestMethod.GET)
+	public ResponseEntity<HospitalInfoVO> hospitalInfoGet(@PathVariable("date") String date) throws ParseException{
+		ResponseEntity<HospitalInfoVO> entity = null;
 		DayGetUtil getDay = new DayGetUtil();
 		String day = getDay.getDay(date);
+		HospitalInfoVO vo = hService.selectOne(day);
+		entity = new ResponseEntity<HospitalInfoVO>(vo, HttpStatus.OK);
 		
-		List<ReservationVO> reservationList = rService.selectByDate(date);
-		
-		
-		logger.info(day);
-		map.put("reservationList", reservationList);
-		
-		entity=new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
-		logger.info("reservationInfo GET end");
 		return entity;
 	}
 	
-	@RequestMapping(value="/dayInfoGet/{day}", method=RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> dayInfoGet(@PathVariable("day") String day, Model model){
-		logger.info("day info get start");
-		ResponseEntity<Map<String,Object>> entity=null;
-		HashMap<String, Object> map=new HashMap<>();
+	@RequestMapping(value="/employeeListGetByType/{type}", method=RequestMethod.GET)
+	public ResponseEntity<List<EmployeeVO>> doctorListGet(@PathVariable("type") String type) throws ParseException{
+		ResponseEntity<List<EmployeeVO>> entity = null;
 		
-		DayGetUtil dg=new DayGetUtil();
-		String selectDay = dg.getSelectDay(day);
+		List<EmployeeVO> list = empService.selectByType(type);		
+		entity = new ResponseEntity<List<EmployeeVO>>(list, HttpStatus.OK);
 		
-		try {
-			HospitalInfoVO hospitalInfo = hService.selectOne(selectDay);
-			List<EmployeeVO> doctorList = empService.selectByType("doctor");
-			
-			map.put("hospitalInfo", hospitalInfo);
-			map.put("doctorList", doctorList);
-
-			entity=new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
-			
-			logger.info("day info get end");
-			return entity;
-		} catch (Exception e) {
-			
-		}
-		logger.info("day info get end");
 		return entity;
 	}
 	
-	@RequestMapping(value="/dayAndReservationInfo/{date}", method=RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> dayAndReservationInfoGET(@PathVariable("date") String date){
-		logger.info("day And Reservation Info GET");
+	@RequestMapping(value="/employeeGetByEno{eno}", method=RequestMethod.GET)
+	public ResponseEntity<EmployeeVO> employeeGetByEno(@PathVariable("eno") String eno){
+		ResponseEntity<EmployeeVO> entity = null;
+		EmployeeVO vo = empService.selectByEno(Integer.parseInt(eno));
+		entity = new ResponseEntity<EmployeeVO>(vo, HttpStatus.OK);
+		return entity;
+	}
+	
+	@RequestMapping(value="/reservationListGetByDate/{date}", method=RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> reservationListGetByDate(@PathVariable("date") String date) throws ParseException{
 		ResponseEntity<Map<String,Object>> entity=null;
 		HashMap<String, Object> map=new HashMap<>();
 		
@@ -201,9 +180,7 @@ public class HomeController {
 			
 			List<ReservationVO> reservationListNormal = rService.selectByDate(date);
 			List<ReservationVO> reservationListFix = rService.selectByFixDay(day);
-			System.out.println(date);
-			System.out.println(reservationListNormal.size());
-			System.out.println(reservationListFix.size());
+
 			Date getStartDate;
 			Date getEndDate;
 			
@@ -225,26 +202,41 @@ public class HomeController {
 				getStartDate = null;
 				getEndDate = null;
 			}
-			HospitalInfoVO hospitalInfo = hService.selectOne(day);
-			List<EmployeeVO> doctorList = empService.selectByType("doctor");
-			List<EmployeeVO> therapistList = empService.selectByType("therapist");
 			
 			map.put("reservationListNormal", reservationListNormal);
 			map.put("reservationListFix", reservationListFix);
-			map.put("hospitalInfo", hospitalInfo);
-			map.put("doctorList", doctorList);
-			map.put("therapistList", therapistList);
-
+			
 			entity=new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
 			
 			return entity;
 		} catch (Exception e) {
 			
 		}
-		
 		return entity;
 	}
 	
+	@RequestMapping(value="/reservationInfoGet/{date}", method=RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> reservationInfo(@PathVariable("date") String date) throws ParseException{
+		logger.info("reservationInfo GET start");
+		logger.info("받아온 날짜는 "+date);
+		
+		ResponseEntity<Map<String,Object>> entity=null;
+		HashMap<String, Object> map=new HashMap<>();
+		
+		DayGetUtil getDay = new DayGetUtil();
+		String day = getDay.getDay(date);
+		
+		List<ReservationVO> reservationList = rService.selectByDate(date);
+		
+		
+		logger.info(day);
+		map.put("reservationList", reservationList);
+		
+		entity=new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		logger.info("reservationInfo GET end");
+		return entity;
+	}
+
 	@RequestMapping(value="/reservationInfoByRno/{rno}", method=RequestMethod.GET)
 	public ResponseEntity<ReservationVO> rservationInfoByRno(@PathVariable("rno") int rno){
 		logger.info("reservationInfoByRno GET");
@@ -265,16 +257,16 @@ public class HomeController {
 		logger.info("reservationRegister Post");
 		ResponseEntity<String> entity= null;
 		
-		/*try {
+		try {
 			System.out.println(vo);
 			rService.register(vo);
 			entity = new ResponseEntity<String>("OK",HttpStatus.OK);
 		} catch (Exception e) {
 			entity = new ResponseEntity<String>("NO",HttpStatus.OK);
-		}*/
-		System.out.println(vo);
+		}
+		/*System.out.println(vo);
 		rService.register(vo);
-		entity = new ResponseEntity<String>("OK",HttpStatus.OK);
+		entity = new ResponseEntity<String>("OK",HttpStatus.OK);*/
 		return entity;
 	}
 	

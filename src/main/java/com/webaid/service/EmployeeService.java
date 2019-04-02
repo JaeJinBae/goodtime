@@ -8,5 +8,5 @@ public interface EmployeeService {
 	public List<EmployeeVO> selectAll();
 	public EmployeeVO selectOneById(String id);
 	public List<EmployeeVO> selectByType(String type);
-	
+	public EmployeeVO selectByEno(int eno);
 }

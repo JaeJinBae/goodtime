@@ -2,11 +2,7 @@ package com.webaid.domain;
 
 public class ReservationVO {
 	private int rno;
-	private int cno;
-	private String name;
-	private String phone;
-	private String birth;
-	private String gender;
+	private int pno;
 	private String memo;
 	private String clinic;
 	private String main_doctor;
@@ -35,44 +31,12 @@ public class ReservationVO {
 		this.rno = rno;
 	}
 
-	public int getCno() {
-		return cno;
+	public int getPno() {
+		return pno;
 	}
 
-	public void setCno(int cno) {
-		this.cno = cno;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
-	public String getBirth() {
-		return birth;
-	}
-
-	public void setBirth(String birth) {
-		this.birth = birth;
-	}
-
-	public String getGender() {
-		return gender;
-	}
-
-	public void setGender(String gender) {
-		this.gender = gender;
+	public void setPno(int pno) {
+		this.pno = pno;
 	}
 
 	public String getMemo() {
@@ -197,12 +161,10 @@ public class ReservationVO {
 
 	@Override
 	public String toString() {
-		return "ReservationVO [rno=" + rno + ", cno=" + cno + ", name=" + name + ", phone=" + phone + ", birth=" + birth
-				+ ", gender=" + gender + ", memo=" + memo + ", clinic=" + clinic + ", main_doctor=" + main_doctor
-				+ ", main_therapist=" + main_therapist + ", rtype=" + rtype + ", normal_date=" + normal_date
-				+ ", normal_rtime=" + normal_rtime + ", fix_day=" + fix_day + ", fix_rtime=" + fix_rtime
+		return "ReservationVO [rno=" + rno + ", pno=" + pno + ", memo=" + memo + ", clinic=" + clinic + ", main_doctor="
+				+ main_doctor + ", main_therapist=" + main_therapist + ", rtype=" + rtype + ", normal_date="
+				+ normal_date + ", normal_rtime=" + normal_rtime + ", fix_day=" + fix_day + ", fix_rtime=" + fix_rtime
 				+ ", fix_day_start=" + fix_day_start + ", fix_day_end=" + fix_day_end + ", writer=" + writer
 				+ ", regdate=" + regdate + ", updatedate=" + updatedate + ", updatewriter=" + updatewriter + "]";
 	}
-
 }

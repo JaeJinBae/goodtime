@@ -127,7 +127,7 @@
 	}
 	#tbl_simple_reservation .tbl_content_pName{
 		padding:0;
-		font-size:17px;
+		font-size:15px;
 	}
 	.aside_right {
 		float:left;
@@ -137,7 +137,7 @@
 	}
 	.ar_tbl_wrap_1{
 		width:100%;
-		margin-top:100px;
+		margin-top:30px;
 	}
 	.ar_tbl_wrap_1 > #inner_tbl_wrap > table {
 		width:100%;
@@ -232,10 +232,32 @@
 	.ar_tbl_wrap_2 {
 		width:100%;
 	}
-	.ar_tbl_wrap_2 > table{
+	
+	.timetable_btn_wrap{
+		width:100%;
+		border-bottom:2px solid black;
+		overflow:hidden;
+		margin-bottom:20px;
+		padding:0 10px;
+	}
+	.timetable_btn_wrap > ul{
+		float:left;
+		margin-right:30px;
+	}
+	.timetable_btn_wrap > ul > li{
+		float:left;
+		border: 1px solid gray;
+		border-bottom:0;
+		border-radius: 7px 7px 0 0;
+		font-size:15px;
+		padding:5px;
+		margin-right:3px;
+		cursor: pointer;
+	}
+	.time_table_wrap > table{
 		width:100%;
 	}
-	.ar_tbl_wrap_2 table td{
+	.time_table_wrap table td{
 		border: 1px solid black;
 	}
 	.doctor_name{
@@ -244,12 +266,6 @@
 	.ar_tbl_wrap_3 {
 		width:100%;
 		margin-top: 100px;
-	}
-	.ar_tbl_wrap_3 > table{
-		width:100%;
-	}
-	.ar_tbl_wrap_3 table td{
-		border: 1px solid black;
 	}
 	.therapist_name{
 		text-align: center;
@@ -302,7 +318,7 @@ function get_today(){
 	}
 	
 	fulldate = today.getFullYear()+"-"+update_month+"-"+update_date;
-	$(".calendar_select_date").val(fulldate);
+	//$(".calendar_select_date").val(fulldate);
 	return fulldate;
 }
 
@@ -368,7 +384,6 @@ function get_patient_by_pno(pno){
 		dataType:"json",
 		async:false,
 		success:function(json){
-			console.log(json);
 			dt = json;
 		}
 	})
@@ -473,7 +488,7 @@ function get_reservationList_byDate(date){
 	return dt;
 }
 
-function draw_doctor_time_table(date, type){
+function draw_time_table(date, type){
 	var hospitalDayInfo = get_hospitalInfo_byDay(date);
 	var empList = get_employeeList_byType(type);
 	
@@ -503,45 +518,8 @@ function draw_doctor_time_table(date, type){
 		}
 		txt += "</tr>";
 	});
-	txt+="</table>";				
-	$(".ar_tbl_wrap_2").html(txt);
-	
-	
-}
-
-function draw_therapist_time_table(date, type){
-	var hospitalDayInfo = get_hospitalInfo_byDay(date);
-	var empList = get_employeeList_byType(type);
-	
-	var starttime=Number(hospitalDayInfo.start_time)/60;
-	var endtime=Number(hospitalDayInfo.end_time)/60;
-	var lunch=Number(hospitalDayInfo.lunch)/60;
-	
-	//치료 테이블 생성
-	txt = "<table><tr><td></td>";
-	for(var i=starttime; i < endtime; i++){
-		txt+="<td>"+i+"시</td>";
-	}
-	txt+="</tr>";
-	$(empList).each(function(){
-		txt += "<tr class='"+this.type+"_"+this.eno+"'><td>"+this.name+"</td>";
-		for(var i=starttime; i < endtime; i++){
-			//점심시간에 진료하는 병원
-			/* if(i == lunch){
-				txt += "<td class='"+this.type+"_"+this.eno+"_"+i+"' style='background:gray; text-align:center;'>점심시간</td>";
-			}else{
-				txt += "<td class='"+this.type+"_"+this.eno+"_"+i+" timetable_inner_content'><p class='reservation_register_btn'>+</p></td>";
-			} */
-			
-			//점심시간에 진료하지 않는 병원
-			txt += "<td class='"+this.type+"_"+this.eno+"_"+i+" timetable_inner_content'><p class='reservation_register_btn'>+</p></td>";
-		}
-		txt += "</tr>";
-	});
-	txt+="</table>";				
-	$(".ar_tbl_wrap_3").html(txt);
-	
-	
+	txt+="</table>";
+	return txt;
 }
 
 function draw_reservation(date){
@@ -553,7 +531,6 @@ function draw_reservation(date){
 	var patient;
 	$(json.reservationListNormal).each(function(){
 		patient = get_patient_by_pno(this.pno);
-		console.log(patient);
 		if(this.rtype == '일반진료'){
 			target_tag = ".doctor_"+this.main_doctor+"_"+(Number(this.normal_rtime)/60);
 			txt = "<p class='patient_p_tag' style='background:yellow;border:1px solid gray;'>"+patient.name+"<input type='hidden' value='"+this.rno+"'></p>";
@@ -630,6 +607,40 @@ function draw_simple_reservation_view(rno){
 	$(".al_tbl_wrap2").css("display","block");
 }
 
+function post_reservation_register(vo){
+	$.ajax({
+		url:"${pageContext.request.contextPath}/reservationRegister",
+		type:"post",
+		dataType:"text",
+		data:vo,
+		success:function(json){
+			console.log(json);
+			if(json == "OK"){
+				alert("예약등록이 완료되었습니다.");
+				$("#reservation_view_btn").html("");
+				$(".reservation_register_btn").css("display", "none");
+				$("#reservation_view_btn").css("display", "none");
+				$(".popup_reservation_register").css("display", "none");
+				$(".popup_wrap").css("display","none");
+				
+				draw_doctor_time_table(normal_date, "doctor");
+				draw_therapist_time_table(normal_date, "therapist");
+				draw_reservation(normal_date);
+			}else{
+				alert("예약등록이 정상적으로 등록되지 않았습니다. 다시 한번 등록하세요.");
+			}
+		}
+	});
+}
+
+function draw_total_time_table(date){
+	$(".time_table_wrap").html("");
+	var doctor_timetable = draw_time_table(date, "doctor");
+	var therapist_timetable = draw_time_table(date, "therapist");
+	$(".time_table_wrap").append(doctor_timetable+"<br><br><br>");
+	$(".time_table_wrap").append(therapist_timetable);
+	draw_reservation(date);
+}
 
 $(function(){
 	/* var num=130;
@@ -644,11 +655,8 @@ $(function(){
 	//환자table 생성
 	draw_patient_table();
 	
-	//draw_time_table(get_today());
+	draw_total_time_table(get_today());
 	
-	draw_doctor_time_table(get_today(), "doctor");
-	draw_therapist_time_table(get_today(), "therapist");
-	draw_reservation(get_today());
 	
 	//달력 날짜 클릭 시 해당 정보GET
 	$(document).on("click", "#calendar td:not(.tr_not > td)", function(){
@@ -676,10 +684,8 @@ $(function(){
 		var day = $(this).find("input[type='hidden']").val();
 		$(".calendar_select_date").val(fulldate);
 		//draw_time_table(fulldate);
-		
-		draw_doctor_time_table(fulldate, "doctor");
-		draw_therapist_time_table(fulldate, "therapist");
-		draw_reservation(fulldate);
+		$(".time_table_wrap").html("");
+		draw_total_time_table(fulldate)
 	 });
 	
 	//환자table에서 페이지 클릭
@@ -694,7 +700,7 @@ $(function(){
 		var searchType = encodeURIComponent(s);
 		var k=$("input[name='keyword']").val();
 		var keyword = encodeURIComponent(k);
-		get_patient("page=1&perPageNum=10&searchType="+searchType+"&keyword="+keyword);
+		draw_patient_table("page=1&perPageNum=10&searchType="+searchType+"&keyword="+keyword);
 		
 	});
 	
@@ -734,6 +740,59 @@ $(function(){
 		$(this).css("display", "none");
 		$("#reservation_view_btn").html("");
 		$(".reservation_register_btn").css("display", "none");
+		
+	});
+	
+	//진료table 선택 버튼
+	$(".timetable_btn_wrap > ul > li").click(function(){
+		var idx = $(this).index();
+		console.log(jQuery.type(idx));
+		var select_date = $(".calendar_select_date").val();
+		switch (idx){
+			case 0:
+				console.log(idx);
+				draw_total_time_table(select_date);
+				break;
+			case 1:
+				console.log(idx);
+				$(".time_table_wrap").html("");
+				draw_time_table(select_date, "doctor");
+				draw_reservation(get_today());
+				break;
+			case 2:
+				
+				break;
+			case 3:
+				
+				break;
+			case 4:
+				console.log(idx);
+				$(".time_table_wrap").html("");
+				draw_time_table(select_date, "therapist");
+				draw_reservation(get_today());
+				break;
+			case 5:
+				
+				break;
+			case 6:
+				
+				break;
+			case 7:
+				
+				break;
+			case 8:
+				
+				break;
+			case 9:
+				
+				break;
+			case 10:
+				
+				break;
+			case 11:
+				
+				break;
+		}
 	});
 	
 	//진료, 치료 테이블에서 예약에 마우스 올리고 치웠을때
@@ -779,6 +838,8 @@ $(function(){
 	//예약view에서 예약등록, 예약접수, 취소 버튼 기능
 	$(".popup_reservation_register_btn_wrap > p").click(function(){
 		var idx = $(this).index();
+		
+		//예약등록
 		if(idx == 0){
 			var selectDate = $("#popup_reservation_register_date").text();
 			var split_date = selectDate.split(" ");			
@@ -797,17 +858,9 @@ $(function(){
 			
 			var vo = {pno:pno, main_doctor:main_doctor, rtype:rtype, normal_date:normal_date, normal_rtime:normal_rtime, clinic:clinic, memo:memo, writer:writer, regdate:regdate};
 			
-			$.ajax({
-				url:"${pageContext.request.contextPath}/reservationRegister",
-				type:"post",
-				dataType:"text",
-				data:vo,
-				success:function(json){
-					console.log(json);
-				}
-			})
+			post_reservation_register(vo);
 			
-		}else if(idx == 2){
+		}else if(idx == 2){//취소
 			
 			$(".popup_reservation_register").css("display", "none");
 			$(".popup_wrap").css("display","none");
@@ -999,7 +1052,26 @@ $(function(){
 					
 				</div><!-- ar_tbl_wrap_1 end-->
 				<div class="ar_tbl_wrap_2">
-				
+					<div class="timetable_btn_wrap">
+						<ul>
+							<li>진료&치료 종합</li>
+							<li>진료종합</li>
+							<li>주간</li>
+							<li>고정</li>
+							<li>치료종합</li>
+							<li>주간</li>
+							<li>고정</li>
+							<li>예약이력</li>
+							<li>변경이력</li>
+							<li>희망예약</li>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</div><!-- timetable_btn_wrap -->
+					<div class="time_table_wrap">
+					
+					</div><!-- time_table_wrap -->
 				</div><!-- ar_tbl_wrap_2 end -->
 				<div class="ar_tbl_wrap_3">
 					

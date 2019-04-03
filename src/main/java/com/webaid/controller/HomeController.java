@@ -140,6 +140,18 @@ public class HomeController {
 		return "sub/sub_main_backup_20190402";
 	}
 	
+	@RequestMapping(value="/getDay/{date}", method=RequestMethod.GET)
+	public ResponseEntity<String> getDay(@PathVariable("date") String date) throws ParseException{
+		ResponseEntity<String> entity = null;
+		
+		DayGetUtil getDay = new DayGetUtil();
+		String day = getDay.getDay(date);
+		
+		entity = new ResponseEntity<String>(day, HttpStatus.OK);
+		
+		return entity;
+	}
+	
 	@RequestMapping(value="/hospitalInfoGetByDay/{date}", method=RequestMethod.GET)
 	public ResponseEntity<HospitalInfoVO> hospitalInfoGet(@PathVariable("date") String date) throws ParseException{
 		ResponseEntity<HospitalInfoVO> entity = null;

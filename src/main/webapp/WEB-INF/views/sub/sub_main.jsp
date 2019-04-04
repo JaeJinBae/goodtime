@@ -11,6 +11,7 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/calendar.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/week_calendar.js"></script>
 <style>
 	.popup_wrap{
 		width:100%;
@@ -165,6 +166,9 @@
 	.ar_tbl_wrap_1{
 		width:100%;
 		margin-top:30px;
+	}
+	.week_select_box_wrap{
+		display:none;
 	}
 	.ar_tbl_wrap_1 > #inner_tbl_wrap{
 		overflow:hidden;
@@ -589,6 +593,8 @@ function draw_time_table_by_case(idx){
 			storage_timetable_btn_num = 1;
 			break;
 		case 2:
+			$(".week_select_box_wrap").css("display","block");
+			makeWeekSelectOptions();
 			$(".time_table_wrap").html("");
 			storage_timetable_btn_num = 2;
 			break;
@@ -1230,11 +1236,39 @@ $(function(){
 							<li></li>
 						</ul>
 					</div><!-- timetable_btn_wrap -->
+					<div class="week_select_box_wrap">
+						<select name="sh_year" id="sh_year" onchange="makeWeekSelectOptions();">
+							<option value='2018'>2018년</option>
+							<option value='2019' selected='selected'>2019년</option>
+							<option value='2020'>2020년</option>
+							<option value='2021'>2021년</option>
+						</select>
+							 
+						<select name="sh_month" id="sh_month" onchange="makeWeekSelectOptions();">
+							<option value='01'>01월</option>
+							<option value='02'>02월</option>
+							<option value='03'>03월</option>
+							<option value='04' selected='selected'>04월</option>
+							<option value='05'>05월</option>
+							<option value='06'>06월</option>
+							<option value='07'>07월</option>
+							<option value='08'>08월</option>
+							<option value='09'>09월</option>
+							<option value='10'>10월</option>
+							<option value='11'>11월</option>
+							<option value='12'>12월</option>
+						</select>
+						<select name="sh_week" id="sh_week">
+						</select>
+						<select name="">
+						</select>
+					</div><!-- week_select_box_wrap end -->
 					<div class="time_table_wrap">
 					
 					</div><!-- time_table_wrap -->
 				</div><!-- ar_tbl_wrap_2 end -->
 				<div class="ar_tbl_wrap_3">
+					
 					
 				</div><!-- ar_tbl_wrap_3 end -->
 			</div><!-- aside_right end -->

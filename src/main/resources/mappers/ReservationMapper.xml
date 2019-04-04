@@ -5,11 +5,11 @@
 <mapper namespace="com.webaid.mappers.ReservationMapper">
 
 	<select id="selectAll" resultType="ReservationVO">
-		select * from reservation order by rno desc
+		select * from reservation order by normal_rtime asc, fix_rtime asc
 	</select>
 	
 	<select id="selectByDate" resultType="ReservationVO">
-		select * from reservation where normal_date=#{normal_date}
+		select * from reservation where normal_date=#{normal_date} order by normal_rtime asc, fix_rtime asc;
 	</select>
 	
 	<select id="selectByFixDay" resultType="ReservationVO">
@@ -21,7 +21,7 @@
 	</select>
 	
 	<insert id="register">
-		insert into reservation values(#{rno}, #{pno}, #{memo}, #{clinic}, #{main_doctor}, #{main_therapist}, #{rtype}, #{normal_date}, #{normal_rtime}, #{fix_day}, #{fix_rtime}, #{fix_day_start}, #{fix_day_end}, #{writer}, #{regdate}, #{updatedate}, #{updatewriter})
+		insert into reservation values(#{rno}, #{pno}, #{memo}, #{clinic}, #{main_doctor}, #{main_therapist}, #{rtype}, #{normal_date}, #{normal_rtime}, #{fix_day}, #{fix_rtime}, #{fix_day_start}, #{fix_day_end}, #{writer}, #{regdate}, #{updatedate}, #{updatewriter}, #{desk_state}, #{therapist_state})
 	</insert>
 	
 </mapper>

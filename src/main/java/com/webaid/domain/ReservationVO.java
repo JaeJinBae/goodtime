@@ -18,6 +18,8 @@ public class ReservationVO {
 	private String regdate;
 	private String updatedate;
 	private String updatewriter;
+	private String desk_state;
+	private String therapist_state;
 
 	public ReservationVO() {
 		super();
@@ -159,12 +161,30 @@ public class ReservationVO {
 		this.updatewriter = updatewriter;
 	}
 
+	public String getDesk_state() {
+		return desk_state;
+	}
+
+	public void setDesk_state(String desk_state) {
+		this.desk_state = desk_state;
+	}
+
+	public String getTherapist_state() {
+		return therapist_state;
+	}
+
+	public void setTherapist_state(String therapist_state) {
+		this.therapist_state = therapist_state;
+	}
+
 	@Override
 	public String toString() {
 		return "ReservationVO [rno=" + rno + ", pno=" + pno + ", memo=" + memo + ", clinic=" + clinic + ", main_doctor="
 				+ main_doctor + ", main_therapist=" + main_therapist + ", rtype=" + rtype + ", normal_date="
 				+ normal_date + ", normal_rtime=" + normal_rtime + ", fix_day=" + fix_day + ", fix_rtime=" + fix_rtime
 				+ ", fix_day_start=" + fix_day_start + ", fix_day_end=" + fix_day_end + ", writer=" + writer
-				+ ", regdate=" + regdate + ", updatedate=" + updatedate + ", updatewriter=" + updatewriter + "]";
+				+ ", regdate=" + regdate + ", updatedate=" + updatedate + ", updatewriter=" + updatewriter
+				+ ", desk_state=" + desk_state + ", therapist_state=" + therapist_state + "]";
 	}
+
 }

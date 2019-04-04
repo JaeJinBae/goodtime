@@ -775,35 +775,55 @@ function draw_simple_reservation_view(rno){
 		str += "<tr><td class='tbl_content_pName'>"+patient.name+"("+patient.cno+")님 ▶"+ doctor.name+"</td></tr>"; 
 	}
 	
-	rtime = Number(json.normal_rtime);
-	hour = parseInt(rtime/60);
-	minute = rtime%60;
-	overMinute = (minute+clinic_time)-60;
-	console.log(overMinute);
-	if(overMinute >= 0){
-		//console.log(overMinute);
-		if(overMinute < 10){
-			overMinute = "0"+overMinute;
-			//console.log(overMinute);
-		}
-		end_time = (hour+1)+":"+overMinute;
-	}else{
-		end_time = hour+":"+(minute+clinic_time);
-	}
 	
-	if(minute == 0){
-		minute = "0"+minute;
-	}
 	
-	start_time = hour+":"+minute;
-	//console.log(minute);
 	str+="<tr><th class='tbl_content_title'>- 예약일시</th></tr>";
 	if(json.rtype == '일반진료' || json.rtype == '일반치료'){
-		 
+		rtime = Number(json.normal_rtime);
+		hour = parseInt(rtime/60);
+		minute = rtime%60;
+		overMinute = (minute+clinic_time)-60;
+		console.log(overMinute);
+		if(overMinute >= 0){
+			//console.log(overMinute);
+			if(overMinute < 10){
+				overMinute = "0"+overMinute;
+				//console.log(overMinute);
+			}
+			end_time = (hour+1)+":"+overMinute;
+		}else{
+			end_time = hour+":"+(minute+clinic_time);
+		}
+		
+		if(minute == 0){
+			minute = "0"+minute;
+		}
+		start_time = hour+":"+minute;
+		
 		str += "<tr><td class='tbl_content'>"+json.normal_date+" "+start_time+"~"+end_time+"</td></tr>"
 			+"<tr><th class='tbl_content_title'>- 진료종류</th></tr>";
 	}else if(json.rtype == '고정진료' || json.rtype == '고정치료'){
-		str += "<tr><td class='tbl_content'>"+json.fix_day+"요일 "+(Number(json.fix_rtime)/60)+"시</td></tr>"
+		rtime = Number(json.fix_rtime);
+		hour = parseInt(rtime/60);
+		minute = rtime%60;
+		overMinute = (minute+clinic_time)-60;
+		console.log(overMinute);
+		if(overMinute >= 0){
+			//console.log(overMinute);
+			if(overMinute < 10){
+				overMinute = "0"+overMinute;
+				//console.log(overMinute);
+			}
+			end_time = (hour+1)+":"+overMinute;
+		}else{
+			end_time = hour+":"+(minute+clinic_time);
+		}
+		
+		if(minute == 0){
+			minute = "0"+minute;
+		}
+		start_time = hour+":"+minute;
+		str += "<tr><td class='tbl_content'>"+json.fix_day+"요일 "+start_time+"~"+end_time+"</td></tr>"
 			+"<tr><th class='tbl_content_title'>- 치료종류</th></tr>";
 	}
 	str += "<tr><td class='tbl_content'>"+clinic.code_name+"</td></tr>"

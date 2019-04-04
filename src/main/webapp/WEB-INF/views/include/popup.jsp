@@ -72,7 +72,7 @@
 		</div><!-- popup_patientUpdate end -->
 		
 		<!-- 진료일정등록 -->
-		<div class="popup_reservation_register popup_content">
+		<div class="popup_reservation_register popup_content popup_content2">
 			<h2><span></span>진료일정등록</h2>
 			<table>
 				<tr>
@@ -172,7 +172,7 @@
 		</div><!-- popup_reservation_register -->
 		
 		<!-- 치료일정등록 -->
-		<div class="popup_therapy_reservation_register popup_content">
+		<div class="popup_therapy_reservation_register popup_content popup_content2">
 			<h2><span></span>치료일정등록</h2>
 			<table>
 				<tr>

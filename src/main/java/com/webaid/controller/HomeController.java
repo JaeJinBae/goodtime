@@ -1,5 +1,7 @@
 package com.webaid.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -141,12 +143,13 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value="/getDay/{date}", method=RequestMethod.GET)
-	public ResponseEntity<String> getDay(@PathVariable("date") String date) throws ParseException{
+	public ResponseEntity<String> getDay(@PathVariable("date") String date) throws ParseException, UnsupportedEncodingException{
+		logger.info("getDay 진입");
 		ResponseEntity<String> entity = null;
 		
 		DayGetUtil getDay = new DayGetUtil();
-		String day = getDay.getDay(date);
-		
+		String day = URLEncoder.encode(getDay.getDay(date), "UTF-8");
+		logger.info("요일은 = "+day);
 		entity = new ResponseEntity<String>(day, HttpStatus.OK);
 		
 		return entity;

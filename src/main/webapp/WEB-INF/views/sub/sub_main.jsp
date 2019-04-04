@@ -163,6 +163,9 @@
 		width:100%;
 		margin-top:30px;
 	}
+	.ar_tbl_wrap_1 > #inner_tbl_wrap{
+		overflow:hidden;
+	}
 	.ar_tbl_wrap_1 > #inner_tbl_wrap > table {
 		width:100%;
 		border-top: 2px solid gray;
@@ -172,7 +175,7 @@
 		text-align: center;
 		font-weight: bold;
 		border-bottom: 2px solid #efefef;
-		padding: 10px 0;
+		padding: 7px 0;
 	}
 	.ar_tbl_wrap_1 > #inner_tbl_wrap > table tr:first-child > th:first-child{
 		width:0;
@@ -211,7 +214,7 @@
 		font-size: 15px;
 		text-align: center;
 		border-bottom: 1px solid lightgray;
-		padding: 5px 0;
+		padding: 2px 0;
 	}
 	.patient_update_btn, .sms_open_btn, .reservation_select_btn{
 		width:40px;
@@ -225,17 +228,16 @@
 		text-align: center;
 	}
 	.page{
-		clear:both;
-		width:626px; 
-		margin:70px auto;
-		margin-bottom:50px;
+		float:right;
+		/* width:626px; */ 
+		margin:15px;
+		margin-bottom:80px;
 	}
 	.page > ul{
 		text-align: center;
 	}
 	.page ul li{
-		width:45px;
-		height:40px;
+		
 		margin:0 auto;
 		list-style: none;
 		display: inline-block;
@@ -250,8 +252,11 @@
 		color:white;
 	}
 	.page ul li a{
+		display:inline-block;
+		width:35px;
+		height:30px;
 		font-size:1.1em;
-		line-height: 40px;
+		line-height: 30px;
 	}
 	.ar_tbl_wrap_2 {
 		width:100%;
@@ -630,21 +635,47 @@ function draw_time_table_by_case(idx){
 
 function draw_reservation(date){
 	var json = get_reservationList_byDate(date);
-	
+	var clinic;
 	//예약정보 생성
 	var target_tag = "";
 	var txt = "";		
 	var patient;
+	var time;
+	var hour;
+	var minute;
+	var clinic_time;
+	var overMinute;
+	var end_time;
+	
 	$(json.reservationListNormal).each(function(){
 		patient = get_patient_by_pno(this.pno);
+		clinic = get_clinic_by_cno(this.clinic);
+		console.log(clinic);
+		clinic_time = Number(clinic.time);
+		time = Number(this.normal_rtime);
+		hour = parseInt(time/60);
+		minute = time%60;
+		overMinute = (minute+clinic_time)-60;
+		
+		if(overMinute >= 0){
+			if(overMinute < 10){
+				overMinute = "0"+overMinute;
+			}
+			end_time = (hour+1)+":"+overMinute;
+		}else{
+			end_time = minute+clinic_time;
+		}
+		if(minute == 0){
+			minute = "0"+minute;
+		}
 		
 		if(this.rtype == '일반진료'){
-			target_tag = ".doctor_"+this.main_doctor+"_"+(Number(this.normal_rtime)/60);
-			txt = "<p class='patient_p_tag' style='background:yellow;border:1px solid gray;'>"+patient.name+"<input type='hidden' value='"+this.rno+"'></p>";
+			target_tag = ".doctor_"+this.main_doctor+"_"+hour;
+			txt = "<p class='patient_p_tag' style='background:"+clinic.color+";border:1px solid gray;'>"+minute+"~"+end_time+" "+patient.name+"<input type='hidden' value='"+this.rno+"'></p>";
 			$(target_tag).append(txt);
 		}else if(this.rtype == '일반치료'){
-			target_tag = ".therapist_"+this.main_therapist+"_"+(Number(this.normal_rtime)/60);
-			txt = "<p class='patient_p_tag' style='background:yellow;border:1px solid gray;'>"+patient.name+"<input type='hidden' value='"+this.rno+"'></p>";
+			target_tag = ".therapist_"+this.main_therapist+"_"+hour;
+			txt = "<p class='patient_p_tag' style='background:"+clinic.color+";border:1px solid gray;'>"+patient.name+"<input type='hidden' value='"+this.rno+"'></p>";
 			$(target_tag).append(txt);
 		}
 		
@@ -652,14 +683,18 @@ function draw_reservation(date){
 	
 	$(json.reservationListFix).each(function(){
 		patient = get_patient_by_pno(this.pno);
+		clinic = get_clinic_by_cno(this.clinic);
+		time = Number(this.normal_rtime);
+		hour = parseInt(time/60);
+		minute = time%60;
+		
 		if(this.rtype == '고정진료'){
-			target_tag = ".doctor_"+this.main_doctor+"_"+(Number(this.fix_rtime)/60);
-			console.log(target_tag);
-			txt = "<p class='patient_p_tag' style='background:pink;border:1px solid gray;'>"+patient.name+"<input type='hidden' value='"+this.rno+"'></p>";
+			target_tag = ".doctor_"+this.main_doctor+"_"+hour;
+			txt = "<p class='patient_p_tag' style='background:#ffaf7a;border:1px solid gray;'>"+patient.name+"<input type='hidden' value='"+this.rno+"'></p>";
 			$(target_tag).append(txt);
 		}else if(this.rtype == '고정치료'){
-			target_tag = ".therapist_"+this.main_therapist+"_"+(Number(this.fix_rtime)/60);
-			txt = "<p class='patient_p_tag' style='background:pink;border:1px solid gray;'>"+patient.name+"<input type='hidden' value='"+this.rno+"'></p>";
+			target_tag = ".therapist_"+this.main_therapist+"_"+hour;
+			txt = "<p class='patient_p_tag' style='background:#ffaf7a;border:1px solid gray;'>"+patient.name+"<input type='hidden' value='"+this.rno+"'></p>";
 			$(target_tag).append(txt);
 		}
 		
@@ -705,10 +740,10 @@ function draw_simple_reservation_view(rno){
 	
 	if(json.main_doctor =="" || json.main_doctor == null){
 		therapist = get_employee_byEno(json.main_therapist);
-		clinic = get_clinic_by_cno(json.main_therapist);
+		clinic = get_clinic_by_cno(json.clinic);
 	}else{
 		doctor = get_employee_byEno(json.main_doctor);
-		clinic = get_clinic_by_cno(json.main_doctor);
+		clinic = get_clinic_by_cno(json.clinic);
 	}
 	
 	var str="";
@@ -777,8 +812,8 @@ function post_reservation_register(vo){
 
 
 $(function(){
-	/* var num=130;
-	console.log(parseInt(num/60)+", "+num%60); */
+	var num=120;
+	console.log(parseInt(num/60)+", "+num%60); 
 	var storage_timetable_btn_num=0;
 	
 	//달력 생성
@@ -929,6 +964,7 @@ $(function(){
 		$(".popup_content > table tr > td > select[name='fix_rtime1']").html(str);
 		
 		$(".popup_reservation_register > h2 > span").html($("#reservation_view_btn").text()+"("+$("#reservation_view_btn > input[name='cno']").val()+")님");
+		$(".popup_reservation_register > table td > select[name='clinic'] > option[value='']").prop("selected", true);
 		$(".popup_reservation_register > table td > select[name='main_doctor'] > option[value='"+eno+"']").prop("selected", true);
 		$(".popup_reservation_register_date").text($(".calendar_select_date").val()+" "+time);
 		$(".popup_reservation_register > table tr > td > select[name='fix_rtime1'] > option[value='"+time+"']").prop("selected", true);
@@ -985,9 +1021,12 @@ $(function(){
 				var main_therapist = "";
 				var rtype = $(".popup_reservation_register > table tr td > select[name='rtype']").val();
 				var normal_date = split_date[0]+"";
-				var normal_rtime = (Number(split_date[1])*60)+"";
+				var normal_time_minute = Number($(".popup_reservation_register > table tr td > select[name='normal_time_minute']").val());
+				var normal_rtime = (Number(split_date[1])*60)+normal_time_minute+"";
 				var fix_day = $(".popup_reservation_register > table tr > td > select[name='fix_day']").val();
-				var fix_rtime = Number($(".popup_reservation_register > table tr > td > select[name='fix_rtime1']").val())*60;
+				var fix_rtime1 = Number($(".popup_reservation_register > table tr > td > select[name='fix_rtime1']").val())*60;
+				var fix_rtime2 = Number($(".popup_reservation_register > table tr > td > select[name='fix_rtime2']").val());
+				var fix_rtime = fix_rtime1+fix_rtime2;
 				var fix_day_start = $(".popup_reservation_register > table tr > td > input[name='fix_day_start']").val();
 				var fix_day_end = $(".popup_reservation_register > table tr > td > input[name='fix_day_end']").val();
 				var clinic = $(".popup_reservation_register > table tr td > select[name='clinic']").val();
@@ -1011,9 +1050,12 @@ $(function(){
 				var main_therapist = $(".popup_therapy_reservation_register > table tr td > select[name='main_therapist']").val();
 				var rtype = $(".popup_therapy_reservation_register > table tr td > select[name='rtype']").val();
 				var normal_date = split_date[0]+"";
-				var normal_rtime = (Number(split_date[1])*60)+"";
+				var normal_time_minute = Number($(".popup_therapy_reservation_register > table tr td > select[name='normal_time_minute']").val());
+				var normal_rtime = (Number(split_date[1])*60)+normal_time_minute+"";
 				var fix_day = $(".popup_therapy_reservation_register > table tr > td > select[name='fix_day']").val();
-				var fix_rtime = Number($(".popup_therapy_reservation_register > table tr > td > select[name='fix_rtime1']").val())*60;
+				var fix_rtime1 = Number($(".popup_reservation_register > table tr > td > select[name='fix_rtime1']").val())*60;
+				var fix_rtime2 = Number($(".popup_reservation_register > table tr > td > select[name='fix_rtime2']").val());
+				var fix_rtime = fix_rtime1+fix_rtime2;
 				var fix_day_start = $(".popup_therapy_reservation_register > table tr > td > input[name='fix_day_start']").val();
 				var fix_day_end = $(".popup_therapy_reservation_register > table tr > td > input[name='fix_day_end']").val();
 				var clinic = $(".popup_therapy_reservation_register > table tr td > select[name='clinic']").val();

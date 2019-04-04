@@ -100,7 +100,7 @@
 					<th>예약시간</th>
 					<td>
 						<span class="popup_reservation_register_date"></span>시
-						<select name="time">
+						<select name="normal_time_minute">
 							<option value="0">00분</option>
 							<option value="10">10분</option>
 							<option value="20">20분</option>
@@ -199,7 +199,7 @@
 					<th>예약시간</th>
 					<td>
 						<span class="popup_reservation_register_date"></span>시
-						<select name="time">
+						<select name="normal_time_minute">
 							<option value="0">00분</option>
 							<option value="10">10분</option>
 							<option value="20">20분</option>

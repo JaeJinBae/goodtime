@@ -577,6 +577,7 @@ function draw_time_table_by_case(idx){
 	
 	switch (idx){
 		case 0:
+			$(".week_select_box_wrap").css("display","none");
 			$(".time_table_wrap").html("");
 			table_txt = draw_total_time_table(select_date, "doctor");
 			table_txt += "<br><br><br>";
@@ -586,6 +587,7 @@ function draw_time_table_by_case(idx){
 			storage_timetable_btn_num = 0;
 			break;
 		case 1:
+			$(".week_select_box_wrap").css("display","none");
 			$(".time_table_wrap").html("");
 			table_txt = draw_total_time_table(select_date, "doctor");
 			$(".time_table_wrap").append(table_txt);
@@ -593,16 +595,18 @@ function draw_time_table_by_case(idx){
 			storage_timetable_btn_num = 1;
 			break;
 		case 2:
-			$(".week_select_box_wrap").css("display","block");
-			makeWeekSelectOptions();
 			$(".time_table_wrap").html("");
 			storage_timetable_btn_num = 2;
+			$(".week_select_box_wrap").css("display","block");
+			draw_week_calendar($(".calendar_select_date").val(), get_employeeList_byType("doctor"));
 			break;
 		case 3:
+			$(".week_select_box_wrap").css("display","none");
 			$(".time_table_wrap").html("");
 			storage_timetable_btn_num = 3;
 			break;
 		case 4:
+			$(".week_select_box_wrap").css("display","none");
 			$(".time_table_wrap").html("");
 			table_txt = draw_total_time_table(select_date, "therapist");
 			$(".time_table_wrap").append(table_txt);
@@ -612,12 +616,16 @@ function draw_time_table_by_case(idx){
 		case 5:
 			$(".time_table_wrap").html("");
 			storage_timetable_btn_num = 5;
+			$(".week_select_box_wrap").css("display","block");
+			draw_week_calendar($(".calendar_select_date").val(), get_employeeList_byType("therapist"));
 			break;
 		case 6:
+			$(".week_select_box_wrap").css("display","none");
 			$(".time_table_wrap").html("");
 			storage_timetable_btn_num = 6;
 			break;
 		case 7:
+			$(".week_select_box_wrap").css("display","none");
 			$(".time_table_wrap").html("");
 			storage_timetable_btn_num = 7;
 			break;
@@ -626,14 +634,17 @@ function draw_time_table_by_case(idx){
 			storage_timetable_btn_num = 8;
 			break;
 		case 9:
+			$(".week_select_box_wrap").css("display","none");
 			$(".time_table_wrap").html("");
 			storage_timetable_btn_num = 9;
 			break;
 		case 10:
+			$(".week_select_box_wrap").css("display","none");
 			$(".time_table_wrap").html("");
 			storage_timetable_btn_num = 10;
 			break;
 		case 11:
+			$(".week_select_box_wrap").css("display","none");
 			$(".time_table_wrap").html("");
 			storage_timetable_btn_num = 11;
 			break;
@@ -789,7 +800,7 @@ function draw_simple_reservation_view(rno){
 		hour = parseInt(rtime/60);
 		minute = rtime%60;
 		overMinute = (minute+clinic_time)-60;
-		console.log(overMinute);
+		
 		if(overMinute >= 0){
 			//console.log(overMinute);
 			if(overMinute < 10){
@@ -880,7 +891,73 @@ function post_reservation_register(vo){
 	});
 }
 
-
+function draw_week_calendar(date, emp){
+	
+	var today = $(".calendar_select_date").val();
+	var year = Number(today.substring(0,4));
+	var month = today.substring(5,7);
+	var str  = "";
+	for(i=year-3; i < year+4; i++){
+		if(i == year){
+			str += "<option value='"+i+"' selected='selected'>"+i+"년</option>";
+		}else{
+			str += "<option value='"+i+"'>"+i+"년</option>";
+		}
+	}
+	$("#sh_year").html(str);
+	str = "";
+	$("#sh_month > option[value='"+month+"']").prop("selected","selected");
+	
+	$(emp).each(function(){
+		str += "<option value='"+this.eno+"'>"+this.name+"</option>";
+	});
+	$(".week_select_box_wrap > select[name='employee']").html(str);
+	str="";
+	
+	makeWeekSelectOptions();
+	var week_time=get_hospitalInfo_byDay("주간");
+	var week_sTime=Number(week_time.start_time)/60;
+	var week_eTime=Number(week_time.end_time)/60;
+	var employee = $(".week_select_box_wrap > select[name='employee']").val();
+	var select_week = $("#sh_week").val();
+	var select_week_split = select_week.split("|"); 
+	var sDate = new Date(select_week_split[0]);
+	var tomorrow;
+	var arrDay = ["일", "월", "화", "수", "목", "금", "토"];
+	var arrDate = [select_week_split[0]];
+	
+	for(var i=1; i < 7; i++){
+		tomorrow = new Date(sDate.setDate(sDate.getDate()+1));
+		var year1 = tomorrow.getFullYear();//yyyy
+		var month1 = (1 + tomorrow.getMonth());//M
+		month1 = month1 >= 10 ? month1 : '0' + month1;// month 두자리로 저장
+		var day1 = tomorrow.getDate();//d
+		day1 = day1 >= 10 ? day1 : '0' + day1;//day 두자리로 저장
+		tomorrow = year1+'-'+month1+'-'+day1;
+		arrDate.push(tomorrow);
+	}
+	
+	console.log(arrDate);
+	str = "<table><tr><td></td>";
+	
+	for(var i=week_sTime; i < week_eTime; i++){
+		str += "<td >"+i+"시</td>";
+	}
+	str += "</tr>";
+	
+	for(var i=1; i<7; i++){
+		str += "<tr class='"+employee+"_"+arrDate[i]+"'><td>"+arrDay[i]+"<input type='hidden' value='"+"test"+"'></td>";
+		for(n=8; n < 20; n++){
+			str += "<td class='"+employee+"_"+arrDate[i]+"_"+n+"'></td>";
+		}
+		str += "</tr>";
+	}
+	str += "</table>";
+	
+	$(".time_table_wrap").html(str);
+	
+	
+}
 
 
 
@@ -1238,17 +1315,17 @@ $(function(){
 					</div><!-- timetable_btn_wrap -->
 					<div class="week_select_box_wrap">
 						<select name="sh_year" id="sh_year" onchange="makeWeekSelectOptions();">
-							<option value='2018'>2018년</option>
+							<!-- <option value='2018'>2018년</option>
 							<option value='2019' selected='selected'>2019년</option>
 							<option value='2020'>2020년</option>
-							<option value='2021'>2021년</option>
+							<option value='2021'>2021년</option> -->
 						</select>
 							 
 						<select name="sh_month" id="sh_month" onchange="makeWeekSelectOptions();">
 							<option value='01'>01월</option>
 							<option value='02'>02월</option>
 							<option value='03'>03월</option>
-							<option value='04' selected='selected'>04월</option>
+							<option value='04'>04월</option>
 							<option value='05'>05월</option>
 							<option value='06'>06월</option>
 							<option value='07'>07월</option>
@@ -1260,7 +1337,7 @@ $(function(){
 						</select>
 						<select name="sh_week" id="sh_week">
 						</select>
-						<select name="">
+						<select name="employee">
 						</select>
 					</div><!-- week_select_box_wrap end -->
 					<div class="time_table_wrap">

@@ -48,4 +48,5 @@ function makeWeekSelectOptions() {
     }
  
     if(seled) obj.value = seled;
+    
 }

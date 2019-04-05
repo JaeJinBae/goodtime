@@ -158,11 +158,17 @@ public class HomeController {
 	@RequestMapping(value="/hospitalInfoGetByDay/{date}", method=RequestMethod.GET)
 	public ResponseEntity<HospitalInfoVO> hospitalInfoGet(@PathVariable("date") String date) throws ParseException{
 		ResponseEntity<HospitalInfoVO> entity = null;
-		DayGetUtil getDay = new DayGetUtil();
-		String day = getDay.getDay(date);
-		HospitalInfoVO vo = hService.selectOne(day);
-		entity = new ResponseEntity<HospitalInfoVO>(vo, HttpStatus.OK);
 		
+		if(date.equals("주간")){
+			HospitalInfoVO vo = hService.selectOne(date);
+			entity = new ResponseEntity<HospitalInfoVO>(vo, HttpStatus.OK);
+		}else{
+			DayGetUtil getDay = new DayGetUtil();
+			String day = getDay.getDay(date);
+			HospitalInfoVO vo = hService.selectOne(day);
+			entity = new ResponseEntity<HospitalInfoVO>(vo, HttpStatus.OK);
+		}
+
 		return entity;
 	}
 	

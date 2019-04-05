@@ -3,10 +3,9 @@ package com.webaid.domain;
 public class ReservationVO {
 	private int rno;
 	private int pno;
+	private int eno;
 	private String memo;
 	private String clinic;
-	private String main_doctor;
-	private String main_therapist;
 	private String rtype;
 	private String normal_date;
 	private String normal_rtime;
@@ -20,6 +19,7 @@ public class ReservationVO {
 	private String updatewriter;
 	private String desk_state;
 	private String therapist_state;
+	private String result;
 
 	public ReservationVO() {
 		super();
@@ -41,6 +41,14 @@ public class ReservationVO {
 		this.pno = pno;
 	}
 
+	public int getEno() {
+		return eno;
+	}
+
+	public void setEno(int eno) {
+		this.eno = eno;
+	}
+
 	public String getMemo() {
 		return memo;
 	}
@@ -55,22 +63,6 @@ public class ReservationVO {
 
 	public void setClinic(String clinic) {
 		this.clinic = clinic;
-	}
-
-	public String getMain_doctor() {
-		return main_doctor;
-	}
-
-	public void setMain_doctor(String main_doctor) {
-		this.main_doctor = main_doctor;
-	}
-
-	public String getMain_therapist() {
-		return main_therapist;
-	}
-
-	public void setMain_therapist(String main_therapist) {
-		this.main_therapist = main_therapist;
 	}
 
 	public String getRtype() {
@@ -177,14 +169,22 @@ public class ReservationVO {
 		this.therapist_state = therapist_state;
 	}
 
+	public String getResult() {
+		return result;
+	}
+
+	public void setResult(String result) {
+		this.result = result;
+	}
+
 	@Override
 	public String toString() {
-		return "ReservationVO [rno=" + rno + ", pno=" + pno + ", memo=" + memo + ", clinic=" + clinic + ", main_doctor="
-				+ main_doctor + ", main_therapist=" + main_therapist + ", rtype=" + rtype + ", normal_date="
-				+ normal_date + ", normal_rtime=" + normal_rtime + ", fix_day=" + fix_day + ", fix_rtime=" + fix_rtime
-				+ ", fix_day_start=" + fix_day_start + ", fix_day_end=" + fix_day_end + ", writer=" + writer
-				+ ", regdate=" + regdate + ", updatedate=" + updatedate + ", updatewriter=" + updatewriter
-				+ ", desk_state=" + desk_state + ", therapist_state=" + therapist_state + "]";
+		return "ReservationVO [rno=" + rno + ", pno=" + pno + ", eno=" + eno + ", memo=" + memo + ", clinic=" + clinic
+				+ ", rtype=" + rtype + ", normal_date=" + normal_date + ", normal_rtime=" + normal_rtime + ", fix_day="
+				+ fix_day + ", fix_rtime=" + fix_rtime + ", fix_day_start=" + fix_day_start + ", fix_day_end="
+				+ fix_day_end + ", writer=" + writer + ", regdate=" + regdate + ", updatedate=" + updatedate
+				+ ", updatewriter=" + updatewriter + ", desk_state=" + desk_state + ", therapist_state="
+				+ therapist_state + ", result=" + result + "]";
 	}
 
 }

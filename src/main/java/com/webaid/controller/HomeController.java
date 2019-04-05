@@ -31,6 +31,7 @@ import com.webaid.domain.PageMaker;
 import com.webaid.domain.PatientVO;
 import com.webaid.domain.ReservationVO;
 import com.webaid.domain.SearchCriteria;
+import com.webaid.domain.SelectByDateEmployeeVO;
 import com.webaid.service.ClinicService;
 import com.webaid.service.EmployeeService;
 import com.webaid.service.HospitalInfoService;
@@ -246,6 +247,31 @@ public class HomeController {
 		}
 		return entity;
 	}
+	
+	@RequestMapping(value="/reservationListByDateEno/{date}/{type}/{eno}", method=RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> get_reservationList_byDate_byEmployee(@PathVariable("date") String date, @PathVariable("type") String type, @PathVariable("eno") String eno) throws ParseException{
+		logger.info("reservationListByDateEno get");
+		
+		ResponseEntity<Map<String, Object>> entity = null;
+		HashMap<String, Object> map=new HashMap<>();
+		SelectByDateEmployeeVO sbdeVO = new SelectByDateEmployeeVO();
+		
+		DayGetUtil getDay = new DayGetUtil();
+		String day = getDay.getDay(date);
+		
+		sbdeVO.setNormal_date(date);
+		sbdeVO.setFix_day(day);
+		sbdeVO.setEno(Integer.parseInt(eno));
+		
+		List<ReservationVO> normalVO = rService.selectByNormalDateEno(sbdeVO);
+		List<ReservationVO> fixVO = rService.selectByFixDayEno(sbdeVO);
+		map.put("normalVO", normalVO);
+		map.put("fixVO", fixVO);
+		entity=new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		
+		return entity;
+	}
+	
 	
 	@RequestMapping(value="/reservationInfoGet/{date}", method=RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> reservationInfo(@PathVariable("date") String date) throws ParseException{

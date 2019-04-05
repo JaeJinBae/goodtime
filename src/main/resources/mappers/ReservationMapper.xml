@@ -20,8 +20,16 @@
 		select * from reservation where rno=#{rno}
 	</select>
 	
+	<select id="selectByNormalDateEno" resultType="ReservationVO">
+		select * from reservation where normal_date=#{normal_date} and eno=#{eno}
+	</select>
+	
+	<select id="selectByFixDayEno" resultType="ReservationVO">
+		select * from reservation where fix_day=#{fix_day} and eno=#{eno}
+	</select>
+	
 	<insert id="register">
-		insert into reservation values(#{rno}, #{pno}, #{memo}, #{clinic}, #{main_doctor}, #{main_therapist}, #{rtype}, #{normal_date}, #{normal_rtime}, #{fix_day}, #{fix_rtime}, #{fix_day_start}, #{fix_day_end}, #{writer}, #{regdate}, #{updatedate}, #{updatewriter}, #{desk_state}, #{therapist_state})
+		insert into reservation values(#{rno}, #{pno}, #{eno}, #{memo}, #{clinic}, #{rtype}, #{normal_date}, #{normal_rtime}, #{fix_day}, #{fix_rtime}, #{fix_day_start}, #{fix_day_end}, #{writer}, #{regdate}, #{updatedate}, #{updatewriter}, #{desk_state}, #{therapist_state}, #{result})
 	</insert>
 	
 </mapper>

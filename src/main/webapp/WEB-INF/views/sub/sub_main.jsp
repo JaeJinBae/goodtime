@@ -537,6 +537,24 @@ function get_reservationList_byDate(date){
 	return dt;
 }
 
+function get_reservationList_byDate_byEmployee(date, type, eno){
+	var dt;
+	$.ajax({
+		url:"${pageContext.request.contextPath}/reservationListByDateEno/"+date+"/"+type+"/"+eno,
+		type: "get",
+		dataType:"json",
+		async:false,
+		success:function(json){
+			dt = json;
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	});
+	
+	return dt;
+}
+
 function draw_total_time_table(date, type){
 	var hospitalDayInfo = get_hospitalInfo_byDay(date);
 	var empList = get_employeeList_byType(type);
@@ -598,7 +616,7 @@ function draw_time_table_by_case(idx){
 			$(".time_table_wrap").html("");
 			storage_timetable_btn_num = 2;
 			$(".week_select_box_wrap").css("display","block");
-			draw_week_calendar($(".calendar_select_date").val(), get_employeeList_byType("doctor"));
+			draw_week_calendar($(".calendar_select_date").val(), get_employeeList_byType("doctor"), "doctor");
 			break;
 		case 3:
 			$(".week_select_box_wrap").css("display","none");
@@ -617,7 +635,7 @@ function draw_time_table_by_case(idx){
 			$(".time_table_wrap").html("");
 			storage_timetable_btn_num = 5;
 			$(".week_select_box_wrap").css("display","block");
-			draw_week_calendar($(".calendar_select_date").val(), get_employeeList_byType("therapist"));
+			draw_week_calendar($(".calendar_select_date").val(), get_employeeList_byType("therapist"), "therapist");
 			break;
 		case 6:
 			$(".week_select_box_wrap").css("display","none");
@@ -689,11 +707,11 @@ function draw_reservation(date){
 		}
 		
 		if(this.rtype == '일반진료'){
-			target_tag = ".doctor_"+this.main_doctor+"_"+hour;
+			target_tag = ".doctor_"+this.eno+"_"+hour;
 			txt = "<p class='patient_p_tag' style='background:"+clinic.color+";border:1px solid gray;'>"+minute+"~"+end_time+" "+patient.name+"<input type='hidden' value='"+this.rno+"'></p>";
 			$(target_tag).append(txt);
 		}else if(this.rtype == '일반치료'){
-			target_tag = ".therapist_"+this.main_therapist+"_"+hour;
+			target_tag = ".therapist_"+this.eno+"_"+hour;
 			txt = "<p class='patient_p_tag' style='background:"+clinic.color+";border:1px solid gray;'>"+minute+"~"+end_time+" "+patient.name+"<input type='hidden' value='"+this.rno+"'></p>";
 			$(target_tag).append(txt);
 		}
@@ -722,11 +740,11 @@ function draw_reservation(date){
 		}
 		
 		if(this.rtype == '고정진료'){
-			target_tag = ".doctor_"+this.main_doctor+"_"+hour;
+			target_tag = ".doctor_"+this.eno+"_"+hour;
 			txt = "<p class='patient_p_tag' style='background:#ffaf7a;border:1px solid gray;'>"+minute+"~"+end_time+" "+patient.name+"<input type='hidden' value='"+this.rno+"'></p>";
 			$(target_tag).append(txt);
 		}else if(this.rtype == '고정치료'){
-			target_tag = ".therapist_"+this.main_therapist+"_"+hour;
+			target_tag = ".therapist_"+this.eno+"_"+hour;
 			txt = "<p class='patient_p_tag' style='background:#ffaf7a;border:1px solid gray;'>"+minute+"~"+end_time+" "+patient.name+"<input type='hidden' value='"+this.rno+"'></p>";
 			$(target_tag).append(txt);
 		}
@@ -777,21 +795,21 @@ function draw_simple_reservation_view(rno){
 	var end_time="";
 	var doctor;
 	var therapist;
-	
-	if(json.main_doctor =="" || json.main_doctor == null){
-		therapist = get_employee_byEno(json.main_therapist);
+	var employee = get_employee_byEno(json.eno);
+	/* if(json.rtype == "일반치료" || json.rtype == "고정치료"){
+		therapist = get_employee_byEno(json.eno);
 	}else{
-		doctor = get_employee_byEno(json.main_doctor);
-	}
+		doctor = get_employee_byEno(json.eno);
+	} */
 	
 	var str="";
 	str="<p class='al_tbl_wrap2_title'>"+json.rtype+"예약 &nbsp;&nbsp;<span style='color:#333;font-size:14px;letter-spacing:0;'>[닫기]</span></p><table id='tbl_simple_reservation'>";
-	if(json.main_doctor == "" || json.main_doctor == null){
+	/* if(json.main_doctor == "" || json.main_doctor == null){
 		str += "<tr><td class='tbl_content_pName'>"+patient.name+"("+patient.cno+")님 ▶"+ therapist.name+"</td></tr>";
 	}else{
 		str += "<tr><td class='tbl_content_pName'>"+patient.name+"("+patient.cno+")님 ▶"+ doctor.name+"</td></tr>"; 
-	}
-	
+	} */
+	str += "<tr><td class='tbl_content_pName'>"+patient.name+"("+patient.cno+")님 ▶"+ employee.name+"</td></tr>";
 	
 	
 	str+="<tr><th class='tbl_content_title'>- 예약일시</th></tr>";
@@ -891,7 +909,8 @@ function post_reservation_register(vo){
 	});
 }
 
-function draw_week_calendar(date, emp){
+//주간 선택하면 select 태그에 값 설정
+function draw_week_calendar(date, emp, type){
 	
 	var today = $(".calendar_select_date").val();
 	var year = Number(today.substring(0,4));
@@ -914,7 +933,13 @@ function draw_week_calendar(date, emp){
 	$(".week_select_box_wrap > select[name='employee']").html(str);
 	str="";
 	
-	makeWeekSelectOptions();
+	makeWeekSelectOptions(type);
+	
+	
+	
+}
+
+function draw_week_timetable(etype){
 	var week_time=get_hospitalInfo_byDay("주간");
 	var week_sTime=Number(week_time.start_time)/60;
 	var week_eTime=Number(week_time.end_time)/60;
@@ -937,7 +962,6 @@ function draw_week_calendar(date, emp){
 		arrDate.push(tomorrow);
 	}
 	
-	console.log(arrDate);
 	str = "<table><tr><td></td>";
 	
 	for(var i=week_sTime; i < week_eTime; i++){
@@ -946,7 +970,7 @@ function draw_week_calendar(date, emp){
 	str += "</tr>";
 	
 	for(var i=1; i<7; i++){
-		str += "<tr class='"+employee+"_"+arrDate[i]+"'><td>"+arrDay[i]+"<input type='hidden' value='"+"test"+"'></td>";
+		str += "<tr class='"+employee+"_"+arrDate[i]+"'><td>"+arrDay[i]+"("+arrDate[i].split("-")[2]+"일)<input type='hidden' value='"+"test"+"'></td>";
 		for(n=8; n < 20; n++){
 			str += "<td class='"+employee+"_"+arrDate[i]+"_"+n+"'></td>";
 		}
@@ -956,9 +980,24 @@ function draw_week_calendar(date, emp){
 	
 	$(".time_table_wrap").html(str);
 	
-	
+	draw_week_reservation(arrDate, etype, employee);
 }
 
+function draw_week_reservation(week, etype, eno){
+	var week_reservation = [];
+	var json;
+	var str="";
+	var target_tag = "";
+	for(var i=1; i < week.length; i++){
+		json = get_reservationList_byDate_byEmployee(week[i], etype, eno) 
+		week_reservation.push(json);
+	}
+	console.log(week_reservation);
+	console.log(week_reservation[0].normalVO[0].eno);
+	$(week_reservation).each(function(){
+		console.log($(this));
+	});
+}
 
 
 $(function(){
@@ -1118,7 +1157,7 @@ $(function(){
 		
 		$(".popup_reservation_register > h2 > span").html($("#reservation_view_btn").text()+"("+$("#reservation_view_btn > input[name='cno']").val()+")님");
 		$(".popup_reservation_register > table td > select[name='clinic'] > option[value='']").prop("selected", true);
-		$(".popup_reservation_register > table td > select[name='main_doctor'] > option[value='"+eno+"']").prop("selected", true);
+		$(".popup_reservation_register > table td > select[name='eno'] > option[value='"+eno+"']").prop("selected", true);
 		$(".popup_reservation_register_date").text($(".calendar_select_date").val()+" "+time);
 		$(".popup_reservation_register > table tr > td > select[name='fix_rtime1'] > option[value='"+time+"']").prop("selected", true);
 		$(".popup_reservation_register > table tr > td > select[name='fix_day'] > option[value='"+select_day+"']").prop("selected", true);
@@ -1149,7 +1188,7 @@ $(function(){
 		$(".popup_content > table tr > td > select[name='fix_rtime1']").html(str);
 		
 		$(".popup_therapy_reservation_register > h2 > span").html($("#reservation_view_btn").text()+"("+$("#reservation_view_btn > input[name='cno']").val()+")님");
-		$(".popup_therapy_reservation_register > table td > select[name='main_therapist'] > option[value='"+eno+"']").prop("selected", true);
+		$(".popup_therapy_reservation_register > table td > select[name='eno'] > option[value='"+eno+"']").prop("selected", true);
 		$(".popup_reservation_register_date").text($(".calendar_select_date").val()+" "+time);
 		$(".popup_therapy_reservation_register > table tr > td > select[name='fix_rtime1'] > option[value='"+time+"']").prop("selected", true);
 		$(".popup_therapy_reservation_register > table tr > td > select[name='fix_day'] > option[value='"+select_day+"']").prop("selected", true);
@@ -1170,8 +1209,7 @@ $(function(){
 				var split_date = selectDate.split(" ");
 				
 				var pno = $("#reservation_view_btn > input[name='pno']").val();
-				var main_doctor = $(".popup_reservation_register > table tr td > select[name='main_doctor']").val();
-				var main_therapist = "";
+				var eno = $(".popup_reservation_register > table tr td > select[name='eno']").val();
 				var rtype = $(".popup_reservation_register > table tr td > select[name='rtype']").val();
 				var normal_date = split_date[0]+"";
 				var normal_time_minute = Number($(".popup_reservation_register > table tr td > select[name='normal_time_minute']").val());
@@ -1190,19 +1228,19 @@ $(function(){
 				var updatedate = "";
 				var desk_state="";
 				var therapist_state="";
+				var result = "";
 				console.log(jQuery.type(fix_rtime));
 				if(rtype == "일반진료"){
-					vo = {pno:pno, main_doctor:main_doctor, main_therapist:main_therapist, fix_day:"", fix_rtime:"", fix_day_start:"", fix_day_end:"", rtype:rtype, normal_date:normal_date, normal_rtime:normal_rtime, clinic:clinic, memo:memo, writer:writer, regdate:regdate, updatewriter:updatewriter, updatedate:updatedate, desk_state:"", therapist_state:""};
+					vo = {pno:pno, eno:eno, fix_day:"", fix_rtime:"", fix_day_start:"", fix_day_end:"", rtype:rtype, normal_date:normal_date, normal_rtime:normal_rtime, clinic:clinic, memo:memo, writer:writer, regdate:regdate, updatewriter:updatewriter, updatedate:updatedate, desk_state:"", therapist_state:"", result:result};
 				}else if(rtype == "고정진료"){
-					vo = {pno:pno, main_doctor:main_doctor, main_therapist:main_therapist, fix_day:fix_day, fix_rtime:fix_rtime, fix_day_start:fix_day_start, fix_day_end:fix_day_end, rtype:rtype, normal_date:"", normal_rtime:"", clinic:clinic, memo:memo, writer:writer, regdate:regdate, updatewriter:updatewriter, updatedate:updatedate, desk_state:"", therapist_state:""};
+					vo = {pno:pno, eno:eno, fix_day:fix_day, fix_rtime:fix_rtime, fix_day_start:fix_day_start, fix_day_end:fix_day_end, rtype:rtype, normal_date:"", normal_rtime:"", clinic:clinic, memo:memo, writer:writer, regdate:regdate, updatewriter:updatewriter, updatedate:updatedate, desk_state:"", therapist_state:"", result:result};
 				}
 			}else{
 				var selectDate = $(".popup_reservation_register_date").eq(1).text();
 				var split_date = selectDate.split(" ");
 				
 				var pno = $("#reservation_view_btn > input[name='pno']").val();
-				var main_doctor = "";
-				var main_therapist = $(".popup_therapy_reservation_register > table tr td > select[name='main_therapist']").val();
+				var eno = $(".popup_therapy_reservation_register > table tr td > select[name='eno']").val();
 				var rtype = $(".popup_therapy_reservation_register > table tr td > select[name='rtype']").val();
 				var normal_date = split_date[0]+"";
 				var normal_time_minute = Number($(".popup_therapy_reservation_register > table tr td > select[name='normal_time_minute']").val());
@@ -1219,11 +1257,12 @@ $(function(){
 				var regdate = get_today();
 				var updatewriter = "";
 				var updatedate = "";
+				var result="";
 				
 				if(rtype == "일반치료"){
-					vo = {pno:pno, main_doctor:main_doctor, main_therapist:main_therapist, fix_day:"", fix_rtime:"", fix_day_start:"", fix_day_end:"", rtype:rtype, normal_date:normal_date, normal_rtime:normal_rtime, clinic:clinic, memo:memo, writer:writer, regdate:regdate, updatewriter:updatewriter, updatedate:updatedate};
+					vo = {pno:pno, eno:eno, fix_day:"", fix_rtime:"", fix_day_start:"", fix_day_end:"", rtype:rtype, normal_date:normal_date, normal_rtime:normal_rtime, clinic:clinic, memo:memo, writer:writer, regdate:regdate, updatewriter:updatewriter, updatedate:updatedate, result:result};
 				}else if(rtype == "고정치료"){
-					vo = {pno:pno, main_doctor:main_doctor, main_therapist:main_therapist, fix_day:fix_day, fix_rtime:fix_rtime, fix_day_start:fix_day_start, fix_day_end:fix_day_end,  rtype:rtype, normal_date:"", normal_rtime:"", clinic:clinic, memo:memo, writer:writer, regdate:regdate, updatewriter:updatewriter, updatedate:updatedate};
+					vo = {pno:pno, eno:eno, fix_day:fix_day, fix_rtime:fix_rtime, fix_day_start:fix_day_start, fix_day_end:fix_day_end,  rtype:rtype, normal_date:"", normal_rtime:"", clinic:clinic, memo:memo, writer:writer, regdate:regdate, updatewriter:updatewriter, updatedate:updatedate, result:result};
 				}
 			}
 			post_reservation_register(vo);
@@ -1234,6 +1273,15 @@ $(function(){
 			$(".popup_therapy_reservation_register").css("display", "none");
 			$(".popup_wrap").css("display","none");
 		}
+	});
+	
+	//주간 select에서 주 변경되었을때 timetable 변경해서 삽입
+	$("#sh_week").change(function(){
+		draw_week_timetable("doctor");
+	})
+	//주간 select에서 의사 및 치료사 변경되었을때 timetable 변경해서 삽입
+	$(".week_select_box_wrap > select[name='employee']").change(function(){
+		draw_week_timetable("doctor");
 	});
 
 });

@@ -78,7 +78,7 @@
 				<tr>
 					<th>담당의사</th>
 					<td>
-						<select name="main_doctor">
+						<select name="eno">
 							<c:forEach var="item" items="${doctorList}">
 								<option value="${item.eno}">${item.name}</option>
 							</c:forEach>
@@ -178,7 +178,7 @@
 				<tr>
 					<th>치료사</th>
 					<td>
-						<select name="main_therapist">
+						<select name="eno">
 							<c:forEach var="item" items="${therapistList}">
 								<option value="${item.eno}">${item.name}</option>
 							</c:forEach>

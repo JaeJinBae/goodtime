@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.webaid.domain.ReservationVO;
+import com.webaid.domain.SelectByDateEmployeeVO;
 
 @Repository
 public class ReservationDaoImpl implements ReservationDao {
@@ -36,6 +37,16 @@ public class ReservationDaoImpl implements ReservationDao {
 		return session.selectList(namespace+".selectByFixDay", day);
 	}
 
+	@Override
+	public List<ReservationVO> selectByNormalDateEno(SelectByDateEmployeeVO vo) {
+		return session.selectList(namespace+".selectByNormalDateEno", vo);
+	}
+
+	@Override
+	public List<ReservationVO> selectByFixDayEno(SelectByDateEmployeeVO vo) {
+		return session.selectList(namespace+".selectByFixDayEno", vo);
+	}
+	
 	@Override
 	public void register(ReservationVO vo) {
 		session.insert(namespace+".register", vo);

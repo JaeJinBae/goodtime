@@ -970,7 +970,7 @@ function draw_week_timetable(etype){
 	str += "</tr>";
 	
 	for(var i=1; i<7; i++){
-		str += "<tr class='"+employee+"_"+arrDate[i]+"'><td>"+arrDay[i]+"("+arrDate[i].split("-")[2]+"일)<input type='hidden' value='"+"test"+"'></td>";
+		str += "<tr class='"+employee+"_"+arrDate[i]+"'><td>"+arrDay[i]+"("+arrDate[i].split("-")[2]+"일)<input type='hidden' name='day' value='"+arrDay[i]+"'></td>";
 		for(n=8; n < 20; n++){
 			str += "<td class='"+employee+"_"+arrDate[i]+"_"+n+"'></td>";
 		}
@@ -988,14 +988,67 @@ function draw_week_reservation(week, etype, eno){
 	var json;
 	var str="";
 	var target_tag = "";
+	//var startDate = ;
 	for(var i=1; i < week.length; i++){
 		json = get_reservationList_byDate_byEmployee(week[i], etype, eno) 
 		week_reservation.push(json);
 	}
-	console.log(week_reservation);
-	console.log(week_reservation[0].normalVO[0].eno);
+	//console.log(week_reservation);
+	//console.log(week_reservation[0].normalVO[0].eno);
 	$(week_reservation).each(function(){
-		console.log($(this));
+		$($(this)[0].normalVO).each(function(){
+			//console.log(this);
+			patient = get_patient_by_pno(this.pno);
+			clinic = get_clinic_by_cno(this.clinic);
+			clinic_time = Number(clinic.time);
+			time = Number(this.normal_rtime);
+			hour = parseInt(time/60);
+			minute = time%60;
+			overMinute = (minute+clinic_time)-60;
+			
+			if(overMinute >= 0){
+				if(overMinute < 10){
+					overMinute = "0"+overMinute;
+				}
+				end_time = (hour+1)+":"+overMinute;
+			}else{
+				end_time = minute+clinic_time;
+			}
+			if(minute == 0){
+				minute = "0"+minute;
+			}
+			
+			target_tag = "."+eno+"_"+this.normal_date+"_"+parseInt(Number(this.normal_rtime)/60);
+			str = "<p class='patient_p_tag' style='background:"+clinic.color+";border:1px solid gray;'>"+minute+"~"+end_time+" "+patient.name+"<input type='hidden' value='"+this.rno+"'></p>";
+			$(target_tag).append(str);
+		})
+		$($(this)[0].fixVO).each(function(){
+			console.log(this);
+			if
+			patient = get_patient_by_pno(this.pno);
+			clinic = get_clinic_by_cno(this.clinic);
+			clinic_time = Number(clinic.time);
+			time = Number(this.normal_rtime);
+			hour = parseInt(time/60);
+			minute = time%60;
+			overMinute = (minute+clinic_time)-60;
+			
+			if(overMinute >= 0){
+				if(overMinute < 10){
+					overMinute = "0"+overMinute;
+				}
+				end_time = (hour+1)+":"+overMinute;
+			}else{
+				end_time = minute+clinic_time;
+			}
+			if(minute == 0){
+				minute = "0"+minute;
+			}
+			
+			target_tag = "."+eno+"_"+this.normal_date+"_"+parseInt(Number(this.normal_rtime)/60);
+			str = "<p class='patient_p_tag' style='background:"+clinic.color+";border:1px solid gray;'>"+minute+"~"+end_time+" "+patient.name+"<input type='hidden' value='"+this.rno+"'></p>";
+			$(target_tag).append(str);
+		})
 	});
 }
 

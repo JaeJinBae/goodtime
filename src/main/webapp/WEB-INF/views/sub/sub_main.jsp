@@ -52,6 +52,9 @@
 	.popup_content > table tr > td > select{
 		font-size: 15px;
 	}
+	.popup_patient_register{
+		display: none;
+	}
 	.popup_patientUpdate{
 		display:none;
 	}
@@ -445,6 +448,25 @@ function get_patient_by_pno(pno){
 		}
 	})
 	return dt;
+}
+
+function post_patient_register(patient){
+	$.ajax({
+		url:"${pageContext.request.contextPath}/patientRegister",
+		type:"post",
+		dataType:"text",
+		data:patient,
+		async:false,
+		success:function(json){
+			$(".popup_patient_register").css("display", "none");
+			$(".popup_wrap").css("display","none");
+			alert("환자등록이 완료되었습니다.");
+			draw_patient_table();
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	});
 }
 
 //환자 정보 수정view에 정보 기입
@@ -1028,7 +1050,7 @@ function draw_week_reservation(week, etype, eno, idxx){
 					minute = "0"+minute;
 				}
 				var cs = $(".time_table_wrap > table tr > td > input[value='"+this.fix_day+"']").parent().parent().prop("class");
-				console.log(cs);
+				//console.log(cs);
 				target_tag = "."+cs+"_"+parseInt(Number(this.fix_rtime)/60);
 				str = "<p class='patient_p_tag' style='background:#ffaf7a;border:1px solid gray;'>"+minute+"~"+end_time+" "+patient.name+"<input type='hidden' value='"+this.rno+"'></p>";
 				$(target_tag).append(str);
@@ -1149,6 +1171,54 @@ $(function(){
 	$(document).on("click", ".page > ul > li > a", function(e){
 		e.preventDefault();
 		draw_patient_table($(this).attr("href"));
+	});
+	
+	//환자 등록
+	$(".patient_register_btn_wrap > button").click(function(){
+		$(".popup_wrap").css("display","block");
+		$(".popup_patient_register").css("display","block");
+	});
+	
+	//환자등록 view에서 버튼 클릭
+	$(".popup_patient_register_submit_wrap > p").click(function(){
+		var idx = $(this).index();
+		if(idx == 0){
+			var cno = $(".popup_patient_register > table tr td > input[name='cno']").val();
+			var name =  $(".popup_patient_register > table tr td > input[name='name']").val();
+			var phone = $(".popup_patient_register > table tr td > input[name='phone']").val();
+			var birth = $(".popup_patient_register > table tr td > input[name='birth']").val();
+			var gender = $(".popup_patient_register > table tr td > select[name='gender']").val();
+			var main_doctor = $(".popup_patient_register > table tr td > select[name='main_doctor']").val();
+			var main_doctor_name = $(".popup_patient_register > table tr td > select[name='main_doctor'] option:selected").html();
+			var main_therapist = $(".popup_patient_register > table tr td > select[name='main_therapist']").val();
+			var main_therapist_name = $(".popup_patient_register > table tr td > select[name='main_therapist'] option:selected").html();
+			var mail = $(".popup_patient_register > table tr td > input[name='mail']").val();
+			var memo = $(".popup_patient_register > table tr td > input[name='memo']").val();
+			if(main_therapist_name == "선택해주세요."){
+				main_therapist_name = "";
+			}
+			var patient={
+					pno:"0",
+					cno:cno,
+					name:name,
+					phone:phone,
+					birth:birth,
+					gender:gender,
+					main_doctor:main_doctor,
+					main_doctor_name:main_doctor_name,
+					main_therapist:main_therapist,
+					main_therapist_name:main_therapist_name,
+					mail:mail,
+					memo:memo,
+					activation:"",
+					sub_therapist:""
+					};
+			
+			post_patient_register(patient);
+		}else{
+			$(".popup_patient_register").css("display", "none");
+			$(".popup_wrap").css("display","none");
+		}
 	});
 	
 	//환자table 환자 검색

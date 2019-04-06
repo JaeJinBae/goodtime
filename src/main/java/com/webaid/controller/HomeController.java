@@ -389,6 +389,20 @@ public class HomeController {
 		return entity;
 	}
 	
+	@RequestMapping(value="/patientRegister", method=RequestMethod.POST)
+	public ResponseEntity<String> patientRegister(PatientVO patient){
+		logger.info("patient register Post");
+		ResponseEntity<String> entity = null;
+		System.out.println(patient);
+		try {
+			pService.register(patient);
+			entity = new ResponseEntity<>("ok", HttpStatus.OK);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return entity;
+	}
+	
 	@RequestMapping(value="/patientUpdate", method=RequestMethod.POST)
 	public ResponseEntity<String> patientUpdate(PatientVO patient){
 		logger.info("paitent update Post");

@@ -11,6 +11,7 @@ public class PatientVO {
 	private String main_doctor;
 	private String main_doctor_name;
 	private String main_therapist;
+	private String main_therapist_name;
 	private String sub_therapist;
 	private String memo;
 	private String activation;
@@ -95,6 +96,14 @@ public class PatientVO {
 		return main_therapist;
 	}
 
+	public String getMain_therapist_name() {
+		return main_therapist_name;
+	}
+
+	public void setMain_therapist_name(String main_therapist_name) {
+		this.main_therapist_name = main_therapist_name;
+	}
+
 	public void setMain_therapist(String main_therapist) {
 		this.main_therapist = main_therapist;
 	}
@@ -127,12 +136,9 @@ public class PatientVO {
 	public String toString() {
 		return "PatientVO [pno=" + pno + ", cno=" + cno + ", name=" + name + ", phone=" + phone + ", birth=" + birth
 				+ ", gender=" + gender + ", mail=" + mail + ", main_doctor=" + main_doctor + ", main_doctor_name="
-				+ main_doctor_name + ", main_therapist=" + main_therapist + ", sub_therapist=" + sub_therapist
-				+ ", memo=" + memo + ", activation=" + activation + "]";
+				+ main_doctor_name + ", main_therapist=" + main_therapist + ", main_therapist_name="
+				+ main_therapist_name + ", sub_therapist=" + sub_therapist + ", memo=" + memo + ", activation="
+				+ activation + "]";
 	}
-
-	
-
-	
 
 }

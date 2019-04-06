@@ -13,4 +13,5 @@ public interface PatientService {
 	public List<PatientVO> listSearch(SearchCriteria cri) throws Exception;
 	public int listSearchCount(SearchCriteria cri);
 	public void update(PatientVO vo);
+	public void register(PatientVO vo);
 }

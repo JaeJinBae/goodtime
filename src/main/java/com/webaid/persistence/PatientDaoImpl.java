@@ -52,4 +52,9 @@ public class PatientDaoImpl implements PatientDao {
 		session.update(namespace+".update", vo);
 	}
 
+	@Override
+	public void register(PatientVO vo) {
+		session.insert(namespace+".register", vo);
+	}
+
 }

@@ -50,6 +50,11 @@ public class PatientServiceImpl implements PatientService {
 		dao.update(vo);
 	}
 
+	@Override
+	public void register(PatientVO vo) {
+		dao.register(vo);
+	}
+
 	
 
 	

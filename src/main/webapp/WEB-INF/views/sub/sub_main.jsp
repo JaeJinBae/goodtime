@@ -167,11 +167,18 @@
 		width:100%;
 		margin-top:30px;
 	}
-	.week_select_box_wrap{
-		display:none;
+	.search_wrap{
+		float:left;
+	}
+	.patient_register_btn_wrap{
+		float:right;
 	}
 	.ar_tbl_wrap_1 > #inner_tbl_wrap{
+		clear: both;
 		overflow:hidden;
+	}
+	.week_select_box_wrap{
+		display:none;
 	}
 	.ar_tbl_wrap_1 > #inner_tbl_wrap > table {
 		width:100%;
@@ -1427,6 +1434,9 @@ $(function(){
 						<input type="text" name="keyword" id="keywordInput" value="">
 						<button id="searchBtn">검색</button>
 					</div><!-- search_wrap end -->
+					<div class="patient_register_btn_wrap">
+						<button>환자추가</button>
+					</div>
 					<div id="inner_tbl_wrap">
 					
 					</div>

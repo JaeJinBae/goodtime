@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.webaid.domain.EmployeeVO;
+import com.webaid.domain.SearchCriteria;
 
 @Repository
 public class EmployeeDaoImpl implements EmployeeDao {
@@ -34,6 +35,26 @@ public class EmployeeDaoImpl implements EmployeeDao {
 	@Override
 	public EmployeeVO selectByEno(int eno) {
 		return session.selectOne(namespace+".selectByEno", eno);
+	}
+
+	@Override
+	public List<EmployeeVO> listSearch(SearchCriteria cri) {
+		return session.selectList(namespace+".listSearch", cri);
+	}
+
+	@Override
+	public int listSearchCount(SearchCriteria cri) {
+		return session.selectOne(namespace+".listSearchCount", cri);
+	}
+
+	@Override
+	public void update(EmployeeVO vo) {
+		session.update(namespace+".update", vo);
+	}
+
+	@Override
+	public void register(EmployeeVO vo) {
+		session.insert(namespace+".register", vo);
 	}
 
 }

@@ -66,8 +66,7 @@
 			</div>
 			<div class="header_inner header_inner2">
 				<p id="patient_view_btn">환자VIEW</p>
-				<p id="doctor_view_btn">진료VIEW</p>
-				<p id="therapist_view_btn">치료VIEW</p>
+				<p id="reservation1_view_btn">예약VIEW</p>
 				<p id="reservation_view_btn"></p>
 			</div>
 			<div class="header_inner header_inner3">

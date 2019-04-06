@@ -912,7 +912,7 @@ function draw_simple_reservation_view(rno){
 	$(".al_tbl_wrap2").css("display","block");
 }
 
-function post_reservation_register(vo){
+function post_reservation_register(vo, stbn){
 	console.log("post_reservation_register 진입");
 	console.log(vo);
 	$.ajax({
@@ -932,7 +932,7 @@ function post_reservation_register(vo){
 				$(".popup_therapy_reservation_register").css("display", "none");
 				$(".popup_wrap").css("display","none");
 				
-				draw_time_table_by_case(storage_timetable_btn_num);
+				draw_time_table_by_case(stbn);
 			}else{
 				alert("예약등록이 정상적으로 등록되지 않았습니다. 다시 한번 등록하세요.");
 			}
@@ -1431,7 +1431,7 @@ $(function(){
 					vo = {pno:pno, eno:eno, fix_day:fix_day, fix_rtime:fix_rtime, fix_day_start:fix_day_start, fix_day_end:fix_day_end,  rtype:rtype, normal_date:"", normal_rtime:"", clinic:clinic, memo:memo, writer:writer, regdate:regdate, updatewriter:updatewriter, updatedate:updatedate, result:result};
 				}
 			}
-			post_reservation_register(vo);
+			post_reservation_register(vo, storage_timetable_btn_num);
 			
 		}else if(idx == 2){//취소
 			

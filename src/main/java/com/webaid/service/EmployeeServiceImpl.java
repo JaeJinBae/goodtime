@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.webaid.domain.EmployeeVO;
+import com.webaid.domain.SearchCriteria;
 import com.webaid.persistence.EmployeeDao;
 
 @Service
@@ -30,6 +31,22 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Override
 	public EmployeeVO selectByEno(int eno) {
 		return dao.selectByEno(eno);
+	}
+	@Override
+	public List<EmployeeVO> listSearch(SearchCriteria cri) {
+		return dao.listSearch(cri);
+	}
+	@Override
+	public int listSearchCount(SearchCriteria cri) {
+		return dao.listSearchCount(cri);
+	}
+	@Override
+	public void update(EmployeeVO vo) {
+		dao.update(vo);
+	}
+	@Override
+	public void register(EmployeeVO vo) {
+		dao.register(vo);
 	}
 
 }

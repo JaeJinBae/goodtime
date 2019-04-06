@@ -537,10 +537,10 @@ function get_reservationList_byDate(date){
 	return dt;
 }
 
-function get_reservationList_byDate_byEmployee(date, type, eno){
+function get_reservationList_byDate_byEmployee(date, type, eno, week){
 	var dt;
 	$.ajax({
-		url:"${pageContext.request.contextPath}/reservationListByDateEno/"+date+"/"+type+"/"+eno,
+		url:"${pageContext.request.contextPath}/reservationListByDateEno/"+date+"/"+type+"/"+eno+"/"+week,
 		type: "get",
 		dataType:"json",
 		async:false,
@@ -988,13 +988,14 @@ function draw_week_reservation(week, etype, eno){
 	var json;
 	var str="";
 	var target_tag = "";
-	//var startDate = ;
+	var week_sDate = week[1];
+	var week_eDate = week[6];
+	
 	for(var i=1; i < week.length; i++){
-		json = get_reservationList_byDate_byEmployee(week[i], etype, eno) 
+		json = get_reservationList_byDate_byEmployee(week[i], etype, eno, week) 
 		week_reservation.push(json);
 	}
-	//console.log(week_reservation);
-	//console.log(week_reservation[0].normalVO[0].eno);
+	
 	$(week_reservation).each(function(){
 		$($(this)[0].normalVO).each(function(){
 			//console.log(this);
@@ -1024,7 +1025,6 @@ function draw_week_reservation(week, etype, eno){
 		})
 		$($(this)[0].fixVO).each(function(){
 			console.log(this);
-			if
 			patient = get_patient_by_pno(this.pno);
 			clinic = get_clinic_by_cno(this.clinic);
 			clinic_time = Number(clinic.time);
@@ -1044,8 +1044,9 @@ function draw_week_reservation(week, etype, eno){
 			if(minute == 0){
 				minute = "0"+minute;
 			}
-			
-			target_tag = "."+eno+"_"+this.normal_date+"_"+parseInt(Number(this.normal_rtime)/60);
+			var cs = $(".time_table_wrap > table tr > td > input[value='"+this.fix_day+"']").parent().parent().prop("class");
+			console.log(cs);
+			target_tag = "."+cs+"_"+parseInt(Number(this.fix_rtime)/60);
 			str = "<p class='patient_p_tag' style='background:"+clinic.color+";border:1px solid gray;'>"+minute+"~"+end_time+" "+patient.name+"<input type='hidden' value='"+this.rno+"'></p>";
 			$(target_tag).append(str);
 		})

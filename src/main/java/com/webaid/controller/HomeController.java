@@ -248,10 +248,10 @@ public class HomeController {
 		return entity;
 	}
 	
-	@RequestMapping(value="/reservationListByDateEno/{date}/{type}/{eno}", method=RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> get_reservationList_byDate_byEmployee(@PathVariable("date") String date, @PathVariable("type") String type, @PathVariable("eno") String eno) throws ParseException{
+	@RequestMapping(value="/reservationListByDateEno/{date}/{type}/{eno}/{week}", method=RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> get_reservationList_byDate_byEmployee(@PathVariable("date") String date, @PathVariable("type") String type, @PathVariable("eno") String eno, @PathVariable("week") String week) throws ParseException{
 		logger.info("reservationListByDateEno get");
-		
+		System.out.println(week);
 		ResponseEntity<Map<String, Object>> entity = null;
 		HashMap<String, Object> map=new HashMap<>();
 		SelectByDateEmployeeVO sbdeVO = new SelectByDateEmployeeVO();
@@ -265,6 +265,35 @@ public class HomeController {
 		
 		List<ReservationVO> normalVO = rService.selectByNormalDateEno(sbdeVO);
 		List<ReservationVO> fixVO = rService.selectByFixDayEno(sbdeVO);
+		
+		String[] splitWeek = week.split(",");
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		Date selectStartDate = format.parse(splitWeek[1]);
+		Date selectEndDate = format.parse(splitWeek[6]);
+
+		Date getStartDate;
+		Date getEndDate;
+		
+		for(int i=fixVO.size()-1; i >= 0; i--){
+			//list에 담긴 내용 체크하고 지우는 과정인데 앞에서부터 지우면 하나 지워지면 뒤에내용이 자동으로 당겨지므로 뒤에서부터 반복문돌면서 조건에 따라 remove
+			
+			getStartDate = format.parse(fixVO.get(i).getFix_day_start());
+			getEndDate = format.parse(fixVO.get(i).getFix_day_end());
+			
+			if(getStartDate.getTime() < selectStartDate.getTime() && getEndDate.getTime() < selectStartDate.getTime()){
+				//System.out.println("조건틀림"+reservationListFix.get(i));
+				fixVO.remove(i);
+			}else if(getStartDate.getTime() > selectEndDate.getTime() && getEndDate.getTime() > selectEndDate.getTime()){
+				fixVO.remove(i);
+			}else{
+				System.out.println("조건맞음"+fixVO.get(i));
+				
+			}
+			getStartDate = null;
+			getEndDate = null;
+		}
+		
+		
 		map.put("normalVO", normalVO);
 		map.put("fixVO", fixVO);
 		entity=new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);

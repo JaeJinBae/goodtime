@@ -602,7 +602,6 @@ function draw_time_table_by_case(idx){
 			table_txt += draw_total_time_table(select_date, "therapist");
 			$(".time_table_wrap").append(table_txt);
 			draw_reservation(select_date);
-			storage_timetable_btn_num = 0;
 			break;
 		case 1:
 			$(".week_select_box_wrap").css("display","none");
@@ -616,12 +615,13 @@ function draw_time_table_by_case(idx){
 			$(".time_table_wrap").html("");
 			storage_timetable_btn_num = 2;
 			$(".week_select_box_wrap").css("display","block");
-			draw_week_calendar($(".calendar_select_date").val(), get_employeeList_byType("doctor"), "doctor");
+			draw_week_calendar($(".calendar_select_date").val(), get_employeeList_byType("doctor"), "doctor", idx);
 			break;
 		case 3:
-			$(".week_select_box_wrap").css("display","none");
 			$(".time_table_wrap").html("");
 			storage_timetable_btn_num = 3;
+			$(".week_select_box_wrap").css("display","block");
+			draw_week_calendar($(".calendar_select_date").val(), get_employeeList_byType("doctor"), "doctor", idx);
 			break;
 		case 4:
 			$(".week_select_box_wrap").css("display","none");
@@ -635,12 +635,13 @@ function draw_time_table_by_case(idx){
 			$(".time_table_wrap").html("");
 			storage_timetable_btn_num = 5;
 			$(".week_select_box_wrap").css("display","block");
-			draw_week_calendar($(".calendar_select_date").val(), get_employeeList_byType("therapist"), "therapist");
+			draw_week_calendar($(".calendar_select_date").val(), get_employeeList_byType("therapist"), "therapist", idx);
 			break;
 		case 6:
-			$(".week_select_box_wrap").css("display","none");
 			$(".time_table_wrap").html("");
 			storage_timetable_btn_num = 6;
+			$(".week_select_box_wrap").css("display","block");
+			draw_week_calendar($(".calendar_select_date").val(), get_employeeList_byType("therapist"), "therapist", idx);
 			break;
 		case 7:
 			$(".week_select_box_wrap").css("display","none");
@@ -717,6 +718,7 @@ function draw_reservation(date){
 		}
 		
 	});
+	
 	
 	$(json.reservationListFix).each(function(){
 		patient = get_patient_by_pno(this.pno);
@@ -910,7 +912,7 @@ function post_reservation_register(vo){
 }
 
 //주간 선택하면 select 태그에 값 설정
-function draw_week_calendar(date, emp, type){
+function draw_week_calendar(date, emp, type, idxx){
 	
 	var today = $(".calendar_select_date").val();
 	var year = Number(today.substring(0,4));
@@ -933,13 +935,13 @@ function draw_week_calendar(date, emp, type){
 	$(".week_select_box_wrap > select[name='employee']").html(str);
 	str="";
 	
-	makeWeekSelectOptions(type);
+	makeWeekSelectOptions(type, idxx);
 	
 	
 	
 }
 
-function draw_week_timetable(etype){
+function draw_week_timetable(etype, idxx){
 	var week_time=get_hospitalInfo_byDay("주간");
 	var week_sTime=Number(week_time.start_time)/60;
 	var week_eTime=Number(week_time.end_time)/60;
@@ -980,77 +982,110 @@ function draw_week_timetable(etype){
 	
 	$(".time_table_wrap").html(str);
 	
-	draw_week_reservation(arrDate, etype, employee);
+	draw_week_reservation(arrDate, etype, employee, idxx);
 }
 
-function draw_week_reservation(week, etype, eno){
+function draw_week_reservation(week, etype, eno, idxx){
 	var week_reservation = [];
 	var json;
 	var str="";
 	var target_tag = "";
 	var week_sDate = week[1];
 	var week_eDate = week[6];
-	
+	console.log(idxx);
 	for(var i=1; i < week.length; i++){
 		json = get_reservationList_byDate_byEmployee(week[i], etype, eno, week) 
 		week_reservation.push(json);
 	}
-	
-	$(week_reservation).each(function(){
-		$($(this)[0].normalVO).each(function(){
-			//console.log(this);
-			patient = get_patient_by_pno(this.pno);
-			clinic = get_clinic_by_cno(this.clinic);
-			clinic_time = Number(clinic.time);
-			time = Number(this.normal_rtime);
-			hour = parseInt(time/60);
-			minute = time%60;
-			overMinute = (minute+clinic_time)-60;
-			
-			if(overMinute >= 0){
-				if(overMinute < 10){
-					overMinute = "0"+overMinute;
+	if(idxx == 3 || idxx == 6){
+		$(week_reservation).each(function(){
+			$($(this)[0].fixVO).each(function(){
+				console.log(this);
+				patient = get_patient_by_pno(this.pno);
+				clinic = get_clinic_by_cno(this.clinic);
+				clinic_time = Number(clinic.time);
+				time = Number(this.normal_rtime);
+				hour = parseInt(time/60);
+				minute = time%60;
+				overMinute = (minute+clinic_time)-60;
+				
+				if(overMinute >= 0){
+					if(overMinute < 10){
+						overMinute = "0"+overMinute;
+					}
+					end_time = (hour+1)+":"+overMinute;
+				}else{
+					end_time = minute+clinic_time;
 				}
-				end_time = (hour+1)+":"+overMinute;
-			}else{
-				end_time = minute+clinic_time;
-			}
-			if(minute == 0){
-				minute = "0"+minute;
-			}
-			
-			target_tag = "."+eno+"_"+this.normal_date+"_"+parseInt(Number(this.normal_rtime)/60);
-			str = "<p class='patient_p_tag' style='background:"+clinic.color+";border:1px solid gray;'>"+minute+"~"+end_time+" "+patient.name+"<input type='hidden' value='"+this.rno+"'></p>";
-			$(target_tag).append(str);
-		})
-		$($(this)[0].fixVO).each(function(){
-			console.log(this);
-			patient = get_patient_by_pno(this.pno);
-			clinic = get_clinic_by_cno(this.clinic);
-			clinic_time = Number(clinic.time);
-			time = Number(this.normal_rtime);
-			hour = parseInt(time/60);
-			minute = time%60;
-			overMinute = (minute+clinic_time)-60;
-			
-			if(overMinute >= 0){
-				if(overMinute < 10){
-					overMinute = "0"+overMinute;
+				if(minute == 0){
+					minute = "0"+minute;
 				}
-				end_time = (hour+1)+":"+overMinute;
-			}else{
-				end_time = minute+clinic_time;
-			}
-			if(minute == 0){
-				minute = "0"+minute;
-			}
-			var cs = $(".time_table_wrap > table tr > td > input[value='"+this.fix_day+"']").parent().parent().prop("class");
-			console.log(cs);
-			target_tag = "."+cs+"_"+parseInt(Number(this.fix_rtime)/60);
-			str = "<p class='patient_p_tag' style='background:"+clinic.color+";border:1px solid gray;'>"+minute+"~"+end_time+" "+patient.name+"<input type='hidden' value='"+this.rno+"'></p>";
-			$(target_tag).append(str);
-		})
-	});
+				var cs = $(".time_table_wrap > table tr > td > input[value='"+this.fix_day+"']").parent().parent().prop("class");
+				console.log(cs);
+				target_tag = "."+cs+"_"+parseInt(Number(this.fix_rtime)/60);
+				str = "<p class='patient_p_tag' style='background:#ffaf7a;border:1px solid gray;'>"+minute+"~"+end_time+" "+patient.name+"<input type='hidden' value='"+this.rno+"'></p>";
+				$(target_tag).append(str);
+			})
+		});
+		
+	}else{
+		$(week_reservation).each(function(){
+			$($(this)[0].normalVO).each(function(){
+				//console.log(this);
+				patient = get_patient_by_pno(this.pno);
+				clinic = get_clinic_by_cno(this.clinic);
+				clinic_time = Number(clinic.time);
+				time = Number(this.normal_rtime);
+				hour = parseInt(time/60);
+				minute = time%60;
+				overMinute = (minute+clinic_time)-60;
+				
+				if(overMinute >= 0){
+					if(overMinute < 10){
+						overMinute = "0"+overMinute;
+					}
+					end_time = (hour+1)+":"+overMinute;
+				}else{
+					end_time = minute+clinic_time;
+				}
+				if(minute == 0){
+					minute = "0"+minute;
+				}
+				
+				target_tag = "."+eno+"_"+this.normal_date+"_"+parseInt(Number(this.normal_rtime)/60);
+				str = "<p class='patient_p_tag' style='background:"+clinic.color+";border:1px solid gray;'>"+minute+"~"+end_time+" "+patient.name+"<input type='hidden' value='"+this.rno+"'></p>";
+				$(target_tag).append(str);
+			})
+			
+			$($(this)[0].fixVO).each(function(){
+				console.log(this);
+				patient = get_patient_by_pno(this.pno);
+				clinic = get_clinic_by_cno(this.clinic);
+				clinic_time = Number(clinic.time);
+				time = Number(this.normal_rtime);
+				hour = parseInt(time/60);
+				minute = time%60;
+				overMinute = (minute+clinic_time)-60;
+				
+				if(overMinute >= 0){
+					if(overMinute < 10){
+						overMinute = "0"+overMinute;
+					}
+					end_time = (hour+1)+":"+overMinute;
+				}else{
+					end_time = minute+clinic_time;
+				}
+				if(minute == 0){
+					minute = "0"+minute;
+				}
+				var cs = $(".time_table_wrap > table tr > td > input[value='"+this.fix_day+"']").parent().parent().prop("class");
+				console.log(cs);
+				target_tag = "."+cs+"_"+parseInt(Number(this.fix_rtime)/60);
+				str = "<p class='patient_p_tag' style='background:#ffaf7a;border:1px solid gray;'>"+minute+"~"+end_time+" "+patient.name+"<input type='hidden' value='"+this.rno+"'></p>";
+				$(target_tag).append(str);
+			})
+		});
+	}
 }
 
 
@@ -1331,11 +1366,11 @@ $(function(){
 	
 	//주간 select에서 주 변경되었을때 timetable 변경해서 삽입
 	$("#sh_week").change(function(){
-		draw_week_timetable("doctor");
+		draw_week_timetable("doctor", storage_timetable_btn_num);
 	})
 	//주간 select에서 의사 및 치료사 변경되었을때 timetable 변경해서 삽입
 	$(".week_select_box_wrap > select[name='employee']").change(function(){
-		draw_week_timetable("doctor");
+		draw_week_timetable("doctor", storage_timetable_btn_num);
 	});
 
 });

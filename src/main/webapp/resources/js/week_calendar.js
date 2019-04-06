@@ -1,4 +1,4 @@
-function makeWeekSelectOptions(type) {
+function makeWeekSelectOptions(type, idxx) {
     var year = $("#sh_year").val();
     var month = $("#sh_month").val();
  
@@ -49,6 +49,6 @@ function makeWeekSelectOptions(type) {
  
     if(seled) obj.value = seled;
     
-    draw_week_timetable(type);
+    draw_week_timetable(type, idxx);
     
 }

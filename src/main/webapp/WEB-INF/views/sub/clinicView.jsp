@@ -281,11 +281,19 @@ $(function(){
 			var code_type = $(".popup_clinic_register > table tr > td > select[name='code_type']").val();
 			var time = $(".popup_clinic_register > table tr > td > select[name='time']").val();
 			var color = $(".popup_clinic_register > table tr > td > input[name='color']").val();
-			
-			
-			var vo = {cno:cno, code_name:code_name, code_type:code_type, time:time, color:color}
-			
-			post_clinic_register(vo);
+
+			if(code_name == ""){
+				alert("코드명을 입력해주세요.");
+				return false;
+			}else if(color == ""){
+				alert("색깔을 입력해주세요.");
+				return false;
+			}else{
+				var vo = {cno:cno, code_name:code_name, code_type:code_type, time:time, color:color}
+				
+				post_clinic_register(vo);
+			}
+
 		}else{
 			$(".popup_clinic_register").css("display", "none");
 			$(".popup_wrap").css("display", "none");
@@ -309,9 +317,18 @@ $(function(){
 			var time = $(".popup_clinic_update > table tr > td > select[name='time']").val();
 			var color = $(".popup_clinic_update > table tr > td > input[name='color']").val();
 			
-			var vo = {cno:cno, code_name:code_name, code_type:code_type, time:time, color:color}
+			if(code_name == ""){
+				alert("코드명을 입력해주세요.");
+				return false;
+			}else if(color == ""){
+				alert("색깔을 입력해주세요.");
+				return false;
+			}else{
+				var vo = {cno:cno, code_name:code_name, code_type:code_type, time:time, color:color}
+				
+				post_clinic_update(vo);
+			}
 			
-			post_clinic_update(vo);
 		}else{
 			$(".popup_clinic_update").css("display", "none");
 			$(".popup_wrap").css("display", "none");

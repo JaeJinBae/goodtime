@@ -138,7 +138,7 @@
 			</tr>
 			<tr>
 				<th>ID</th>
-				<td><input type="text" name="id" value="" placeholder="영문, 숫자만 가능"><input type="hidden" name="id_check" value="no"><button class="id_duplication_check_btn">중복확인</button></td>
+				<td><input type="text" name="id" value="" placeholder="영문, 숫자만 가능" readonly="readonly"></td>
 			</tr>
 			<tr>
 				<th>비밀번호</th>

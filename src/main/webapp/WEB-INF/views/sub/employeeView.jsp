@@ -227,6 +227,20 @@ function post_employee_register(vo){
 		data:vo,
 		async:false,
 		success:function(json){
+			$(".popup_employee_register > input[name='eno']").val("");
+			$(".popup_employee_register > table tr > td > input[name='name']").val("");
+			$(".popup_employee_register > table tr > td > input[name='phone']").val("");
+			$(".popup_employee_register > table tr > td > select[name='type'] > option[value='doctor']").prop("selected",true);
+			$(".popup_employee_register > table tr > td > select[name='level'] > option[value='lv1']").prop("selected", true);
+			$(".popup_employee_register > table tr > td > input[name='id']").val("");
+			$(".popup_employee_register > table tr > td > input[name='id_check']").val("");
+			$(".popup_employee_register > table tr > td > input[name='pw']").val("");
+			$(".popup_employee_register > table tr > td > input[name='pwconfirm']").val("");
+			$(".popup_employee_register > table tr > td > input[name='birth']").val("");
+			$(".popup_employee_register > table tr > td > input[name='mail']").val("");
+			$(".popup_employee_register > table tr > td > select[name='gender']").val();
+			$(".popup_employee_register > table tr > td > input[name='memo']").val("");
+			
 			$(".popup_employee_register").css("display", "none");
 			$(".popup_wrap").css("display","none");
 			alert("직원등록이 완료되었습니다.");
@@ -248,6 +262,7 @@ function post_employee_update(employee){
 		success:function(json){
 			$(".popup_employee_update").css("display", "none");
 			$(".popup_wrap").css("display","none");
+			alert("직원정보수정이 완료되었습니다.");
 			draw_employee_table();
 		}
 	});
@@ -305,15 +320,44 @@ $(function(){
 			var type = $(".popup_employee_register > table tr > td > select[name='type']").val();
 			var level = $(".popup_employee_register > table tr > td > select[name='level']").val();
 			var id = $(".popup_employee_register > table tr > td > input[name='id']").val();
+			var id_check = $(".popup_employee_register > table tr > td > input[name='id_check']").val();
 			var pw = $(".popup_employee_register > table tr > td > input[name='pw']").val();
+			var pwConfirm = $(".popup_employee_register > table tr > td > input[name='pwconfirm']").val();
 			var birth = $(".popup_employee_register > table tr > td > input[name='birth']").val();
 			var mail = $(".popup_employee_register > table tr > td > input[name='mail']").val();
 			var gender = $(".popup_employee_register > table tr > td > select[name='gender']").val();
 			var memo = $(".popup_employee_register > table tr > td > input[name='memo']").val();
 			
-			var vo = {eno:eno, name:name, phone:phone, type:type, level:level, id:id, pw:pw, birth:birth, mail:mail, gender:gender, memo:memo, offday_fix:"", offday_normal:""}
 			
-			post_employee_register(vo);
+			if(name == "" || name == null){
+				alert("이름을 입력해주세요.");
+				return false;
+			}else if(phone == "" || phone == null){
+				alert("연락처를 입력해주세요.");
+				return false;
+			}else if(id == "" || id == null){
+				alert("ID를 입력해주세요.");
+				return false;
+			}else if(id_check== "no"){
+				alert("사용할 수 없는 아이디입니다. 중복확인을 해주세요.");
+				return false;
+			}else if(pw == "" || pw == null){
+				alert("비밀번호를 입력해주세요.");
+				return false;
+			}else if(pw != pwConfirm){
+				alert("비밀번호와 비밀번호확인이 일치하지 않습니다.");
+				return false;
+			}else if(birth == "" || birth == null){
+				alert("생년월일을 입력해주세요.");
+				return false;
+			}else{
+				var vo = {eno:eno, name:name, phone:phone, type:type, level:level, id:id, pw:pw, birth:birth, mail:mail, gender:gender, memo:memo, offday_fix:"", offday_normal:""}
+				
+				post_employee_register(vo);
+			}
+			
+			
+			
 		}else{
 			$(".popup_employee_register").css("display", "none");
 			$(".popup_wrap").css("display", "none");
@@ -351,16 +395,32 @@ $(function(){
 			var type = $(".popup_employee_update > table tr > td > select[name='type']").val();
 			var level = $(".popup_employee_update > table tr > td > select[name='level']").val();
 			var id = $(".popup_employee_update > table tr > td > input[name='id']").val();
+
 			var pw = $(".popup_employee_update > table tr > td > input[name='pw']").val();
-			var pw_confirm = $(".popup_employee_update > table tr > td > input[name='pwconfirm']").val();
+			var pwConfirm = $(".popup_employee_update > table tr > td > input[name='pwconfirm']").val();
 			var birth = $(".popup_employee_update > table tr > td > input[name='birth']").val();
 			var mail = $(".popup_employee_update > table tr > td > input[name='mail']").val();
 			var gender = $(".popup_employee_update > table tr > td > select[name='gender']").val();
 			var memo = $(".popup_employee_update > table tr > td > input[name='memo']").val();
 			
-			var vo = {eno:eno, name:name, phone:phone, type:type, level:level, id:id, pw:pw, birth:birth, mail:mail, gender:gender, memo:memo, offday_fix:"", offday_normal:""}
+			if(name == "" || name == null){
+				alert("이름을 입력해주세요.");
+				return false;
+			}else if(phone == "" || phone == null){
+				alert("연락처를 입력해주세요.");
+				return false;
+			}else if(pw != pwConfirm){
+				alert("비밀번호와 비밀번호확인이 일치하지 않습니다.");
+				return false;
+			}else if(birth == "" || birth == null){
+				alert("생년월일을 입력해주세요.");
+				return false;
+			}else{
+				var vo = {eno:eno, name:name, phone:phone, type:type, level:level, id:id, pw:pw, birth:birth, mail:mail, gender:gender, memo:memo, offday_fix:"", offday_normal:""}
+				
+				post_employee_update(vo);
+			}
 			
-			post_employee_update(vo);
 		}else{
 			$(".popup_employee_update").css("display", "none");
 			$(".popup_wrap").css("display", "none");

@@ -1125,7 +1125,8 @@ $(function(){
 	//달력 생성
 	buildCalendar();
 	
-	$(".calendar_select_date").val(get_today());
+	//$(".calendar_select_date").val(get_today());
+	$(".calendar_select_date").val("2019-04-08");
 	
 	//날짜마다 요일 표시
 	write_yoil();

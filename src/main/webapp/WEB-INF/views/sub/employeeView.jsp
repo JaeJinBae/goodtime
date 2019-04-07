@@ -156,7 +156,7 @@ function draw_employee_table(info){
 	}else{
 		$(json.employeeListAll).each(function(){
 			str += "<tr><td><input type='hidden' name='eno' value='"+this.eno+"'></td><td>"+this.name+"</td><td><p class='employee_update_btn'>수정</p></td>"
-				+"<td>"+this.type+"</td><td>"+this.birth+"</td><td>"+this.phone+"</td><td>"+this.id+"</td><td>"+this.memo+"</td>";
+				+"<td>"+this.type+"</td><td>"+this.birth+"</td><td>"+this.phone+"</td><td>"+this.id+"</td><td>"+this.memo+"</td></tr>";
 		});
 	}
 	str += "</table>";
@@ -335,11 +335,11 @@ $(function(){
 	});
 	
 	//직원 수정버튼 클릭
-	$(".employee_update_btn").click(function(){
+	$(document).on("click", ".employee_update_btn", function(){
 		var eno = $(this).parent().parent().find("input[name='eno']").val();
 		console.log("click");
 		draw_employee_update_view(eno);
-	})
+	});
 	
 	//직원 수정 popup에서 버튼 클릭
 	$(".popup_employee_update_submit_wrap > p").click(function(){
@@ -382,9 +382,9 @@ $(function(){
 			<div class="aside1">
 				<div class="select_btn_wrap">
 					<select name="searchType">
-						<option value="name" ${cri.searchType=='t'?'selected':''}>이름</option>
-						<option value="id" ${cri.searchType=='c'?'selected':''}>ID</option>
-						<option value="phone" ${cri.searchType=='c'?'selected':''}>연락처</option>
+						<option value="name" ${cri.searchType=='name'?'selected':''}>이름</option>
+						<option value="id" ${cri.searchType=='id'?'selected':''}>ID</option>
+						<option value="phone" ${cri.searchType=='phone'?'selected':''}>연락처</option>
 					</select> 
 					<input type="text" name="keyword" id="keywordInput" value="">
 					<button id="searchBtn">검색</button>

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.webaid.domain.ClinicVO;
+import com.webaid.domain.SearchCriteria;
 import com.webaid.persistence.ClinicDao;
 
 @Service
@@ -37,6 +38,21 @@ public class ClinicServiceImpl implements ClinicService {
 	@Override
 	public void delete(int cno) {
 		dao.delete(cno);
+	}
+
+	@Override
+	public List<ClinicVO> listSearch(SearchCriteria cri) {
+		return dao.listSearch(cri);
+	}
+
+	@Override
+	public int listSearchCount(SearchCriteria cri) {
+		return dao.listSearchCount(cri);
+	}
+
+	@Override
+	public void register(ClinicVO vo) {
+		dao.register(vo);
 	}
 
 	

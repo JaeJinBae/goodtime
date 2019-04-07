@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.webaid.domain.ClinicVO;
+import com.webaid.domain.SearchCriteria;
 
 @Repository
 public class ClinicDaoImpl implements ClinicDao {
@@ -39,6 +40,21 @@ public class ClinicDaoImpl implements ClinicDao {
 	@Override
 	public void delete(int cno) {
 		session.delete(namespace+".delete", cno);
+	}
+
+	@Override
+	public List<ClinicVO> listSearch(SearchCriteria cri) {
+		return session.selectList(namespace+".listSearch", cri);
+	}
+
+	@Override
+	public int listSearchCount(SearchCriteria cri) {
+		return session.selectOne(namespace+".listSearchCount", cri);
+	}
+
+	@Override
+	public void register(ClinicVO vo) {
+		session.insert(namespace+".register", vo);
 	}
 
 	

@@ -173,13 +173,7 @@ public class HomeController {
 		return entity;
 	}
 	
-	@RequestMapping(value="/clinicGetByCno/{cno}", method=RequestMethod.GET)
-	public ResponseEntity<ClinicVO> clinicGetByCno(@PathVariable("cno") String cno){
-		ResponseEntity<ClinicVO> entity = null;
-		ClinicVO vo = cService.selectOneByCno(Integer.parseInt(cno));
-		entity = new ResponseEntity<ClinicVO>(vo, HttpStatus.OK);
-		return entity;
-	}
+	
 	
 	
 	
@@ -412,7 +406,7 @@ public class HomeController {
 	
 	@RequestMapping(value="employeeAllGet", method=RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> employeeAllGet(@ModelAttribute("cri") SearchCriteria cri) throws Exception{
-		logger.info("patient all Get");
+		logger.info("employee All Get");
 		
 		ResponseEntity<Map<String, Object>> entity = null;
 		HashMap<String, Object> map=new HashMap<>();
@@ -504,6 +498,87 @@ public class HomeController {
 		
 		return entity;
 	}
+	
+	@RequestMapping(value="/clinicView", method=RequestMethod.GET)
+	public String clinicViewGet(){
+		logger.info("clinicView Get");
+		
+		return "sub/clinicView";
+	}
+	
+	@RequestMapping(value="clinicAllGet", method=RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> clinicAllGet(@ModelAttribute("cri") SearchCriteria cri) throws Exception{
+		logger.info("clinic all Get");
+		
+		ResponseEntity<Map<String, Object>> entity = null;
+		HashMap<String, Object> map=new HashMap<>();
+		
+		List<ClinicVO> clinicListAll = cService.listSearch(cri);
+		System.out.println("넘겨받은 페이지는 "+cri.getPage());
+		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.makeSearch(cri.getPage());
+		pageMaker.setTotalCount(cService.listSearchCount(cri));
+		System.out.println(pageMaker.makeSearch(cri.getPage()));
+		map.put("clinicListAll", clinicListAll);
+		map.put("pageMaker", pageMaker);
+		
+		entity = new ResponseEntity<Map<String,Object>>(map, HttpStatus.OK);
+		return entity;
+	}
+	
+	@RequestMapping(value="/clinicGetByCno/{cno}", method=RequestMethod.GET)
+	public ResponseEntity<ClinicVO> clinicGetByCno(@PathVariable("cno") String cno){
+		ResponseEntity<ClinicVO> entity = null;
+		ClinicVO vo = cService.selectOneByCno(Integer.parseInt(cno));
+		entity = new ResponseEntity<ClinicVO>(vo, HttpStatus.OK);
+		return entity;
+	}
+	
+	@RequestMapping(value="/clinicRegister", method=RequestMethod.POST)
+	public ResponseEntity<String> clinicRegister(ClinicVO clinic){
+		logger.info("clinic register Post");
+		ResponseEntity<String> entity = null;
+		System.out.println(clinic);
+		try {
+			cService.register(clinic);
+			entity = new ResponseEntity<>("ok", HttpStatus.OK);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return entity;
+	}
+	
+	@RequestMapping(value="/clinicUpdate", method=RequestMethod.POST)
+	public ResponseEntity<String> clinicUpdate(ClinicVO clinic){
+		logger.info("clinic update Post");
+		ResponseEntity<String> entity = null;
+		
+		try {
+			cService.update(clinic);
+			entity = new ResponseEntity<String>("ok", HttpStatus.OK);
+		} catch (Exception e) {
+			entity = new ResponseEntity<String>("no", HttpStatus.OK);
+			e.getMessage();
+		}
+		return entity;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

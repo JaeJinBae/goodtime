@@ -539,7 +539,7 @@ function get_employee_byEno(eno){
 	var dt;
 	
 	$.ajax({
-		url:"${pageContext.request.contextPath}/employeeGetByEno"+eno,
+		url:"${pageContext.request.contextPath}/employeeGetByEno/"+eno,
 		type:"get",
 		dataTyp:"json",
 		async:false,

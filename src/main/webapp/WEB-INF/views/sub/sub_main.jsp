@@ -936,7 +936,7 @@ function draw_simple_reservation_view(type, rno){
 		+ "<tr><td class='tbl_content_pName'>"+patient.name+"("+patient.cno+")님 ▶"+ employee.name+"</td></tr>"
 		+"<tr><th class='tbl_content_title'>- 예약일시</th></tr>";
 		
-	if(json.rtype == '일반진료' || json.rtype == '일반치료'){
+	if(json.rtype == 'nc' || json.rtype == 'nt'){
 		rtime = Number(json.rtime);
 		hour = parseInt(rtime/60);
 		minute = rtime%60;
@@ -960,8 +960,8 @@ function draw_simple_reservation_view(type, rno){
 		
 		str += "<tr><td class='tbl_content'>"+json.rdate+" "+start_time+"~"+end_time+"</td></tr>"
 			+"<tr><th class='tbl_content_title'>- 진료종류</th></tr>";
-	}else if(json.rtype == '고정진료' || json.rtype == '고정치료'){
-		rtime = Number(json.fix_rtime);
+	}else if(json.rtype == 'fc' || json.rtype == 'ft'){
+		rtime = Number(json.rtime);
 		hour = parseInt(rtime/60);
 		minute = rtime%60;
 		overMinute = (minute+clinic_time)-60;
@@ -1512,9 +1512,10 @@ $(function(){
 				var pno = $("#reservation_view_btn > input[name='pno']").val();
 				var eno = $(".popup_reservation_register > table tr td > select[name='eno']").val();
 				var rtype = $(".popup_reservation_register > table tr td > select[name='rtype']").val();
-				var normal_date = split_date[0]+"";
-				var normal_time_minute = Number($(".popup_reservation_register > table tr td > select[name='normal_time_minute']").val());
-				var normal_rtime = (Number(split_date[1])*60)+normal_time_minute+"";
+				
+				var rdate = split_date[0]+"";
+				var rtime_minute = Number($(".popup_reservation_register > table tr td > select[name='rtime_minute']").val());
+				var rtime = (Number(split_date[1])*60)+normal_time_minute+"";
 				var fix_day = $(".popup_reservation_register > table tr > td > select[name='fix_day']").val();
 				var fix_rtime1 = Number($(".popup_reservation_register > table tr > td > select[name='fix_rtime1']").val())*60;
 				var fix_rtime2 = Number($(".popup_reservation_register > table tr > td > select[name='fix_rtime2']").val());
@@ -1530,11 +1531,11 @@ $(function(){
 				var desk_state="";
 				var therapist_state="";
 				var result = "";
-				console.log(jQuery.type(fix_rtime));
-				if(rtype == "일반진료"){
+				
+				if(rtype == "nc"){
 					vo = {pno:pno, eno:eno, fix_day:"", fix_date:"", fix_rtime:"", fix_day_start:"", fix_day_end:"", rtype:rtype, normal_date:normal_date, normal_rtime:normal_rtime, clinic:clinic, memo:memo, writer:writer, regdate:regdate, updatewriter:updatewriter, updatedate:updatedate, desk_state:"", therapist_state:"", result:result};
 					post_reservation_register(vo, storage_timetable_btn_num);
-				}else if(rtype == "고정진료"){
+				}else if(rtype == "fc"){
 					vo = {pno:pno, eno:eno, fix_day:fix_day, fix_date:"", fix_rtime:fix_rtime, fix_day_start:fix_day_start, fix_day_end:fix_day_end, rtype:rtype, normal_date:"", normal_rtime:"", clinic:clinic, memo:memo, writer:writer, regdate:regdate, updatewriter:updatewriter, updatedate:updatedate, desk_state:"", therapist_state:"", result:result};
 					post_fix_reservation_register(vo, storage_timetable_btn_num)
 				}

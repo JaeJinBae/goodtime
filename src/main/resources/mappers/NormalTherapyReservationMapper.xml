@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.webaid.mappers.NormalTherapyReservationMapper">
+
+	<select id="selectAll" resultType="NormalTherapyReservationVO">
+		select * from normal_therapy_reservation order by rtime asc
+	</select>
+	
+	<select id="selectByDate" resultType="NormalTherapyReservationVO">
+		select * from normal_therapy_reservation where rdate=#{rdate} order by rtime asc
+	</select>
+	
+	<select id="selectByRno" resultType="NormalTherapyReservationVO">
+		select * from normal_therapy_reservation where rno=#{rno}
+	</select>
+	
+	<select id="selectByDateEno" resultType="NormalTherapyReservationVO">
+		select * from normal_therapy_reservation where rdate=#{rdate} and eno=#{eno}
+	</select>
+	
+	<insert id="register">
+		insert into normal_therapy_reservation values(#{rno}, #{pno}, #{eno}, #{memo}, #{clinic}, #{rtype}, #{rdate}, #{rtime}, #{writer}, #{regdate}, #{updatedate}, #{updatewriter}, #{desk_state}, #{therapist_state}, #{result}, #{result_memo})
+	</insert>
+	
+</mapper>

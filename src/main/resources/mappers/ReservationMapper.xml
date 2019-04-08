@@ -29,7 +29,7 @@
 	</select>
 	
 	<insert id="register">
-		insert into reservation values(#{rno}, #{pno}, #{eno}, #{memo}, #{clinic}, #{rtype}, #{normal_date}, #{normal_rtime}, #{fix_day}, #{fix_rtime}, #{fix_day_start}, #{fix_day_end}, #{writer}, #{regdate}, #{updatedate}, #{updatewriter}, #{desk_state}, #{therapist_state}, #{result})
+		insert into reservation values(#{rno}, #{pno}, #{eno}, #{memo}, #{clinic}, #{rtype}, #{normal_date}, #{normal_rtime}, #{fix_day}, #{fix_rtime}, #{fix_date}, #{fix_day_start}, #{fix_day_end}, #{writer}, #{regdate}, #{updatedate}, #{updatewriter}, #{desk_state}, #{therapist_state}, #{result})
 	</insert>
 	
 </mapper>

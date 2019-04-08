@@ -1,28 +1,27 @@
 package com.webaid.domain;
 
-public class ReservationVO {
+public class FixTherapyReservationVO {
 	private int rno;
 	private int pno;
 	private int eno;
 	private String memo;
 	private String clinic;
 	private String rtype;
-	private String normal_date;
-	private String normal_rtime;
+	private String rdate;
+	private String rtime;
 	private String fix_day;
-	private String fix_date;
-	private String fix_rtime;
 	private String fix_day_start;
 	private String fix_day_end;
 	private String writer;
 	private String regdate;
-	private String updatedate;
 	private String updatewriter;
+	private String updatedate;
 	private String desk_state;
 	private String therapist_state;
 	private String result;
+	private String result_memo;
 
-	public ReservationVO() {
+	public FixTherapyReservationVO() {
 		super();
 	}
 
@@ -74,20 +73,20 @@ public class ReservationVO {
 		this.rtype = rtype;
 	}
 
-	public String getNormal_date() {
-		return normal_date;
+	public String getRdate() {
+		return rdate;
 	}
 
-	public void setNormal_date(String normal_date) {
-		this.normal_date = normal_date;
+	public void setRdate(String rdate) {
+		this.rdate = rdate;
 	}
 
-	public String getNormal_rtime() {
-		return normal_rtime;
+	public String getRtime() {
+		return rtime;
 	}
 
-	public void setNormal_rtime(String normal_rtime) {
-		this.normal_rtime = normal_rtime;
+	public void setRtime(String rtime) {
+		this.rtime = rtime;
 	}
 
 	public String getFix_day() {
@@ -96,22 +95,6 @@ public class ReservationVO {
 
 	public void setFix_day(String fix_day) {
 		this.fix_day = fix_day;
-	}
-
-	public String getFix_date() {
-		return fix_date;
-	}
-
-	public void setFix_date(String fix_date) {
-		this.fix_date = fix_date;
-	}
-
-	public String getFix_rtime() {
-		return fix_rtime;
-	}
-
-	public void setFix_rtime(String fix_rtime) {
-		this.fix_rtime = fix_rtime;
 	}
 
 	public String getFix_day_start() {
@@ -146,20 +129,20 @@ public class ReservationVO {
 		this.regdate = regdate;
 	}
 
-	public String getUpdatedate() {
-		return updatedate;
-	}
-
-	public void setUpdatedate(String updatedate) {
-		this.updatedate = updatedate;
-	}
-
 	public String getUpdatewriter() {
 		return updatewriter;
 	}
 
 	public void setUpdatewriter(String updatewriter) {
 		this.updatewriter = updatewriter;
+	}
+
+	public String getUpdatedate() {
+		return updatedate;
+	}
+
+	public void setUpdatedate(String updatedate) {
+		this.updatedate = updatedate;
 	}
 
 	public String getDesk_state() {
@@ -186,25 +169,22 @@ public class ReservationVO {
 		this.result = result;
 	}
 
-	@Override
-	public String toString() {
-		return "ReservationVO [rno=" + rno + ", pno=" + pno + ", eno=" + eno + ", memo=" + memo + ", clinic=" + clinic
-				+ ", rtype=" + rtype + ", normal_date=" + normal_date + ", normal_rtime=" + normal_rtime + ", fix_day="
-				+ fix_day + ", fix_date=" + fix_date + ", fix_rtime=" + fix_rtime + ", fix_day_start=" + fix_day_start
-				+ ", fix_day_end=" + fix_day_end + ", writer=" + writer + ", regdate=" + regdate + ", updatedate="
-				+ updatedate + ", updatewriter=" + updatewriter + ", desk_state=" + desk_state + ", therapist_state="
-				+ therapist_state + ", result=" + result + ", getRno()=" + getRno() + ", getPno()=" + getPno()
-				+ ", getEno()=" + getEno() + ", getMemo()=" + getMemo() + ", getClinic()=" + getClinic()
-				+ ", getRtype()=" + getRtype() + ", getNormal_date()=" + getNormal_date() + ", getNormal_rtime()="
-				+ getNormal_rtime() + ", getFix_day()=" + getFix_day() + ", getFix_date()=" + getFix_date()
-				+ ", getFix_rtime()=" + getFix_rtime() + ", getFix_day_start()=" + getFix_day_start()
-				+ ", getFix_day_end()=" + getFix_day_end() + ", getWriter()=" + getWriter() + ", getRegdate()="
-				+ getRegdate() + ", getUpdatedate()=" + getUpdatedate() + ", getUpdatewriter()=" + getUpdatewriter()
-				+ ", getDesk_state()=" + getDesk_state() + ", getTherapist_state()=" + getTherapist_state()
-				+ ", getResult()=" + getResult() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode()
-				+ ", toString()=" + super.toString() + "]";
+	public String getResult_memo() {
+		return result_memo;
 	}
 
-	
+	public void setResult_memo(String result_memo) {
+		this.result_memo = result_memo;
+	}
+
+	@Override
+	public String toString() {
+		return "FixTherapyReservationVO [rno=" + rno + ", pno=" + pno + ", eno=" + eno + ", memo=" + memo + ", clinic="
+				+ clinic + ", rtype=" + rtype + ", rdate=" + rdate + ", rtime=" + rtime + ", fix_day=" + fix_day
+				+ ", fix_day_start=" + fix_day_start + ", fix_day_end=" + fix_day_end + ", writer=" + writer
+				+ ", regdate=" + regdate + ", updatewriter=" + updatewriter + ", updatedate=" + updatedate
+				+ ", desk_state=" + desk_state + ", therapist_state=" + therapist_state + ", result=" + result
+				+ ", result_memo=" + result_memo + "]";
+	}
 
 }

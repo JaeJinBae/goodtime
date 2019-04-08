@@ -25,8 +25,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.webaid.domain.ClinicVO;
 import com.webaid.domain.EmployeeVO;
+import com.webaid.domain.FixClinicReservationVO;
+import com.webaid.domain.FixTherapyReservationVO;
 import com.webaid.domain.HospitalInfoVO;
 import com.webaid.domain.IdPwVO;
+import com.webaid.domain.NormalClinicReservationVO;
+import com.webaid.domain.NormalTherapyReservationVO;
 import com.webaid.domain.PageMaker;
 import com.webaid.domain.PatientVO;
 import com.webaid.domain.ReservationVO;
@@ -34,7 +38,11 @@ import com.webaid.domain.SearchCriteria;
 import com.webaid.domain.SelectByDateEmployeeVO;
 import com.webaid.service.ClinicService;
 import com.webaid.service.EmployeeService;
+import com.webaid.service.FixClinicReservationService;
+import com.webaid.service.FixTherapyReservationService;
 import com.webaid.service.HospitalInfoService;
+import com.webaid.service.NormalClinicReservationService;
+import com.webaid.service.NormalTherapyReservationService;
 import com.webaid.service.PatientService;
 import com.webaid.service.ReservationService;
 import com.webaid.util.DayGetUtil;
@@ -53,6 +61,15 @@ public class HomeController {
 	
 	@Autowired
 	private ReservationService rService;
+	
+	@Autowired
+	private NormalClinicReservationService ncrService;
+	@Autowired
+	private NormalTherapyReservationService ntrService;
+	@Autowired
+	private FixClinicReservationService fcrService;
+	@Autowired
+	private FixTherapyReservationService ftrService;
 	
 	@Autowired
 	private PatientService pService;
@@ -189,33 +206,20 @@ public class HomeController {
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 			Date selectDate = format.parse(date);
 			
-			List<ReservationVO> reservationListNormal = rService.selectByDate(date);
-			List<ReservationVO> reservationListFix = rService.selectByFixDay(day);
-
-			Date getStartDate;
-			Date getEndDate;
+			//List<ReservationVO> reservationListNormal = rService.selectByDate(date);
+			//List<ReservationVO> reservationListFix = rService.selectByFixDay(day);
 			
-			for(int i=reservationListFix.size()-1; i >= 0; i--){
-				//list에 담긴 내용 체크하고 지우는 과정인데 앞에서부터 지우면 하나 지워지면 뒤에내용이 자동으로 당겨지므로 뒤에서부터 반복문돌면서 조건에 따라 remove
-				reservationListFix.get(i).getFix_day_start();
-				getStartDate = format.parse(reservationListFix.get(i).getFix_day_start());
-				getEndDate = format.parse(reservationListFix.get(i).getFix_day_end());
-				
-				if(selectDate.getTime() >= getStartDate.getTime() && selectDate.getTime() <= getEndDate.getTime()){
-					//System.out.println("조건맞음"+reservationListFix.get(i));
-				}else if(selectDate.getTime() <= getStartDate.getTime() || selectDate.getTime() >= getEndDate.getTime()){
-					//System.out.println("조건틀림"+reservationListFix.get(i));
-					reservationListFix.remove(i);
-				}else{
-					System.out.println("조건틀림2"+reservationListFix.get(i));
-					reservationListFix.remove(i);
-				}
-				getStartDate = null;
-				getEndDate = null;
-			}
+			List<NormalClinicReservationVO> ncReservationList = ncrService.selectByDate(date);
+			List<NormalTherapyReservationVO> ntReservationList = ntrService.selectByDate(date);
+			List<FixClinicReservationVO> fcReservationList = fcrService.selectByDate(date);
+			List<FixTherapyReservationVO> ftReservationList = ftrService.selectByDate(date);
 			
-			map.put("reservationListNormal", reservationListNormal);
-			map.put("reservationListFix", reservationListFix);
+			//map.put("reservationListNormal", reservationListNormal);
+			//map.put("reservationListFix", reservationListFix);
+			map.put("ncReservationList", ncReservationList);
+			map.put("ntReservationList", ntReservationList);
+			map.put("fcReservationList", fcReservationList);
+			map.put("ftReservationList", ftReservationList);
 			
 			entity=new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
 			
@@ -302,17 +306,71 @@ public class HomeController {
 		return entity;
 	}
 
-	@RequestMapping(value="/reservationInfoByRno/{rno}", method=RequestMethod.GET)
-	public ResponseEntity<ReservationVO> rservationInfoByRno(@PathVariable("rno") int rno){
+	@RequestMapping(value="/reservationInfoByRno/{type}/{rno}", method=RequestMethod.GET)
+	public ResponseEntity<ReservationVO> rservationInfoByRno(@PathVariable("type") String type, @PathVariable("rno") int rno){
 		logger.info("reservationInfoByRno GET");
 		ResponseEntity<ReservationVO> entity=null;
-		
+		if(type.equals("nc")){
+			
+		}
 		try {
 			ReservationVO vo=rService.selectByRno(rno);
 			entity = new ResponseEntity<ReservationVO>(vo, HttpStatus.OK);
 			return entity;
 		} catch (Exception e) {
 			
+		}
+		return entity;
+	}
+	
+	@RequestMapping(value="/ncReservationInfoByRno/{rno}", method=RequestMethod.GET)
+	public ResponseEntity<NormalClinicReservationVO> ncReservationByRno(@PathVariable("rno") int rno){
+		ResponseEntity<NormalClinicReservationVO> entity = null;
+		try {
+			NormalClinicReservationVO vo = ncrService.selectByRno(rno);
+			entity = new ResponseEntity<NormalClinicReservationVO>(vo, HttpStatus.OK);
+		} catch (Exception e) {
+			e.getMessage();
+			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		return entity;
+	}
+	
+	@RequestMapping(value="/ntReservationInfoByRno/{rno}", method=RequestMethod.GET)
+	public ResponseEntity<NormalTherapyReservationVO> ntReservationByRno(@PathVariable("rno") int rno){
+		ResponseEntity<NormalTherapyReservationVO> entity = null;
+		try {
+			NormalTherapyReservationVO vo = ntrService.selectByRno(rno);
+			entity = new ResponseEntity<NormalTherapyReservationVO>(vo, HttpStatus.OK);
+		} catch (Exception e) {
+			e.getMessage();
+			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		return entity;
+	}
+	
+	@RequestMapping(value="/fcReservationInfoByRno/{rno}", method=RequestMethod.GET)
+	public ResponseEntity<FixClinicReservationVO> fcReservationByRno(@PathVariable("rno") int rno){
+		ResponseEntity<FixClinicReservationVO> entity = null;
+		try {
+			FixClinicReservationVO vo = fcrService.selectByRno(rno);
+			entity = new ResponseEntity<FixClinicReservationVO>(vo, HttpStatus.OK);
+		} catch (Exception e) {
+			e.getMessage();
+			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		return entity;
+	}
+	
+	@RequestMapping(value="/ftReservationInfoByRno/{rno}", method=RequestMethod.GET)
+	public ResponseEntity<FixTherapyReservationVO> ftReservationByRno(@PathVariable("rno") int rno){
+		ResponseEntity<FixTherapyReservationVO> entity = null;
+		try {
+			FixTherapyReservationVO vo = ftrService.selectByRno(rno);
+			entity = new ResponseEntity<FixTherapyReservationVO>(vo, HttpStatus.OK);
+		} catch (Exception e) {
+			e.getMessage();
+			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		return entity;
 	}

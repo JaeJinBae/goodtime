@@ -179,9 +179,9 @@
 				<th>예약구분</th>
 				<td>
 					<select name="rtype">
-						<option value="일반진료">일반예약</option>
-						<option value="고정진료">고정예약</option>
-						<option value="희망예약">희망예약</option>
+						<option value="nc">일반예약</option>
+						<option value="fc">고정예약</option>
+						<option value="ch">희망예약</option>
 					</select>
 				</td>
 			</tr>
@@ -254,9 +254,9 @@
 				<th>예약구분</th>
 				<td>
 					<select name="rtype">
-						<option value="일반치료">일반예약</option>
-						<option value="고정치료">고정예약</option>
-						<option value="희망예약">희망예약</option>
+						<option value="nt">일반예약</option>
+						<option value="ft">고정예약</option>
+						<option value="th">희망예약</option>
 					</select>
 				</td>
 			</tr>

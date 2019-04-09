@@ -137,7 +137,7 @@
 	</div><!-- popup_patientUpdate end -->
 	
 	<!-- 진료일정등록 -->
-	<div class="popup_reservation_register popup_content popup_content2">
+	<div class="popup_clinic_reservation_register popup_content popup_content2">
 		<h2><span></span>진료일정등록</h2>
 		<table>
 			<tr>
@@ -165,7 +165,7 @@
 				<th>예약시간</th>
 				<td>
 					<span class="popup_reservation_register_date"></span>시
-					<select name="normal_time_minute">
+					<select name="rtime_minute">
 						<option value="0">00분</option>
 						<option value="10">10분</option>
 						<option value="20">20분</option>
@@ -199,26 +199,8 @@
 				</td>
 			</tr>
 			<tr>
-				<th>고정예약시간</th>
-				<td>
-					<select name="fix_rtime1">
-						
-					</select>
-				</td>
-				<td>
-					<select name="fix_rtime2">
-						<option value="0">00분</option>
-						<option value="10">10분</option>
-						<option value="20">20분</option>
-						<option value="30">30분</option>
-						<option value="40">40분</option>
-						<option value="50">50분</option>
-					</select>
-				</td>
-			</tr>
-			<tr>
 				<th>고정예약시작일</th>
-				<td><input type="text" name="fix_day_start" placeholder="ex) 2019-01-01"></td>
+				<td><input type="text" name="fix_day_start" placeholder="ex) 2019-01-01" readonly="readonly"></td>
 			</tr>
 			<tr>
 				<th>고정예약종료일</th>
@@ -264,7 +246,7 @@
 				<th>예약시간</th>
 				<td>
 					<span class="popup_reservation_register_date"></span>시
-					<select name="normal_time_minute">
+					<select name="rtime_minute">
 						<option value="0">00분</option>
 						<option value="10">10분</option>
 						<option value="20">20분</option>
@@ -299,26 +281,8 @@
 				</td>
 			</tr>
 			<tr>
-				<th>고정예약시간</th>
-				<td>
-					<select name="fix_rtime1">
-						
-					</select>
-				</td>
-				<td>
-					<select name="fix_rtime2">
-						<option value="0">00분</option>
-						<option value="10">10분</option>
-						<option value="20">20분</option>
-						<option value="30">30분</option>
-						<option value="40">40분</option>
-						<option value="50">50분</option>
-					</select>
-				</td>
-			</tr>
-			<tr>
 				<th>고정예약시작일</th>
-				<td><input type="text" name="fix_day_start" placeholder="ex) 2019-01-01"></td>
+				<td><input type="text" name="fix_day_start" placeholder="ex) 2019-01-01" readonly="readonly"></td>
 			</tr>
 			<tr>
 				<th>고정예약종료일</th>

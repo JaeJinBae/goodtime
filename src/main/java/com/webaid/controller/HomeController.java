@@ -1,16 +1,21 @@
 package com.webaid.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +25,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.webaid.domain.ClinicVO;
 import com.webaid.domain.EmployeeVO;
@@ -33,6 +40,7 @@ import com.webaid.domain.NormalClinicReservationVO;
 import com.webaid.domain.NormalTherapyReservationVO;
 import com.webaid.domain.PageMaker;
 import com.webaid.domain.PatientVO;
+import com.webaid.domain.ReservationListVO;
 import com.webaid.domain.ReservationVO;
 import com.webaid.domain.SearchCriteria;
 import com.webaid.domain.SelectByDateEmployeeVO;
@@ -46,6 +54,8 @@ import com.webaid.service.NormalTherapyReservationService;
 import com.webaid.service.PatientService;
 import com.webaid.service.ReservationService;
 import com.webaid.util.DayGetUtil;
+
+import net.sf.json.JSONArray;
 
 
 @Controller
@@ -390,6 +400,80 @@ public class HomeController {
 		/*System.out.println(vo);
 		rService.register(vo);
 		entity = new ResponseEntity<String>("OK",HttpStatus.OK);*/
+		return entity;
+	}
+	
+	@RequestMapping(value="/ncReservationRegister", method=RequestMethod.POST)
+	public ResponseEntity<String> ncReservationRegisterPost(NormalClinicReservationVO vo){
+		logger.info("ncReservationRegister Post");
+		ResponseEntity<String> entity= null;
+		
+		try {
+			System.out.println(vo);
+			ncrService.register(vo);
+			entity = new ResponseEntity<String>("OK",HttpStatus.OK);
+		} catch (Exception e) {
+			entity = new ResponseEntity<String>("NO",HttpStatus.OK);
+		}
+		
+		return entity;
+	}
+	
+	@RequestMapping(value="/ntReservationRegister", method=RequestMethod.POST)
+	public ResponseEntity<String> ntReservationRegisterPost(NormalTherapyReservationVO vo){
+		logger.info("ntReservationRegister Post");
+		ResponseEntity<String> entity= null;
+		
+		try {
+			System.out.println(vo);
+			ntrService.register(vo);
+			entity = new ResponseEntity<String>("OK",HttpStatus.OK);
+		} catch (Exception e) {
+			entity = new ResponseEntity<String>("NO",HttpStatus.OK);
+		}
+		
+		return entity;
+	}
+	
+	@RequestMapping(value="/fcReservationRegister", method=RequestMethod.POST)
+	public ResponseEntity<String> fcReservationRegisterPost(@RequestBody Map<String, Object> data) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException{
+		logger.info("fcReservationRegister Post");
+		
+		ResponseEntity<String> entity= null;
+		
+		FixClinicReservationVO vo = new FixClinicReservationVO();
+		BeanUtils.populate(vo, (Map) data.get("vo"));		
+		
+		String str = data.get("date").toString();
+		String str2 = str.substring(1, str.length()-1);
+		String[] splitDate = str2.split(", ");
+		
+		try {
+			for(int i=0; i<splitDate.length; i++){
+				vo.setRdate(splitDate[i]);
+				fcrService.register(vo);
+			}
+			entity = new ResponseEntity<String>("OK",HttpStatus.OK);
+		} catch (Exception e) {
+			entity = new ResponseEntity<String>("NO",HttpStatus.OK);
+		}
+		
+		return entity;
+	}
+	
+	@RequestMapping(value="/ftReservationRegister", method=RequestMethod.POST)
+	public ResponseEntity<String> ftReservationRegisterPost(FixTherapyReservationVO vo){
+		logger.info("ftReservationRegister Post");
+		ResponseEntity<String> entity= null;
+		
+		try {
+			System.out.println(vo);
+			ftrService.register(vo);
+			entity = new ResponseEntity<String>("OK",HttpStatus.OK);
+		} catch (Exception e) {
+			entity = new ResponseEntity<String>("NO",HttpStatus.OK);
+		}
+		
 		return entity;
 	}
 	

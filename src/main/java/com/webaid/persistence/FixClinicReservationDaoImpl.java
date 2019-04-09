@@ -28,7 +28,7 @@ public class FixClinicReservationDaoImpl implements FixClinicReservationDao {
 
 	@Override
 	public FixClinicReservationVO selectByRno(int rno) {
-		return session.selectOne(namespace + ".selectByRno");
+		return session.selectOne(namespace + ".selectByRno", rno);
 	}
 
 	@Override

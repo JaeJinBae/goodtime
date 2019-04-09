@@ -29,7 +29,7 @@ public class NormalTherapyReservationDaoImpl implements NormalTherapyReservation
 
 	@Override
 	public NormalTherapyReservationVO selectByRno(int rno) {
-		return session.selectOne(namespace + ".selectByRno");
+		return session.selectOne(namespace + ".selectByRno", rno);
 	}
 
 	@Override

@@ -595,7 +595,7 @@ function draw_time_table_by_case(idx){
 			table_txt += "<br><br><br>";
 			table_txt += draw_total_time_table(select_date, "therapist");
 			$(".time_table_wrap").append(table_txt);
-			//draw_reservation(select_date);
+			draw_reservation(select_date);
 			break;
 		case 1:
 			$(".week_select_box_wrap").css("display","none");
@@ -839,6 +839,9 @@ function get_ncReservation_byRno(rno){
 		async: false,
 		success:function(json){
 			dt = json;
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 		}
 	});
 	return dt;
@@ -929,9 +932,18 @@ function draw_simple_reservation_view(type, rno){
 	var doctor;
 	var therapist;
 	var employee = get_employee_byEno(json.eno);
-		
+	var rtype;
+	if(json.rtype=="nc"){
+		rtype = "일반진료";
+	}else if(json.rtype == "nt"){
+		rtype="일반치료"
+	}else if(json.rtype == "fc"){
+		rtype="고정진료"
+	}else if(json.rtype == "ft"){
+		rtype="고정치료"
+	}
 	var str="";
-	str = "<p class='al_tbl_wrap2_title'>"+json.rtype+"예약 &nbsp;&nbsp;<span style='color:#333;font-size:14px;letter-spacing:0;'>[닫기]</span></p><table id='tbl_simple_reservation'>"
+	str = "<p class='al_tbl_wrap2_title'>"+rtype+"예약 &nbsp;&nbsp;<span style='color:#333;font-size:14px;letter-spacing:0;'>[닫기]</span></p><table id='tbl_simple_reservation'>"
 		+ "<tr><td class='tbl_content_pName'>"+patient.name+"("+patient.cno+")님 ▶"+ employee.name+"</td></tr>"
 		+"<tr><th class='tbl_content_title'>- 예약일시</th></tr>";
 		
@@ -1003,44 +1015,6 @@ function draw_simple_reservation_view(type, rno){
 	$(".al_tbl_wrap2").css("display","block");
 }
 
-function post_reservation_register(vo, stbn){
-	console.log("post_reservation_register 진입");
-	console.log(vo);
-	$.ajax({
-		url:"${pageContext.request.contextPath}/reservationRegister",
-		type:"post",
-		dataType:"text",
-		data:vo,
-		async:false,
-		success:function(json){
-			console.log(json);
-			if(json == "OK"){
-				alert("예약등록이 완료되었습니다.");
-				/* $("#reservation_view_btn").html("");
-				$(".reservation_register_btn").css("display", "none");
-				$("#reservation_view_btn").css("display", "none");
-				$(".popup_reservation_register").css("display", "none");
-				$(".popup_therapy_reservation_register").css("display", "none");
-				$(".popup_wrap").css("display","none");
-				
-				draw_time_table_by_case(stbn); */
-			}else{
-				alert("예약등록이 정상적으로 등록되지 않았습니다. 다시 한번 등록하세요.");
-			}
-		}
-	});
-}
-
-function post_fix_reservation_register(vo,stbn){
-	var betweenDate = get_between_date(vo.fix_day_start, vo.fix_day_end);
-	
-	for(var i=0; i<betweenDate.length; i++){
-		vo.fix_date = betweenDate[i];
-		console.log(vo);
-		post_reservation_register(vo, stbn);
-	}
-}
-
 function post_ncReservation_register(vo, stbn){
 	console.log("post_ncReservation_register 진입");
 	console.log(vo);
@@ -1061,7 +1035,7 @@ function post_ncReservation_register(vo, stbn){
 				$(".popup_therapy_reservation_register").css("display", "none");
 				$(".popup_wrap").css("display","none");
 				
-				//draw_time_table_by_case(stbn);
+				draw_time_table_by_case(stbn);
 			}else{
 				alert("예약등록이 정상적으로 등록되지 않았습니다. 다시 한번 등록하세요.");
 			}
@@ -1086,7 +1060,7 @@ function post_ntReservation_register(vo, stbn){
 				$(".popup_therapy_reservation_register").css("display", "none");
 				$(".popup_wrap").css("display","none");
 				
-				//draw_time_table_by_case(stbn);
+				draw_time_table_by_case(stbn);
 			}else{
 				alert("예약등록이 정상적으로 등록되지 않았습니다. 다시 한번 등록하세요.");
 			}
@@ -1100,7 +1074,7 @@ function post_fcReservation_register(vo, stbn){
 	$.ajax({
 		url:"${pageContext.request.contextPath}/fcReservationRegister",
 		type:"post",
-		dataType:"json",
+		dataType:"text",
 		data:JSON.stringify(data),
 		async:false,
 		contentType : "application/json; charset=UTF-8",
@@ -1115,7 +1089,7 @@ function post_fcReservation_register(vo, stbn){
 				$(".popup_therapy_reservation_register").css("display", "none");
 				$(".popup_wrap").css("display","none");
 				
-				//draw_time_table_by_case(stbn);
+				draw_time_table_by_case(stbn);
 			}else{
 				alert("예약등록이 정상적으로 등록되지 않았습니다. 다시 한번 등록하세요.");
 			}
@@ -1126,7 +1100,36 @@ function post_fcReservation_register(vo, stbn){
 	});
 }
 function post_ftReservation_register(vo, stbn){
-	console.log(vo);
+	var arrDate = get_between_date(vo.fix_day_start, vo.fix_day_end);
+	var data = {"vo":vo, "date":arrDate};
+	
+	$.ajax({
+		url:"${pageContext.request.contextPath}/ftReservationRegister",
+		type:"post",
+		dataType:"text",
+		data:JSON.stringify(data),
+		async:false,
+		contentType : "application/json; charset=UTF-8",
+		success:function(json){
+			console.log(json);
+			if(json == "OK"){
+				alert("예약등록이 완료되었습니다.");
+				$("#reservation_view_btn").html("");
+				$(".reservation_register_btn").css("display", "none");
+				$("#reservation_view_btn").css("display", "none");
+				$(".popup_clinic_reservation_register").css("display", "none");
+				$(".popup_therapy_reservation_register").css("display", "none");
+				$(".popup_wrap").css("display","none");
+				
+				draw_time_table_by_case(stbn);
+			}else{
+				alert("예약등록이 정상적으로 등록되지 않았습니다. 다시 한번 등록하세요.");
+			}
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	});
 }
 
 //주간 선택하면 select 태그에 값 설정
@@ -1338,7 +1341,7 @@ function get_between_date(date1, date2){
 }
 
 $(function(){
-	console.log(get_between_date("2019-04-01", "2019-05-05"));
+	//console.log(get_between_date("2019-04-01", "2019-05-05"));
 	
 	//진료view에서 무슨 탭 눌러졌는지 기억하기 위한 변수
 	var storage_timetable_btn_num=0;
@@ -1347,7 +1350,6 @@ $(function(){
 	buildCalendar();
 	
 	$(".calendar_select_date").val(get_today());
-	//$(".calendar_select_date").val("2019-04-08");
 	
 	//날짜마다 요일 표시
 	write_yoil();
@@ -1502,8 +1504,9 @@ $(function(){
 	//진료, 치료 테이블에서 예약에 마우스 올리고 치웠을때
 	$(document).on({
 		mouseenter:function(){
-			var rno=$(this).find("input[type='hidden']").val(); 
-			draw_simple_reservation_view(rno);
+			var rno = $(this).find("input[name='rno']").val();
+			var type = $(this).find("input[name='type']").val();
+			draw_simple_reservation_view(type, rno);
 		},
 		mouseleave:function(){}
 		}, ".patient_p_tag");/*  */

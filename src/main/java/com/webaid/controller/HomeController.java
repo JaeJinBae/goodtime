@@ -5,13 +5,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
 
@@ -28,7 +25,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.webaid.domain.ClinicVO;
 import com.webaid.domain.EmployeeVO;
@@ -40,7 +36,6 @@ import com.webaid.domain.NormalClinicReservationVO;
 import com.webaid.domain.NormalTherapyReservationVO;
 import com.webaid.domain.PageMaker;
 import com.webaid.domain.PatientVO;
-import com.webaid.domain.ReservationListVO;
 import com.webaid.domain.ReservationVO;
 import com.webaid.domain.SearchCriteria;
 import com.webaid.domain.SelectByDateEmployeeVO;
@@ -54,8 +49,6 @@ import com.webaid.service.NormalTherapyReservationService;
 import com.webaid.service.PatientService;
 import com.webaid.service.ReservationService;
 import com.webaid.util.DayGetUtil;
-
-import net.sf.json.JSONArray;
 
 
 @Controller
@@ -74,10 +67,13 @@ public class HomeController {
 	
 	@Autowired
 	private NormalClinicReservationService ncrService;
+	
 	@Autowired
 	private NormalTherapyReservationService ntrService;
+	
 	@Autowired
 	private FixClinicReservationService fcrService;
+	
 	@Autowired
 	private FixTherapyReservationService ftrService;
 	
@@ -335,9 +331,11 @@ public class HomeController {
 	
 	@RequestMapping(value="/ncReservationInfoByRno/{rno}", method=RequestMethod.GET)
 	public ResponseEntity<NormalClinicReservationVO> ncReservationByRno(@PathVariable("rno") int rno){
+		logger.info("ncReservation get by rno");
 		ResponseEntity<NormalClinicReservationVO> entity = null;
 		try {
 			NormalClinicReservationVO vo = ncrService.selectByRno(rno);
+			System.out.println("객체=\n"+vo+"\n"+rno);
 			entity = new ResponseEntity<NormalClinicReservationVO>(vo, HttpStatus.OK);
 		} catch (Exception e) {
 			e.getMessage();
@@ -385,24 +383,6 @@ public class HomeController {
 		return entity;
 	}
 	
-	@RequestMapping(value="/reservationRegister", method=RequestMethod.POST)
-	public ResponseEntity<String> reservationRegisterPost(ReservationVO vo){
-		logger.info("reservationRegister Post");
-		ResponseEntity<String> entity= null;
-		
-		try {
-			System.out.println(vo);
-			rService.register(vo);
-			entity = new ResponseEntity<String>("OK",HttpStatus.OK);
-		} catch (Exception e) {
-			entity = new ResponseEntity<String>("NO",HttpStatus.OK);
-		}
-		/*System.out.println(vo);
-		rService.register(vo);
-		entity = new ResponseEntity<String>("OK",HttpStatus.OK);*/
-		return entity;
-	}
-	
 	@RequestMapping(value="/ncReservationRegister", method=RequestMethod.POST)
 	public ResponseEntity<String> ncReservationRegisterPost(NormalClinicReservationVO vo){
 		logger.info("ncReservationRegister Post");
@@ -436,7 +416,7 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value="/fcReservationRegister", method=RequestMethod.POST)
-	public ResponseEntity<String> fcReservationRegisterPost(@RequestBody Map<String, Object> data) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException{
+	public ResponseEntity<String> fcReservationRegisterPost(@RequestBody Map<String, Object> data) throws IllegalAccessException, InvocationTargetException{
 		logger.info("fcReservationRegister Post");
 		
 		ResponseEntity<String> entity= null;
@@ -462,13 +442,24 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value="/ftReservationRegister", method=RequestMethod.POST)
-	public ResponseEntity<String> ftReservationRegisterPost(FixTherapyReservationVO vo){
+	public ResponseEntity<String> ftReservationRegisterPost(@RequestBody Map<String, Object> data) throws IllegalAccessException, InvocationTargetException{
 		logger.info("ftReservationRegister Post");
 		ResponseEntity<String> entity= null;
 		
+		FixTherapyReservationVO vo = new FixTherapyReservationVO();
+
+		BeanUtils.populate(vo, (Map) data.get("vo"));
+		
+		
+		String str = data.get("date").toString();
+		String str2 = str.substring(1, str.length()-1);
+		String[] splitDate = str2.split(", ");
+		
 		try {
-			System.out.println(vo);
-			ftrService.register(vo);
+			for(int i=0; i<splitDate.length; i++){
+				vo.setRdate(splitDate[i]);
+				ftrService.register(vo);
+			}
 			entity = new ResponseEntity<String>("OK",HttpStatus.OK);
 		} catch (Exception e) {
 			entity = new ResponseEntity<String>("NO",HttpStatus.OK);

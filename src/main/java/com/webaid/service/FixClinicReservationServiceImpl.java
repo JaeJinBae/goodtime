@@ -40,4 +40,9 @@ public class FixClinicReservationServiceImpl implements FixClinicReservationServ
 
 	}
 
+	@Override
+	public void updateDeskState(int rno) {
+		dao.updateDeskState(rno);
+	}
+
 }

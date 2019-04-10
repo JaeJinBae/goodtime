@@ -40,4 +40,9 @@ public class NormalClinicReservationServiceImpl implements NormalClinicReservati
 		dao.register(vo);
 	}
 
+	@Override
+	public void updateDeskState(int rno) {
+		dao.updateDeskState(rno);
+	}
+
 }

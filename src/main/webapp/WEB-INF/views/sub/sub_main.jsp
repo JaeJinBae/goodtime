@@ -78,11 +78,20 @@
 	.popup_reservation_info_view > .popup_reservation_info_btn_wrap{
 		width:500px;
 		margin:0 auto;
+		text-align: center;
 	}
 	.popup_reservation_info_view > .popup_reservation_info_btn_wrap > p{
 		display: inline-block;
+		padding:10px;
+		font-size:15px;
 		margin-left:20px;
 		cursor: pointer;
+		border:1px solid lightgray;
+	}
+	.popup_reservation_info_view > .popup_reservation_info_btn_wrap > p:first-child{
+		background:#057be8;
+		color: #fff;
+		font-size:15px; 
 	}
 	.all_wrap{
 		width: 100%;
@@ -792,9 +801,19 @@ function draw_reservation(date){
 		}
 		
 		target_tag = ".doctor_"+this.eno+"_"+hour;
-		txt = "<p class='patient_p_tag' style='background:"+clinic.color+";border:1px solid gray;'>"+minute+"~"+end_time+" "+patient.name
-			+"<input type='hidden' name='rno' value='"+this.rno+"'><input type='hidden' name='type' value='nc'></p>";
-		$(target_tag).append(txt);		
+		txt = "<p class='patient_p_tag' style='background:"+clinic.color+";border:1px solid gray;'>"+minute+"~"+end_time+" "+patient.name;
+		if(this.desk_state == "접수완료"){
+			txt += "<img style='width:15px;' class='footImg' src='${pageContext.request.contextPath}/resources/images/foot.png'>";
+		}
+		txt += "<input type='hidden' name='rno' value='"+this.rno+"'><input type='hidden' name='type' value='nc'></p>";
+		$(target_tag).append(txt);
+		
+		if(overMinute > 0){
+			target_tag = ".doctor_"+this.eno+"_"+(hour+1);
+			txt = "<p style='background:black;color:#fff;'>~"+end_time+"예약불가</p>";
+			$(target_tag).append(txt);
+		}
+		
 	});
 	
 	//일반치료
@@ -820,9 +839,18 @@ function draw_reservation(date){
 		}
 		
 		target_tag = ".therapist_"+this.eno+"_"+hour;
-		txt = "<p class='patient_p_tag' style='background:"+clinic.color+";border:1px solid gray;'>"+minute+"~"+end_time+" "+patient.name
-			+"<input type='hidden' name='rno' value='"+this.rno+"'><input type='hidden' name='type' value='nt'></p>";
+		txt = "<p class='patient_p_tag' style='background:"+clinic.color+";border:1px solid gray;'>"+minute+"~"+end_time+" "+patient.name;
+		if(this.desk_state == "접수완료"){
+			txt += "<img style='width:15px;' class='footImg' src='${pageContext.request.contextPath}/resources/images/foot.png'>";
+		}
+		txt	+= "<input type='hidden' name='rno' value='"+this.rno+"'><input type='hidden' name='type' value='nt'></p>";
 		$(target_tag).append(txt);
+		
+		if(overMinute > 0){
+			target_tag = ".therapist_"+this.eno+"_"+(hour+1);
+			txt = "<p style='background:black;color:#fff;'>~"+end_time+"예약불가</p>";
+			$(target_tag).append(txt);
+		}
 	});
 	
 	//고정진료
@@ -848,9 +876,18 @@ function draw_reservation(date){
 		}
 		
 		target_tag = ".doctor_"+this.eno+"_"+hour;
-		txt = "<p class='patient_p_tag' style='background:#ffaf7a;border:1px solid gray;'>"+minute+"~"+end_time+" "+patient.name
-			+"<input type='hidden' name='rno' value='"+this.rno+"'><input type='hidden' name='type' value='fc'></p>";
-		$(target_tag).append(txt);		
+		txt = "<p class='patient_p_tag' style='background:#ffaf7a;border:1px solid gray;'>"+minute+"~"+end_time+" "+patient.name;
+		if(this.desk_state == "접수완료"){
+			txt += "<img style='width:15px;' class='footImg' src='${pageContext.request.contextPath}/resources/images/foot.png'>";
+		}
+		txt	+= "<input type='hidden' name='rno' value='"+this.rno+"'><input type='hidden' name='type' value='fc'></p>";
+		$(target_tag).append(txt);
+		
+		if(overMinute > 0){
+			target_tag = ".doctor_"+this.eno+"_"+(hour+1);
+			txt = "<p style='background:black;color:#fff;'>~"+end_time+"예약불가</p>";
+			$(target_tag).append(txt);
+		}
 	});
 	
 	//고정치료
@@ -876,10 +913,18 @@ function draw_reservation(date){
 		}
 				
 		target_tag = ".therapist_"+this.eno+"_"+hour;
-		txt = "<p class='patient_p_tag' style='background:#ffaf7a;border:1px solid gray;'>"+minute+"~"+end_time+" "+patient.name
-			+"<input type='hidden' name='rno' value='"+this.rno+"'><input type='hidden' name='type' value='ft'></p>";
+		txt = "<p class='patient_p_tag' style='background:#ffaf7a;border:1px solid gray;'>"+minute+"~"+end_time+" "+patient.name;
+		if(this.desk_state == "접수완료"){
+			txt += "<img style='width:15px;' class='footImg' src='${pageContext.request.contextPath}/resources/images/foot.png'>";
+		}
+		txt	+= "<input type='hidden' name='rno' value='"+this.rno+"'><input type='hidden' name='type' value='ft'></p>";
 		$(target_tag).append(txt);
 		
+		if(overMinute > 0){
+			target_tag = ".therapist_"+this.eno+"_"+(hour+1);
+			txt = "<p style='background:black;color:#fff;'>~"+end_time+"예약불가</p>";
+			$(target_tag).append(txt);
+		}
 	});
 }
 
@@ -1312,10 +1357,19 @@ function draw_week_reservation(week, etype, eno, idxx){
 					}
 					var cs = $(".time_table_wrap > table tr > td > input[value='"+this.fix_day+"']").parent().parent().prop("class");
 					
-					target_tag = "."+cs+"_"+parseInt(Number(this.rtime)/60);
-					str = "<p class='patient_p_tag' style='background:#ffaf7a;border:1px solid gray;'>"+minute+"~"+end_time+" "+patient.name
-						+"<input type='hidden' name='rno' value='"+this.rno+"'><input type='hidden' name='type' value='"+this.rtype+"'></p>";
+					target_tag = "."+cs+"_"+hour;
+					str = "<p class='patient_p_tag' style='background:#ffaf7a;border:1px solid gray;'>"+minute+"~"+end_time+" "+patient.name;
+					if(this.desk_state == "접수완료"){
+						str += "<img style='width:15px;' class='footImg' src='${pageContext.request.contextPath}/resources/images/foot.png'>";
+					}
+					str	+= "<input type='hidden' name='rno' value='"+this.rno+"'><input type='hidden' name='type' value='"+this.rtype+"'></p>";
 					$(target_tag).append(str);
+					
+					if(overMinute > 0){
+						target_tag = "."+cs+"_"+(hour+1);
+						str = "<p style='background:black;color:#fff;'>~"+end_time+"예약불가</p>";
+						$(target_tag).append(str);
+					}
 				})
 			});
 		}else if(etype == "therapist"){//치료고정 view
@@ -1342,10 +1396,19 @@ function draw_week_reservation(week, etype, eno, idxx){
 					}
 					var cs = $(".time_table_wrap > table tr > td > input[value='"+this.fix_day+"']").parent().parent().prop("class");
 					
-					target_tag = "."+cs+"_"+parseInt(Number(this.rtime)/60);
-					str = "<p class='patient_p_tag' style='background:#ffaf7a;border:1px solid gray;'>"+minute+"~"+end_time+" "+patient.name
-						+"<input type='hidden' name='rno' value='"+this.rno+"'><input type='hidden' name='type' value='"+this.rtype+"'></p>";
+					target_tag = "."+cs+"_"+hour;
+					str = "<p class='patient_p_tag' style='background:#ffaf7a;border:1px solid gray;'>"+minute+"~"+end_time+" "+patient.name;
+					if(this.desk_state == "접수완료"){
+						str += "<img style='width:15px;' class='footImg' src='${pageContext.request.contextPath}/resources/images/foot.png'>";
+					}
+					str	+= "<input type='hidden' name='rno' value='"+this.rno+"'><input type='hidden' name='type' value='"+this.rtype+"'></p>";
 					$(target_tag).append(str);
+					
+					if(overMinute > 0){
+						target_tag = "."+cs+"_"+(hour+1);
+						str = "<p style='background:black;color:#fff;'>~"+end_time+"예약불가</p>";
+						$(target_tag).append(str);
+					}
 				})
 			});
 		}
@@ -1374,10 +1437,19 @@ function draw_week_reservation(week, etype, eno, idxx){
 						minute = "0"+minute;
 					}
 					
-					target_tag = "."+eno+"_"+this.rdate+"_"+parseInt(Number(this.rtime)/60);
-					str = "<p class='patient_p_tag' style='background:"+clinic.color+";border:1px solid gray;'>"+minute+"~"+end_time+" "+patient.name
-						+"<input type='hidden' name='rno' value='"+this.rno+"'><input type='hidden' name='type' value='"+this.rtype+"'></p>";
+					target_tag = "."+eno+"_"+this.rdate+"_"+hour;
+					str = "<p class='patient_p_tag' style='background:"+clinic.color+";border:1px solid gray;'>"+minute+"~"+end_time+" "+patient.name;
+					if(this.desk_state == "접수완료"){
+						str += "<img style='width:15px;' class='footImg' src='${pageContext.request.contextPath}/resources/images/foot.png'>";
+					}
+					str	+= "<input type='hidden' name='rno' value='"+this.rno+"'><input type='hidden' name='type' value='"+this.rtype+"'></p>";
 					$(target_tag).append(str);
+					
+					if(overMinute > 0){
+						target_tag = "."+eno+"_"+this.rdate+"_"+(hour+1);
+						str = "<p style='background:black;color:#fff;'>~"+end_time+"예약불가</p>";
+						$(target_tag).append(str);
+					}
 				})
 				$($(this.fcr)).each(function(){
 					patient = get_patient_by_pno(this.pno);
@@ -1401,10 +1473,19 @@ function draw_week_reservation(week, etype, eno, idxx){
 					}
 					var cs = $(".time_table_wrap > table tr > td > input[value='"+this.fix_day+"']").parent().parent().prop("class");
 					
-					target_tag = "."+cs+"_"+parseInt(Number(this.rtime)/60);
-					str = "<p class='patient_p_tag' style='background:#ffaf7a;border:1px solid gray;'>"+minute+"~"+end_time+" "+patient.name
-						+"<input type='hidden' name='rno' value='"+this.rno+"'><input type='hidden' name='type' value='"+this.rtype+"'></p>";
+					target_tag = "."+cs+"_"+hour;
+					str = "<p class='patient_p_tag' style='background:#ffaf7a;border:1px solid gray;'>"+minute+"~"+end_time+" "+patient.name;
+					if(this.desk_state == "접수완료"){
+						str += "<img style='width:15px;' class='footImg' src='${pageContext.request.contextPath}/resources/images/foot.png'>";
+					}
+					str	+= "<input type='hidden' name='rno' value='"+this.rno+"'><input type='hidden' name='type' value='"+this.rtype+"'></p>";
 					$(target_tag).append(str);
+					
+					if(overMinute > 0){
+						target_tag = "."+cs+"_"+(hour+1);
+						str = "<p style='background:black;color:#fff;'>~"+end_time+"예약불가</p>";
+						$(target_tag).append(str);
+					}
 				})
 			});
 		}else if(etype == "therapist"){//치료주간 view
@@ -1430,10 +1511,19 @@ function draw_week_reservation(week, etype, eno, idxx){
 						minute = "0"+minute;
 					}
 					
-					target_tag = "."+eno+"_"+this.rdate+"_"+parseInt(Number(this.rtime)/60);
-					str = "<p class='patient_p_tag' style='background:"+clinic.color+";border:1px solid gray;'>"+minute+"~"+end_time+" "+patient.name
-						+"<input type='hidden' name='rno' value='"+this.rno+"'><input type='hidden' name='type' value='"+this.rtype+"'></p>";
+					target_tag = "."+eno+"_"+this.rdate+"_"+hour;
+					str = "<p class='patient_p_tag' style='background:"+clinic.color+";border:1px solid gray;'>"+minute+"~"+end_time+" "+patient.name;
+					if(this.desk_state == "접수완료"){
+						str += "<img style='width:15px;' class='footImg' src='${pageContext.request.contextPath}/resources/images/foot.png'>";
+					}
+					str	+= "<input type='hidden' name='rno' value='"+this.rno+"'><input type='hidden' name='type' value='"+this.rtype+"'></p>";
 					$(target_tag).append(str);
+					
+					if(overMinute > 0){
+						target_tag = "."+eno+"_"+this.rdate+"_"+(hour+1);
+						str = "<p style='background:black;color:#fff;'>~"+end_time+"예약불가</p>";
+						$(target_tag).append(str);
+					}
 				})
 				$($(this.ftr)).each(function(){
 					patient = get_patient_by_pno(this.pno);
@@ -1457,10 +1547,19 @@ function draw_week_reservation(week, etype, eno, idxx){
 					}
 					var cs = $(".time_table_wrap > table tr > td > input[value='"+this.fix_day+"']").parent().parent().prop("class");
 					
-					target_tag = "."+cs+"_"+parseInt(Number(this.rtime)/60);
-					str = "<p class='patient_p_tag' style='background:#ffaf7a;border:1px solid gray;'>"+minute+"~"+end_time+" "+patient.name
-						+"<input type='hidden' name='rno' value='"+this.rno+"'><input type='hidden' name='type' value='"+this.rtype+"'></p>";
+					target_tag = "."+cs+"_"+hour;
+					str = "<p class='patient_p_tag' style='background:#ffaf7a;border:1px solid gray;'>"+minute+"~"+end_time+" "+patient.name;
+					if(this.desk_state == "접수완료"){
+						str += "<img style='width:15px;' class='footImg' src='${pageContext.request.contextPath}/resources/images/foot.png'>";
+					}
+					str	+= "<input type='hidden' name='rno' value='"+this.rno+"'><input type='hidden' name='type' value='"+this.rtype+"'></p>";
 					$(target_tag).append(str);
+					
+					if(overMinute > 0){
+						target_tag = "."+cs+"_"+(hour+1);
+						str = "<p style='background:black;color:#fff;'>~"+end_time+"예약불가</p>";
+						$(target_tag).append(str);
+					}
 				})
 			});
 		}
@@ -1504,28 +1603,65 @@ function open_reservation_info_view(type, rno){
 	var rData;
 	var pData;
 	var eData;
-	var time
+	var cData;
+	var time;
+	var rtype;
 	if(type == "nc"){
 		rData = get_ncReservation_byRno(rno);
+		rtype="일반진료예약";
 	}else if(type == "nt"){
 		rData = get_ntReservation_byRno(rno);
+		rtype="일반치료예약";
 	}else if(type == "fc"){
 		rData = get_fcReservation_byRno(rno);
+		rtype="고정진료예약";
 	}else if(type == "ft"){
 		rData = get_ftReservation_byRno(rno);
+		rtype="고정치료예약";
 	}
 	
 	pData = get_patient_by_pno(rData.pno);
 	eData = get_employee_byEno(rData.eno);
+	cData = get_clinic_by_cno(rData.clinic);
 	
-	$(".popup_reservation_info_view > h2 > span").append(" "+pData.name+"("+pData.cno+")님");
+	var str = rtype+"<span> "+pData.name+"("+pData.cno+")님</span><input type='hidden' name='rtype' value='"+rData.rtype+"'><input type='hidden' name='rno' value='"+rData.rno+"'>";
+	$(".popup_reservation_info_view > h2").html(str);
 	$(".popup_reservation_info_view > table tr:first-child > td > span").html(pData.phone);
 	$(".popup_reservation_info_view > table tr:nth-child(2) > td > span").html(rData.rdate+" "+rData.rtime);
+	$(".popup_reservation_info_view > table tr:nth-child(3) > td > span").html(cData.code_name+" / "+eData.name);
+	$(".popup_reservation_info_view > table tr:last-child > td > span").html(rData.memo);
 	$(".popup_reservation_info_view").css("display", "block");
 	$(".popup_wrap").css("display", "block");
 }
 
+function update_reservation_deskState(rtype, rno, stbn){
+	console.log(rtype+"/"+rno+"/"+stbn);
+	$.ajax({
+		url:"${pageContext.request.contextPath}/updateReservationDeskState/"+rtype+"/"+rno,
+		type:"post",
+		dataType:"text",
+		async:false,
+		success:function(json){
+			console.log(json);
+			if(json == "ok"){
+				alert("접수완료 되었습니다.");
+				
+				$(".popup_reservation_info_view").css("display", "none");
+				$(".popup_wrap").css("display","none");
+				
+				draw_time_table_by_case(stbn);
+			}else{
+				alert("예약등록이 정상적으로 등록되지 않았습니다. 다시 한번 등록하세요.");
+			}
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	});
+}
+
 $(function(){
+	
 	//console.log(get_between_date("2019-04-01", "2019-05-05"));
 	
 	//진료view에서 무슨 탭 눌러졌는지 기억하기 위한 변수
@@ -1881,6 +2017,17 @@ $(function(){
 		var rno = $(this).find("input[name='rno']").val();
 		open_reservation_info_view(type, rno);
 	})
+	
+	$(".popup_reservation_info_btn_wrap > p").click(function(){
+		var btn_idx = $(this).index();
+		$(".popup_reservation_info_btn_wrap > p").css({"background":"#fff", "color":"#111"});
+		$(this).css({"background":"#057be8", "color":"#fff"});
+		var rtype = $(".popup_reservation_info_view > h2 > input[name='rtype']").val();
+		var rno = $(".popup_reservation_info_view > h2 > input[name='rno']").val();
+		
+		console.log(rtype+"/"+rno);
+		update_reservation_deskState(rtype, rno, storage_timetable_btn_num)
+	});
 
 });
 </script> 

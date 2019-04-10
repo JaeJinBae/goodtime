@@ -24,4 +24,8 @@
 		insert into normal_clinic_reservation values(#{rno}, #{pno}, #{eno}, #{memo}, #{clinic}, #{rtype}, #{rdate}, #{rtime}, #{writer}, #{regdate}, #{updatedate}, #{updatewriter}, #{desk_state}, #{result}, #{result_memo})
 	</insert>
 	
+	<update id="updateDeskState">
+		update normal_clinic_reservation set desk_state='접수완료', result='접수완료' where rno=#{rno}
+	</update>
+	
 </mapper>

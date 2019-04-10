@@ -37,4 +37,9 @@ public class FixTherapyReservationServiceImpl implements FixTherapyReservationSe
 		dao.register(vo);
 	}
 
+	@Override
+	public void updateDeskState(int rno) {
+		dao.updateDeskState(rno);
+	}
+
 }

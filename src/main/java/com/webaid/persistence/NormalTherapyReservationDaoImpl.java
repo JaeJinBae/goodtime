@@ -42,4 +42,9 @@ public class NormalTherapyReservationDaoImpl implements NormalTherapyReservation
 		session.insert(namespace + ".register", vo);
 	}
 
+	@Override
+	public void updateDeskState(int rno) {
+		session.update(namespace+".updateDeskState", rno);
+	}
+
 }

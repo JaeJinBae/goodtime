@@ -527,6 +527,27 @@ public class HomeController {
 		return entity;
 	}
 	
+	@RequestMapping(value="/updateReservationDeskState/{rtype}/{rno}", method=RequestMethod.POST)
+	public ResponseEntity<String> updateReservationDeskState(@PathVariable("rtype") String rtype, @PathVariable("rno") String rno){
+		ResponseEntity<String> entity = null;
+		System.out.println(rtype+"\n"+rno);
+		try {
+			if(rtype.equals("nc")){
+				ncrService.updateDeskState(Integer.parseInt(rno));
+			}else if(rtype.equals("nt")){
+				ntrService.updateDeskState(Integer.parseInt(rno));
+			}else if(rtype.equals("fc")){
+				fcrService.updateDeskState(Integer.parseInt(rno));
+			}else if(rtype.equals("ft")){
+				ftrService.updateDeskState(Integer.parseInt(rno));
+			}
+			entity = new ResponseEntity<String>("ok", HttpStatus.OK);
+		} catch (Exception e) {
+			entity = new ResponseEntity<String>("no", HttpStatus.OK);
+		}
+		
+		return entity;
+	}
 	@RequestMapping(value="patientAllGet", method=RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> patientAllGet(@ModelAttribute("cri") SearchCriteria cri) throws Exception{
 		logger.info("patient all Get");

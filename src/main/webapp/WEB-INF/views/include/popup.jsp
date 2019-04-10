@@ -301,7 +301,7 @@
 	</div><!-- popup_therapy_reservation_register end -->
 	
 	<div class="popup_reservation_info_view popup_content">
-		<h2><span>일반예약자</span></h2>
+		<h2></h2>
 		<table>
 			<tr>
 				<th>연락처</th>
@@ -313,11 +313,11 @@
 			</tr>
 			<tr>
 				<th>치료내용</th>
-				<td></td>
+				<td><span></span></td>
 			</tr>
 			<tr>
 				<th>메모</th>
-				<td></td>
+				<td><span></span></td>
 			</tr>
 		</table>
 		<div class="popup_reservation_info_btn_wrap">

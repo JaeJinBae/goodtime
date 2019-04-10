@@ -330,6 +330,10 @@
 	.time_table_wrap table td{
 		border: 1px solid black;
 	}
+	.patient_p_tag{
+		font-size:14px;
+		cursor: pointer;
+	}
 	.doctor_name{
 		text-align: center;
 	}

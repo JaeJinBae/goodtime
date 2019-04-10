@@ -1,7 +1,7 @@
 package com.webaid.domain;
 
 public class SelectByDateEmployeeVO {
-	private String normal_date;
+	private String rdate;
 	private String fix_day;
 	private int eno;
 
@@ -9,12 +9,12 @@ public class SelectByDateEmployeeVO {
 		super();
 	}
 
-	public String getNormal_date() {
-		return normal_date;
+	public String getRdate() {
+		return rdate;
 	}
 
-	public void setNormal_date(String normal_date) {
-		this.normal_date = normal_date;
+	public void setRdate(String rdate) {
+		this.rdate = rdate;
 	}
 
 	public String getFix_day() {
@@ -35,8 +35,7 @@ public class SelectByDateEmployeeVO {
 
 	@Override
 	public String toString() {
-		return "SelectByDateEmployeeVO [normal_date=" + normal_date + ", fix_day=" + fix_day + ", eno=" + eno + "]";
+		return "SelectByDateEmployeeVO [rdate=" + rdate + ", fix_day=" + fix_day + ", eno=" + eno + "]";
 	}
-
 	
 }

@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -236,59 +237,117 @@ public class HomeController {
 		return entity;
 	}
 	
-	@RequestMapping(value="/reservationListByDateEno/{date}/{type}/{eno}/{week}", method=RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> get_reservationList_byDate_byEmployee(@PathVariable("date") String date, @PathVariable("type") String type, @PathVariable("eno") String eno, @PathVariable("week") String week) throws ParseException{
+	@RequestMapping(value="/reservationListByDateEno/{type}/{eno}/{week}", method=RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> get_reservationList_byDate_byEmployee(@PathVariable("type") String type, @PathVariable("eno") String eno, @PathVariable("week") String week) throws ParseException{
 		logger.info("reservationListByDateEno get");
 		System.out.println(week);
+		
 		ResponseEntity<Map<String, Object>> entity = null;
 		HashMap<String, Object> map=new HashMap<>();
 		SelectByDateEmployeeVO sbdeVO = new SelectByDateEmployeeVO();
-		
-		DayGetUtil getDay = new DayGetUtil();
-		String day = getDay.getDay(date);
-		
-		sbdeVO.setNormal_date(date);
-		sbdeVO.setFix_day(day);
-		sbdeVO.setEno(Integer.parseInt(eno));
-		
-		List<ReservationVO> normalVO = rService.selectByNormalDateEno(sbdeVO);
-		List<ReservationVO> fixVO = rService.selectByFixDayEno(sbdeVO);
-		
+		List<NormalClinicReservationVO> ncrList = new ArrayList<NormalClinicReservationVO>();
+		List<FixClinicReservationVO> fcrList = new ArrayList<FixClinicReservationVO>();
+		List<NormalTherapyReservationVO> ntrList = new ArrayList<NormalTherapyReservationVO>();
+		List<FixTherapyReservationVO> ftrList = new ArrayList<FixTherapyReservationVO>();
 		String[] splitWeek = week.split(",");
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-		Date selectStartDate = format.parse(splitWeek[1]);
-		Date selectEndDate = format.parse(splitWeek[6]);
 
-		Date getStartDate;
-		Date getEndDate;
-		
-		for(int i=fixVO.size()-1; i >= 0; i--){
-			//list에 담긴 내용 체크하고 지우는 과정인데 앞에서부터 지우면 하나 지워지면 뒤에내용이 자동으로 당겨지므로 뒤에서부터 반복문돌면서 조건에 따라 remove
-			
-			getStartDate = format.parse(fixVO.get(i).getFix_day_start());
-			getEndDate = format.parse(fixVO.get(i).getFix_day_end());
-			
-			if(getStartDate.getTime() < selectStartDate.getTime() && getEndDate.getTime() < selectStartDate.getTime()){
-				//System.out.println("조건틀림"+reservationListFix.get(i));
-				fixVO.remove(i);
-			}else if(getStartDate.getTime() > selectEndDate.getTime() && getEndDate.getTime() > selectEndDate.getTime()){
-				fixVO.remove(i);
-			}else{
-				System.out.println("조건맞음"+fixVO.get(i));
+		if(type.equals("doctor")){
+			for(int i = 1; i <= splitWeek.length-1; i++){
+				sbdeVO.setRdate(splitWeek[i]);
+				sbdeVO.setEno(Integer.parseInt(eno));
 				
+				List<NormalClinicReservationVO> ncrVO = ncrService.selectByDateEno(sbdeVO);
+				List<FixClinicReservationVO> fcrVO = fcrService.selectByDateEno(sbdeVO);
+				
+				if(ncrVO.size() != 0){
+					for(int j=0; j<ncrVO.size(); j++){
+						ncrList.add(ncrVO.get(j));
+					}
+				}
+				if(fcrVO.size() != 0){
+					for(int j=0; j<fcrVO.size(); j++){
+						fcrList.add(fcrVO.get(j));
+					}
+				}
 			}
-			getStartDate = null;
-			getEndDate = null;
+			 
+			map.put("ncr", ncrList);
+			map.put("fcr", fcrList);
+		}else{
+			for(int i = 1; i < splitWeek.length-1; i++){
+				sbdeVO.setRdate(splitWeek[i]);
+				sbdeVO.setEno(Integer.parseInt(eno));
+				
+				List<NormalTherapyReservationVO> ntrVO = ntrService.selectByDateEno(sbdeVO);
+				List<FixTherapyReservationVO> ftrVO = ftrService.selectByDateEno(sbdeVO);
+				
+				if(ntrVO.size() != 0){
+					for(int j=0; j<ntrVO.size(); j++){
+						ntrList.add(ntrVO.get(j));
+					}
+				}
+				if(ftrVO.size() != 0){
+					for(int j=0; j<ftrVO.size(); j++){
+						ftrList.add(ftrVO.get(j));
+					}
+				}
+			}
+			map.put("ntr", ntrList);
+			map.put("ftr", ftrList);
 		}
 		
-		
-		map.put("normalVO", normalVO);
-		map.put("fixVO", fixVO);
 		entity=new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
 		
 		return entity;
 	}
 	
+	
+	@RequestMapping(value="/fixReservationListByDateEno/{type}/{eno}/{week}", method=RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> get_fixReservationList_byDate_byEmployee(@PathVariable("type") String type, @PathVariable("eno") String eno, @PathVariable("week") String week) throws ParseException{
+		logger.info("fixReservationListByDateEno get");
+		System.out.println(week);
+		
+		ResponseEntity<Map<String, Object>> entity = null;
+		HashMap<String, Object> map=new HashMap<>();
+		SelectByDateEmployeeVO sbdeVO = new SelectByDateEmployeeVO();
+		List<FixClinicReservationVO> fcrList = new ArrayList<FixClinicReservationVO>();
+		List<FixTherapyReservationVO> ftrList = new ArrayList<FixTherapyReservationVO>();
+		String[] splitWeek = week.split(",");
+
+		if(type.equals("doctor")){
+			for(int i = 1; i <= splitWeek.length-1; i++){
+				sbdeVO.setRdate(splitWeek[i]);
+				sbdeVO.setEno(Integer.parseInt(eno));
+				
+				List<FixClinicReservationVO> fcrVO = fcrService.selectByDateEno(sbdeVO);
+				
+				if(fcrVO.size() != 0){
+					for(int j=0; j<fcrVO.size(); j++){
+						fcrList.add(fcrVO.get(j));
+					}
+				}
+			}
+			map.put("vo", fcrList);
+		}else{
+			for(int i = 1; i < splitWeek.length-1; i++){
+				sbdeVO.setRdate(splitWeek[i]);
+				sbdeVO.setEno(Integer.parseInt(eno));
+				
+				List<FixTherapyReservationVO> ftrVO = ftrService.selectByDateEno(sbdeVO);
+				
+				if(ftrVO.size() != 0){
+					for(int j=0; j<ftrVO.size(); j++){
+						ftrList.add(ftrVO.get(j));
+					}
+				}
+			}
+			map.put("vo", ftrList);
+		}
+		
+		entity=new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		
+		return entity;
+	}
 	
 	@RequestMapping(value="/reservationInfoGet/{date}", method=RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> reservationInfo(@PathVariable("date") String date) throws ParseException{

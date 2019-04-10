@@ -1794,12 +1794,12 @@ $(function(){
 	//주간 select에서 의사 및 치료사 변경되었을때 timetable 변경해서 삽입
 	$(document).on("change",".week_select_box_wrap > select[name='employee']",function(){
 		console.log("click");
-		/* if(storage_timetable_btn_num == 2){
+		if(storage_timetable_btn_num == 2 || storage_timetable_btn_num == 3){
 			draw_week_timetable("doctor", storage_timetable_btn_num);
-		}else if(storage_timetable_btn_num == 5){
+		}else if(storage_timetable_btn_num == 5 || storage_timetable_btn_num == 6){
 			draw_week_timetable("therapist", storage_timetable_btn_num);
-		} */
-		draw_time_table_by_case(storage_timetable_btn_num);
+		} 
+		//draw_time_table_by_case(storage_timetable_btn_num);
 	});
 	/* $(".week_select_box_wrap > select[name='employee']").change(function(){
 		if(storage_timetable_btn_num == 2){

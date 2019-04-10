@@ -72,6 +72,18 @@
 		margin-left:20px;
 		cursor: pointer;
 	}
+	.popup_reservation_info_view{
+		display:none;
+	}
+	.popup_reservation_info_view > .popup_reservation_info_btn_wrap{
+		width:500px;
+		margin:0 auto;
+	}
+	.popup_reservation_info_view > .popup_reservation_info_btn_wrap > p{
+		display: inline-block;
+		margin-left:20px;
+		cursor: pointer;
+	}
 	.all_wrap{
 		width: 100%;
 		/* height: 100%; */
@@ -394,6 +406,9 @@ function get_patient_all(info){
 		dataType:"json",
 		success:function(json){			
 			dt = json;
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 		}
 	});
 	return dt;
@@ -447,6 +462,9 @@ function get_patient_by_pno(pno){
 		async:false,
 		success:function(json){
 			dt = json;
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 		}
 	})
 	return dt;
@@ -501,6 +519,9 @@ function post_patient_update_info(patient){
 			$(".popup_patientUpdate").css("display", "none");
 			$(".popup_wrap").css("display","none");
 			draw_patient_table();
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 		}
 	});
 }
@@ -515,6 +536,9 @@ function get_hospitalInfo_byDay(date){
 		async:false,
 		success:function(json){
 			dt = json;
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 		}
 	});
 	return dt;
@@ -531,6 +555,9 @@ function get_employeeList_byType(type){
 		async:false,
 		success:function(json){
 			dt = json;
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 		}
 	});
 	
@@ -547,6 +574,9 @@ function get_employee_byEno(eno){
 		async:false,
 		success:function(json){
 			dt = json;
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 		}
 	});
 	return dt;
@@ -680,6 +710,9 @@ function get_reservationList_byDate(date){
 		async:false,
 		success:function(json){
 			dt = json;
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 		}
 	});
 	
@@ -877,6 +910,9 @@ function get_ntReservation_byRno(rno){
 		async: false,
 		success:function(json){
 			dt = json;
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 		}
 	});
 	return dt;
@@ -892,6 +928,9 @@ function get_fcReservation_byRno(rno){
 		async: false,
 		success:function(json){
 			dt = json;
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 		}
 	});
 	return dt;
@@ -907,6 +946,9 @@ function get_ftReservation_byRno(rno){
 		async: false,
 		success:function(json){
 			dt = json;
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 		}
 	});
 	return dt;
@@ -921,6 +963,9 @@ function get_clinic_by_cno(cno){
 		async: false,
 		success:function(json){
 			dt = json;
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 		}
 	});
 	return dt;
@@ -940,7 +985,7 @@ function draw_simple_reservation_view(type, rno){
 	}else{
 		json = get_ftReservation_byRno(rno);
 	}
-	console.log(type+"/"+rno);
+	
 	var patient = get_patient_by_pno(json.pno);
 	var clinic = get_clinic_by_cno(json.clinic);
 	var clinic_time = Number(clinic.time);
@@ -1233,7 +1278,13 @@ function draw_week_reservation(week, etype, eno, idxx){
 	var week_eDate = week[6];
 	var date;
 	var rtype;
-	
+	var patient;
+	var clinic;
+	var clinic_time;
+	var time;
+	var hour;
+	var minute;
+	var overMinute;
 	if(idxx == 3 || idxx == 6){//고정 View
 		json = get_fixReservationList_byDate_byEmployee(etype, eno, week);
 	console.log(json);
@@ -1447,6 +1498,31 @@ function get_between_date(date1, date2){
 	}
 	//console.log(arrDate);
 	return arrDate;
+}
+
+function open_reservation_info_view(type, rno){
+	var rData;
+	var pData;
+	var eData;
+	var time
+	if(type == "nc"){
+		rData = get_ncReservation_byRno(rno);
+	}else if(type == "nt"){
+		rData = get_ntReservation_byRno(rno);
+	}else if(type == "fc"){
+		rData = get_fcReservation_byRno(rno);
+	}else if(type == "ft"){
+		rData = get_ftReservation_byRno(rno);
+	}
+	
+	pData = get_patient_by_pno(rData.pno);
+	eData = get_employee_byEno(rData.eno);
+	
+	$(".popup_reservation_info_view > h2 > span").append(" "+pData.name+"("+pData.cno+")님");
+	$(".popup_reservation_info_view > table tr:first-child > td > span").html(pData.phone);
+	$(".popup_reservation_info_view > table tr:nth-child(2) > td > span").html(rData.rdate+" "+rData.rtime);
+	$(".popup_reservation_info_view").css("display", "block");
+	$(".popup_wrap").css("display", "block");
 }
 
 $(function(){
@@ -1793,21 +1869,18 @@ $(function(){
 	})
 	//주간 select에서 의사 및 치료사 변경되었을때 timetable 변경해서 삽입
 	$(document).on("change",".week_select_box_wrap > select[name='employee']",function(){
-		console.log("click");
 		if(storage_timetable_btn_num == 2 || storage_timetable_btn_num == 3){
 			draw_week_timetable("doctor", storage_timetable_btn_num);
 		}else if(storage_timetable_btn_num == 5 || storage_timetable_btn_num == 6){
 			draw_week_timetable("therapist", storage_timetable_btn_num);
 		} 
-		//draw_time_table_by_case(storage_timetable_btn_num);
 	});
-	/* $(".week_select_box_wrap > select[name='employee']").change(function(){
-		if(storage_timetable_btn_num == 2){
-			draw_week_timetable("doctor", storage_timetable_btn_num);
-		}else if(storage_timetable_btn_num == 5){
-			draw_week_timetable("therapist", storage_timetable_btn_num);
-		}
-	}); */
+	
+	$(document).on("click", ".patient_p_tag", function(){
+		var type = $(this).find("input[name='type']").val();
+		var rno = $(this).find("input[name='rno']").val();
+		open_reservation_info_view(type, rno);
+	})
 
 });
 </script> 

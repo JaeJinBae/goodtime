@@ -299,3 +299,33 @@
 			<p>취소</p>
 		</div>
 	</div><!-- popup_therapy_reservation_register end -->
+	
+	<div class="popup_reservation_info_view popup_content">
+		<h2><span>일반예약자</span></h2>
+		<table>
+			<tr>
+				<th>연락처</th>
+				<td><span></span><button>문자</button></td>
+			</tr>
+			<tr>
+				<th>일정일시</th>
+				<td><span></span><button>변경</button><button>삭제</button></td>
+			</tr>
+			<tr>
+				<th>치료내용</th>
+				<td></td>
+			</tr>
+			<tr>
+				<th>메모</th>
+				<td></td>
+			</tr>
+		</table>
+		<div class="popup_reservation_info_btn_wrap">
+			<p>접수예정</p>
+			<p>접수완료</p>
+			<p>당일취소</p>
+			<p>전일취소</p>
+			<p>사유취소</p>
+		</div>
+	</div><!-- popup_reservation_info_view -->
+	

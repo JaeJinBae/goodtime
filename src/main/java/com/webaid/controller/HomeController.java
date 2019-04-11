@@ -35,6 +35,7 @@ import com.webaid.domain.NormalClinicReservationVO;
 import com.webaid.domain.NormalTherapyReservationVO;
 import com.webaid.domain.PageMaker;
 import com.webaid.domain.PatientVO;
+import com.webaid.domain.ReservationRecordVO;
 import com.webaid.domain.SearchCriteria;
 import com.webaid.domain.SelectByDateEmployeeVO;
 import com.webaid.service.ClinicService;
@@ -45,6 +46,7 @@ import com.webaid.service.HospitalInfoService;
 import com.webaid.service.NormalClinicReservationService;
 import com.webaid.service.NormalTherapyReservationService;
 import com.webaid.service.PatientService;
+import com.webaid.service.ReservationRecordService;
 import com.webaid.util.DayGetUtil;
 
 
@@ -76,6 +78,9 @@ public class HomeController {
 	
 	@Autowired
 	private ClinicService cService;
+	
+	@Autowired
+	private ReservationRecordService rrService;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model) {
@@ -337,7 +342,6 @@ public class HomeController {
 		ResponseEntity<NormalClinicReservationVO> entity = null;
 		try {
 			NormalClinicReservationVO vo = ncrService.selectByRno(rno);
-			System.out.println("객체=\n"+vo+"\n"+rno);
 			entity = new ResponseEntity<NormalClinicReservationVO>(vo, HttpStatus.OK);
 		} catch (Exception e) {
 			e.getMessage();
@@ -389,12 +393,29 @@ public class HomeController {
 	public ResponseEntity<String> ncReservationRegisterPost(NormalClinicReservationVO vo){
 		logger.info("ncReservationRegister Post");
 		ResponseEntity<String> entity= null;
+		ReservationRecordVO rrvo = new ReservationRecordVO();
+		ClinicVO cvo = cService.selectOneByCno(Integer.parseInt(vo.getClinic()));
+		PatientVO pvo = pService.selectByPno(vo.getPno()+"");
+		EmployeeVO evo = empService.selectByEno(vo.getEno());
 		
 		try {
-			System.out.println(vo);
 			ncrService.register(vo);
+			rrvo.setNo(0);
+			rrvo.setPname(pvo.getName());
+			rrvo.setEname(evo.getName());
+			rrvo.setRno(vo.getRno());
+			rrvo.setRtype(vo.getRtype());
+			rrvo.setCname(cvo.getCode_name());
+			rrvo.setRdate(vo.getRdate());
+			rrvo.setRtime(vo.getRtime());
+			rrvo.setReception_info(vo.getDesk_state_regdate()+" "+vo.getDesk_state_writer());
+			rrvo.setRegister_info(vo.getRegdate()+" "+vo.getWriter());
+			rrvo.setResult(vo.getResult());
+			System.out.println(rrvo);
+			rrService.register(rrvo);
 			entity = new ResponseEntity<String>("OK",HttpStatus.OK);
 		} catch (Exception e) {
+			e.getMessage();
 			entity = new ResponseEntity<String>("NO",HttpStatus.OK);
 		}
 		
@@ -407,8 +428,8 @@ public class HomeController {
 		ResponseEntity<String> entity= null;
 		
 		try {
-			System.out.println(vo);
 			ntrService.register(vo);
+			System.out.println(vo.getRno());
 			entity = new ResponseEntity<String>("OK",HttpStatus.OK);
 		} catch (Exception e) {
 			entity = new ResponseEntity<String>("NO",HttpStatus.OK);

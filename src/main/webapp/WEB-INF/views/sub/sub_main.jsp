@@ -2079,7 +2079,7 @@ $(function(){
 				var desk_state="예약완료";
 				var desk_state_writer=$("#session_login_name").val();
 				var nowDate = new Date();
-				var desk_state_regdate = nowDate.getFullYear()+"-"+(((nowDate.getMonth()+1)>9?'':'0')+(nowDate.getMonth()+1))+"-"+((nowDate.getDate()>9?'':'0')+nowDate.getDate())+" "+nowDate.getHours()+":"+nowDate.getMinutes();
+				var desk_state_regdate = nowDate.getFullYear()+"-"+(((nowDate.getMonth()+1)>9?'':'0')+(nowDate.getMonth()+1))+"-"+((nowDate.getDate()>9?'':'0')+nowDate.getDate())+" "+nowDate.getHours()+":"+((nowDate.getMinutes()>9?'':'0')+nowDate.getMinutes());
 				var result = "예약완료";
 				
 				if(idx == 1){
@@ -2117,7 +2117,7 @@ $(function(){
 				var desk_state="예약완료";
 				var desk_state_writer=$("#session_login_name").val();
 				var nowDate = new Date();
-				var desk_state_regdate = nowDate.getFullYear()+"-"+(((nowDate.getMonth()+1)>9?'':'0')+(nowDate.getMonth()+1))+"-"+((nowDate.getDate()>9?'':'0')+nowDate.getDate())+" "+nowDate.getHours()+":"+nowDate.getMinutes();
+				var desk_state_regdate = nowDate.getFullYear()+"-"+(((nowDate.getMonth()+1)>9?'':'0')+(nowDate.getMonth()+1))+"-"+((nowDate.getDate()>9?'':'0')+nowDate.getDate())+" "+nowDate.getHours()+":"+((nowDate.getMinutes()>9?'':'0')+nowDate.getMinutes());
 				var result = "예약완료";
 				
 				if(idx == 1){

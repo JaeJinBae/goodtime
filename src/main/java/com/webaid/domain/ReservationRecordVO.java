@@ -12,6 +12,7 @@ public class ReservationRecordVO {
 	private String reception_info;
 	private String therapy_info;
 	private String register_info;
+	private String result;
 
 	public ReservationRecordVO() {
 		super();
@@ -105,11 +106,20 @@ public class ReservationRecordVO {
 		this.register_info = register_info;
 	}
 
+	public String getResult() {
+		return result;
+	}
+
+	public void setResult(String result) {
+		this.result = result;
+	}
+
 	@Override
 	public String toString() {
 		return "ReservationRecordVO [no=" + no + ", pname=" + pname + ", ename=" + ename + ", rno=" + rno + ", rtype="
 				+ rtype + ", cname=" + cname + ", rdate=" + rdate + ", rtime=" + rtime + ", reception_info="
-				+ reception_info + ", therapy_info=" + therapy_info + ", register_info=" + register_info + "]";
+				+ reception_info + ", therapy_info=" + therapy_info + ", register_info=" + register_info + ", result="
+				+ result + "]";
 	}
 
 }

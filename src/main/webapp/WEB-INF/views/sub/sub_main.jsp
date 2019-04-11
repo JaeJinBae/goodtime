@@ -2155,9 +2155,9 @@ $(function(){
 	
 	//주간 select에서 주 변경되었을때 timetable 변경해서 삽입
 	$("#sh_week").change(function(){
-		if(storage_timetable_btn_num == 2){
+		if(storage_timetable_btn_num == 2 || storage_timetable_btn_num == 3){
 			draw_week_timetable("doctor", storage_timetable_btn_num);
-		}else if(storage_timetable_btn_num == 5){
+		}else if(storage_timetable_btn_num == 5 || storage_timetable_btn_num == 6){
 			draw_week_timetable("therapist", storage_timetable_btn_num);
 		}
 		

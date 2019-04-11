@@ -411,7 +411,6 @@ public class HomeController {
 			rrvo.setReception_info(vo.getDesk_state_regdate()+" "+vo.getDesk_state_writer());
 			rrvo.setRegister_info(vo.getRegdate()+" "+vo.getWriter());
 			rrvo.setResult(vo.getResult());
-			System.out.println(rrvo);
 			rrService.register(rrvo);
 			entity = new ResponseEntity<String>("OK",HttpStatus.OK);
 		} catch (Exception e) {
@@ -426,10 +425,24 @@ public class HomeController {
 	public ResponseEntity<String> ntReservationRegisterPost(NormalTherapyReservationVO vo){
 		logger.info("ntReservationRegister Post");
 		ResponseEntity<String> entity= null;
-		
+		ReservationRecordVO rrvo = new ReservationRecordVO();
+		ClinicVO cvo = cService.selectOneByCno(Integer.parseInt(vo.getClinic()));
+		PatientVO pvo = pService.selectByPno(vo.getPno()+"");
+		EmployeeVO evo = empService.selectByEno(vo.getEno());
 		try {
 			ntrService.register(vo);
-			System.out.println(vo.getRno());
+			rrvo.setNo(0);
+			rrvo.setPname(pvo.getName());
+			rrvo.setEname(evo.getName());
+			rrvo.setRno(vo.getRno());
+			rrvo.setRtype(vo.getRtype());
+			rrvo.setCname(cvo.getCode_name());
+			rrvo.setRdate(vo.getRdate());
+			rrvo.setRtime(vo.getRtime());
+			rrvo.setReception_info(vo.getDesk_state_regdate()+" "+vo.getDesk_state_writer());
+			rrvo.setRegister_info(vo.getRegdate()+" "+vo.getWriter());
+			rrvo.setResult(vo.getResult());
+			rrService.register(rrvo);
 			entity = new ResponseEntity<String>("OK",HttpStatus.OK);
 		} catch (Exception e) {
 			entity = new ResponseEntity<String>("NO",HttpStatus.OK);
@@ -451,13 +464,32 @@ public class HomeController {
 		String str2 = str.substring(1, str.length()-1);
 		String[] splitDate = str2.split(", ");
 		
+		
+		
 		try {
 			for(int i=0; i<splitDate.length; i++){
+				ReservationRecordVO rrvo = new ReservationRecordVO();
+				ClinicVO cvo = cService.selectOneByCno(Integer.parseInt(vo.getClinic()));
+				PatientVO pvo = pService.selectByPno(vo.getPno()+"");
+				EmployeeVO evo = empService.selectByEno(vo.getEno());
 				vo.setRdate(splitDate[i]);
 				fcrService.register(vo);
+				rrvo.setNo(0);
+				rrvo.setPname(pvo.getName());
+				rrvo.setEname(evo.getName());
+				rrvo.setRno(vo.getRno());
+				rrvo.setRtype(vo.getRtype());
+				rrvo.setCname(cvo.getCode_name());
+				rrvo.setRdate(vo.getRdate());
+				rrvo.setRtime(vo.getRtime());
+				rrvo.setReception_info(vo.getDesk_state_regdate()+" "+vo.getDesk_state_writer());
+				rrvo.setRegister_info(vo.getRegdate()+" "+vo.getWriter());
+				rrvo.setResult(vo.getResult());
+				rrService.register(rrvo);
 			}
 			entity = new ResponseEntity<String>("OK",HttpStatus.OK);
 		} catch (Exception e) {
+			System.out.println(e.getMessage());
 			entity = new ResponseEntity<String>("NO",HttpStatus.OK);
 		}
 		
@@ -472,16 +504,32 @@ public class HomeController {
 		FixTherapyReservationVO vo = new FixTherapyReservationVO();
 
 		BeanUtils.populate(vo, (Map) data.get("vo"));
-		
-		
+				
 		String str = data.get("date").toString();
 		String str2 = str.substring(1, str.length()-1);
 		String[] splitDate = str2.split(", ");
+		
+		ReservationRecordVO rrvo = new ReservationRecordVO();
+		ClinicVO cvo = cService.selectOneByCno(Integer.parseInt(vo.getClinic()));
+		PatientVO pvo = pService.selectByPno(vo.getPno()+"");
+		EmployeeVO evo = empService.selectByEno(vo.getEno());
 		
 		try {
 			for(int i=0; i<splitDate.length; i++){
 				vo.setRdate(splitDate[i]);
 				ftrService.register(vo);
+				rrvo.setNo(0);
+				rrvo.setPname(pvo.getName());
+				rrvo.setEname(evo.getName());
+				rrvo.setRno(vo.getRno());
+				rrvo.setRtype(vo.getRtype());
+				rrvo.setCname(cvo.getCode_name());
+				rrvo.setRdate(vo.getRdate());
+				rrvo.setRtime(vo.getRtime());
+				rrvo.setReception_info(vo.getDesk_state_regdate()+" "+vo.getDesk_state_writer());
+				rrvo.setRegister_info(vo.getRegdate()+" "+vo.getWriter());
+				rrvo.setResult(vo.getResult());
+				rrService.register(rrvo);
 			}
 			entity = new ResponseEntity<String>("OK",HttpStatus.OK);
 		} catch (Exception e) {

@@ -21,7 +21,7 @@
 	</select>
 	
 	<insert id="register" useGeneratedKeys="true" keyProperty="rno">
-		insert into fix_therapy_reservation values(#{rno}, #{pno}, #{eno}, #{memo}, #{clinic}, #{rtype}, #{rdate}, #{rtime}, #{fix_day}, #{fix_day_start}, #{fix_day_end}, #{writer}, #{regdate}, #{updatewriter}, #{updatedate}, #{desk_state}, #{desk_state_writer}, #{desk_state_regdate}, #{therapist_state}, #{therapist_state_writer}, #{therapist_state_regdate}, #{result}, #{result_memo})
+		insert into fix_therapy_reservation values(0, #{pno}, #{eno}, #{memo}, #{clinic}, #{rtype}, #{rdate}, #{rtime}, #{fix_day}, #{fix_day_start}, #{fix_day_end}, #{writer}, #{regdate}, #{updatewriter}, #{updatedate}, #{desk_state}, #{desk_state_writer}, #{desk_state_regdate}, #{therapist_state}, #{therapist_state_writer}, #{therapist_state_regdate}, #{result}, #{result_memo})
 	</insert>
 	
 	<update id="updateDeskState">

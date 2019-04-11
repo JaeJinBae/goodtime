@@ -11,5 +11,6 @@ public interface NormalTherapyReservationService {
 	public NormalTherapyReservationVO selectByRno(int rno);
 	public List<NormalTherapyReservationVO> selectByDateEno(SelectByDateEmployeeVO vo);
 	public void register(NormalTherapyReservationVO vo);
-	public void updateDeskState(int rno);
+	public void updateDeskState(NormalTherapyReservationVO vo);
+	public void cancel(NormalTherapyReservationVO vo);
 }

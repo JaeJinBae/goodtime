@@ -11,5 +11,6 @@ public interface FixClinicReservationDao {
 	public FixClinicReservationVO selectByRno(int rno);
 	public List<FixClinicReservationVO> selectByDateEno(SelectByDateEmployeeVO vo);
 	public void register(FixClinicReservationVO vo);
-	public void updateDeskState(int rno);
+	public void updateDeskState(FixClinicReservationVO vo);
+	public void cancel(FixClinicReservationVO vo);
 }

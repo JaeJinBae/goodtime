@@ -88,11 +88,16 @@
 		cursor: pointer;
 		border:1px solid lightgray;
 	}
-	.popup_reservation_info_view > .popup_reservation_info_btn_wrap > p:first-child{
-		background:#057be8;
-		color: #fff;
-		font-size:15px; 
+	.popup_reservation_info_cancel_wrap{
+		display:none;
+		width:500px;
+		margin: 0 auto;
+		background: #efefef;
 	}
+	.popup_reservation_info_cancel_wrap > table{
+		width: 100%;
+	}
+	
 	.all_wrap{
 		width: 100%;
 		/* height: 100%; */
@@ -333,6 +338,8 @@
 	.patient_p_tag{
 		font-size:14px;
 		cursor: pointer;
+		line-height: 22px;
+		padding: 2px 0;
 	}
 	.doctor_name{
 		text-align: center;
@@ -1624,6 +1631,17 @@ function open_reservation_info_view(type, rno){
 		rtype="고정치료예약";
 	}
 	
+	$(".popup_reservation_info_btn_wrap > p").css({"background":"#fff", "color":"black"});
+	if(rData.result =="예약완료"){
+		$(".popup_reservation_info_btn_wrap > p").eq(0).css({"background":"#057be8", "color":"#fff"});
+	}else if(rData.result == "접수완료"){
+		$(".popup_reservation_info_btn_wrap > p").eq(1).css({"background":"#057be8", "color":"#fff"});
+	}else if(rData.result == "예약취소"){
+		$(".popup_reservation_info_btn_wrap > p").eq(2).css({"background":"#057be8", "color":"#fff"});
+	}else{
+		$(".popup_reservation_info_btn_wrap > p").eq(1).css({"background":"#057be8", "color":"#fff"});
+	}
+	
 	pData = get_patient_by_pno(rData.pno);
 	eData = get_employee_byEno(rData.eno);
 	cData = get_clinic_by_cno(rData.clinic);
@@ -1638,17 +1656,52 @@ function open_reservation_info_view(type, rno){
 	$(".popup_wrap").css("display", "block");
 }
 
-function update_reservation_deskState(rtype, rno, stbn){
+function update_reservation_deskState(rtype, rno, state, stbn){
 	console.log(rtype+"/"+rno+"/"+stbn);
 	$.ajax({
-		url:"${pageContext.request.contextPath}/updateReservationDeskState/"+rtype+"/"+rno,
+		url:"${pageContext.request.contextPath}/updateReservationDeskState/"+rtype+"/"+rno+"/"+state,
 		type:"post",
 		dataType:"text",
 		async:false,
 		success:function(json){
 			console.log(json);
 			if(json == "ok"){
-				alert("접수완료 되었습니다.");
+				alert(state+" 되었습니다.");
+				
+				$(".popup_reservation_info_view").css("display", "none");
+				$(".popup_wrap").css("display","none");
+				
+				draw_time_table_by_case(stbn);
+			}else{
+				alert("예약등록이 정상적으로 등록되지 않았습니다. 다시 한번 등록하세요.");
+			}
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	});
+}
+
+function update_reservation_state(idxx, rtype, rno, state, stbn){
+	if(idxx == 0 || idxx == 1){
+		update_reservation_deskState(rtype, rno, state, stbn);
+	}else if(idxx == 2){
+		$(".popup_reservation_info_cancel_wrap").css("display","block");
+	}
+}
+
+function reservation_cancel(rtype, rno, stbn){
+	var reason = $(".popup_reservation_info_cancel_wrap > table tr > td > textarea[name='cancel_reason']").val();
+	
+	$.ajax({
+		url:"${pageContext.request.contextPath}/reservationCancel/"+rtype+"/"+rno+"/"+reason,
+		type:"post",
+		dataType:"text",
+		async:false,
+		success:function(json){
+			console.log(json);
+			if(json == "ok"){
+				alert("예약이 취소 되었습니다.");
 				
 				$(".popup_reservation_info_view").css("display", "none");
 				$(".popup_wrap").css("display","none");
@@ -2024,15 +2077,19 @@ $(function(){
 	
 	$(".popup_reservation_info_btn_wrap > p").click(function(){
 		var btn_idx = $(this).index();
-		$(".popup_reservation_info_btn_wrap > p").css({"background":"#fff", "color":"#111"});
-		$(this).css({"background":"#057be8", "color":"#fff"});
+		
 		var rtype = $(".popup_reservation_info_view > h2 > input[name='rtype']").val();
 		var rno = $(".popup_reservation_info_view > h2 > input[name='rno']").val();
+		var state = $(this).text();
 		
-		console.log(rtype+"/"+rno);
-		update_reservation_deskState(rtype, rno, storage_timetable_btn_num)
+		update_reservation_state(btn_idx, rtype, rno, state, storage_timetable_btn_num);
 	});
 
+	$(".popup_reservation_info_cancel_wrap > table tr td > button").click(function(){
+		var rtype = $(".popup_reservation_info_view > h2 > input[name='rtype']").val();
+		var rno = $(".popup_reservation_info_view > h2 > input[name='rno']").val();
+		reservation_cancel(rtype, rno, storage_timetable_btn_num);
+	});
 });
 </script> 
 </head> 

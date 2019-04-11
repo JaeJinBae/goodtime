@@ -43,8 +43,13 @@ public class NormalTherapyReservationDaoImpl implements NormalTherapyReservation
 	}
 
 	@Override
-	public void updateDeskState(int rno) {
-		session.update(namespace+".updateDeskState", rno);
+	public void updateDeskState(NormalTherapyReservationVO vo) {
+		session.update(namespace+".updateDeskState", vo);
+	}
+
+	@Override
+	public void cancel(NormalTherapyReservationVO vo) {
+		session.update(namespace+".cancel", vo);
 	}
 
 }

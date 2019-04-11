@@ -41,8 +41,13 @@ public class NormalClinicReservationServiceImpl implements NormalClinicReservati
 	}
 
 	@Override
-	public void updateDeskState(int rno) {
-		dao.updateDeskState(rno);
+	public void updateDeskState(NormalClinicReservationVO vo) {
+		dao.updateDeskState(vo);
+	}
+
+	@Override
+	public void cancel(NormalClinicReservationVO vo) {
+		dao.cancel(vo);
 	}
 
 }

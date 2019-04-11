@@ -321,11 +321,18 @@
 			</tr>
 		</table>
 		<div class="popup_reservation_info_btn_wrap">
-			<p>접수예정</p>
+			<p>예약완료</p>
 			<p>접수완료</p>
-			<p>당일취소</p>
-			<p>전일취소</p>
-			<p>사유취소</p>
+			<p>예약취소</p>
+		</div>
+		<div class="popup_reservation_info_cancel_wrap">
+			<table>
+				<tr>
+					<th>취소사유</th>
+					<td><textarea name="cancel_reason"></textarea></td>
+					<td><button>저장</button></td>
+				</tr>
+			</table>
 		</div>
 	</div><!-- popup_reservation_info_view -->
 	

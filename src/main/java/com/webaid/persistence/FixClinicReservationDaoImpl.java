@@ -42,8 +42,13 @@ public class FixClinicReservationDaoImpl implements FixClinicReservationDao {
 	}
 
 	@Override
-	public void updateDeskState(int rno) {
-		session.update(namespace+".updateDeskState", rno);
+	public void updateDeskState(FixClinicReservationVO vo) {
+		session.update(namespace+".updateDeskState", vo);
+	}
+
+	@Override
+	public void cancel(FixClinicReservationVO vo) {
+		session.update(namespace+".cancel", vo);
 	}
 
 }

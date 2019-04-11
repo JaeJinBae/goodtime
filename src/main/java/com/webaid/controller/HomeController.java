@@ -4,9 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URLEncoder;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +35,6 @@ import com.webaid.domain.NormalClinicReservationVO;
 import com.webaid.domain.NormalTherapyReservationVO;
 import com.webaid.domain.PageMaker;
 import com.webaid.domain.PatientVO;
-import com.webaid.domain.ReservationVO;
 import com.webaid.domain.SearchCriteria;
 import com.webaid.domain.SelectByDateEmployeeVO;
 import com.webaid.service.ClinicService;
@@ -48,7 +45,6 @@ import com.webaid.service.HospitalInfoService;
 import com.webaid.service.NormalClinicReservationService;
 import com.webaid.service.NormalTherapyReservationService;
 import com.webaid.service.PatientService;
-import com.webaid.service.ReservationService;
 import com.webaid.util.DayGetUtil;
 
 
@@ -62,9 +58,6 @@ public class HomeController {
 	
 	@Autowired
 	private HospitalInfoService hService;
-	
-	@Autowired
-	private ReservationService rService;
 	
 	@Autowired
 	private NormalClinicReservationService ncrService;
@@ -207,22 +200,11 @@ public class HomeController {
 		HashMap<String, Object> map=new HashMap<>();
 		
 		try {
-			DayGetUtil getDay = new DayGetUtil();
-			String day = getDay.getDay(date);
-			
-			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-			Date selectDate = format.parse(date);
-			
-			//List<ReservationVO> reservationListNormal = rService.selectByDate(date);
-			//List<ReservationVO> reservationListFix = rService.selectByFixDay(day);
-			
 			List<NormalClinicReservationVO> ncReservationList = ncrService.selectByDate(date);
 			List<NormalTherapyReservationVO> ntReservationList = ntrService.selectByDate(date);
 			List<FixClinicReservationVO> fcReservationList = fcrService.selectByDate(date);
 			List<FixTherapyReservationVO> ftReservationList = ftrService.selectByDate(date);
 			
-			//map.put("reservationListNormal", reservationListNormal);
-			//map.put("reservationListFix", reservationListFix);
 			map.put("ncReservationList", ncReservationList);
 			map.put("ntReservationList", ntReservationList);
 			map.put("fcReservationList", fcReservationList);
@@ -346,45 +328,6 @@ public class HomeController {
 		
 		entity=new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
 		
-		return entity;
-	}
-	
-	@RequestMapping(value="/reservationInfoGet/{date}", method=RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> reservationInfo(@PathVariable("date") String date) throws ParseException{
-		logger.info("reservationInfo GET start");
-		logger.info("받아온 날짜는 "+date);
-		
-		ResponseEntity<Map<String,Object>> entity=null;
-		HashMap<String, Object> map=new HashMap<>();
-		
-		DayGetUtil getDay = new DayGetUtil();
-		String day = getDay.getDay(date);
-		
-		List<ReservationVO> reservationList = rService.selectByDate(date);
-		
-		
-		logger.info(day);
-		map.put("reservationList", reservationList);
-		
-		entity=new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
-		logger.info("reservationInfo GET end");
-		return entity;
-	}
-
-	@RequestMapping(value="/reservationInfoByRno/{type}/{rno}", method=RequestMethod.GET)
-	public ResponseEntity<ReservationVO> rservationInfoByRno(@PathVariable("type") String type, @PathVariable("rno") int rno){
-		logger.info("reservationInfoByRno GET");
-		ResponseEntity<ReservationVO> entity=null;
-		if(type.equals("nc")){
-			
-		}
-		try {
-			ReservationVO vo=rService.selectByRno(rno);
-			entity = new ResponseEntity<ReservationVO>(vo, HttpStatus.OK);
-			return entity;
-		} catch (Exception e) {
-			
-		}
 		return entity;
 	}
 	

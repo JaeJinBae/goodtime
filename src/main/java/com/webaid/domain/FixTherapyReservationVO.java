@@ -17,7 +17,11 @@ public class FixTherapyReservationVO {
 	private String updatewriter;
 	private String updatedate;
 	private String desk_state;
+	private String desk_state_writer;
+	private String desk_state_regdate;
 	private String therapist_state;
+	private String therapist_state_writer;
+	private String therapist_state_regdate;
 	private String result;
 	private String result_memo;
 
@@ -153,12 +157,44 @@ public class FixTherapyReservationVO {
 		this.desk_state = desk_state;
 	}
 
+	public String getDesk_state_writer() {
+		return desk_state_writer;
+	}
+
+	public void setDesk_state_writer(String desk_state_writer) {
+		this.desk_state_writer = desk_state_writer;
+	}
+
+	public String getDesk_state_regdate() {
+		return desk_state_regdate;
+	}
+
+	public void setDesk_state_regdate(String desk_state_regdate) {
+		this.desk_state_regdate = desk_state_regdate;
+	}
+
 	public String getTherapist_state() {
 		return therapist_state;
 	}
 
 	public void setTherapist_state(String therapist_state) {
 		this.therapist_state = therapist_state;
+	}
+
+	public String getTherapist_state_writer() {
+		return therapist_state_writer;
+	}
+
+	public void setTherapist_state_writer(String therapist_state_writer) {
+		this.therapist_state_writer = therapist_state_writer;
+	}
+
+	public String getTherapist_state_regdate() {
+		return therapist_state_regdate;
+	}
+
+	public void setTherapist_state_regdate(String therapist_state_regdate) {
+		this.therapist_state_regdate = therapist_state_regdate;
 	}
 
 	public String getResult() {
@@ -183,7 +219,9 @@ public class FixTherapyReservationVO {
 				+ clinic + ", rtype=" + rtype + ", rdate=" + rdate + ", rtime=" + rtime + ", fix_day=" + fix_day
 				+ ", fix_day_start=" + fix_day_start + ", fix_day_end=" + fix_day_end + ", writer=" + writer
 				+ ", regdate=" + regdate + ", updatewriter=" + updatewriter + ", updatedate=" + updatedate
-				+ ", desk_state=" + desk_state + ", therapist_state=" + therapist_state + ", result=" + result
+				+ ", desk_state=" + desk_state + ", desk_state_writer=" + desk_state_writer + ", desk_state_regdate="
+				+ desk_state_regdate + ", therapist_state=" + therapist_state + ", therapist_state_writer="
+				+ therapist_state_writer + ", therapist_state_regdate=" + therapist_state_regdate + ", result=" + result
 				+ ", result_memo=" + result_memo + "]";
 	}
 

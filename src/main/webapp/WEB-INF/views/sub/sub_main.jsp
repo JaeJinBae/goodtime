@@ -2076,12 +2076,11 @@ $(function(){
 				var memo = $(".popup_clinic_reservation_register > table tr td input[name='memo']").val();
 				var writer = $("#session_login_name").val();
 				var regdate = get_today();
-				var updatewriter = "";
-				var updatedate = "";
 				var desk_state="예약완료";
-				var therapist_state="";
+				var desk_state_writer=$("#session_login_name").val();
+				var nowDate = new Date();
+				var desk_state_regdate = nowDate.getFullYear()+"-"+(((nowDate.getMonth()+1)>9?'':'0')+(nowDate.getMonth()+1))+"-"+((nowDate.getDate()>9?'':'0')+nowDate.getDate())+" "+nowDate.getHours()+":"+nowDate.getMinutes();
 				var result = "예약완료";
-				var result_memo = "";
 				
 				if(idx == 1){
 					desk_state = "접수완료";
@@ -2089,10 +2088,10 @@ $(function(){
 				}
 				
 				if(rtype == "nc"){
-					vo = {pno:pno, eno:eno, rtype:rtype, rdate:rdate, rtime:rtime, clinic:clinic, memo:memo, writer:writer, regdate:regdate, updatewriter:updatewriter, updatedate:updatedate, desk_state:desk_state, result:result, result_memo:""};
+					vo = {pno:pno, eno:eno, rtype:rtype, rdate:rdate, rtime:rtime, clinic:clinic, memo:memo, writer:writer, regdate:regdate, updatewriter:"", updatedate:"", desk_state:desk_state, desk_state_writer:desk_state_writer, desk_state_regdate:desk_state_regdate, result:result, result_memo:""};
 					post_ncReservation_register(vo, storage_timetable_btn_num);
 				}else if(rtype == "fc"){
-					vo = {rno:"0", pno:pno, eno:eno, fix_day:fix_day, rdate:rdate, rtime:rtime, fix_day_start:fix_day_start, fix_day_end:fix_day_end, rtype:rtype, clinic:clinic, memo:memo, writer:writer, regdate:regdate, updatewriter:updatewriter, updatedate:updatedate, desk_state:desk_state, result:result, result_memo:""};
+					vo = {rno:"0", pno:pno, eno:eno, fix_day:fix_day, rdate:rdate, rtime:rtime, fix_day_start:fix_day_start, fix_day_end:fix_day_end, rtype:rtype, clinic:clinic, memo:memo, writer:writer, regdate:regdate, updatewriter:"", updatedate:"", desk_state:desk_state, desk_state_writer:desk_state_writer, desk_state_regdate:desk_state_regdate, result:result, result_memo:""};
 					post_fcReservation_register(vo, storage_timetable_btn_num);
 				}
 			//치료등록
@@ -2114,12 +2113,11 @@ $(function(){
 				var memo = $(".popup_therapy_reservation_register > table tr td input[name='memo']").val();
 				var writer = $("#session_login_name").val();
 				var regdate = get_today();
-				var updatewriter = "";
-				var updatedate = "";
 				var desk_state="예약완료";
-				var therapist_state="";
+				var desk_state_writer=$("#session_login_name").val();
+				var nowDate = new Date();
+				var desk_state_regdate = nowDate.getFullYear()+"-"+(((nowDate.getMonth()+1)>9?'':'0')+(nowDate.getMonth()+1))+"-"+((nowDate.getDate()>9?'':'0')+nowDate.getDate())+" "+nowDate.getHours()+":"+nowDate.getMinutes();
 				var result = "예약완료";
-				var result_memo = "";
 				
 				if(idx == 1){
 					desk_state = "접수완료";
@@ -2127,10 +2125,10 @@ $(function(){
 				}
 				
 				if(rtype == "nt"){
-					vo = {pno:pno, eno:eno, rtype:rtype, rdate:rdate, rtime:rtime, clinic:clinic, memo:memo, writer:writer, regdate:regdate, updatewriter:updatewriter, updatedate:updatedate, desk_state:desk_state, therapist_state:"", result:result, result_memo:""};
+					vo = {pno:pno, eno:eno, rtype:rtype, rdate:rdate, rtime:rtime, clinic:clinic, memo:memo, writer:writer, regdate:regdate, updatewriter:"", updatedate:"", desk_state:desk_state, desk_state_writer:desk_state_writer, desk_state_regdate:desk_state_regdate, therapist_state:"", result:result, result_memo:""};
 					post_ntReservation_register(vo, storage_timetable_btn_num);
 				}else if(rtype == "ft"){
-					vo = {pno:pno, eno:eno, fix_day:fix_day, rdate:rdate, rtime:rtime, fix_day_start:fix_day_start, fix_day_end:fix_day_end, rtype:rtype, clinic:clinic, memo:memo, writer:writer, regdate:regdate, updatewriter:updatewriter, updatedate:updatedate, desk_state:desk_state, therapist_state:"", result:result, result_memo:""};
+					vo = {pno:pno, eno:eno, fix_day:fix_day, rdate:rdate, rtime:rtime, fix_day_start:fix_day_start, fix_day_end:fix_day_end, rtype:rtype, clinic:clinic, memo:memo, writer:writer, regdate:regdate, updatewriter:updatewriter, updatedate:updatedate, desk_state:desk_state, desk_state_writer:desk_state_writer, desk_state_regdate:desk_state_regdate, therapist_state:"", therapist_state_writer:"", therapist_state_regdate:"", result:result, result_memo:""};
 					post_ftReservation_register(vo, storage_timetable_btn_num);
 				}
 			}
@@ -2266,7 +2264,6 @@ $(function(){
 							<li>고정</li>
 							<li>예약이력</li>
 							<li>변경이력</li>
-							<li>희망예약</li>
 							<li>휴무</li>
 							<li>고정</li>
 							<li>문자종합</li>

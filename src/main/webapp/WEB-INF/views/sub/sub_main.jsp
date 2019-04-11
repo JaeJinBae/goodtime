@@ -863,7 +863,7 @@ function draw_reservation(date){
 		if(this.result == "예약취소"){
 			target_tag = ".therapist_"+this.eno+"_"+hour;
 			txt = "<p class='patient_p_tag' style='background:#e9e9e9;border:1px solid gray;color:gray;'>"+minute+"~"+end_time+" "+patient.name
-				+ "<input type='hidden' name='rno' value='"+this.rno+"'><input type='hidden' name='type' value='nc'></p>";
+				+ "<input type='hidden' name='rno' value='"+this.rno+"'><input type='hidden' name='type' value='nt'></p>";
 			
 			$(target_tag).append(txt);
 		}else{
@@ -909,7 +909,7 @@ function draw_reservation(date){
 		if(this.result == "예약취소"){
 			target_tag = ".doctor_"+this.eno+"_"+hour;
 			txt = "<p class='patient_p_tag' style='background:#e9e9e9;border:1px solid gray;color:gray;'>"+minute+"~"+end_time+" "+patient.name
-				+ "<input type='hidden' name='rno' value='"+this.rno+"'><input type='hidden' name='type' value='nc'></p>";
+				+ "<input type='hidden' name='rno' value='"+this.rno+"'><input type='hidden' name='type' value='fc'></p>";
 			
 			$(target_tag).append(txt);
 		}else{
@@ -956,7 +956,7 @@ function draw_reservation(date){
 		if(this.result == "예약취소"){
 			target_tag = ".therapist_"+this.eno+"_"+hour;
 			txt = "<p class='patient_p_tag' style='background:#e9e9e9;border:1px solid gray;color:gray;'>"+minute+"~"+end_time+" "+patient.name
-				+ "<input type='hidden' name='rno' value='"+this.rno+"'><input type='hidden' name='type' value='nc'></p>";
+				+ "<input type='hidden' name='rno' value='"+this.rno+"'><input type='hidden' name='type' value='ft'></p>";
 			
 			$(target_tag).append(txt);
 		}else{
@@ -1552,7 +1552,7 @@ function draw_week_reservation(week, etype, eno, idxx){
 					var cs = $(".time_table_wrap > table tr > td > input[value='"+this.fix_day+"']").parent().parent().prop("class");
 					
 					if(this.result == "예약취소"){
-						arget_tag = "."+cs+"_"+hour;
+						target_tag = "."+cs+"_"+hour;
 						str = "<p class='patient_p_tag' style='background:#e9e9e9;color:gray;border:1px solid gray;'>"+minute+"~"+end_time+" "+patient.name
 							+ "<input type='hidden' name='rno' value='"+this.rno+"'><input type='hidden' name='type' value='"+this.rtype+"'></p>";
 						$(target_tag).append(str);
@@ -1728,7 +1728,7 @@ function open_reservation_info_view(type, rno){
 	}else if(rData.result == "예약취소"){
 		$(".popup_reservation_info_btn_wrap > p").eq(2).css({"background":"#057be8", "color":"#fff"});
 	}else{
-		$(".popup_reservation_info_btn_wrap > p").eq(1).css({"background":"#057be8", "color":"#fff"});
+		$(".popup_reservation_info_btn_wrap > p").eq(0).css({"background":"#057be8", "color":"#fff"});
 	}
 	
 	pData = get_patient_by_pno(rData.pno);
@@ -1780,7 +1780,8 @@ function update_reservation_state(idxx, rtype, rno, state, stbn){
 }
 
 function reservation_cancel(rtype, rno, stbn){
-	var reason = $(".popup_reservation_info_cancel_wrap > table tr > td > textarea[name='cancel_reason']").val();
+	var reason = "";
+	reason = $(".popup_reservation_info_cancel_wrap > table tr > td > textarea[name='cancel_reason']").val();
 	
 	$.ajax({
 		url:"${pageContext.request.contextPath}/reservationCancel/"+rtype+"/"+rno+"/"+reason,
@@ -1966,7 +1967,9 @@ $(function(){
 		mouseenter:function(){
 			var rno = $(this).find("input[name='rno']").val();
 			var type = $(this).find("input[name='type']").val();
+			console.log(type+"/"+rno);
 			draw_simple_reservation_view(type, rno);
+			
 		},
 		mouseleave:function(){}
 		}, ".patient_p_tag");/*  */
@@ -2052,7 +2055,7 @@ $(function(){
 		var idx = $(this).index();
 		
 		//예약등록
-		if(idx == 0){
+		if(idx == 0 || idx == 1){
 			var vo;
 			//진료등록
 			if($(".popup_clinic_reservation_register").css("display") == "block"){
@@ -2077,8 +2080,13 @@ $(function(){
 				var updatedate = "";
 				var desk_state="예약완료";
 				var therapist_state="";
-				var result = "";
+				var result = "예약완료";
 				var result_memo = "";
+				
+				if(idx == 1){
+					desk_state = "접수완료";
+					result = "접수완료";
+				}
 				
 				if(rtype == "nc"){
 					vo = {pno:pno, eno:eno, rtype:rtype, rdate:rdate, rtime:rtime, clinic:clinic, memo:memo, writer:writer, regdate:regdate, updatewriter:updatewriter, updatedate:updatedate, desk_state:desk_state, result:result, result_memo:""};
@@ -2110,8 +2118,13 @@ $(function(){
 				var updatedate = "";
 				var desk_state="예약완료";
 				var therapist_state="";
-				var result = "";
+				var result = "예약완료";
 				var result_memo = "";
+				
+				if(idx == 1){
+					desk_state = "접수완료";
+					result = "접수완료";
+				}
 				
 				if(rtype == "nt"){
 					vo = {pno:pno, eno:eno, rtype:rtype, rdate:rdate, rtime:rtime, clinic:clinic, memo:memo, writer:writer, regdate:regdate, updatewriter:updatewriter, updatedate:updatedate, desk_state:desk_state, therapist_state:"", result:result, result_memo:""};

@@ -464,14 +464,13 @@ public class HomeController {
 		String str2 = str.substring(1, str.length()-1);
 		String[] splitDate = str2.split(", ");
 		
-		
+		ReservationRecordVO rrvo = new ReservationRecordVO();
+		ClinicVO cvo = cService.selectOneByCno(Integer.parseInt(vo.getClinic()));
+		PatientVO pvo = pService.selectByPno(vo.getPno()+"");
+		EmployeeVO evo = empService.selectByEno(vo.getEno());
 		
 		try {
 			for(int i=0; i<splitDate.length; i++){
-				ReservationRecordVO rrvo = new ReservationRecordVO();
-				ClinicVO cvo = cService.selectOneByCno(Integer.parseInt(vo.getClinic()));
-				PatientVO pvo = pService.selectByPno(vo.getPno()+"");
-				EmployeeVO evo = empService.selectByEno(vo.getEno());
 				vo.setRdate(splitDate[i]);
 				fcrService.register(vo);
 				rrvo.setNo(0);

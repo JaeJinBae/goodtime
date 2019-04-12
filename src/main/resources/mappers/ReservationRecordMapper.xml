@@ -13,15 +13,7 @@
 	</select>
 	
 	<sql id="search">
-		<if test="searchType=='name'.toString()">
-			where name like concat('%',#{keyword},'%')
-		</if>
-		<if test="searchType=='phone'.toString()">
-			where phone like concat('%',#{keyword},'%') 
-		</if>
-		<if test="searchType=='cno'.toString()">
-			where cno like concat('%',#{keyword},'%')
-		</if>
+		where rdate like concat('%',#{keyword1},'%') and ename like concat('%',#{keyword2},'%') and rtype like concat('%',#{keyword3},'%') and result like concat('%',#{keyword4},'%')
 	</sql>
 	
 	<select id="listSearchCount" resultType="int">

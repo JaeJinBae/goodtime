@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.webaid.domain.ReservationRecordVO;
-import com.webaid.domain.SearchCriteria;
+import com.webaid.domain.SearchCriteriaRR;
 import com.webaid.persistence.ReservationRecordDao;
 
 @Service
@@ -21,12 +21,12 @@ public class ReservationRecordServiceImpl implements ReservationRecordService {
 	}
 
 	@Override
-	public List<ReservationRecordVO> listSearch(SearchCriteria cri) {
+	public List<ReservationRecordVO> listSearch(SearchCriteriaRR cri) {
 		return dao.listSearch(cri);
 	}
 
 	@Override
-	public int listSearchCount(SearchCriteria cri) {
+	public int listSearchCount(SearchCriteriaRR cri) {
 		return dao.listSearchCount(cri);
 	}
 

@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.webaid.domain.ReservationRecordVO;
-import com.webaid.domain.SearchCriteria;
+import com.webaid.domain.SearchCriteriaRR;
 
 @Repository
 public class ReservationRecordDaoImpl implements ReservationRecordDao {
@@ -23,12 +23,12 @@ public class ReservationRecordDaoImpl implements ReservationRecordDao {
 	}
 
 	@Override
-	public List<ReservationRecordVO> listSearch(SearchCriteria cri) {
+	public List<ReservationRecordVO> listSearch(SearchCriteriaRR cri) {
 		return session.selectList(namespace + ".listSearch", cri);
 	}
 
 	@Override
-	public int listSearchCount(SearchCriteria cri) {
+	public int listSearchCount(SearchCriteriaRR cri) {
 		return session.selectOne(namespace + ".listSearchCount", cri);
 	}
 

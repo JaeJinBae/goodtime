@@ -34,9 +34,11 @@ import com.webaid.domain.IdPwVO;
 import com.webaid.domain.NormalClinicReservationVO;
 import com.webaid.domain.NormalTherapyReservationVO;
 import com.webaid.domain.PageMaker;
+import com.webaid.domain.PageMakerRR;
 import com.webaid.domain.PatientVO;
 import com.webaid.domain.ReservationRecordVO;
 import com.webaid.domain.SearchCriteria;
+import com.webaid.domain.SearchCriteriaRR;
 import com.webaid.domain.SelectByDateEmployeeVO;
 import com.webaid.service.ClinicService;
 import com.webaid.service.EmployeeService;
@@ -185,7 +187,7 @@ public class HomeController {
 		
 		List<PatientVO> patientListAll = pService.listSearch(cri);
 		System.out.println("넘겨받은 페이지는 "+cri.getPage());
-		
+		System.out.println(cri);
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);
 		pageMaker.makeSearch(cri.getPage());
@@ -877,20 +879,20 @@ public class HomeController {
 	
 	
 	@RequestMapping(value="/reservationRecordGetAll", method=RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> reservationRecordGetAll(@ModelAttribute("cri") SearchCriteria cri){
+	public ResponseEntity<Map<String, Object>> reservationRecordGetAll(@ModelAttribute("cri") SearchCriteriaRR cri){
 		logger.info("reservation record get all");
-		
+		System.out.println(cri);
 		ResponseEntity<Map<String, Object>> entity = null;
 		HashMap<String, Object> map=new HashMap<>();
 		
 		try {
 			List<ReservationRecordVO> list = rrService.listSearch(cri);
 			
-			PageMaker pageMaker = new PageMaker();
+			PageMakerRR pageMaker = new PageMakerRR();
 			pageMaker.setCri(cri);
 			pageMaker.makeSearch(cri.getPage());
 			pageMaker.setTotalCount(rrService.listSearchCount(cri));
-			
+			System.out.println(pageMaker.makeSearch(cri.getPage()));
 			map.put("list", list);
 			map.put("pageMaker", pageMaker);
 			

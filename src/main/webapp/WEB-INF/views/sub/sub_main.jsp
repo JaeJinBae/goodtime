@@ -305,6 +305,31 @@
 		width:100%;
 	}
 	
+	.reservation_record_page{
+		float:right;
+		/* width:626px; */ 
+		margin:15px;
+		margin-bottom:80px;
+	}
+	.reservation_record_page > ul{
+		text-align: center;
+	}
+	.reservation_record_page ul li{
+		
+		margin:0 auto;
+		list-style: none;
+		display: inline-block;
+		text-align:center;
+		border:1px solid #e9e9e9;
+	}
+	.reservation_record_page ul li a{
+		display:inline-block;
+		width:35px;
+		height:30px;
+		font-size:1.1em;
+		line-height: 30px;
+	}
+	
 	.timetable_btn_wrap{
 		width:100%;
 		border-bottom:2px solid black;
@@ -695,8 +720,10 @@ function draw_time_table_by_case(idx){
 			$(".week_select_box_wrap").css("display","none");
 			$(".time_table_wrap").html("");
 			storage_timetable_btn_num = 7;
+			draw_reservation_record_table();
 			break;
 		case 8:
+			$(".week_select_box_wrap").css("display","none");
 			$(".time_table_wrap").html("");
 			storage_timetable_btn_num = 8;
 			break;
@@ -1745,18 +1772,23 @@ function open_reservation_info_view(type, rno){
 	$(".popup_wrap").css("display", "block");
 }
 
-function update_reservation_deskState(rtype, rno, state, stbn){
-	console.log(rtype+"/"+rno+"/"+stbn);
+function update_reservation_deskState(rtype, rno, state, writer, regdate, stbn){
+	var reason = $(".popup_reservation_info_cancel_wrap > table tr > td > textarea[name='cancel_reason']").val();
+	if(reason == ""){
+		reason = "_";
+	}
+	console.log(rtype+"/"+rno+"/"+state+"/"+writer+"/"+regdate+"/"+reason+"/"+stbn);
 	$.ajax({
-		url:"${pageContext.request.contextPath}/updateReservationDeskState/"+rtype+"/"+rno+"/"+state,
+		url:"${pageContext.request.contextPath}/updateReservationDeskState/"+rtype+"/"+rno+"/"+state+"/"+writer+"/"+regdate+"/"+reason,
 		type:"post",
 		dataType:"text",
 		async:false,
 		success:function(json){
 			console.log(json);
 			if(json == "ok"){
+								
 				alert(state+" 되었습니다.");
-				
+				$(".popup_reservation_info_cancel_wrap").css("display","none");
 				$(".popup_reservation_info_view").css("display", "none");
 				$(".popup_wrap").css("display","none");
 				
@@ -1771,46 +1803,92 @@ function update_reservation_deskState(rtype, rno, state, stbn){
 	});
 }
 
-function update_reservation_state(idxx, rtype, rno, state, stbn){
+function update_reservation_state(idxx, rtype, rno, state, writer, regdate, stbn){
 	if(idxx == 0 || idxx == 1){
-		update_reservation_deskState(rtype, rno, state, stbn);
+		update_reservation_deskState(rtype, rno, state, writer, regdate, stbn);
 	}else if(idxx == 2){
 		$(".popup_reservation_info_cancel_wrap").css("display","block");
 	}
 }
 
-function reservation_cancel(rtype, rno, stbn){
-	var reason = "";
-	reason = $(".popup_reservation_info_cancel_wrap > table tr > td > textarea[name='cancel_reason']").val();
-	
+function get_reservation_record_all(info){
+	var dt;
 	$.ajax({
-		url:"${pageContext.request.contextPath}/reservationCancel/"+rtype+"/"+rno+"/"+reason,
-		type:"post",
-		dataType:"text",
+		url:"${pageContext.request.contextPath}/reservationRecordGetAll",
+		type:"get",
+		data:info,
+		dataType:"json",
 		async:false,
 		success:function(json){
-			console.log(json);
-			if(json == "ok"){
-				alert("예약이 취소 되었습니다.");
-				
-				$(".popup_reservation_info_view").css("display", "none");
-				$(".popup_wrap").css("display","none");
-				
-				draw_time_table_by_case(stbn);
-			}else{
-				alert("예약등록이 정상적으로 등록되지 않았습니다. 다시 한번 등록하세요.");
-			}
+			dt = json;
 		},
 		error:function(request,status,error){
 			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 		}
 	});
+	return dt;
+}
+
+function draw_reservation_record_table(info){
+	var json = get_reservation_record_all(info);
+	var str = "";
+	var time;
+	var hour;
+	var minute;
+	var overMinute;
+	
+	str = "<table class='tbl_reservation_record'><tr><th>환자명</th><th>담당자</th><th>분류</th><th>종류</th><th>예정일시</th><th>접수일시</th><th>치료완료일시</th><th>등록일시</th></tr>";
+	if(json.list.length == 0){
+		str += "<tr><td colspan='8'>등록된 회원이 없습니다.</td></tr>";
+	}else{
+		$(json.list).each(function(){
+			time = Number(this.rtime);
+			hour = parseInt(time/60);
+			minute = time%60;
+
+			if(minute < 10){
+				minute = "0"+minute;
+			}
+			if(hour < 10){
+				hour = "0"+hour;
+			}
+			
+			str += "<tr><td>"+this.pname+"</td><td>"+this.ename+"</td><td>";
+			if(this.rtype == "nc"){
+				str += "일반진료</td>";
+			}else if(this.rtype == "fc"){
+				str += "고정진료</td>";
+			}else if(this.rtype == "nt"){
+				str += "일반치료</td>";
+			}else if(this.rtype == "ft"){
+				str += "고정진료</td>";
+			}
+			str += "<td>"+this.cname+"</td><td>"+this.rdate+" "+hour+":"+minute+"</td><td>"+this.reception_info+"</td><td>"+this.therapy_info+"</td><td>"+this.register_info+"</td><tr>";
+		});
+		str += "</table>";
+		
+		str += "<div class='reservation_record_page'><ul>";
+		if(json.pageMaker.prev){
+			str += "<li><a href='page="+(json.pageMaker.startPage-1)+"&perPageNum=10&searchType="+json.pageMaker.cri.searchType+"&keyword="+json.pageMaker.cri.keyword+"'>&laquo;</a></li>";
+		}
+		for(var i=json.pageMaker.startPage; i<=json.pageMaker.endPage; i++){
+			
+			if(json.pageMaker.cri.page == i){
+				str += "<li class='active1'><a class='active2' href='page="+i+"&perPageNum=10&searchType="+json.pageMaker.cri.searchType+"&keyword="+json.pageMaker.cri.keyword+"'>"+i+"</a></li>";
+			}else{
+				str += "<li><a href='page="+i+"&perPageNum=10&searchType="+json.pageMaker.cri.searchType+"&keyword="+json.pageMaker.cri.keyword+"'>"+i+"</a></li>"
+			}
+		}
+		if(json.pageMaker.next){
+			str += "<li><a href='page="+(json.pageMaker.endPage+1)+"&perPageNum=10&searchType="+json.pageMaker.cri.searchType+"&keyword="+json.pageMaker.cri.keyword+"'>&raquo;</a></li>";
+		}
+		str += "</ul></div>";	
+	}
+	$(".time_table_wrap").html(str);
+	
 }
 
 $(function(){
-	
-	//console.log(get_between_date("2019-04-01", "2019-05-05"));
-	
 	//진료view에서 무슨 탭 눌러졌는지 기억하기 위한 변수
 	var storage_timetable_btn_num=0;
 	
@@ -1863,6 +1941,11 @@ $(function(){
 	$(document).on("click", ".page > ul > li > a", function(e){
 		e.preventDefault();
 		draw_patient_table($(this).attr("href"));
+	});
+	
+	$(document).on("click", ".reservation_record_page > ul > li > a", function(e){
+		e.preventDefault();
+		draw_reservation_record_table($(this).attr("href"));
 	});
 	
 	//환자 등록
@@ -2182,14 +2265,27 @@ $(function(){
 		var rtype = $(".popup_reservation_info_view > h2 > input[name='rtype']").val();
 		var rno = $(".popup_reservation_info_view > h2 > input[name='rno']").val();
 		var state = $(this).text();
+		var writer = $("#session_login_name").val();
+		var nowDate = new Date();
+		var regdate = nowDate.getFullYear()+"-"+(((nowDate.getMonth()+1)>9?'':'0')+(nowDate.getMonth()+1))+"-"+((nowDate.getDate()>9?'':'0')+nowDate.getDate())+" "+nowDate.getHours()+":"+((nowDate.getMinutes()>9?'':'0')+nowDate.getMinutes());
 		
-		update_reservation_state(btn_idx, rtype, rno, state, storage_timetable_btn_num);
+		update_reservation_state(btn_idx, rtype, rno, state, writer, regdate, storage_timetable_btn_num);
 	});
 
 	$(".popup_reservation_info_cancel_wrap > table tr td > button").click(function(){
 		var rtype = $(".popup_reservation_info_view > h2 > input[name='rtype']").val();
 		var rno = $(".popup_reservation_info_view > h2 > input[name='rno']").val();
-		reservation_cancel(rtype, rno, storage_timetable_btn_num);
+		var state = "예약취소";
+		var writer = $("#session_login_name").val();
+		var nowDate = new Date();
+		var regdate = nowDate.getFullYear()+"-"+(((nowDate.getMonth()+1)>9?'':'0')+(nowDate.getMonth()+1))+"-"+((nowDate.getDate()>9?'':'0')+nowDate.getDate())+" "+nowDate.getHours()+":"+((nowDate.getMinutes()>9?'':'0')+nowDate.getMinutes());
+		update_reservation_deskState(rtype, rno, state, writer, regdate, storage_timetable_btn_num)
+	});
+	
+	//예약이력 테이블 페이지 클릭
+	$(document).on("click", ".reservation_record_page > ul > li > a", function(e){
+		e.preventDefault();
+		draw_reservation_record_table($(this).attr("href"));
 	});
 });
 </script> 

@@ -8,15 +8,37 @@
 		select * from reservation_record order by no desc;
 	</select>
 	
+	<select id="listSearch" resultType="ReservationRecordVO">
+		select * from reservation_record <include refid="search"></include> order by no desc limit #{pageStart},#{perPageNum}
+	</select>
+	
+	<sql id="search">
+		<if test="searchType=='name'.toString()">
+			where name like concat('%',#{keyword},'%')
+		</if>
+		<if test="searchType=='phone'.toString()">
+			where phone like concat('%',#{keyword},'%') 
+		</if>
+		<if test="searchType=='cno'.toString()">
+			where cno like concat('%',#{keyword},'%')
+		</if>
+	</sql>
+	
+	<select id="listSearchCount" resultType="int">
+		select count(no) from reservation_record <include refid="search"></include>
+	</select>
+	
 	<insert id="register">
 		insert into reservation_record values(0, #{pname}, #{ename}, #{rno}, #{rtype}, #{cname}, #{rdate}, #{rtime}, #{reception_info}, #{therapy_info}, #{register_info}, #{result})
 	</insert>
 	
 	<update id="updateReceptionInfo">
-		update reservation_record set reception_info=#{reception_info}, result='접수완료' where rno=#{rno} and rtype=#{rtype}
+		update reservation_record set reception_info=#{reception_info}, result=#{result} where rno=#{rno} and rtype=#{rtype}
 	</update>
 	
 	<update id="updateTherapyInfo">
 		update reservation_record set therapy_info=#{therapy_info}, result='치료완료' where rno=#{rno} and rtype=#{rtype}
 	</update>
+	
+	
 </mapper>

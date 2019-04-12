@@ -195,9 +195,235 @@ public class HomeController {
 		return entity;
 	}
 	
+	@RequestMapping(value="/patientAllGet", method=RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> patientAllGet(@ModelAttribute("cri") SearchCriteria cri) throws Exception{
+		logger.info("patient all Get");
+		
+		ResponseEntity<Map<String, Object>> entity = null;
+		HashMap<String, Object> map=new HashMap<>();
+		
+		List<PatientVO> patientListAll = pService.listSearch(cri);
+		System.out.println("넘겨받은 페이지는 "+cri.getPage());
+		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.makeSearch(cri.getPage());
+		pageMaker.setTotalCount(pService.listSearchCount(cri));
+		System.out.println(pageMaker.makeSearch(cri.getPage()));
+		map.put("patientListAll", patientListAll);
+		map.put("pageMaker", pageMaker);
+		
+		entity = new ResponseEntity<Map<String,Object>>(map, HttpStatus.OK);
+		return entity;
+	}
 	
+	@RequestMapping(value="/patientByPno/{pno}", method=RequestMethod.GET)
+	public ResponseEntity<PatientVO> patientByPno(@PathVariable("pno") String pno){
+		ResponseEntity<PatientVO> entity = null;
+		
+		PatientVO vo = pService.selectByPno(pno);
+		entity= new ResponseEntity<PatientVO>(vo, HttpStatus.OK);
+		
+		return entity;
+	}
 	
+	@RequestMapping(value="/patientRegister", method=RequestMethod.POST)
+	public ResponseEntity<String> patientRegister(PatientVO patient){
+		logger.info("patient register Post");
+		ResponseEntity<String> entity = null;
+		System.out.println(patient);
+		try {
+			pService.register(patient);
+			entity = new ResponseEntity<>("ok", HttpStatus.OK);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return entity;
+	}
 	
+	@RequestMapping(value="/patientUpdate", method=RequestMethod.POST)
+	public ResponseEntity<String> patientUpdate(PatientVO patient){
+		logger.info("paitent update Post");
+		
+		ResponseEntity<String> entity = null;
+		
+		try {
+			pService.update(patient);
+			entity = new ResponseEntity<String>("ok", HttpStatus.OK);
+		} catch (Exception e) {
+			entity = new ResponseEntity<String>("no",HttpStatus.OK);
+		}
+		
+		return entity;
+	}
+	
+	@RequestMapping(value="/employeeView", method=RequestMethod.GET)
+	public String employeeViewGet(){
+		logger.info("employeeView Get");
+		
+		return "sub/employeeView";
+	}
+	
+	@RequestMapping(value="/employeeAllGet", method=RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> employeeAllGet(@ModelAttribute("cri") SearchCriteria cri) throws Exception{
+		logger.info("employee All Get");
+		
+		ResponseEntity<Map<String, Object>> entity = null;
+		HashMap<String, Object> map=new HashMap<>();
+		
+		List<EmployeeVO> employeeListAll = empService.listSearch(cri);
+		System.out.println("넘겨받은 페이지는 "+cri.getPage());
+		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.makeSearch(cri.getPage());
+		pageMaker.setTotalCount(empService.listSearchCount(cri));
+		System.out.println(pageMaker.makeSearch(cri.getPage()));
+		map.put("employeeListAll", employeeListAll);
+		map.put("pageMaker", pageMaker);
+		
+		entity = new ResponseEntity<Map<String,Object>>(map, HttpStatus.OK);
+		return entity;
+	}
+	
+	@RequestMapping(value="/employeeIdCheck/{id}", method=RequestMethod.GET)
+	public ResponseEntity<String> employeeIdCheck(@PathVariable("id") String id){
+		logger.info("employee duplication id check");
+		ResponseEntity<String> entity = null;
+		
+		try {
+			EmployeeVO vo = empService.selectOneById(id);
+			
+			if(vo == null){
+				entity = new ResponseEntity<String>("ok", HttpStatus.OK);
+			}else{
+				entity = new ResponseEntity<String>("no", HttpStatus.OK);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return entity;
+	}
+	
+	@RequestMapping(value="/employeeListGetByType/{type}", method=RequestMethod.GET)
+	public ResponseEntity<List<EmployeeVO>> doctorListGet(@PathVariable("type") String type) throws ParseException{
+		ResponseEntity<List<EmployeeVO>> entity = null;
+		
+		List<EmployeeVO> list = empService.selectByType(type);		
+		entity = new ResponseEntity<List<EmployeeVO>>(list, HttpStatus.OK);
+		
+		return entity;
+	}
+	
+	@RequestMapping(value="/employeeGetByEno/{eno}", method=RequestMethod.GET)
+	public ResponseEntity<EmployeeVO> employeeGetByEno(@PathVariable("eno") String eno){
+		ResponseEntity<EmployeeVO> entity = null;
+		EmployeeVO vo = empService.selectByEno(Integer.parseInt(eno));
+		entity = new ResponseEntity<EmployeeVO>(vo, HttpStatus.OK);
+		return entity;
+	}
+	
+	@RequestMapping(value="/employeeRegister", method=RequestMethod.POST)
+	public ResponseEntity<String> employeeRegister(EmployeeVO employee){
+		logger.info("employee register Post");
+		ResponseEntity<String> entity = null;
+		System.out.println(employee);
+		try {
+			empService.register(employee);
+			entity = new ResponseEntity<>("ok", HttpStatus.OK);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return entity;
+	}
+	
+	@RequestMapping(value="/employeeUpdate", method=RequestMethod.POST)
+	public ResponseEntity<String> employeeUpdate(EmployeeVO employee){
+		logger.info("employee update Post");
+		ResponseEntity<String> entity = null;
+		
+		EmployeeVO prevVO = empService.selectByEno(employee.getEno());
+		String prevPw = prevVO.getPw();
+		String newPw = employee.getPw();
+		
+		try {
+			if(newPw.equals("") || newPw == null){
+				employee.setPw(prevPw);
+			}
+			empService.update(employee);
+			entity = new ResponseEntity<String>("ok", HttpStatus.OK);
+		} catch (Exception e) {
+			entity = new ResponseEntity<String>("no",HttpStatus.OK);
+		}
+		
+		return entity;
+	}
+	
+	@RequestMapping(value="/clinicView", method=RequestMethod.GET)
+	public String clinicViewGet(){
+		logger.info("clinicView Get");
+		
+		return "sub/clinicView";
+	}
+	
+	@RequestMapping(value="/clinicAllGet", method=RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> clinicAllGet(@ModelAttribute("cri") SearchCriteria cri) throws Exception{
+		logger.info("clinic all Get");
+		
+		ResponseEntity<Map<String, Object>> entity = null;
+		HashMap<String, Object> map=new HashMap<>();
+		
+		List<ClinicVO> clinicListAll = cService.listSearch(cri);
+		System.out.println("넘겨받은 페이지는 "+cri.getPage());
+		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.makeSearch(cri.getPage());
+		pageMaker.setTotalCount(cService.listSearchCount(cri));
+		System.out.println(pageMaker.makeSearch(cri.getPage()));
+		map.put("clinicListAll", clinicListAll);
+		map.put("pageMaker", pageMaker);
+		
+		entity = new ResponseEntity<Map<String,Object>>(map, HttpStatus.OK);
+		return entity;
+	}
+	
+	@RequestMapping(value="/clinicGetByCno/{cno}", method=RequestMethod.GET)
+	public ResponseEntity<ClinicVO> clinicGetByCno(@PathVariable("cno") String cno){
+		ResponseEntity<ClinicVO> entity = null;
+		ClinicVO vo = cService.selectOneByCno(Integer.parseInt(cno));
+		entity = new ResponseEntity<ClinicVO>(vo, HttpStatus.OK);
+		return entity;
+	}
+	
+	@RequestMapping(value="/clinicRegister", method=RequestMethod.POST)
+	public ResponseEntity<String> clinicRegister(ClinicVO clinic){
+		logger.info("clinic register Post");
+		ResponseEntity<String> entity = null;
+		System.out.println(clinic);
+		try {
+			cService.register(clinic);
+			entity = new ResponseEntity<>("ok", HttpStatus.OK);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return entity;
+	}
+	
+	@RequestMapping(value="/clinicUpdate", method=RequestMethod.POST)
+	public ResponseEntity<String> clinicUpdate(ClinicVO clinic){
+		logger.info("clinic update Post");
+		ResponseEntity<String> entity = null;
+		
+		try {
+			cService.update(clinic);
+			entity = new ResponseEntity<String>("ok", HttpStatus.OK);
+		} catch (Exception e) {
+			entity = new ResponseEntity<String>("no", HttpStatus.OK);
+			e.getMessage();
+		}
+		return entity;
+	}	
 	
 	@RequestMapping(value="/reservationListGetByDate/{date}", method=RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> reservationListGetByDate(@PathVariable("date") String date) throws ParseException{
@@ -408,7 +634,12 @@ public class HomeController {
 			rrvo.setCname(cvo.getCode_name());
 			rrvo.setRdate(vo.getRdate());
 			rrvo.setRtime(vo.getRtime());
-			rrvo.setReception_info(vo.getDesk_state_regdate()+" "+vo.getDesk_state_writer());
+			if(vo.getResult().equals("예약완료")){
+				rrvo.setReception_info("");
+			}else{
+				rrvo.setReception_info(vo.getDesk_state_regdate()+" "+vo.getDesk_state_writer());
+			}
+			rrvo.setTherapy_info("");
 			rrvo.setRegister_info(vo.getRegdate()+" "+vo.getWriter());
 			rrvo.setResult(vo.getResult());
 			rrService.register(rrvo);
@@ -439,7 +670,12 @@ public class HomeController {
 			rrvo.setCname(cvo.getCode_name());
 			rrvo.setRdate(vo.getRdate());
 			rrvo.setRtime(vo.getRtime());
-			rrvo.setReception_info(vo.getDesk_state_regdate()+" "+vo.getDesk_state_writer());
+			if(vo.getResult().equals("예약완료")){
+				rrvo.setReception_info("");
+			}else{
+				rrvo.setReception_info(vo.getDesk_state_regdate()+" "+vo.getDesk_state_writer());
+			}
+			rrvo.setTherapy_info("");
 			rrvo.setRegister_info(vo.getRegdate()+" "+vo.getWriter());
 			rrvo.setResult(vo.getResult());
 			rrService.register(rrvo);
@@ -468,7 +704,7 @@ public class HomeController {
 		ClinicVO cvo = cService.selectOneByCno(Integer.parseInt(vo.getClinic()));
 		PatientVO pvo = pService.selectByPno(vo.getPno()+"");
 		EmployeeVO evo = empService.selectByEno(vo.getEno());
-		
+		System.out.println(vo);
 		try {
 			for(int i=0; i<splitDate.length; i++){
 				vo.setRdate(splitDate[i]);
@@ -481,7 +717,12 @@ public class HomeController {
 				rrvo.setCname(cvo.getCode_name());
 				rrvo.setRdate(vo.getRdate());
 				rrvo.setRtime(vo.getRtime());
-				rrvo.setReception_info(vo.getDesk_state_regdate()+" "+vo.getDesk_state_writer());
+				if(vo.getResult().equals("예약완료")){
+					rrvo.setReception_info("");
+				}else{
+					rrvo.setReception_info(vo.getDesk_state_regdate()+" "+vo.getDesk_state_writer());
+				}
+				rrvo.setTherapy_info("");
 				rrvo.setRegister_info(vo.getRegdate()+" "+vo.getWriter());
 				rrvo.setResult(vo.getResult());
 				rrService.register(rrvo);
@@ -525,7 +766,12 @@ public class HomeController {
 				rrvo.setCname(cvo.getCode_name());
 				rrvo.setRdate(vo.getRdate());
 				rrvo.setRtime(vo.getRtime());
-				rrvo.setReception_info(vo.getDesk_state_regdate()+" "+vo.getDesk_state_writer());
+				if(vo.getResult().equals("예약완료")){
+					rrvo.setReception_info("");
+				}else{
+					rrvo.setReception_info(vo.getDesk_state_regdate()+" "+vo.getDesk_state_writer());
+				}
+				rrvo.setTherapy_info("");
 				rrvo.setRegister_info(vo.getRegdate()+" "+vo.getWriter());
 				rrvo.setResult(vo.getResult());
 				rrService.register(rrvo);
@@ -538,8 +784,8 @@ public class HomeController {
 		return entity;
 	}
 	
-	@RequestMapping(value="/updateReservationDeskState/{rtype}/{rno}/{state}", method=RequestMethod.POST)
-	public ResponseEntity<String> updateReservationDeskState(@PathVariable("rtype") String rtype, @PathVariable("rno") String rno, @PathVariable("state") String state){
+	@RequestMapping(value="/updateReservationDeskState/{rtype}/{rno}/{state}/{writer}/{regdate}/{reason}", method=RequestMethod.POST)
+	public ResponseEntity<String> updateReservationDeskState(@PathVariable("rtype") String rtype, @PathVariable("rno") String rno, @PathVariable("state") String state, @PathVariable("writer") String writer, @PathVariable("regdate") String regdate, @PathVariable("reason") String reason){
 		ResponseEntity<String> entity = null;
 		System.out.println(rtype+"\n"+rno);
 		try {
@@ -547,26 +793,98 @@ public class HomeController {
 				NormalClinicReservationVO vo = new NormalClinicReservationVO();
 				vo.setRno(Integer.parseInt(rno));
 				vo.setDesk_state(state);
+				vo.setDesk_state_writer(writer);
+				vo.setDesk_state_regdate(regdate);
 				vo.setResult(state);
+				if(state.equals("예약취소")){
+					vo.setResult_memo(reason);
+				}
 				ncrService.updateDeskState(vo);
+				
+				ReservationRecordVO rrvo = new ReservationRecordVO();
+				rrvo.setRno(Integer.parseInt(rno));
+				rrvo.setRtype(rtype);
+				if(state.equals("예약완료")){
+					rrvo.setReception_info(" ");
+				}else if(state.equals("접수완료")){
+					rrvo.setReception_info(regdate+" "+writer);
+				}else if(state.equals("예약취소")){
+					rrvo.setReception_info("예약취소 "+regdate+" "+writer);
+				}
+				rrvo.setResult(state);
+				rrService.updateReceptionInfo(rrvo);
 			}else if(rtype.equals("nt")){
 				NormalTherapyReservationVO vo = new NormalTherapyReservationVO();
 				vo.setRno(Integer.parseInt(rno));
 				vo.setDesk_state(state);
+				vo.setDesk_state_writer(writer);
+				vo.setDesk_state_regdate(regdate);
 				vo.setResult(state);
+				if(state.equals("예약취소")){
+					vo.setResult_memo(reason);
+				}
 				ntrService.updateDeskState(vo);
+				
+				ReservationRecordVO rrvo = new ReservationRecordVO();
+				rrvo.setRno(Integer.parseInt(rno));
+				rrvo.setRtype(rtype);
+				if(state.equals("예약완료")){
+					rrvo.setReception_info(" ");
+				}else if(state.equals("접수완료")){
+					rrvo.setReception_info(regdate+" "+writer);
+				}else if(state.equals("예약취소")){
+					rrvo.setReception_info("예약취소 "+regdate+" "+writer);
+				}
+				rrvo.setResult(state);
+				rrService.updateReceptionInfo(rrvo);
 			}else if(rtype.equals("fc")){
 				FixClinicReservationVO vo = new FixClinicReservationVO();
 				vo.setRno(Integer.parseInt(rno));
 				vo.setDesk_state(state);
+				vo.setDesk_state_writer(writer);
+				vo.setDesk_state_regdate(regdate);
 				vo.setResult(state);
+				if(state.equals("예약취소")){
+					vo.setResult_memo(reason);
+				}
 				fcrService.updateDeskState(vo);
+				
+				ReservationRecordVO rrvo = new ReservationRecordVO();
+				rrvo.setRno(Integer.parseInt(rno));
+				rrvo.setRtype(rtype);
+				if(state.equals("예약완료")){
+					rrvo.setReception_info(" ");
+				}else if(state.equals("접수완료")){
+					rrvo.setReception_info(regdate+" "+writer);
+				}else if(state.equals("예약취소")){
+					rrvo.setReception_info("예약취소 "+regdate+" "+writer);
+				}
+				rrvo.setResult(state);
+				rrService.updateReceptionInfo(rrvo);
 			}else if(rtype.equals("ft")){
 				FixTherapyReservationVO vo = new FixTherapyReservationVO();
 				vo.setRno(Integer.parseInt(rno));
 				vo.setDesk_state(state);
+				vo.setDesk_state_writer(writer);
+				vo.setDesk_state_regdate(regdate);
 				vo.setResult(state);
+				if(state.equals("예약취소")){
+					vo.setResult_memo(reason);
+				}
 				ftrService.updateDeskState(vo);
+				
+				ReservationRecordVO rrvo = new ReservationRecordVO();
+				rrvo.setRno(Integer.parseInt(rno));
+				rrvo.setRtype(rtype);
+				if(state.equals("예약완료")){
+					rrvo.setReception_info(" ");
+				}else if(state.equals("접수완료")){
+					rrvo.setReception_info(regdate+" "+writer);
+				}else if(state.equals("예약취소")){
+					rrvo.setReception_info("예약취소 "+regdate+" "+writer);
+				}
+				rrvo.setResult(state);
+				rrService.updateReceptionInfo(rrvo);
 			}
 			entity = new ResponseEntity<String>("ok", HttpStatus.OK);
 		} catch (Exception e) {
@@ -576,272 +894,32 @@ public class HomeController {
 		return entity;
 	}
 	
-	@RequestMapping(value="reservationCancel/{rtype}/{rno}/{reason}", method=RequestMethod.POST)
-	public ResponseEntity<String> reservationCancel(@PathVariable("rtype") String rtype, @PathVariable("rno") int rno, @PathVariable("reason") String reason){
-		ResponseEntity<String> entity = null;
+	
+	@RequestMapping(value="/reservationRecordGetAll", method=RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> reservationRecordGetAll(@ModelAttribute("cri") SearchCriteria cri){
+		logger.info("reservation record get all");
+		
+		ResponseEntity<Map<String, Object>> entity = null;
+		HashMap<String, Object> map=new HashMap<>();
 		
 		try {
-			if(rtype.equals("nc")){
-				NormalClinicReservationVO vo = new NormalClinicReservationVO();
-				vo.setRno(rno);
-				vo.setResult_memo(reason);
-				ncrService.cancel(vo);
-			}else if(rtype.equals("nt")){
-				NormalTherapyReservationVO vo = new NormalTherapyReservationVO();
-				vo.setRno(rno);
-				vo.setResult_memo(reason);
-				ntrService.cancel(vo);
-			}else if(rtype.equals("fc")){
-				FixClinicReservationVO vo = new FixClinicReservationVO();
-				vo.setRno(rno);
-				vo.setResult_memo(reason);
-				fcrService.cancel(vo);
-			}else if(rtype.equals("ft")){
-				FixTherapyReservationVO vo = new FixTherapyReservationVO();
-				vo.setRno(rno);
-				vo.setResult_memo(reason);
-				ftrService.cancel(vo);
-			}
+			List<ReservationRecordVO> list = rrService.listSearch(cri);
 			
-			entity = new ResponseEntity<String>("ok", HttpStatus.OK);
-		} catch (Exception e) {
-			e.getMessage();
-			entity = new ResponseEntity<String>("no", HttpStatus.OK);
-		}
-		
-		return entity;
-	}
-	
-	@RequestMapping(value="patientAllGet", method=RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> patientAllGet(@ModelAttribute("cri") SearchCriteria cri) throws Exception{
-		logger.info("patient all Get");
-		
-		ResponseEntity<Map<String, Object>> entity = null;
-		HashMap<String, Object> map=new HashMap<>();
-		
-		List<PatientVO> patientListAll = pService.listSearch(cri);
-		System.out.println("넘겨받은 페이지는 "+cri.getPage());
-		
-		PageMaker pageMaker = new PageMaker();
-		pageMaker.setCri(cri);
-		pageMaker.makeSearch(cri.getPage());
-		pageMaker.setTotalCount(pService.listSearchCount(cri));
-		System.out.println(pageMaker.makeSearch(cri.getPage()));
-		map.put("patientListAll", patientListAll);
-		map.put("pageMaker", pageMaker);
-		
-		entity = new ResponseEntity<Map<String,Object>>(map, HttpStatus.OK);
-		return entity;
-	}
-	
-	@RequestMapping(value="/patientByPno/{pno}", method=RequestMethod.GET)
-	public ResponseEntity<PatientVO> patientByPno(@PathVariable("pno") String pno){
-		ResponseEntity<PatientVO> entity = null;
-		
-		PatientVO vo = pService.selectByPno(pno);
-		entity= new ResponseEntity<PatientVO>(vo, HttpStatus.OK);
-		
-		return entity;
-	}
-	
-	@RequestMapping(value="/patientRegister", method=RequestMethod.POST)
-	public ResponseEntity<String> patientRegister(PatientVO patient){
-		logger.info("patient register Post");
-		ResponseEntity<String> entity = null;
-		System.out.println(patient);
-		try {
-			pService.register(patient);
-			entity = new ResponseEntity<>("ok", HttpStatus.OK);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-		return entity;
-	}
-	
-	@RequestMapping(value="/patientUpdate", method=RequestMethod.POST)
-	public ResponseEntity<String> patientUpdate(PatientVO patient){
-		logger.info("paitent update Post");
-		
-		ResponseEntity<String> entity = null;
-		
-		try {
-			pService.update(patient);
-			entity = new ResponseEntity<String>("ok", HttpStatus.OK);
-		} catch (Exception e) {
-			entity = new ResponseEntity<String>("no",HttpStatus.OK);
-		}
-		
-		return entity;
-	}
-	
-	@RequestMapping(value="/employeeView", method=RequestMethod.GET)
-	public String employeeViewGet(){
-		logger.info("employeeView Get");
-		
-		return "sub/employeeView";
-	}
-	
-	@RequestMapping(value="employeeAllGet", method=RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> employeeAllGet(@ModelAttribute("cri") SearchCriteria cri) throws Exception{
-		logger.info("employee All Get");
-		
-		ResponseEntity<Map<String, Object>> entity = null;
-		HashMap<String, Object> map=new HashMap<>();
-		
-		List<EmployeeVO> employeeListAll = empService.listSearch(cri);
-		System.out.println("넘겨받은 페이지는 "+cri.getPage());
-		
-		PageMaker pageMaker = new PageMaker();
-		pageMaker.setCri(cri);
-		pageMaker.makeSearch(cri.getPage());
-		pageMaker.setTotalCount(empService.listSearchCount(cri));
-		System.out.println(pageMaker.makeSearch(cri.getPage()));
-		map.put("employeeListAll", employeeListAll);
-		map.put("pageMaker", pageMaker);
-		
-		entity = new ResponseEntity<Map<String,Object>>(map, HttpStatus.OK);
-		return entity;
-	}
-	
-	@RequestMapping(value="employeeIdCheck/{id}", method=RequestMethod.GET)
-	public ResponseEntity<String> employeeIdCheck(@PathVariable("id") String id){
-		logger.info("employee duplication id check");
-		ResponseEntity<String> entity = null;
-		
-		try {
-			EmployeeVO vo = empService.selectOneById(id);
+			PageMaker pageMaker = new PageMaker();
+			pageMaker.setCri(cri);
+			pageMaker.makeSearch(cri.getPage());
+			pageMaker.setTotalCount(rrService.listSearchCount(cri));
 			
-			if(vo == null){
-				entity = new ResponseEntity<String>("ok", HttpStatus.OK);
-			}else{
-				entity = new ResponseEntity<String>("no", HttpStatus.OK);
-			}
+			map.put("list", list);
+			map.put("pageMaker", pageMaker);
+			
+			entity = new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
 		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		return entity;
-	}
-	
-	@RequestMapping(value="/employeeListGetByType/{type}", method=RequestMethod.GET)
-	public ResponseEntity<List<EmployeeVO>> doctorListGet(@PathVariable("type") String type) throws ParseException{
-		ResponseEntity<List<EmployeeVO>> entity = null;
-		
-		List<EmployeeVO> list = empService.selectByType(type);		
-		entity = new ResponseEntity<List<EmployeeVO>>(list, HttpStatus.OK);
-		
-		return entity;
-	}
-	
-	@RequestMapping(value="/employeeGetByEno/{eno}", method=RequestMethod.GET)
-	public ResponseEntity<EmployeeVO> employeeGetByEno(@PathVariable("eno") String eno){
-		ResponseEntity<EmployeeVO> entity = null;
-		EmployeeVO vo = empService.selectByEno(Integer.parseInt(eno));
-		entity = new ResponseEntity<EmployeeVO>(vo, HttpStatus.OK);
-		return entity;
-	}
-	
-	@RequestMapping(value="/employeeRegister", method=RequestMethod.POST)
-	public ResponseEntity<String> employeeRegister(EmployeeVO employee){
-		logger.info("employee register Post");
-		ResponseEntity<String> entity = null;
-		System.out.println(employee);
-		try {
-			empService.register(employee);
-			entity = new ResponseEntity<>("ok", HttpStatus.OK);
-		} catch (Exception e) {
+			entity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
 			System.out.println(e.getMessage());
 		}
 		return entity;
 	}
-	
-	@RequestMapping(value="/employeeUpdate", method=RequestMethod.POST)
-	public ResponseEntity<String> employeeUpdate(EmployeeVO employee){
-		logger.info("employee update Post");
-		ResponseEntity<String> entity = null;
-		
-		EmployeeVO prevVO = empService.selectByEno(employee.getEno());
-		String prevPw = prevVO.getPw();
-		String newPw = employee.getPw();
-		
-		try {
-			if(newPw.equals("") || newPw == null){
-				employee.setPw(prevPw);
-			}
-			empService.update(employee);
-			entity = new ResponseEntity<String>("ok", HttpStatus.OK);
-		} catch (Exception e) {
-			entity = new ResponseEntity<String>("no",HttpStatus.OK);
-		}
-		
-		return entity;
-	}
-	
-	@RequestMapping(value="/clinicView", method=RequestMethod.GET)
-	public String clinicViewGet(){
-		logger.info("clinicView Get");
-		
-		return "sub/clinicView";
-	}
-	
-	@RequestMapping(value="clinicAllGet", method=RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> clinicAllGet(@ModelAttribute("cri") SearchCriteria cri) throws Exception{
-		logger.info("clinic all Get");
-		
-		ResponseEntity<Map<String, Object>> entity = null;
-		HashMap<String, Object> map=new HashMap<>();
-		
-		List<ClinicVO> clinicListAll = cService.listSearch(cri);
-		System.out.println("넘겨받은 페이지는 "+cri.getPage());
-		
-		PageMaker pageMaker = new PageMaker();
-		pageMaker.setCri(cri);
-		pageMaker.makeSearch(cri.getPage());
-		pageMaker.setTotalCount(cService.listSearchCount(cri));
-		System.out.println(pageMaker.makeSearch(cri.getPage()));
-		map.put("clinicListAll", clinicListAll);
-		map.put("pageMaker", pageMaker);
-		
-		entity = new ResponseEntity<Map<String,Object>>(map, HttpStatus.OK);
-		return entity;
-	}
-	
-	@RequestMapping(value="/clinicGetByCno/{cno}", method=RequestMethod.GET)
-	public ResponseEntity<ClinicVO> clinicGetByCno(@PathVariable("cno") String cno){
-		ResponseEntity<ClinicVO> entity = null;
-		ClinicVO vo = cService.selectOneByCno(Integer.parseInt(cno));
-		entity = new ResponseEntity<ClinicVO>(vo, HttpStatus.OK);
-		return entity;
-	}
-	
-	@RequestMapping(value="/clinicRegister", method=RequestMethod.POST)
-	public ResponseEntity<String> clinicRegister(ClinicVO clinic){
-		logger.info("clinic register Post");
-		ResponseEntity<String> entity = null;
-		System.out.println(clinic);
-		try {
-			cService.register(clinic);
-			entity = new ResponseEntity<>("ok", HttpStatus.OK);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-		return entity;
-	}
-	
-	@RequestMapping(value="/clinicUpdate", method=RequestMethod.POST)
-	public ResponseEntity<String> clinicUpdate(ClinicVO clinic){
-		logger.info("clinic update Post");
-		ResponseEntity<String> entity = null;
-		
-		try {
-			cService.update(clinic);
-			entity = new ResponseEntity<String>("ok", HttpStatus.OK);
-		} catch (Exception e) {
-			entity = new ResponseEntity<String>("no", HttpStatus.OK);
-			e.getMessage();
-		}
-		return entity;
-	}
-	
 	
 	
 	

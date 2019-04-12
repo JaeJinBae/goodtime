@@ -146,25 +146,6 @@ public class HomeController {
 		return "sub/sub_main";
 	}
 	
-	@RequestMapping(value = "/sub_main2", method = RequestMethod.GET)
-	public String sub_main2(Model model, HttpSession session) {
-		logger.info("sub_main GET");
-		
-		//HospitalInfoVO hospitalInfo = hService.selectOne(day); 
-		List<EmployeeVO> doctorList = empService.selectByType("doctor");
-		List<EmployeeVO> therapistList = empService.selectByType("therapist");
-		//List<ClinicVO> clinicList = cService.selectAll();
-		List<ClinicVO> clinicList = cService.selectByCodeType("진료");
-		List<ClinicVO> therapyList = cService.selectByCodeType("치료");
-		//model.addAttribute("hospitalInfo", hospitalInfo);
-		model.addAttribute("doctorList", doctorList);
-		model.addAttribute("therapistList", therapistList);
-		model.addAttribute("clinicList", clinicList);
-		model.addAttribute("therapyList", therapyList);
-		
-		return "sub/sub_main_backup_20190402";
-	}
-	
 	@RequestMapping(value="/getDay/{date}", method=RequestMethod.GET)
 	public ResponseEntity<String> getDay(@PathVariable("date") String date) throws ParseException, UnsupportedEncodingException{
 		logger.info("getDay 진입");

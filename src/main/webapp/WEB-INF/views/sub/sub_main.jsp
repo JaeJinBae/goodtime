@@ -2368,12 +2368,7 @@ $(function(){
 					</div><!-- timetable_btn_wrap -->
 					<div class="week_select_box_wrap">
 						<select name="sh_year" id="sh_year" onchange="makeWeekSelectOptions();">
-							<!-- <option value='2018'>2018년</option>
-							<option value='2019' selected='selected'>2019년</option>
-							<option value='2020'>2020년</option>
-							<option value='2021'>2021년</option> -->
 						</select>
-							 
 						<select name="sh_month" id="sh_month" onchange="makeWeekSelectOptions();">
 							<option value='01'>01월</option>
 							<option value='02'>02월</option>
@@ -2393,6 +2388,30 @@ $(function(){
 						<select name="employee">
 						</select>
 					</div><!-- week_select_box_wrap end -->
+					<div class="reservation_record_selectBox_wrap">
+						<input name="rdate" type="text" value="">
+						<select name="employee">
+							<c:forEach var="list" items="${doctorList}">
+								<option value="${list.eno}">${list.name}</option>
+							</c:forEach>
+							<c:forEach var="list" items="${therapistList}">
+								<option value="${list.eno}">${list.name}</option>
+							</c:forEach>
+						</select>
+						<select name="rtype">
+							<option value="nc">일반진료</option>
+							<option value="fc">고정진료</option>
+							<option value="nt">일반치료</option>
+							<option value="ft">고정치료</option>
+						</select>
+						<select name="result">
+							<option value="예약완료">예약완료(미접수)</option>
+							<option value="접수완료">접수완료</option>
+							<option value="예약취소">예약취소</option>
+							<option value="치료완료">치료완료</option>
+						</select>
+						<button>검색</button>
+					</div><!-- reservation_record_selectBox_wrap -->
 					<div class="time_table_wrap">
 					
 					</div><!-- time_table_wrap -->

@@ -2389,8 +2389,9 @@ $(function(){
 						</select>
 					</div><!-- week_select_box_wrap end -->
 					<div class="reservation_record_selectBox_wrap">
-						<input name="rdate" type="text" value="">
+						<input name="rdate" type="text" value="" placeholder="ex) 2019-01-01">
 						<select name="employee">
+							<option value="">직원 전체</option>
 							<c:forEach var="list" items="${doctorList}">
 								<option value="${list.eno}">${list.name}</option>
 							</c:forEach>
@@ -2399,12 +2400,14 @@ $(function(){
 							</c:forEach>
 						</select>
 						<select name="rtype">
+							<option value="">분류전체보기</option>
 							<option value="nc">일반진료</option>
 							<option value="fc">고정진료</option>
 							<option value="nt">일반치료</option>
 							<option value="ft">고정치료</option>
 						</select>
 						<select name="result">
+							<option value="">전체보기</option>
 							<option value="예약완료">예약완료(미접수)</option>
 							<option value="접수완료">접수완료</option>
 							<option value="예약취소">예약취소</option>

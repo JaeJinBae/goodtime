@@ -388,6 +388,9 @@
 		border:1px solid lightgray;
 		cursor:pointer;
 	}
+	.reservation_record_selectBox_wrap{
+		display:none;
+	}
 </style> 
 <script>
 //달력에 각 일마다 요일 표시
@@ -665,7 +668,7 @@ function draw_total_time_table(date, type){
 function draw_time_table_by_case(idx){
 	var select_date = $(".calendar_select_date").val();
 	var table_txt;
-	
+	$(".reservation_record_selectBox_wrap").css("display","none");
 	switch (idx){
 		case 0:
 			$(".week_select_box_wrap").css("display","none");
@@ -718,6 +721,7 @@ function draw_time_table_by_case(idx){
 			break;
 		case 7:
 			$(".week_select_box_wrap").css("display","none");
+			$(".reservation_record_selectBox_wrap").css("display","block");
 			$(".time_table_wrap").html("");
 			storage_timetable_btn_num = 7;
 			draw_reservation_record_table();

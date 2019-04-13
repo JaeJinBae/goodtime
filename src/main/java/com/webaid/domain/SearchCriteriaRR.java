@@ -44,7 +44,7 @@ public class SearchCriteriaRR extends Criteria {
 
 	@Override
 	public String toString() {
-		return "SearchCriteriaRR [keyword1=" + keyword1 + ", keyword2=" + keyword2 + ", keryword3=" + keyword3
+		return "SearchCriteriaRR [keyword1=" + keyword1 + ", keyword2=" + keyword2 + ", keyword3=" + keyword3
 				+ ", keyword4=" + keyword4 + "]";
 	}
 

@@ -186,13 +186,13 @@ public class HomeController {
 		HashMap<String, Object> map=new HashMap<>();
 		
 		List<PatientVO> patientListAll = pService.listSearch(cri);
-		System.out.println("넘겨받은 페이지는 "+cri.getPage());
-		System.out.println(cri);
+		System.out.println(patientListAll);
+		System.out.println("환자에서 cri값\n"+cri);
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);
 		pageMaker.makeSearch(cri.getPage());
 		pageMaker.setTotalCount(pService.listSearchCount(cri));
-		System.out.println(pageMaker.makeSearch(cri.getPage()));
+		
 		map.put("patientListAll", patientListAll);
 		map.put("pageMaker", pageMaker);
 		
@@ -881,21 +881,34 @@ public class HomeController {
 	@RequestMapping(value="/reservationRecordGetAll", method=RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> reservationRecordGetAll(@ModelAttribute("cri") SearchCriteriaRR cri){
 		logger.info("reservation record get all");
-		System.out.println(cri);
+		
 		ResponseEntity<Map<String, Object>> entity = null;
 		HashMap<String, Object> map=new HashMap<>();
 		
 		try {
+			if(cri.getKeyword1() == null){
+				cri.setKeyword1("");
+			}
+			if(cri.getKeyword2() == null){
+				cri.setKeyword2("");
+			}
+			if(cri.getKeyword3() == null){
+				cri.setKeyword3("");
+			}			
+			if(cri.getKeyword4() == null){
+				cri.setKeyword4("");
+			}
+			
 			List<ReservationRecordVO> list = rrService.listSearch(cri);
 			
 			PageMakerRR pageMaker = new PageMakerRR();
 			pageMaker.setCri(cri);
 			pageMaker.makeSearch(cri.getPage());
 			pageMaker.setTotalCount(rrService.listSearchCount(cri));
-			System.out.println(pageMaker.makeSearch(cri.getPage()));
+			System.out.println("totalcount = "+rrService.listSearchCount(cri));
 			map.put("list", list);
 			map.put("pageMaker", pageMaker);
-			
+			System.out.println(cri.getPageStart());
 			entity = new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
 		} catch (Exception e) {
 			entity = new ResponseEntity<>(HttpStatus.NOT_FOUND);

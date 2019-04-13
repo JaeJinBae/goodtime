@@ -9,15 +9,15 @@
 	</select>
 	
 	<select id="listSearch" resultType="ReservationRecordVO">
-		select * from reservation_record <include refid="search"></include> order by no desc limit #{pageStart},#{perPageNum}
+		select * from reservation_record where rdate like concat('%',#{keyword1},'%') and ename like concat('%',#{keyword2},'%') and rtype like concat('%',#{keyword3},'%') and result like concat('%',#{keyword4},'%') order by no desc limit #{pageStart},#{perPageNum}
 	</select>
 	
 	<sql id="search">
-		where rdate like concat('%',#{keyword1},'%') and ename like concat('%',#{keyword2},'%') and rtype like concat('%',#{keyword3},'%') and result like concat('%',#{keyword4},'%')
+		where rdate like concat('%',#{keyword1},'%') or ename like concat('%',#{keyword2},'%') or rtype like concat('%',#{keyword3},'%') or result like concat('%',#{keyword4},'%')
 	</sql>
 	
 	<select id="listSearchCount" resultType="int">
-		select count(no) from reservation_record <include refid="search"></include>
+		select count(no) from reservation_record where rdate like concat('%',#{keyword1},'%') or ename like concat('%',#{keyword2},'%') or rtype like concat('%',#{keyword3},'%') or result like concat('%',#{keyword4},'%')
 	</select>
 	
 	<insert id="register">

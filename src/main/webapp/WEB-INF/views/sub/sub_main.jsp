@@ -1869,18 +1869,18 @@ function draw_reservation_record_table(info){
 		
 		str += "<div class='reservation_record_page'><ul>";
 		if(json.pageMaker.prev){
-			str += "<li><a href='page="+(json.pageMaker.startPage-1)+"&perPageNum=10&searchType="+json.pageMaker.cri.searchType+"&keyword="+json.pageMaker.cri.keyword+"'>&laquo;</a></li>";
+			str += "<li><a href='page="+(json.pageMaker.startPage-1)+"&perPageNum=10&keyword1="+json.pageMaker.cri.keyword1+"&keyword2="+json.pageMaker.cri.keyword2+"&keyword3="+json.pageMaker.cri.keyword3+"&keyword4="+json.pageMaker.cri.keyword4+"'>&laquo;</a></li>";
 		}
 		for(var i=json.pageMaker.startPage; i<=json.pageMaker.endPage; i++){
 			
 			if(json.pageMaker.cri.page == i){
-				str += "<li class='active1'><a class='active2' href='page="+i+"&perPageNum=10&searchType="+json.pageMaker.cri.searchType+"&keyword="+json.pageMaker.cri.keyword+"'>"+i+"</a></li>";
+				str += "<li class='active1'><a class='active2' href='page="+i+"&perPageNum=10&keyword1="+json.pageMaker.cri.keyword1+"&keyword2="+json.pageMaker.cri.keyword2+"&keyword3="+json.pageMaker.cri.keyword3+"&keyword4="+json.pageMaker.cri.keyword4+"'>"+i+"</a></li>";
 			}else{
-				str += "<li><a href='page="+i+"&perPageNum=10&searchType="+json.pageMaker.cri.searchType+"&keyword="+json.pageMaker.cri.keyword+"'>"+i+"</a></li>"
+				str += "<li><a href='page="+i+"&perPageNum=10&keyword1="+json.pageMaker.cri.keyword1+"&keyword2="+json.pageMaker.cri.keyword2+"&keyword3="+json.pageMaker.cri.keyword3+"&keyword4="+json.pageMaker.cri.keyword4+"'>"+i+"</a></li>"
 			}
 		}
 		if(json.pageMaker.next){
-			str += "<li><a href='page="+(json.pageMaker.endPage+1)+"&perPageNum=10&searchType="+json.pageMaker.cri.searchType+"&keyword="+json.pageMaker.cri.keyword+"'>&raquo;</a></li>";
+			str += "<li><a href='page="+(json.pageMaker.endPage+1)+"&perPageNum=10&keyword1="+json.pageMaker.cri.keyword1+"&keyword2="+json.pageMaker.cri.keyword2+"&keyword3="+json.pageMaker.cri.keyword3+"&keyword4="+json.pageMaker.cri.keyword4+"'>&raquo;</a></li>";
 		}
 		str += "</ul></div>";	
 	}
@@ -2259,6 +2259,7 @@ $(function(){
 		open_reservation_info_view(type, rno);
 	})
 	
+	//예약완료, 접수완료, 예약취소 눌렀을 때
 	$(".popup_reservation_info_btn_wrap > p").click(function(){
 		var btn_idx = $(this).index();
 		
@@ -2272,6 +2273,7 @@ $(function(){
 		update_reservation_state(btn_idx, rtype, rno, state, writer, regdate, storage_timetable_btn_num);
 	});
 
+	//예약취소 누르고 취소사유 입력 후 저장 눌렀을 때
 	$(".popup_reservation_info_cancel_wrap > table tr td > button").click(function(){
 		var rtype = $(".popup_reservation_info_view > h2 > input[name='rtype']").val();
 		var rno = $(".popup_reservation_info_view > h2 > input[name='rno']").val();
@@ -2280,6 +2282,16 @@ $(function(){
 		var nowDate = new Date();
 		var regdate = nowDate.getFullYear()+"-"+(((nowDate.getMonth()+1)>9?'':'0')+(nowDate.getMonth()+1))+"-"+((nowDate.getDate()>9?'':'0')+nowDate.getDate())+" "+nowDate.getHours()+":"+((nowDate.getMinutes()>9?'':'0')+nowDate.getMinutes());
 		update_reservation_deskState(rtype, rno, state, writer, regdate, storage_timetable_btn_num)
+	});
+	
+	//예약이력에서 검색 눌렀을 때
+	$(".reservation_record_selectBox_wrap > button").click(function(){
+		var keyword1 = encodeURIComponent($(".reservation_record_selectBox_wrap > input[name='rdate']").val());
+		var keyword2 = encodeURIComponent($(".reservation_record_selectBox_wrap > select[name='employee']").val());
+		var keyword3 = encodeURIComponent($(".reservation_record_selectBox_wrap > select[name='rtype']").val());
+		var keyword4 = encodeURIComponent($(".reservation_record_selectBox_wrap > select[name='result']").val());
+
+		draw_reservation_record_table("page=1&perPageNum=10&keyword1="+keyword1+"&keyword2="+keyword2+"&keyword3="+keyword3+"&keyword4="+keyword4);
 	});
 	
 	//예약이력 테이블 페이지 클릭
@@ -2393,10 +2405,10 @@ $(function(){
 						<select name="employee">
 							<option value="">직원 전체</option>
 							<c:forEach var="list" items="${doctorList}">
-								<option value="${list.eno}">${list.name}</option>
+								<option value="${list.name}">${list.name}</option>
 							</c:forEach>
 							<c:forEach var="list" items="${therapistList}">
-								<option value="${list.eno}">${list.name}</option>
+								<option value="${list.name}">${list.name}</option>
 							</c:forEach>
 						</select>
 						<select name="rtype">

@@ -97,6 +97,13 @@
 	.popup_reservation_info_cancel_wrap > table{
 		width: 100%;
 	}
+	.popup_normal_reservation_update{
+		display:none;
+	}
+	
+	.popup_fix_reservation_update{
+		display:none;
+	}
 	
 	.all_wrap{
 		width: 100%;

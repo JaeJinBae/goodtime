@@ -28,6 +28,10 @@
 		update normal_clinic_reservation set desk_state=#{desk_state}, result=#{result}, desk_state_writer=#{desk_state_writer}, desk_state_regdate=#{desk_state_regdate} where rno=#{rno}
 	</update>
 	
+	<update id="updateInfo">
+		update normal_clinic_reservation set rdate=#{rdate}, rtime=#{rtime}, eno=#{eno}, clinic=#{clinic}, memo=#{memo} where rno=#{rno}
+	</update>
+	
 	<update id="cancel">
 		update normal_clinic_reservation set desk_state='예약취소', result='예약취소', desk_state_writer=#{desk_state_writer}, desk_state_regdate=#{desk_state_regdate}, result_memo=#{result_memo} where rno=#{rno}
 	</update>

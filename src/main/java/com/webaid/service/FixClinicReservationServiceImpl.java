@@ -46,6 +46,11 @@ public class FixClinicReservationServiceImpl implements FixClinicReservationServ
 	}
 
 	@Override
+	public void updateInfo(FixClinicReservationVO vo) {
+		dao.updateInfo(vo);
+	}
+
+	@Override
 	public void cancel(FixClinicReservationVO vo) {
 		dao.cancel(vo);
 	}

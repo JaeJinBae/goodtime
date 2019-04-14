@@ -8,10 +8,12 @@ import org.springframework.stereotype.Service;
 import com.webaid.domain.FixTherapyReservationVO;
 import com.webaid.domain.SelectByDateEmployeeVO;
 import com.webaid.persistence.FixTherapyReservationDao;
+
 @Service
 public class FixTherapyReservationServiceImpl implements FixTherapyReservationService {
 	@Autowired
 	private FixTherapyReservationDao dao;
+
 	@Override
 	public List<FixTherapyReservationVO> selectAll() {
 		return dao.selectAll();
@@ -40,6 +42,11 @@ public class FixTherapyReservationServiceImpl implements FixTherapyReservationSe
 	@Override
 	public void updateDeskState(FixTherapyReservationVO vo) {
 		dao.updateDeskState(vo);
+	}
+
+	@Override
+	public void updateInfo(FixTherapyReservationVO vo) {
+		dao.updateInfo(vo);
 	}
 
 	@Override

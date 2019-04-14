@@ -777,6 +777,57 @@ public class HomeController {
 		return entity;
 	}
 	
+	@RequestMapping(value="/updateReservationInfo",method=RequestMethod.POST)
+	public ResponseEntity<String> updateReservationInfo(@RequestBody Map<String, String> info){
+		ResponseEntity<String> entity = null;
+		
+		try {
+			if(info.get("rtype").equals("nc")){
+				NormalClinicReservationVO vo = new NormalClinicReservationVO();
+				vo.setRno(Integer.parseInt(info.get("rno")));
+				vo.setRdate(info.get("rdate"));
+				vo.setRtime(info.get("rtime"));
+				vo.setEno(Integer.parseInt(info.get("emp")));
+				vo.setClinic(info.get("clinic"));
+				vo.setMemo(info.get("memo"));
+				ncrService.updateInfo(vo);
+			}else if(info.get("rtype").equals("nt")){
+				NormalTherapyReservationVO vo = new NormalTherapyReservationVO();
+				vo.setRno(Integer.parseInt(info.get("rno")));
+				vo.setRdate(info.get("rdate"));
+				vo.setRtime(info.get("rtime"));
+				vo.setEno(Integer.parseInt(info.get("emp")));
+				vo.setClinic(info.get("clinic"));
+				vo.setMemo(info.get("memo"));
+				ntrService.updateInfo(vo);
+			}else if(info.get("rtype").equals("fc")){
+				FixClinicReservationVO vo = new FixClinicReservationVO();
+				vo.setRno(Integer.parseInt(info.get("rno")));
+				vo.setRdate(info.get("rdate"));
+				vo.setRtime(info.get("rtime"));
+				vo.setEno(Integer.parseInt(info.get("emp")));
+				vo.setClinic(info.get("clinic"));
+				vo.setMemo(info.get("memo"));
+				fcrService.updateInfo(vo);
+			}else if(info.get("rtype").equals("ft")){
+				FixTherapyReservationVO vo = new FixTherapyReservationVO();
+				vo.setRno(Integer.parseInt(info.get("rno")));
+				vo.setRdate(info.get("rdate"));
+				vo.setRtime(info.get("rtime"));
+				vo.setEno(Integer.parseInt(info.get("emp")));
+				vo.setClinic(info.get("clinic"));
+				vo.setMemo(info.get("memo"));
+				ftrService.updateInfo(vo);
+			}
+			entity = new ResponseEntity<String>("ok", HttpStatus.OK);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			entity = new ResponseEntity<String>("no", HttpStatus.OK);
+		}
+		
+		return entity;
+	}
+	
 	@RequestMapping(value="/updateReservationDeskState/{rtype}/{rno}/{state}/{writer}/{regdate}/{reason}", method=RequestMethod.POST)
 	public ResponseEntity<String> updateReservationDeskState(@PathVariable("rtype") String rtype, @PathVariable("rno") String rno, @PathVariable("state") String state, @PathVariable("writer") String writer, @PathVariable("regdate") String regdate, @PathVariable("reason") String reason){
 		ResponseEntity<String> entity = null;

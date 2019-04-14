@@ -45,6 +45,11 @@ public class NormalTherapyReservationServiceImpl implements NormalTherapyReserva
 	}
 
 	@Override
+	public void updateInfo(NormalTherapyReservationVO vo) {
+		dao.updateInfo(vo);
+	}
+
+	@Override
 	public void cancel(NormalTherapyReservationVO vo) {
 		dao.cancel(vo);
 	}

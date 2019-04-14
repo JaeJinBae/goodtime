@@ -24,8 +24,6 @@ public class ReservationRecordDaoImpl implements ReservationRecordDao {
 
 	@Override
 	public List<ReservationRecordVO> listSearch(SearchCriteriaRR cri) {
-		System.out.println(cri);
-		System.out.println(cri.getPageStart()+"\n"+cri.getPerPageNum());
 		return session.selectList(namespace + ".listSearch", cri);
 	}
 

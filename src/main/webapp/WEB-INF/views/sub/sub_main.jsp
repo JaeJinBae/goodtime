@@ -97,11 +97,7 @@
 	.popup_reservation_info_cancel_wrap > table{
 		width: 100%;
 	}
-	.popup_normal_reservation_update{
-		display:none;
-	}
-	
-	.popup_fix_reservation_update{
+	.popup_reservation_update{
 		display:none;
 	}
 	
@@ -1834,24 +1830,62 @@ function draw_reservation_update_view(rno, rtype){
 	$(emp).each(function(){
 		str += "<option value='"+this.eno+"'>"+this.name+"</option>";
 	});
-	$(".popup_normal_reservation_update > table tr:nth-child(4) > td select[name='emp']").html(str);
+	$(".popup_reservation_update > table tr:nth-child(4) > td select[name='emp']").html(str);
 	str = "";
 	
 	$(clinic).each(function(){
 		str += "<option value='"+this.cno+"'>"+this.code_name+"</option>";
 	});
-	$(".popup_normal_reservation_update > table tr:nth-child(5) > td select[name='clinic']").html(str);
+	$(".popup_reservation_update > table tr:nth-child(5) > td select[name='clinic']").html(str);
 	
-	$(".popup_normal_reservation_update > h2 > span").text(type+" "+patient.name+"("+patient.cno+")님 ");
-	$(".popup_normal_reservation_update > h2").append("<input type='hidden' name='rno' value='"+rno+"'><input type='hidden' name='rtype' value='"+rtype+"'>");
-	$(".popup_normal_reservation_update > table tr:first-child > td").text(rdate_rtime);
-	$(".popup_normal_reservation_update > table tr:nth-child(2) > td > input[name='rdate']").val(json.rdate);
-	$(".popup_normal_reservation_update > table tr:nth-child(4) > td select[name='emp'] > option[value='"+json.eno+"']").prop("selected",true);
-	$(".popup_normal_reservation_update > table tr:nth-child(5) > td select[name='clinic'] > option[value='"+json.clinic+"']").prop("selected",true);
-	$(".popup_normal_reservation_update > table tr:nth-child(6) > td >input[name='memo']").val(json.memo);
+	$(".popup_reservation_update > h2 > span").text(type+" "+patient.name+"("+patient.cno+")님 ");
+	$(".popup_reservation_update > h2").append("<input type='hidden' name='rno' value='"+rno+"'><input type='hidden' name='rtype' value='"+rtype+"'>");
+	$(".popup_reservation_update > table tr:first-child > td").text(rdate_rtime);
+	$(".popup_reservation_update > table tr:nth-child(2) > td > input[name='rdate']").val(json.rdate);
+	$(".popup_reservation_update > table tr:nth-child(4) > td select[name='emp'] > option[value='"+json.eno+"']").prop("selected",true);
+	$(".popup_reservation_update > table tr:nth-child(5) > td select[name='clinic'] > option[value='"+json.clinic+"']").prop("selected",true);
+	$(".popup_reservation_update > table tr:nth-child(6) > td >input[name='memo']").val(json.memo);
 	$(".popup_reservation_info_view").css("display","none");
-	$(".popup_normal_reservation_update").css("display","block");
+	$(".popup_reservation_update").css("display","block");
 	
+}
+
+function update_reservation_info(){
+	var rno = $(".popup_reservation_update > h2 > input[name='rno']").val();
+	var rtype = $(".popup_reservation_update > h2 > input[name='rtype']").val();
+	var rdate = $(".popup_reservation_update > table tr:nth-child(2) > td > input[name='rdate']").val();
+	var rtime1 = $(".popup_reservation_update > table tr:nth-child(3) > td > select[name='rtime1']").val();
+	var rtime2 = $(".popup_reservation_update > table tr:nth-child(3) > td > select[name='rtime2']").val();
+	var rtime = Number(rtime1)+Number(rtime2);
+	var emp = $(".popup_reservation_update > table tr:nth-child(4) > td > select[name='emp']").val();
+	var clinic = $(".popup_reservation_update > table tr:nth-child(5) > td > select[name='clinic']").val();
+	var memo = $(".popup_reservation_update > table tr:nth-child(6) > td > input[name='memo']").val();
+	var updateMemo = $(".popup_reservation_update > table tr:nth-child(7) > td > input[name='updateMemo']").val();
+	
+	var data = {rno:rno, rtype:rtype, rdate:rdate, rtime:rtime, emp:emp, clinic:clinic, memo:memo, updateMemo:updateMemo};
+	//console.log(rno+"\n"+rtype+"\n"+rdate+"\n"+rtime+"\n"+emp+"\n"+clinic+"\n"+memo+"\n"+updateMemo+"\n");
+	$.ajax({
+		url:"${pageContext.request.contextPath}/updateReservationInfo",
+		type:"post",
+		dataType:"text",
+		data:JSON.stringify(data),
+		async:false,
+		contentType : "application/json; charset=UTF-8",
+		success:function(json){
+			console.log(json);
+			if(json == "ok"){
+				alert("일정변경이 완료되었습니다.");
+				
+				
+				
+			}else{
+				alert("예약등록이 정상적으로 등록되지 않았습니다. 다시 한번 등록하세요.");
+			}
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	});
 }
 
 function update_reservation_deskState(rtype, rno, state, writer, regdate, stbn){
@@ -2350,8 +2384,8 @@ $(function(){
 	});
 	
 	//예약일정 변경 저장 클릭
-	$(".popup_res_update_btn_wrap").click(function(){
-		
+	$(".popup_res_update_btn_wrap > p").click(function(){
+		update_reservation_info();
 	});
 	
 	//예약완료, 접수완료, 예약취소 눌렀을 때

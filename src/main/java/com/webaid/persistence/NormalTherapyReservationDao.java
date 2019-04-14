@@ -12,5 +12,6 @@ public interface NormalTherapyReservationDao {
 	public List<NormalTherapyReservationVO> selectByDateEno(SelectByDateEmployeeVO vo);
 	public void register(NormalTherapyReservationVO vo);
 	public void updateDeskState(NormalTherapyReservationVO vo);
+	public void updateInfo(NormalTherapyReservationVO vo);
 	public void cancel(NormalTherapyReservationVO vo);
 }

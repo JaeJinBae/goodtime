@@ -336,7 +336,7 @@
 		</div>
 	</div><!-- popup_reservation_info_view -->
 	
-	<div class="popup_normal_reservation_update popup_content">
+	<div class="popup_reservation_update popup_content">
 		<h2><span></span>일정변경</h2>
 		<table>
 			<tr>
@@ -402,52 +402,9 @@
 				<td><input type="text" name="updateMemo" value=""></td>
 			</tr>
 		</table>
-		<div class="popup_normal_res_update_btn_wrap">
+		<div class="popup_res_update_btn_wrap">
 			<p>변경일정저장</p>
 		</div>
 	</div><!-- popup_normal_reservation_update -->
 	
-	<div class="popup_fix_reservation_update popup_content">
-		<h2></h2>
-		<table>
-			<tr>
-				<th>변경 전 일시</th>
-				<td></td>
-			</tr>
-			<tr>
-				<th>변경 날짜</th>
-				<td><input type="date" value=""></td>
-			</tr>
-			<tr>
-				<th>변경 시간</th>
-				<td></td>
-			</tr>
-			<tr>
-				<th>의사/치료사</th>
-				<td>
-					<select name="emp">
-						
-					</select>
-				</td>
-			</tr>
-			<tr>
-				<th>진료종류</th>
-				<td>
-					<select name="clinic">
-					
-					</select>
-				</td>
-			</tr>
-			<tr>
-				<th>메모</th>
-				<td><input type="text" name="memo" value=""></td>
-			</tr>
-			<tr>
-				<th>변경사유</th>
-				<td><input type="text" name="updateMemo" value=""></td>
-			</tr>
-		</table>
-		<div class="popup_fix_res_update_btn_wrap">
-			<p>변경일정저장</p>
-		</div>
-	</div>
+	

@@ -1105,6 +1105,23 @@ function get_clinic_by_cno(cno){
 	return dt;
 }
 
+function get_clinic_by_type(type){
+	var dt;
+	$.ajax({
+		url:"${pageContext.request.contextPath}/clinicGetByType/"+type,
+		type: "get",
+		dataType:"json", 
+		async: false,
+		success:function(json){
+			dt = json;
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	});
+	return dt;
+}
+
 
 //진료, 치료 테이블에서 예약된환자 이름에 마우스 올리면 좌측하단에 예약정보 나타내는 함수
 function draw_simple_reservation_view(type, rno){
@@ -1787,24 +1804,51 @@ function draw_reservation_update_view(rno, rtype){
 	var json;
 	var type;
 	var patient;
+	var emp;
+	var clinic;
 	if(rtype == "nc"){
 		json = get_ncReservation_byRno(rno);
 		type = "일반진료";
+		emp = get_employeeList_byType("doctor");
+		clinic = get_clinic_by_type("진료");
 	}else if(rtype == "nt"){
 		json = get_ntReservation_byRno(rno);
 		type = "일반치료";
+		emp = get_employeeList_byType("therapist");
+		clinic = get_clinic_by_type("치료");
 	}else if(rtype == "fc"){
 		json = get_fcReservation_byRno(rno);
 		type = "고정진료";
+		emp = get_employeeList_byType("doctor");
+		clinic = get_clinic_by_type("진료");
 	}else if(rtype == "ft"){
 		json = get_ftReservation_byRno(rno);
 		type = "고정치료";
+		emp = get_employeeList_byType("therapist");
+		clinic = get_clinic_by_type("치료");
 	}
 	patient = get_patient_by_pno(json.pno);
 	var rdate_rtime = json.rdate+" "+parseInt(Number(json.rtime)/60)+":"+((Number(json.rtime)%60>9?'':'0')+Number(json.rtime)%60);
+	var str;
+	console.log(emp);
+	$(emp).each(function(){
+		str += "<option value='"+this.eno+"'>"+this.name+"</option>";
+	});
+	$(".popup_normal_reservation_update > table tr:nth-child(4) > td select[name='emp']").html(str);
+	str = "";
+	
+	$(clinic).each(function(){
+		str += "<option value='"+this.cno+"'>"+this.code_name+"</option>";
+	});
+	$(".popup_normal_reservation_update > table tr:nth-child(5) > td select[name='clinic']").html(str);
+	
 	$(".popup_normal_reservation_update > h2 > span").text(type+" "+patient.name+"("+patient.cno+")님 ");
 	$(".popup_normal_reservation_update > h2").append("<input type='hidden' name='rno' value='"+rno+"'><input type='hidden' name='rtype' value='"+rtype+"'>");
 	$(".popup_normal_reservation_update > table tr:first-child > td").text(rdate_rtime);
+	$(".popup_normal_reservation_update > table tr:nth-child(2) > td > input[name='rdate']").val(json.rdate);
+	$(".popup_normal_reservation_update > table tr:nth-child(4) > td select[name='emp'] > option[value='"+json.eno+"']").prop("selected",true);
+	$(".popup_normal_reservation_update > table tr:nth-child(5) > td select[name='clinic'] > option[value='"+json.clinic+"']").prop("selected",true);
+	$(".popup_normal_reservation_update > table tr:nth-child(6) > td >input[name='memo']").val(json.memo);
 	$(".popup_reservation_info_view").css("display","none");
 	$(".popup_normal_reservation_update").css("display","block");
 	
@@ -2303,6 +2347,11 @@ $(function(){
 		var rno = $(".popup_reservation_info_view > h2 > input[name='rno']").val();
 		var rtype = $(".popup_reservation_info_view > h2 > input[name='rtype']").val();
 		draw_reservation_update_view(rno, rtype);
+	});
+	
+	//예약일정 변경 저장 클릭
+	$(".popup_res_update_btn_wrap").click(function(){
+		
 	});
 	
 	//예약완료, 접수완료, 예약취소 눌렀을 때

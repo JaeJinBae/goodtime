@@ -379,6 +379,16 @@ public class HomeController {
 		return entity;
 	}
 	
+	@RequestMapping(value="/clinicGetByType/{type}", method=RequestMethod.GET)
+	public ResponseEntity<List<ClinicVO>> clinicGetByType(@PathVariable("type") String type){
+		ResponseEntity<List<ClinicVO>> entity = null;
+		
+		List<ClinicVO> list = cService.selectByCodeType(type);
+		entity = new ResponseEntity<List<ClinicVO>>(list, HttpStatus.OK);
+		
+		return entity;
+	}
+	
 	@RequestMapping(value="/clinicRegister", method=RequestMethod.POST)
 	public ResponseEntity<String> clinicRegister(ClinicVO clinic){
 		logger.info("clinic register Post");

@@ -351,7 +351,21 @@
 				<th>변경 시간</th>
 				<td>
 					<select name="rtime1">
-					
+						<option value="480">08시</option>
+						<option value="540">09시</option>
+						<option value="600">10시</option>
+						<option value="660">11시</option>
+						<option value="720">12시</option>
+						<option value="780">13시</option>
+						<option value="840">14시</option>
+						<option value="900">15시</option>
+						<option value="960">16시</option>
+						<option value="1020">17시</option>
+						<option value="1080">18시</option>
+						<option value="1140">19시</option>
+						<option value="1200">20시</option>
+						<option value="1260">21시</option>
+						<option value="1320">22시</option>
 					</select>
 					<select name="rtime2">
 						<option value="0">00분</option>

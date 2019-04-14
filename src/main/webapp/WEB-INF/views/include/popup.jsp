@@ -300,6 +300,42 @@
 		</div>
 	</div><!-- popup_therapy_reservation_register end -->
 	
+	<div class="popup_reservation_info_view popup_content">
+		<h2></h2>
+		<table>
+			<tr>
+				<th>연락처</th>
+				<td><span></span><button>문자</button></td>
+			</tr>
+			<tr>
+				<th>일정일시</th>
+				<td><span></span><button>변경</button></td>
+			</tr>
+			<tr>
+				<th>치료내용</th>
+				<td><span></span></td>
+			</tr>
+			<tr>
+				<th>메모</th>
+				<td><span></span></td>
+			</tr>
+		</table>
+		<div class="popup_reservation_info_btn_wrap">
+			<p>예약완료</p>
+			<p>접수완료</p>
+			<p>예약취소</p>
+		</div>
+		<div class="popup_reservation_info_cancel_wrap">
+			<table>
+				<tr>
+					<th>취소사유</th>
+					<td><textarea name="cancel_reason"></textarea></td>
+					<td><button>저장</button></td>
+				</tr>
+			</table>
+		</div>
+	</div><!-- popup_reservation_info_view -->
+	
 	<div class="popup_normal_reservation_update popup_content">
 		<h2><span></span>일정변경</h2>
 		<table>
@@ -309,11 +345,23 @@
 			</tr>
 			<tr>
 				<th>변경 날짜</th>
-				<td><input type="date" value=""></td>
+				<td><input type="date" name="rdate" value=""></td>
 			</tr>
 			<tr>
 				<th>변경 시간</th>
-				<td></td>
+				<td>
+					<select name="rtime1">
+					
+					</select>
+					<select name="rtime2">
+						<option value="0">00분</option>
+						<option value="10">10분</option>
+						<option value="20">20분</option>
+						<option value="30">30분</option>
+						<option value="40">40분</option>
+						<option value="50">50분</option>
+					</select>
+				</td>
 			</tr>
 			<tr>
 				<th>의사/치료사</th>
@@ -389,40 +437,3 @@
 			<p>변경일정저장</p>
 		</div>
 	</div>
-	
-	<div class="popup_reservation_info_view popup_content">
-		<h2></h2>
-		<table>
-			<tr>
-				<th>연락처</th>
-				<td><span></span><button>문자</button></td>
-			</tr>
-			<tr>
-				<th>일정일시</th>
-				<td><span></span><button>변경</button><button>삭제</button></td>
-			</tr>
-			<tr>
-				<th>치료내용</th>
-				<td><span></span></td>
-			</tr>
-			<tr>
-				<th>메모</th>
-				<td><span></span></td>
-			</tr>
-		</table>
-		<div class="popup_reservation_info_btn_wrap">
-			<p>예약완료</p>
-			<p>접수완료</p>
-			<p>예약취소</p>
-		</div>
-		<div class="popup_reservation_info_cancel_wrap">
-			<table>
-				<tr>
-					<th>취소사유</th>
-					<td><textarea name="cancel_reason"></textarea></td>
-					<td><button>저장</button></td>
-				</tr>
-			</table>
-		</div>
-	</div><!-- popup_reservation_info_view -->
-	

@@ -1783,6 +1783,33 @@ function open_reservation_info_view(type, rno){
 	$(".popup_wrap").css("display", "block");
 }
 
+function draw_reservation_update_view(rno, rtype){
+	var json;
+	var type;
+	var patient;
+	if(rtype == "nc"){
+		json = get_ncReservation_byRno(rno);
+		type = "일반진료";
+	}else if(rtype == "nt"){
+		json = get_ntReservation_byRno(rno);
+		type = "일반치료";
+	}else if(rtype == "fc"){
+		json = get_fcReservation_byRno(rno);
+		type = "고정진료";
+	}else if(rtype == "ft"){
+		json = get_ftReservation_byRno(rno);
+		type = "고정치료";
+	}
+	patient = get_patient_by_pno(json.pno);
+	var rdate_rtime = json.rdate+" "+parseInt(Number(json.rtime)/60)+":"+((Number(json.rtime)%60>9?'':'0')+Number(json.rtime)%60);
+	$(".popup_normal_reservation_update > h2 > span").text(type+" "+patient.name+"("+patient.cno+")님 ");
+	$(".popup_normal_reservation_update > h2").append("<input type='hidden' name='rno' value='"+rno+"'><input type='hidden' name='rtype' value='"+rtype+"'>");
+	$(".popup_normal_reservation_update > table tr:first-child > td").text(rdate_rtime);
+	$(".popup_reservation_info_view").css("display","none");
+	$(".popup_normal_reservation_update").css("display","block");
+	
+}
+
 function update_reservation_deskState(rtype, rno, state, writer, regdate, stbn){
 	var reason = $(".popup_reservation_info_cancel_wrap > table tr > td > textarea[name='cancel_reason']").val();
 	if(reason == ""){
@@ -1906,7 +1933,8 @@ $(function(){
 	//달력 생성
 	buildCalendar();
 	
-	$(".calendar_select_date").val(get_today());
+	//$(".calendar_select_date").val(get_today());
+	$(".calendar_select_date").val("2019-04-15");
 	
 	//날짜마다 요일 표시
 	write_yoil();
@@ -2269,6 +2297,13 @@ $(function(){
 		var rno = $(this).find("input[name='rno']").val();
 		open_reservation_info_view(type, rno);
 	})
+	
+	//변경 클릭
+	$(".popup_reservation_info_view > table tr:nth-child(2) > td > button").click(function(){
+		var rno = $(".popup_reservation_info_view > h2 > input[name='rno']").val();
+		var rtype = $(".popup_reservation_info_view > h2 > input[name='rtype']").val();
+		draw_reservation_update_view(rno, rtype);
+	});
 	
 	//예약완료, 접수완료, 예약취소 눌렀을 때
 	$(".popup_reservation_info_btn_wrap > p").click(function(){

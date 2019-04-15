@@ -47,4 +47,9 @@ public class ReservationRecordDaoImpl implements ReservationRecordDao {
 		session.update(namespace + ".updateTherapyInfo", vo);
 	}
 
+	@Override
+	public void updateRdateRtime(ReservationRecordVO vo) {
+		session.update(namespace+".updateRdateRtime", vo);
+	}
+
 }

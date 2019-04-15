@@ -32,5 +32,9 @@
 		update reservation_record set therapy_info=#{therapy_info}, result='치료완료' where rno=#{rno} and rtype=#{rtype}
 	</update>
 	
+	<update id="updateRdateRtime">
+		update reservation_record set rdate=#{rdate}, rtime=#{rtime} where rno=#{rno} and rtype=#{rtype}
+	</update>
+	
 	
 </mapper>

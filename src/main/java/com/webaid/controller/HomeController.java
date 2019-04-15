@@ -850,6 +850,14 @@ public class HomeController {
 			rurvo.setUpdate_info(update_info);
 			rurvo.setUpdate_memo(update_memo);
 			rurService.register(rurvo);
+			
+			ReservationRecordVO rrvo = new ReservationRecordVO();
+			rrvo.setRno(Integer.parseInt(rno));
+			rrvo.setRtype(rtype);
+			rrvo.setRdate(rdate);
+			rrvo.setRtime(rtime);
+			rrService.updateRdateRtime(rrvo);
+			
 			entity = new ResponseEntity<String>("ok", HttpStatus.OK);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -1009,7 +1017,38 @@ public class HomeController {
 		return entity;
 	}
 	
-	
+	@RequestMapping(value="/reservationUpdateRecordGetAll", method=RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> reservationUpdateRecordGetAll(@ModelAttribute("cri") SearchCriteria cri){
+		logger.info("reservation update record get all");
+		
+		ResponseEntity<Map<String, Object>> entity = null;
+		HashMap<String, Object> map=new HashMap<>();
+		
+		try {
+			if(cri.getSearchType() == null){
+				cri.setSearchType("n");
+			}
+			if(cri.getKeyword() == null){
+				cri.setKeyword("");
+			}
+			
+			List<ReservationUpdateRecordVO> list = rurService.listSearch(cri);
+			
+			PageMaker pageMaker = new PageMaker();
+			pageMaker.setCri(cri);
+			pageMaker.makeSearch(cri.getPage());
+			pageMaker.setTotalCount(rurService.listSearchCount(cri));
+			
+			map.put("list", list);
+			map.put("pageMaker", pageMaker);
+			
+			entity = new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
+		} catch (Exception e) {
+			entity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			System.out.println(e.getMessage());
+		}
+		return entity;
+	}
 	
 	
 	

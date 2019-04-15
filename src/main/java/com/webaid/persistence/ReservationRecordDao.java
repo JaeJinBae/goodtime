@@ -12,4 +12,5 @@ public interface ReservationRecordDao {
 	public void register(ReservationRecordVO vo);
 	public void updateReceptionInfo(ReservationRecordVO vo);
 	public void updateTherapyInfo(ReservationRecordVO vo);
+	public void updateRdateRtime(ReservationRecordVO vo);
 }

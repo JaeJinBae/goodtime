@@ -45,4 +45,9 @@ public class ReservationRecordServiceImpl implements ReservationRecordService {
 		dao.updateTherapyInfo(vo);
 	}
 
+	@Override
+	public void updateRdateRtime(ReservationRecordVO vo) {
+		dao.updateRdateRtime(vo);
+	}
+
 }

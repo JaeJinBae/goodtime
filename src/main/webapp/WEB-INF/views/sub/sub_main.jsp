@@ -2011,13 +2011,13 @@ function draw_reservation_record_table(info){
 			
 			str += "<tr><td>"+this.pname+"</td><td>"+this.ename+"</td>";
 			if(this.rtype == "nc"){
-				str += "일반진료</td>";
+				str += "<td>일반진료</td>";
 			}else if(this.rtype == "fc"){
-				str += "고정진료</td>";
+				str += "<td>고정진료</td>";
 			}else if(this.rtype == "nt"){
-				str += "일반치료</td>";
+				str += "<td>일반치료</td>";
 			}else if(this.rtype == "ft"){
-				str += "고정진료</td>";
+				str += "<td>고정진료</td>";
 			}
 			str += "<td>"+this.cname+"</td><td>"+this.rdate+" "+hour+":"+minute+"</td><td>"+this.reception_info+"</td><td>"+this.therapy_info+"</td><td>"+this.register_info+"</td></tr>";
 		});
@@ -2072,7 +2072,7 @@ function draw_reservation_update_record_table(info){
 	var minute;
 	var overMinute;
 	
-	str = "<table class='tbl_reservation_record'><tr><th>환자명</th><th>예정시간</th><th>변경종류</th><th>변경내용</th><th>변경등록일시</th><th>변경메모</th></tr>";
+	str = "<table class='tbl_reservation_update_record'><tr><th>환자명</th><th>예정시간</th><th>변경종류</th><th>변경내용</th><th>변경등록일시</th><th>변경메모</th></tr>";
 	if(json.list.length == 0){
 		str += "<tr><td colspan='6'>등록된 정보가 없습니다.</td></tr>";
 	}else{
@@ -2090,13 +2090,13 @@ function draw_reservation_update_record_table(info){
 			
 			str += "<tr><td>"+this.pname+"</td><td>"+this.before_info+"</td>";
 			if(this.rtype == "nc"){
-				str += "일반진료 일정변경</td>";
+				str += "<td>일반진료 일정변경</td>";
 			}else if(this.rtype == "fc"){
-				str += "고정진료 일정변경</td>";
+				str += "<td>고정진료 일정변경</td>";
 			}else if(this.rtype == "nt"){
-				str += "일반치료 일정변경</td>";
+				str += "<td>일반치료 일정변경</td>";
 			}else if(this.rtype == "ft"){
-				str += "고정치료 일정변경</td>";
+				str += "<td>고정치료 일정변경</td>";
 			}
 			str += "<td>"+this.after_info+"</td><td>"+this.update_info+"</td><td>"+this.update_memo+"</td></tr>";
 		});
@@ -2146,15 +2146,15 @@ function draw_normalOff_table(info){
 	var str = "";
 	var emp;
 	
-	str = "<table class='tbl_reservation_record'><tr><th>이름</th><th>휴무종류</th><th>시작일시</th><th>종료일시</th><th>등록일시</th><th>관리</th></tr>";
+	str = "<table class='tbl_normal_off'><tr><th>이름</th><th>휴무종류</th><th>시작일시</th><th>종료일시</th><th>등록일시</th><th>관리</th></tr>";
 	if(json.list.length == 0){
 		str += "<tr><td colspan='6'>등록된 정보가 없습니다.</td></tr>";
 	}else{
 		$(json.list).each(function(){
 			emp = get_employee_byEno(this.eno);
 			
-			str += "<tr><td>"+emp.name+"</td><td>"+this.offtype+"</td><td>"
-				+ this.startdate+" "+(Number(this.starttime)/60)+"시</td><td>"+this.enddate+" "+(Number(this.endtime)/60)+"시</td><td>"+this.regdate+" "+this.writer+"</td><td><button>수정</button></td></tr>";
+			str += "<tr><td>"+emp.name+"</td><td>"+this.offtype+"</td>"
+			+ "<td>"+this.startdate+" "+(Number(this.starttime)/60)+"시</td><td>"+this.enddate+" "+(Number(this.endtime)/60)+"시</td><td>"+this.regdate+" "+this.writer+"</td><td><button>수정</button></td></tr>";
 		});
 		str += "</table>";
 		
@@ -2201,7 +2201,7 @@ function draw_fixOff_table(info){
 	var str = "";
 	var emp;
 	
-	str = "<table class='tbl_reservation_record'><tr><th>이름</th><th>휴무종류</th><th>요일</th><th>시작일시</th><th>종료일시</th><th>등록일시</th><th>관리</th></tr>";
+	str = "<table class='tbl_fix_off'><tr><th>이름</th><th>휴무종류</th><th>요일</th><th>시작일시</th><th>종료일시</th><th>등록일시</th><th>관리</th></tr>";
 	if(json.list.length == 0){
 		str += "<tr><td colspan='6'>등록된 정보가 없습니다.</td></tr>";
 	}else{

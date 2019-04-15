@@ -1786,7 +1786,8 @@ function open_reservation_info_view(type, rno){
 	eData = get_employee_byEno(rData.eno);
 	cData = get_clinic_by_cno(rData.clinic);
 	
-	var str = rtype+"<span> "+pData.name+"("+pData.cno+")님</span><input type='hidden' name='rtype' value='"+rData.rtype+"'><input type='hidden' name='rno' value='"+rData.rno+"'>";
+	var str = rtype+"<span> "+pData.name+"("+pData.cno+")님</span><input type='hidden' name='rtype' value='"+rData.rtype+"'>"
+			+"<input type='hidden' name='rno' value='"+rData.rno+"'>";
 	$(".popup_reservation_info_view > h2").html(str);
 	$(".popup_reservation_info_view > table tr:first-child > td > span").html(pData.phone);
 	$(".popup_reservation_info_view > table tr:nth-child(2) > td > span").html(rData.rdate+" "+rData.rtime);
@@ -1839,7 +1840,7 @@ function draw_reservation_update_view(rno, rtype){
 	$(".popup_reservation_update > table tr:nth-child(5) > td select[name='clinic']").html(str);
 	
 	$(".popup_reservation_update > h2 > span").text(type+" "+patient.name+"("+patient.cno+")님 ");
-	$(".popup_reservation_update > h2").append("<input type='hidden' name='rno' value='"+rno+"'><input type='hidden' name='rtype' value='"+rtype+"'>");
+	$(".popup_reservation_update > h2").append("<input type='hidden' name='rno' value='"+rno+"'><input type='hidden' name='rtype' value='"+rtype+"'><input type='hidden' name='pno' value='"+json.pno+"'>");
 	$(".popup_reservation_update > table tr:first-child > td").text(rdate_rtime);
 	$(".popup_reservation_update > table tr:nth-child(2) > td > input[name='rdate']").val(json.rdate);
 	$(".popup_reservation_update > table tr:nth-child(4) > td select[name='emp'] > option[value='"+json.eno+"']").prop("selected",true);
@@ -1851,6 +1852,9 @@ function draw_reservation_update_view(rno, rtype){
 }
 
 function update_reservation_info(){
+	var now = new Date();
+	
+	var pno = $(".popup_reservation_update > h2 > input[name='pno']").val();
 	var rno = $(".popup_reservation_update > h2 > input[name='rno']").val();
 	var rtype = $(".popup_reservation_update > h2 > input[name='rtype']").val();
 	var rdate = $(".popup_reservation_update > table tr:nth-child(2) > td > input[name='rdate']").val();
@@ -1861,9 +1865,23 @@ function update_reservation_info(){
 	var clinic = $(".popup_reservation_update > table tr:nth-child(5) > td > select[name='clinic']").val();
 	var memo = $(".popup_reservation_update > table tr:nth-child(6) > td > input[name='memo']").val();
 	var updateMemo = $(".popup_reservation_update > table tr:nth-child(7) > td > input[name='updateMemo']").val();
+	var before_reservation;
+	if(rtype == "nc"){
+		before_reservation = get_ncReservation_byRno(rno);
+	}else if(rtype == "fc"){
+		before_reservation = get_fcReservation_byRno(rno);
+	}else if(rtype == "nt"){
+		before_reservation = get_ntReservation_byRno(rno);
+	}else if(rtype == "ft"){
+		before_reservation = get_ftReservation_byRno(rno);
+	}
+	var before_info = $(".popup_reservation_update > table tr:first-child > td").text()+" "+get_employee_byEno(before_reservation.eno).name;
+	var after_info = rdate+" "+Number(rtime1/60)+":"+((Number(rtime2)>9?'':'0')+rtime2)+" "+$(".popup_reservation_update > table tr:nth-child(4) > td > select[name='emp'] option:selected").text();
+	var update_info = now.getFullYear()+"-"+(((now.getMonth()+1)>9?'':'0')+(now.getMonth()+1))+"-"+((now.getDate()>9?'':'0')+now.getDate())+" "
+					+ now.getHours()+":"+((now.getMinutes()>9?'':'0')+now.getMinutes())+" "+$("#session_login_name").val();
 	
-	var data = {rno:rno, rtype:rtype, rdate:rdate, rtime:rtime, emp:emp, clinic:clinic, memo:memo, updateMemo:updateMemo};
-	//console.log(rno+"\n"+rtype+"\n"+rdate+"\n"+rtime+"\n"+emp+"\n"+clinic+"\n"+memo+"\n"+updateMemo+"\n");
+	var data = {pno:pno, rno:rno, rtype:rtype, rdate:rdate, rtime:rtime, emp:emp, clinic:clinic, memo:memo, updateMemo:updateMemo, before_info:before_info, after_info:after_info, update_type:"일정변경", update_info:update_info};
+	
 	$.ajax({
 		url:"${pageContext.request.contextPath}/updateReservationInfo",
 		type:"post",
@@ -1875,9 +1893,6 @@ function update_reservation_info(){
 			console.log(json);
 			if(json == "ok"){
 				alert("일정변경이 완료되었습니다.");
-				
-				
-				
 			}else{
 				alert("예약등록이 정상적으로 등록되지 않았습니다. 다시 한번 등록하세요.");
 			}
@@ -2011,8 +2026,8 @@ $(function(){
 	//달력 생성
 	buildCalendar();
 	
-	//$(".calendar_select_date").val(get_today());
-	$(".calendar_select_date").val("2019-04-15");
+	$(".calendar_select_date").val(get_today());
+	//$(".calendar_select_date").val("2019-04-15");
 	
 	//날짜마다 요일 표시
 	write_yoil();

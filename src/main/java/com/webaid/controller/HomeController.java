@@ -37,6 +37,7 @@ import com.webaid.domain.PageMaker;
 import com.webaid.domain.PageMakerRR;
 import com.webaid.domain.PatientVO;
 import com.webaid.domain.ReservationRecordVO;
+import com.webaid.domain.ReservationUpdateRecordVO;
 import com.webaid.domain.SearchCriteria;
 import com.webaid.domain.SearchCriteriaRR;
 import com.webaid.domain.SelectByDateEmployeeVO;
@@ -49,6 +50,7 @@ import com.webaid.service.NormalClinicReservationService;
 import com.webaid.service.NormalTherapyReservationService;
 import com.webaid.service.PatientService;
 import com.webaid.service.ReservationRecordService;
+import com.webaid.service.ReservationUpdateRecordService;
 import com.webaid.util.DayGetUtil;
 
 
@@ -83,6 +85,9 @@ public class HomeController {
 	
 	@Autowired
 	private ReservationRecordService rrService;
+	
+	@Autowired
+	private ReservationUpdateRecordService rurService;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model) {
@@ -781,44 +786,70 @@ public class HomeController {
 	public ResponseEntity<String> updateReservationInfo(@RequestBody Map<String, String> info){
 		ResponseEntity<String> entity = null;
 		
+		String pno = info.get("pno");
+		String rno = info.get("rno");
+		String rtype = info.get("rtype");
+		String rdate = info.get("rdate");
+		String rtime = info.get("rtime");
+		int eno = Integer.parseInt(info.get("emp"));
+		String clinic = info.get("clinic");
+		String memo = info.get("memo");
+		String before_info = info.get("before_info");
+		String after_info = info.get("after_info");
+		String update_type = info.get("update_type");
+		String update_info = info.get("update_info");
+		String update_memo = info.get("updateMemo");
+		
 		try {
-			if(info.get("rtype").equals("nc")){
+			if(rtype.equals("nc")){
 				NormalClinicReservationVO vo = new NormalClinicReservationVO();
-				vo.setRno(Integer.parseInt(info.get("rno")));
-				vo.setRdate(info.get("rdate"));
-				vo.setRtime(info.get("rtime"));
-				vo.setEno(Integer.parseInt(info.get("emp")));
-				vo.setClinic(info.get("clinic"));
-				vo.setMemo(info.get("memo"));
+				vo.setRno(Integer.parseInt(rno));
+				vo.setRdate(rdate);
+				vo.setRtime(rtime);
+				vo.setEno(eno);
+				vo.setClinic(clinic);
+				vo.setMemo(memo);
 				ncrService.updateInfo(vo);
-			}else if(info.get("rtype").equals("nt")){
+			}else if(rtype.equals("nt")){
 				NormalTherapyReservationVO vo = new NormalTherapyReservationVO();
-				vo.setRno(Integer.parseInt(info.get("rno")));
-				vo.setRdate(info.get("rdate"));
-				vo.setRtime(info.get("rtime"));
-				vo.setEno(Integer.parseInt(info.get("emp")));
-				vo.setClinic(info.get("clinic"));
-				vo.setMemo(info.get("memo"));
+				vo.setRno(Integer.parseInt(rno));
+				vo.setRdate(rdate);
+				vo.setRtime(rtime);
+				vo.setEno(eno);
+				vo.setClinic(clinic);
+				vo.setMemo(memo);
 				ntrService.updateInfo(vo);
-			}else if(info.get("rtype").equals("fc")){
+			}else if(rtype.equals("fc")){
 				FixClinicReservationVO vo = new FixClinicReservationVO();
-				vo.setRno(Integer.parseInt(info.get("rno")));
-				vo.setRdate(info.get("rdate"));
-				vo.setRtime(info.get("rtime"));
-				vo.setEno(Integer.parseInt(info.get("emp")));
-				vo.setClinic(info.get("clinic"));
-				vo.setMemo(info.get("memo"));
+				vo.setRno(Integer.parseInt(rno));
+				vo.setRdate(rdate);
+				vo.setRtime(rtime);
+				vo.setEno(eno);
+				vo.setClinic(clinic);
+				vo.setMemo(memo);
 				fcrService.updateInfo(vo);
-			}else if(info.get("rtype").equals("ft")){
+			}else if(rtype.equals("ft")){
 				FixTherapyReservationVO vo = new FixTherapyReservationVO();
-				vo.setRno(Integer.parseInt(info.get("rno")));
-				vo.setRdate(info.get("rdate"));
-				vo.setRtime(info.get("rtime"));
-				vo.setEno(Integer.parseInt(info.get("emp")));
-				vo.setClinic(info.get("clinic"));
-				vo.setMemo(info.get("memo"));
+				vo.setRno(Integer.parseInt(rno));
+				vo.setRdate(rdate);
+				vo.setRtime(rtime);
+				vo.setEno(eno);
+				vo.setClinic(clinic);
+				vo.setMemo(memo);
 				ftrService.updateInfo(vo);
 			}
+			
+			ReservationUpdateRecordVO rurvo = new ReservationUpdateRecordVO();
+			
+			rurvo.setRno(Integer.parseInt(rno));
+			rurvo.setRtype(rtype);
+			rurvo.setPname(pService.selectByPno(pno).getName());
+			rurvo.setBefore_info(before_info);
+			rurvo.setAfter_info(after_info);
+			rurvo.setUpdate_type(update_type);
+			rurvo.setUpdate_info(update_info);
+			rurvo.setUpdate_memo(update_memo);
+			rurService.register(rurvo);
 			entity = new ResponseEntity<String>("ok", HttpStatus.OK);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());

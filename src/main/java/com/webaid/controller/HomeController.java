@@ -792,6 +792,7 @@ public class HomeController {
 		String rdate = info.get("rdate");
 		String rtime = info.get("rtime");
 		int eno = Integer.parseInt(info.get("emp"));
+		String ename = empService.selectByEno(eno).getName();
 		String clinic = info.get("clinic");
 		String memo = info.get("memo");
 		String before_info = info.get("before_info");
@@ -854,6 +855,7 @@ public class HomeController {
 			ReservationRecordVO rrvo = new ReservationRecordVO();
 			rrvo.setRno(Integer.parseInt(rno));
 			rrvo.setRtype(rtype);
+			rrvo.setEname(ename);
 			rrvo.setRdate(rdate);
 			rrvo.setRtime(rtime);
 			rrService.updateRdateRtime(rrvo);

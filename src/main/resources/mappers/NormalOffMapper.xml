@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.webaid.mappers.NormalOffMapper">
+
+	<select id="selectAll" resultType="NormalOffVO">
+		select * from normal_off order by no desc;
+	</select>
+	
+	<select id="listSearch" resultType="NormalOffVO">
+		select * from normal_off <include refid="search"></include> order by no desc limit #{pageStart},#{perPageNum}
+	</select>
+	
+	<sql id="search">
+		where startdate like concat('%',#{keyword1},'%') and eno like concat('%',#{keyword2},'%')
+	</sql>
+	
+	<select id="listSearchCount" resultType="int">
+		select count(no) from normal_off <include refid="search"></include>
+	</select>
+	
+	<insert id="register">
+		insert into normal_off values(0, #{eno}, #{offtype}, #{startdate}, #{enddate}, #{starttime}, #{endtime}, #{regdate}, #{writer})
+	</insert>
+	
+	<update id="update">
+		update normal_off set startdate=#{startdate}, enddate=#{enddate}, starttime=#{starttime}, endtime=#{endtime}
+	</update>
+</mapper>

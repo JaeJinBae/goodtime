@@ -5,6 +5,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.URLEncoder;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,10 +31,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.webaid.domain.ClinicVO;
 import com.webaid.domain.EmployeeVO;
 import com.webaid.domain.FixClinicReservationVO;
+import com.webaid.domain.FixOffVO;
 import com.webaid.domain.FixTherapyReservationVO;
 import com.webaid.domain.HospitalInfoVO;
 import com.webaid.domain.IdPwVO;
 import com.webaid.domain.NormalClinicReservationVO;
+import com.webaid.domain.NormalOffVO;
 import com.webaid.domain.NormalTherapyReservationVO;
 import com.webaid.domain.PageMaker;
 import com.webaid.domain.PageMakerRR;
@@ -44,9 +49,11 @@ import com.webaid.domain.SelectByDateEmployeeVO;
 import com.webaid.service.ClinicService;
 import com.webaid.service.EmployeeService;
 import com.webaid.service.FixClinicReservationService;
+import com.webaid.service.FixOffService;
 import com.webaid.service.FixTherapyReservationService;
 import com.webaid.service.HospitalInfoService;
 import com.webaid.service.NormalClinicReservationService;
+import com.webaid.service.NormalOffService;
 import com.webaid.service.NormalTherapyReservationService;
 import com.webaid.service.PatientService;
 import com.webaid.service.ReservationRecordService;
@@ -88,6 +95,12 @@ public class HomeController {
 	
 	@Autowired
 	private ReservationUpdateRecordService rurService;
+	
+	@Autowired
+	private NormalOffService noService;
+	
+	@Autowired
+	private FixOffService foService;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model) {
@@ -1053,9 +1066,84 @@ public class HomeController {
 	}
 	
 	
+	@RequestMapping(value="/normalOffGetAll", method=RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> normalOffGetAll(@ModelAttribute("cri") SearchCriteriaRR cri){
+		ResponseEntity<Map<String, Object>> entity = null;
+		HashMap<String, Object> map = new HashMap<>();
+		
+		Calendar now = new GregorianCalendar();
+		int year = now.get(now.YEAR);
+		String month = now.get(now.MONTH)+1+"";
+		if(Integer.parseInt(month)<10){
+			month = "0"+month;
+		}
+		try {
+			if(cri.getKeyword1() == null){
+				cri.setKeyword1(year+"-"+month);
+			}
+			if(cri.getKeyword2() == null){
+				cri.setKeyword2("");
+			}
+			cri.setKeyword3("");
+			cri.setKeyword4("");
+			
+			List<NormalOffVO> list = noService.listSearch(cri);
+
+			PageMakerRR pageMaker = new PageMakerRR();
+			pageMaker.setCri(cri);
+			pageMaker.makeSearch(cri.getPage());
+			pageMaker.setTotalCount(noService.listSearchCount(cri));
+			
+			map.put("list", list);
+			map.put("pageMaker", pageMaker);
+			
+			entity = new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		return entity;
+	}
 	
-	
-	
+	@RequestMapping(value="/fixOffGetAll", method=RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> fixOffGetAll(@ModelAttribute("cri") SearchCriteriaRR cri){
+		ResponseEntity<Map<String, Object>> entity = null;
+		HashMap<String, Object> map = new HashMap<>();
+		
+		Calendar now = new GregorianCalendar();
+		int year = now.get(now.YEAR);
+		String month = now.get(now.MONTH)+1+"";
+		if(Integer.parseInt(month)<10){
+			month = "0"+month;
+		}
+		
+		try {
+			if(cri.getKeyword1() == null){
+				cri.setKeyword1(year+"-"+month);
+			}
+			if(cri.getKeyword2() == null){
+				cri.setKeyword2("");
+			}
+			cri.setKeyword3("");
+			cri.setKeyword4("");
+			
+			List<FixOffVO> list = foService.listSearch(cri);
+			
+			PageMakerRR pageMaker = new PageMakerRR();
+			pageMaker.setCri(cri);
+			pageMaker.makeSearch(cri.getPage());
+			pageMaker.setTotalCount(foService.listSearchCount(cri));
+			
+			map.put("list", list);
+			map.put("pageMaker", pageMaker);
+			
+			entity = new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		return entity;
+	}
 	
 	
 	

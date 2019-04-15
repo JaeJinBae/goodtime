@@ -762,17 +762,17 @@ function draw_time_table_by_case(idx){
 		case 9:
 			$(".week_select_box_wrap").css("display","none");
 			$(".time_table_wrap").html("");
-			
+			draw_normalOff_table();
 			break;
 		case 10:
 			$(".week_select_box_wrap").css("display","none");
 			$(".time_table_wrap").html("");
-			storage_timetable_btn_num = 10;
+			draw_fixOff_table();
 			break;
 		case 11:
 			$(".week_select_box_wrap").css("display","none");
 			$(".time_table_wrap").html("");
-			storage_timetable_btn_num = 11;
+			
 			break;
 		default:
 			console.log(idx);
@@ -2009,7 +2009,7 @@ function draw_reservation_record_table(info){
 				hour = "0"+hour;
 			}
 			
-			str += "<tr><td>"+this.pname+"</td><td>"+this.ename+"</td><td>";
+			str += "<tr><td>"+this.pname+"</td><td>"+this.ename+"</td>";
 			if(this.rtype == "nc"){
 				str += "일반진료</td>";
 			}else if(this.rtype == "fc"){
@@ -2019,7 +2019,7 @@ function draw_reservation_record_table(info){
 			}else if(this.rtype == "ft"){
 				str += "고정진료</td>";
 			}
-			str += "<td>"+this.cname+"</td><td>"+this.rdate+" "+hour+":"+minute+"</td><td>"+this.reception_info+"</td><td>"+this.therapy_info+"</td><td>"+this.register_info+"</td><tr>";
+			str += "<td>"+this.cname+"</td><td>"+this.rdate+" "+hour+":"+minute+"</td><td>"+this.reception_info+"</td><td>"+this.therapy_info+"</td><td>"+this.register_info+"</td></tr>";
 		});
 		str += "</table>";
 		
@@ -2044,6 +2044,7 @@ function draw_reservation_record_table(info){
 	
 }
 
+//변경이력 Get All
 function get_reservation_update_record_all(info){
 	var dt;
 	$.ajax({
@@ -2062,6 +2063,7 @@ function get_reservation_update_record_all(info){
 	return dt;
 }
 
+//변경이력 view 생성
 function draw_reservation_update_record_table(info){
 	var json = get_reservation_update_record_all(info);
 	var str = "";
@@ -2086,7 +2088,7 @@ function draw_reservation_update_record_table(info){
 				hour = "0"+hour;
 			}
 			
-			str += "<tr><td>"+this.pname+"</td><td>"+this.before_info+"</td><td>";
+			str += "<tr><td>"+this.pname+"</td><td>"+this.before_info+"</td>";
 			if(this.rtype == "nc"){
 				str += "일반진료 일정변경</td>";
 			}else if(this.rtype == "fc"){
@@ -2096,7 +2098,7 @@ function draw_reservation_update_record_table(info){
 			}else if(this.rtype == "ft"){
 				str += "고정치료 일정변경</td>";
 			}
-			str += "<td>"+this.after_info+"</td><td>"+this.update_info+"</td><td>"+this.update_memo+"</td><tr>";
+			str += "<td>"+this.after_info+"</td><td>"+this.update_info+"</td><td>"+this.update_memo+"</td></tr>";
 		});
 		str += "</table>";
 		
@@ -2114,6 +2116,117 @@ function draw_reservation_update_record_table(info){
 		}
 		if(json.pageMaker.next){
 			str += "<li><a href='page="+(json.pageMaker.endPage+1)+"&perPageNum=10&searchType="+json.pageMaker.cri.searchType+"&keyword="+json.pageMaker.cri.keyword+"'>&raquo;</a></li>";
+		}
+		str += "</ul></div>";	
+	}
+	$(".time_table_wrap").html(str);
+}
+
+function get_normalOff_all(info){
+	var dt;
+	$.ajax({
+		url:"${pageContext.request.contextPath}/normalOffGetAll",
+		type:"get",
+		data:info,
+		dataType:"json",
+		async:false,
+		success:function(json){
+			dt = json;
+			console.log(json);
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	});
+	return dt;
+}
+
+function draw_normalOff_table(info){
+	var json = get_normalOff_all(info);
+	var str = "";
+	var emp;
+	
+	str = "<table class='tbl_reservation_record'><tr><th>이름</th><th>휴무종류</th><th>시작일시</th><th>종료일시</th><th>등록일시</th><th>관리</th></tr>";
+	if(json.list.length == 0){
+		str += "<tr><td colspan='6'>등록된 정보가 없습니다.</td></tr>";
+	}else{
+		$(json.list).each(function(){
+			emp = get_employee_byEno(this.eno);
+			
+			str += "<tr><td>"+emp.name+"</td><td>"+this.offtype+"</td><td>"
+				+ this.startdate+" "+(Number(this.starttime)/60)+"시</td><td>"+this.enddate+" "+(Number(this.endtime)/60)+"시</td><td>"+this.regdate+" "+this.writer+"</td><td><button>수정</button></td></tr>";
+		});
+		str += "</table>";
+		
+		str += "<div class='normal_off_page'><ul>";
+		if(json.pageMaker.prev){
+			str += "<li><a href='page="+(json.pageMaker.startPage-1)+"&perPageNum=10&keyword1="+json.pageMaker.cri.keyword1+"&keyword2="+json.pageMaker.cri.keyword2+"'>&laquo;</a></li>";
+		}
+		for(var i=json.pageMaker.startPage; i<=json.pageMaker.endPage; i++){
+			
+			if(json.pageMaker.cri.page == i){
+				str += "<li class='active1'><a class='active2' href='page="+i+"&perPageNum=10&keyword1="+json.pageMaker.cri.keyword1+"&keyword2="+json.pageMaker.cri.keyword2+"'>"+i+"</a></li>";
+			}else{
+				str += "<li><a href='page="+i+"&perPageNum=10&keyword1="+json.pageMaker.cri.keyword1+"&keyword2="+json.pageMaker.cri.keyword2+"'>"+i+"</a></li>"
+			}
+		}
+		if(json.pageMaker.next){
+			str += "<li><a href='page="+(json.pageMaker.endPage+1)+"&perPageNum=10&keyword1="+json.pageMaker.cri.keyword1+"&keyword2="+json.pageMaker.cri.keyword2+"'>&raquo;</a></li>";
+		}
+		str += "</ul></div>";	
+	}
+	$(".time_table_wrap").html(str);
+}
+
+function get_fixOff_all(info){
+	var dt;
+	$.ajax({
+		url:"${pageContext.request.contextPath}/fixOffGetAll",
+		type:"get",
+		data:info,
+		dataType:"json",
+		async:false,
+		success:function(json){
+			dt = json;
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	});
+	return dt;
+}
+
+function draw_fixOff_table(info){
+	var json = get_fixOff_all(info);
+	var str = "";
+	var emp;
+	
+	str = "<table class='tbl_reservation_record'><tr><th>이름</th><th>휴무종류</th><th>요일</th><th>시작일시</th><th>종료일시</th><th>등록일시</th><th>관리</th></tr>";
+	if(json.list.length == 0){
+		str += "<tr><td colspan='6'>등록된 정보가 없습니다.</td></tr>";
+	}else{
+		$(json.list).each(function(){
+			emp = get_employee_byEno(this.eno);
+			
+			str += "<tr><td>"+emp.name+"</td><td>"+this.offtype+"</td><td>"+this.dow+"</td>"
+				+ "<td>"+this.startdate+" "+(Number(this.starttime)/60)+"시</td><td>"+this.enddate+" "+(Number(this.endtime)/60)+"시</td><td>"+this.regdate+" "+this.writer+"</td><td><button>수정</button></td></tr>";
+		});
+		str += "</table>";
+		
+		str += "<div class='normal_off_page'><ul>";
+		if(json.pageMaker.prev){
+			str += "<li><a href='page="+(json.pageMaker.startPage-1)+"&perPageNum=10&keyword1="+json.pageMaker.cri.keyword1+"&keyword2="+json.pageMaker.cri.keyword2+"'>&laquo;</a></li>";
+		}
+		for(var i=json.pageMaker.startPage; i<=json.pageMaker.endPage; i++){
+			
+			if(json.pageMaker.cri.page == i){
+				str += "<li class='active1'><a class='active2' href='page="+i+"&perPageNum=10&keyword1="+json.pageMaker.cri.keyword1+"&keyword2="+json.pageMaker.cri.keyword2+"'>"+i+"</a></li>";
+			}else{
+				str += "<li><a href='page="+i+"&perPageNum=10&keyword1="+json.pageMaker.cri.keyword1+"&keyword2="+json.pageMaker.cri.keyword2+"'>"+i+"</a></li>"
+			}
+		}
+		if(json.pageMaker.next){
+			str += "<li><a href='page="+(json.pageMaker.endPage+1)+"&perPageNum=10&keyword1="+json.pageMaker.cri.keyword1+"&keyword2="+json.pageMaker.cri.keyword2+"'>&raquo;</a></li>";
 		}
 		str += "</ul></div>";	
 	}

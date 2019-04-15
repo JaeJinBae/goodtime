@@ -2152,9 +2152,9 @@ function draw_normalOff_table(info){
 	}else{
 		$(json.list).each(function(){
 			emp = get_employee_byEno(this.eno);
-			
-			str += "<tr><td>"+emp.name+"</td><td>"+this.offtype+"</td>"
-			+ "<td>"+this.startdate+" "+(Number(this.starttime)/60)+"시</td><td>"+this.enddate+" "+(Number(this.endtime)/60)+"시</td><td>"+this.regdate+" "+this.writer+"</td><td><button>수정</button></td></tr>";
+			str += "<tr><td>"+emp.name+"</td><td>"+this.offtype+"</td><td>"+this.startdate+" "+(Number(this.starttime)/60)+"시</td><td>"+this.enddate+" "+(Number(this.endtime)/60)+"시</td><td>"+this.regdate+"</td><td>"+this.writer+"</td><td><button>수정</button></td></tr>";
+			/* str += "<tr><td>"+emp.name+"</td><td>"+this.offtype+"</td>"
+			+ "<td>"+this.startdate+" "+(Number(this.starttime)/60)+"시</td><td>"+this.enddate+" "+(Number(this.endtime)/60)+"시</td><td>"+this.regdate+" "+this.writer+"</td><td><button>수정</button></td></tr>"; */
 		});
 		str += "</table>";
 		

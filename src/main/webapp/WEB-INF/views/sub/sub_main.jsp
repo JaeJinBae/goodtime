@@ -2196,10 +2196,18 @@ function draw_normalOff_in_weektable(){
 	
 	var offData = get_normalOff_byWeek(arrWeek, eno);
 	console.log(offData);
+	var target_class;
 	
-	$(offData).each(function(){
-		console.log(this["2019-04-16"]);
-	});
+	for(var i=1; i<arrWeek.length; i++){
+		$(offData[arrWeek[i]]).each(function(){
+			for(var n=Number(this.starttime)/60; n<Number(this.endtime)/60; n++){
+				target_class = "."+this.eno+"_"+arrWeek[i]+"_"+n;
+				$(target_class).html();
+				$(target_class).append("<p style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>");
+			}
+			console.log(this.no);
+		});
+	}
 }
 
 function get_normalOff_all(info){
@@ -2255,6 +2263,10 @@ function draw_normalOff_table(info){
 		str += "</ul></div>";	
 	}
 	$(".time_table_wrap").html(str);
+}
+
+function get_fixOff_byDate(date){
+	
 }
 
 function get_fixOff_all(info){

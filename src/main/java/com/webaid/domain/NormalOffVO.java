@@ -3,6 +3,7 @@ package com.webaid.domain;
 public class NormalOffVO {
 	private int no;
 	private int eno;
+	private String etype;
 	private String offtype;
 	private String startdate;
 	private String enddate;
@@ -29,6 +30,14 @@ public class NormalOffVO {
 
 	public void setEno(int eno) {
 		this.eno = eno;
+	}
+
+	public String getEtype() {
+		return etype;
+	}
+
+	public void setEtype(String etype) {
+		this.etype = etype;
 	}
 
 	public String getOfftype() {
@@ -89,9 +98,13 @@ public class NormalOffVO {
 
 	@Override
 	public String toString() {
-		return "NormalOffVO [no=" + no + ", eno=" + eno + ", offtype=" + offtype + ", startdate=" + startdate
-				+ ", enddate=" + enddate + ", starttime=" + starttime + ", endtime=" + endtime + ", regdate=" + regdate
-				+ ", writer=" + writer + "]";
+		return "NormalOffVO [no=" + no + ", eno=" + eno + ", etype=" + etype + ", offtype=" + offtype + ", startdate="
+				+ startdate + ", enddate=" + enddate + ", starttime=" + starttime + ", endtime=" + endtime
+				+ ", regdate=" + regdate + ", writer=" + writer + ", getNo()=" + getNo() + ", getEno()=" + getEno()
+				+ ", getEtype()=" + getEtype() + ", getOfftype()=" + getOfftype() + ", getStartdate()=" + getStartdate()
+				+ ", getEnddate()=" + getEnddate() + ", getStarttime()=" + getStarttime() + ", getEndtime()="
+				+ getEndtime() + ", getRegdate()=" + getRegdate() + ", getWriter()=" + getWriter() + ", getClass()="
+				+ getClass() + ", hashCode()=" + hashCode() + ", toString()=" + super.toString() + "]";
 	}
 
 }

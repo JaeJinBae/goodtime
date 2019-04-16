@@ -689,7 +689,8 @@ function draw_total_time_table(date, type){
 				txt += "<td class='"+this.type+"_"+this.eno+"_"+i+" timetable_inner_content'><p class='reservation_register_btn' style='border:1px solid lightgray;width:20px;text-align:center;height:20px;font-size:20px;background:gray;color:#fff;cursor:pointer;'>+</p></td>";
 			} */
 			//점심시간에도 진료 및 치료하는 병원
-			txt += "<td class='"+this.type+"_"+this.eno+"_"+i+" timetable_inner_content'><p class='reservation_register_btn'>+</p></td>";
+			txt += "<td class='"+this.type+"_"+this.eno+"_"+i+" timetable_inner_content'>";
+			txt += "<p class='reservation_register_btn'>+</p></td>";
 		}
 		txt += "</tr>";
 	});
@@ -712,6 +713,7 @@ function draw_time_table_by_case(idx){
 			table_txt += draw_total_time_table(select_date, "therapist");
 			$(".time_table_wrap").append(table_txt);
 			draw_reservation(select_date);
+			draw_normalOff_in_timetable(select_date);
 			break;
 		case 1:
 			$(".week_select_box_wrap").css("display","none");
@@ -2139,6 +2141,37 @@ function get_normalOff_all(info){
 		}
 	});
 	return dt;
+}
+
+function get_normalOff_byDate(date){
+	var dt;
+	$.ajax({
+		url:"${pageContext.request.contextPath}/selectNormalOffByDate/"+date,
+		type:"get",
+		dataType:"json",
+		async:false,
+		success:function(json){
+			dt = json;
+			console.log(json);
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	});
+	return dt;
+}
+
+function draw_normalOff_in_timetable(date){
+	var offData = get_normalOff_byDate(date);
+	var timeTableClass = "";
+	
+	$(offData).each(function(){
+		for(var i=((this.starttime)/60); i<((this.endtime)/60); i++){
+			timeTableClass = "."+this.etype+"_"+this.eno+"_"+i;
+			$(timeTableClass).html("");
+			$(timeTableClass).append("<p style='background:#444; color:#fefefe;'>"+this.offtype+"</p>")
+		}
+	});
 }
 
 function draw_normalOff_table(info){

@@ -6,7 +6,6 @@ import java.net.URLEncoder;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
@@ -38,6 +37,7 @@ import com.webaid.domain.IdPwVO;
 import com.webaid.domain.NormalClinicReservationVO;
 import com.webaid.domain.NormalOffVO;
 import com.webaid.domain.NormalTherapyReservationVO;
+import com.webaid.domain.OffData;
 import com.webaid.domain.PageMaker;
 import com.webaid.domain.PageMakerRR;
 import com.webaid.domain.PatientVO;
@@ -1145,7 +1145,19 @@ public class HomeController {
 		return entity;
 	}
 	
-	
+	@RequestMapping(value="/selectNormalOffByDate/{date}", method=RequestMethod.GET)
+	public ResponseEntity<List<NormalOffVO>> normalOffSelectByDate(@PathVariable("date") String date){
+		ResponseEntity<List<NormalOffVO>> entity = null;
+		OffData offdata = new OffData();
+		String[] str = date.split("-");
+		offdata.setYearmonth(str[0]+"-"+str[1]);
+		offdata.setSelect_date(date);
+		
+		List<NormalOffVO> list = noService.selectByDate(offdata);
+		
+		entity = new ResponseEntity<List<NormalOffVO>>(list, HttpStatus.OK);
+		return entity;
+	}
 	
 	
 	

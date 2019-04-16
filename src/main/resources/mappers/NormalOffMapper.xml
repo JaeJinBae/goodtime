@@ -8,6 +8,10 @@
 		select * from normal_off order by no desc;
 	</select>
 	
+	<select id="selectByDate" resultType="NormalOffVO">
+		select * from normal_off where startdate like concat('%',#{yearmonth},'%') and date(startdate) <![CDATA[<=]]> date(#{select_date}) and date(enddate) <![CDATA[>=]]> date(#{select_date})
+	</select>
+	
 	<select id="listSearch" resultType="NormalOffVO">
 		select * from normal_off <include refid="search"></include> order by no desc limit #{pageStart},#{perPageNum}
 	</select>
@@ -21,7 +25,7 @@
 	</select>
 	
 	<insert id="register">
-		insert into normal_off values(0, #{eno}, #{offtype}, #{startdate}, #{enddate}, #{starttime}, #{endtime}, #{regdate}, #{writer})
+		insert into normal_off values(0, #{eno}, #{etype}, #{offtype}, #{startdate}, #{enddate}, #{starttime}, #{endtime}, #{regdate}, #{writer})
 	</insert>
 	
 	<update id="update">

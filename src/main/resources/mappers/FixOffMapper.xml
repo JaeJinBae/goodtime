@@ -21,7 +21,7 @@
 	</select>
 	
 	<insert id="register">
-		insert into fix_off values(0, #{eno}, #{offtype}, #{startdate}, #{enddate}, #{dow}, #{starttime}, #{endtime}, #{regdate}, #{writer})
+		insert into fix_off values(0, #{eno}, #{etype}, #{offtype}, #{startdate}, #{enddate}, #{dow}, #{starttime}, #{endtime}, #{regdate}, #{writer})
 	</insert>
 	
 	<update id="update">

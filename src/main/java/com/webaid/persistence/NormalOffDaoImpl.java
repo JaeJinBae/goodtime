@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.webaid.domain.NormalOffVO;
+import com.webaid.domain.OffData;
 import com.webaid.domain.SearchCriteriaRR;
 
 @Repository
@@ -22,6 +23,11 @@ public class NormalOffDaoImpl implements NormalOffDao {
 		return session.selectList(namespace+".selectAll");
 	}
 
+	@Override
+	public List<NormalOffVO> selectByDate(OffData offdata) {
+		return session.selectList(namespace+".selectByDate", offdata);
+	}
+	
 	@Override
 	public List<NormalOffVO> listSearch(SearchCriteriaRR cri) {
 		return session.selectList(namespace+".listSearch", cri);
@@ -41,5 +47,7 @@ public class NormalOffDaoImpl implements NormalOffDao {
 	public void update(NormalOffVO vo) {
 		session.update(namespace+".update", vo);
 	}
+
+	
 
 }

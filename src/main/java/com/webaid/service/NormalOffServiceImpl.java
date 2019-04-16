@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.webaid.domain.NormalOffVO;
+import com.webaid.domain.OffData;
 import com.webaid.domain.SearchCriteriaRR;
 import com.webaid.persistence.NormalOffDao;
 
@@ -20,6 +21,11 @@ public class NormalOffServiceImpl implements NormalOffService {
 		return dao.selectAll();
 	}
 
+	@Override
+	public List<NormalOffVO> selectByDate(OffData offdata) {
+		return dao.selectByDate(offdata);
+	}
+	
 	@Override
 	public List<NormalOffVO> listSearch(SearchCriteriaRR cri) {
 		return dao.listSearch(cri);
@@ -39,5 +45,7 @@ public class NormalOffServiceImpl implements NormalOffService {
 	public void update(NormalOffVO vo) {
 		dao.update(vo);
 	}
+
+	
 
 }

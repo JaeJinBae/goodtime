@@ -3,6 +3,7 @@ package com.webaid.domain;
 public class FixOffVO {
 	private int no;
 	private int eno;
+	private String etype;
 	private String offtype;
 	private String startdate;
 	private String enddate;
@@ -30,6 +31,14 @@ public class FixOffVO {
 
 	public void setEno(int eno) {
 		this.eno = eno;
+	}
+
+	public String getEtype() {
+		return etype;
+	}
+
+	public void setEtype(String etype) {
+		this.etype = etype;
 	}
 
 	public String getOfftype() {
@@ -98,9 +107,9 @@ public class FixOffVO {
 
 	@Override
 	public String toString() {
-		return "FixOffVO [no=" + no + ", eno=" + eno + ", offtype=" + offtype + ", startdate=" + startdate
-				+ ", enddate=" + enddate + ", dow=" + dow + ", starttime=" + starttime + ", endtime=" + endtime
-				+ ", regdate=" + regdate + ", writer=" + writer + "]";
+		return "FixOffVO [no=" + no + ", eno=" + eno + ", etype=" + etype + ", offtype=" + offtype + ", startdate="
+				+ startdate + ", enddate=" + enddate + ", dow=" + dow + ", starttime=" + starttime + ", endtime="
+				+ endtime + ", regdate=" + regdate + ", writer=" + writer + "]";
 	}
 
 }

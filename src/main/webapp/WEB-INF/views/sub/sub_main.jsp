@@ -2934,6 +2934,7 @@ $(function(){
 	
 	$(document).on("click", ".active2", function(e){
 		e.preventDefault();
+		
 		return false;
 	})
 });

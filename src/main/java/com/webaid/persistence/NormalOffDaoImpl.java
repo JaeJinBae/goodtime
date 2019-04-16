@@ -14,40 +14,43 @@ import com.webaid.domain.SearchCriteriaRR;
 public class NormalOffDaoImpl implements NormalOffDao {
 
 	private static final String namespace = "com.webaid.mappers.NormalOffMapper";
-	
+
 	@Autowired
 	private SqlSession session;
-	
+
 	@Override
 	public List<NormalOffVO> selectAll() {
-		return session.selectList(namespace+".selectAll");
+		return session.selectList(namespace + ".selectAll");
 	}
 
 	@Override
 	public List<NormalOffVO> selectByDate(OffData offdata) {
-		return session.selectList(namespace+".selectByDate", offdata);
+		return session.selectList(namespace + ".selectByDate", offdata);
 	}
-	
+
+	@Override
+	public List<NormalOffVO> selectByEnoDate(OffData offdata) {
+		return session.selectList(namespace + ".selectByEnoDate", offdata);
+	}
+
 	@Override
 	public List<NormalOffVO> listSearch(SearchCriteriaRR cri) {
-		return session.selectList(namespace+".listSearch", cri);
+		return session.selectList(namespace + ".listSearch", cri);
 	}
 
 	@Override
 	public int listSearchCount(SearchCriteriaRR cri) {
-		return session.selectOne(namespace+".listSearchCount", cri);
+		return session.selectOne(namespace + ".listSearchCount", cri);
 	}
 
 	@Override
 	public void register(NormalOffVO vo) {
-		session.insert(namespace+".register", vo);
+		session.insert(namespace + ".register", vo);
 	}
 
 	@Override
 	public void update(NormalOffVO vo) {
-		session.update(namespace+".update", vo);
+		session.update(namespace + ".update", vo);
 	}
-
-	
 
 }

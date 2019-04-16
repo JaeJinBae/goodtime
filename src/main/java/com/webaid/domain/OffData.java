@@ -1,11 +1,20 @@
 package com.webaid.domain;
 
 public class OffData {
+	private int eno;
 	private String yearmonth;
 	private String select_date;
 
 	public OffData() {
 		super();
+	}
+
+	public int getEno() {
+		return eno;
+	}
+
+	public void setEno(int eno) {
+		this.eno = eno;
 	}
 
 	public String getYearmonth() {
@@ -26,7 +35,7 @@ public class OffData {
 
 	@Override
 	public String toString() {
-		return "OffData [yearmonth=" + yearmonth + ", select_date=" + select_date + "]";
+		return "OffData [eno=" + eno + ", yearmonth=" + yearmonth + ", select_date=" + select_date + "]";
 	}
 
 }

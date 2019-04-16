@@ -12,6 +12,10 @@
 		select * from normal_off where startdate like concat('%',#{yearmonth},'%') and date(startdate) <![CDATA[<=]]> date(#{select_date}) and date(enddate) <![CDATA[>=]]> date(#{select_date})
 	</select>
 	
+	<select id="selectByEnoDate" resultType="NormalOffVO">
+		select * from normal_off where eno=#{eno} and startdate like concat('%',#{yearmonth},'%') and date(startdate) <![CDATA[<=]]> date(#{select_date}) and date(enddate) <![CDATA[>=]]> date(#{select_date})
+	</select>
+	
 	<select id="listSearch" resultType="NormalOffVO">
 		select * from normal_off <include refid="search"></include> order by no desc limit #{pageStart},#{perPageNum}
 	</select>

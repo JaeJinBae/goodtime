@@ -2130,24 +2130,6 @@ function draw_reservation_update_record_table(info){
 	$(".time_table_wrap").html(str);
 }
 
-function get_normalOff_all(info){
-	var dt;
-	$.ajax({
-		url:"${pageContext.request.contextPath}/normalOffGetAll",
-		type:"get",
-		data:info,
-		dataType:"json",
-		async:false,
-		success:function(json){
-			dt = json;
-			console.log(json);
-		},
-		error:function(request,status,error){
-			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-		}
-	});
-	return dt;
-}
 
 function get_normalOff_byDate(date){
 	var dt;
@@ -2158,7 +2140,6 @@ function get_normalOff_byDate(date){
 		async:false,
 		success:function(json){
 			dt = json;
-			console.log(json);
 		},
 		error:function(request,status,error){
 			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -2182,16 +2163,15 @@ function draw_normalOff_in_timetable(date){
 }
 
 //주간, 고정 휴무GET
-function get_normalOff_byWeek(week){
+function get_normalOff_byWeek(week, eno){
 	var dt;
 	$.ajax({
-		url:"${pageContext.request.contextPath}/selectNormalOffByWeek/"+week,
+		url:"${pageContext.request.contextPath}/selectNormalOffByWeek/"+week+"/"+eno,
 		type:"get",
 		dataType:"json",
 		async:false,
 		success:function(json){
 			dt = json;
-			console.log(json);
 		},
 		error:function(request,status,error){
 			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -2202,6 +2182,7 @@ function get_normalOff_byWeek(week){
 
 function draw_normalOff_in_weektable(){
 	var select_week = $("#sh_week").val();
+	var eno = $(".week_select_box_wrap > select[name='employee']").val();
 	var sWeek =select_week.split("|")[0];
 	var arrWeek=[];
 	var strDate;
@@ -2213,11 +2194,31 @@ function draw_normalOff_in_weektable(){
 		arrWeek.push(strDate);
 	}
 	
-	var offData = get_normalOff_byWeek(arrWeek);
+	var offData = get_normalOff_byWeek(arrWeek, eno);
 	console.log(offData);
+	
+	$(offData).each(function(){
+		console.log(this["2019-04-16"]);
+	});
 }
 
-
+function get_normalOff_all(info){
+	var dt;
+	$.ajax({
+		url:"${pageContext.request.contextPath}/normalOffGetAll",
+		type:"get",
+		data:info,
+		dataType:"json",
+		async:false,
+		success:function(json){
+			dt = json;
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	});
+	return dt;
+}
 
 function draw_normalOff_table(info){
 	var json = get_normalOff_all(info);
@@ -2663,8 +2664,10 @@ $(function(){
 	$("#sh_week").change(function(){
 		if(storage_timetable_btn_num == 2 || storage_timetable_btn_num == 3){
 			draw_week_timetable("doctor", storage_timetable_btn_num);
+			draw_normalOff_in_weektable();
 		}else if(storage_timetable_btn_num == 5 || storage_timetable_btn_num == 6){
 			draw_week_timetable("therapist", storage_timetable_btn_num);
+			draw_normalOff_in_weektable();
 		}
 		
 	})
@@ -2672,8 +2675,10 @@ $(function(){
 	$(document).on("change",".week_select_box_wrap > select[name='employee']",function(){
 		if(storage_timetable_btn_num == 2 || storage_timetable_btn_num == 3){
 			draw_week_timetable("doctor", storage_timetable_btn_num);
+			draw_normalOff_in_weektable();
 		}else if(storage_timetable_btn_num == 5 || storage_timetable_btn_num == 6){
 			draw_week_timetable("therapist", storage_timetable_btn_num);
+			draw_normalOff_in_weektable();
 		} 
 	});
 	

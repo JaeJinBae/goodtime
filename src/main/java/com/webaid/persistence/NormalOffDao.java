@@ -9,6 +9,7 @@ import com.webaid.domain.SearchCriteriaRR;
 public interface NormalOffDao {
 	public List<NormalOffVO> selectAll();
 	public List<NormalOffVO> selectByDate(OffData offdata);
+	public List<NormalOffVO> selectByEnoDate(OffData offdata);
 	public List<NormalOffVO> listSearch(SearchCriteriaRR cri);
 	public int listSearchCount(SearchCriteriaRR cri);
 	public void register(NormalOffVO vo);

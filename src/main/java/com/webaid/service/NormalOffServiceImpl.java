@@ -27,6 +27,11 @@ public class NormalOffServiceImpl implements NormalOffService {
 	}
 	
 	@Override
+	public List<NormalOffVO> selectByEnoDate(OffData offdata) {
+		return dao.selectByEnoDate(offdata);
+	}
+	
+	@Override
 	public List<NormalOffVO> listSearch(SearchCriteriaRR cri) {
 		return dao.listSearch(cri);
 	}
@@ -45,6 +50,8 @@ public class NormalOffServiceImpl implements NormalOffService {
 	public void update(NormalOffVO vo) {
 		dao.update(vo);
 	}
+
+	
 
 	
 

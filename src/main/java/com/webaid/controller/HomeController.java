@@ -1160,7 +1160,22 @@ public class HomeController {
 	}
 	
 	
-	
+	@RequestMapping(value="/selectNormalOffByWeek/{week}", method=RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> normalOffSelectByWeek(@PathVariable("week") List<String> week){
+		ResponseEntity<Map<String, Object>> entity = null;
+		HashMap<String, Object> map = new HashMap<>();
+		OffData offdata = new OffData();
+		String[] str;
+		for(int i=0; i<week.size(); i++){
+			str = week.get(i).split("-");
+			offdata.setYearmonth(str[0]+"-"+str[1]);
+			offdata.setSelect_date(week.get(i));
+			List<NormalOffVO> list=noService.selectByDate(offdata);
+			map.put(week.get(i), list);
+		}
+		entity = new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
+		return entity;
+	}
 	
 	
 	

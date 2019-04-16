@@ -721,16 +721,19 @@ function draw_time_table_by_case(idx){
 			table_txt = draw_total_time_table(select_date, "doctor");
 			$(".time_table_wrap").append(table_txt);
 			draw_reservation(select_date);
+			draw_normalOff_in_timetable(select_date);
 			break;
 		case 2:
 			$(".time_table_wrap").html("");
 			$(".week_select_box_wrap").css("display","block");
 			draw_week_calendar($(".calendar_select_date").val(), get_employeeList_byType("doctor"), "doctor", idx);
+			draw_normalOff_in_weektable();
 			break;
 		case 3:
 			$(".time_table_wrap").html("");
 			$(".week_select_box_wrap").css("display","block");
 			draw_week_calendar($(".calendar_select_date").val(), get_employeeList_byType("doctor"), "doctor", idx);
+			draw_normalOff_in_weektable();
 			break;
 		case 4:
 			$(".week_select_box_wrap").css("display","none");
@@ -738,16 +741,19 @@ function draw_time_table_by_case(idx){
 			table_txt = draw_total_time_table(select_date, "therapist");
 			$(".time_table_wrap").append(table_txt);
 			draw_reservation(select_date);
+			draw_normalOff_in_timetable(select_date);
 			break;
 		case 5:
 			$(".time_table_wrap").html("");
 			$(".week_select_box_wrap").css("display","block");
 			draw_week_calendar($(".calendar_select_date").val(), get_employeeList_byType("therapist"), "therapist", idx);
+			draw_normalOff_in_weektable();
 			break;
 		case 6:
 			$(".time_table_wrap").html("");
 			$(".week_select_box_wrap").css("display","block");
 			draw_week_calendar($(".calendar_select_date").val(), get_employeeList_byType("therapist"), "therapist", idx);
+			draw_normalOff_in_weektable();
 			break;
 		case 7:
 			$(".week_select_box_wrap").css("display","none");
@@ -2161,18 +2167,57 @@ function get_normalOff_byDate(date){
 	return dt;
 }
 
+//일반휴무 선택날짜별 그리기(진료&치료종합, 진료종합, 치료종합)
 function draw_normalOff_in_timetable(date){
 	var offData = get_normalOff_byDate(date);
 	var timeTableClass = "";
 	
 	$(offData).each(function(){
-		for(var i=((this.starttime)/60); i<((this.endtime)/60); i++){
+		for(var i=((this.starttime)/60) ; i<((this.endtime)/60) ; i++){
 			timeTableClass = "."+this.etype+"_"+this.eno+"_"+i;
 			$(timeTableClass).html("");
-			$(timeTableClass).append("<p style='background:#444; color:#fefefe;'>"+this.offtype+"</p>")
+			$(timeTableClass).append("<p style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>")
 		}
 	});
 }
+
+//주간, 고정 휴무GET
+function get_normalOff_byWeek(week){
+	var dt;
+	$.ajax({
+		url:"${pageContext.request.contextPath}/selectNormalOffByWeek/"+week,
+		type:"get",
+		dataType:"json",
+		async:false,
+		success:function(json){
+			dt = json;
+			console.log(json);
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	});
+	return dt;
+}
+
+function draw_normalOff_in_weektable(){
+	var select_week = $("#sh_week").val();
+	var sWeek =select_week.split("|")[0];
+	var arrWeek=[];
+	var strDate;
+	arrWeek.push(sWeek);
+	var date = new Date(sWeek);
+	for(var i=1; i<7; i++){
+		date.setDate(date.getDate()+1);
+		strDate = date.getFullYear()+"-"+(((date.getMonth()+1)>9?'':'0')+(date.getMonth()+1))+"-"+((date.getDate()>9?'':'0')+date.getDate());
+		arrWeek.push(strDate);
+	}
+	
+	var offData = get_normalOff_byWeek(arrWeek);
+	console.log(offData);
+}
+
+
 
 function draw_normalOff_table(info){
 	var json = get_normalOff_all(info);

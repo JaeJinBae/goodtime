@@ -9,11 +9,11 @@
 	</select>
 	
 	<select id="selectByDate" resultType="NormalOffVO">
-		select * from normal_off where startdate like concat('%',#{yearmonth},'%') and date(startdate) <![CDATA[<=]]> date(#{select_date}) and date(enddate) <![CDATA[>=]]> date(#{select_date})
+		select * from normal_off where date(startdate) <![CDATA[<=]]> date(#{select_date}) and date(enddate) <![CDATA[>=]]> date(#{select_date})
 	</select>
 	
 	<select id="selectByEnoDate" resultType="NormalOffVO">
-		select * from normal_off where eno=#{eno} and startdate like concat('%',#{yearmonth},'%') and date(startdate) <![CDATA[<=]]> date(#{select_date}) and date(enddate) <![CDATA[>=]]> date(#{select_date})
+		select * from normal_off where eno=#{eno} and date(startdate) <![CDATA[<=]]> date(#{select_date}) and date(enddate) <![CDATA[>=]]> date(#{select_date})
 	</select>
 	
 	<select id="listSearch" resultType="NormalOffVO">

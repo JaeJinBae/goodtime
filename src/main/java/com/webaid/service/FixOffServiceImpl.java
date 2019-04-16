@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.webaid.domain.FixOffVO;
+import com.webaid.domain.OffData;
 import com.webaid.domain.SearchCriteriaRR;
 import com.webaid.persistence.FixOffDao;
 
@@ -14,10 +15,20 @@ public class FixOffServiceImpl implements FixOffService {
 
 	@Autowired
 	private FixOffDao dao;
-	
+
 	@Override
 	public List<FixOffVO> selectAll() {
 		return dao.selectAll();
+	}
+
+	@Override
+	public List<FixOffVO> selectByDate(OffData offdata) {
+		return dao.selectByDate(offdata);
+	}
+
+	@Override
+	public List<FixOffVO> selectByEnoDate(OffData offdata) {
+		return dao.selectByEnoDate(offdata);
 	}
 
 	@Override

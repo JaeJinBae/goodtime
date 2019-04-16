@@ -12,6 +12,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/calendar.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/week_calendar.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/mainFunction.js"></script>
 <style>
 	.popup_wrap{
 		width:100%;
@@ -425,6 +426,7 @@
 	}
 </style> 
 <script>
+
 //달력에 각 일마다 요일 표시
 function write_yoil(){
 	var idx=1;
@@ -714,6 +716,7 @@ function draw_time_table_by_case(idx){
 			$(".time_table_wrap").append(table_txt);
 			draw_reservation(select_date);
 			draw_normalOff_in_timetable(select_date);
+			draw_fixOff_in_timetable(select_date);
 			break;
 		case 1:
 			$(".week_select_box_wrap").css("display","none");
@@ -722,18 +725,21 @@ function draw_time_table_by_case(idx){
 			$(".time_table_wrap").append(table_txt);
 			draw_reservation(select_date);
 			draw_normalOff_in_timetable(select_date);
+			draw_fixOff_in_timetable(select_date);
 			break;
 		case 2:
 			$(".time_table_wrap").html("");
 			$(".week_select_box_wrap").css("display","block");
 			draw_week_calendar($(".calendar_select_date").val(), get_employeeList_byType("doctor"), "doctor", idx);
 			draw_normalOff_in_weektable();
+			draw_fixOff_in_weektable();
 			break;
 		case 3:
 			$(".time_table_wrap").html("");
 			$(".week_select_box_wrap").css("display","block");
 			draw_week_calendar($(".calendar_select_date").val(), get_employeeList_byType("doctor"), "doctor", idx);
 			draw_normalOff_in_weektable();
+			draw_fixOff_in_weektable();
 			break;
 		case 4:
 			$(".week_select_box_wrap").css("display","none");
@@ -742,18 +748,21 @@ function draw_time_table_by_case(idx){
 			$(".time_table_wrap").append(table_txt);
 			draw_reservation(select_date);
 			draw_normalOff_in_timetable(select_date);
+			draw_fixOff_in_timetable(select_date);
 			break;
 		case 5:
 			$(".time_table_wrap").html("");
 			$(".week_select_box_wrap").css("display","block");
 			draw_week_calendar($(".calendar_select_date").val(), get_employeeList_byType("therapist"), "therapist", idx);
 			draw_normalOff_in_weektable();
+			draw_fixOff_in_weektable();
 			break;
 		case 6:
 			$(".time_table_wrap").html("");
 			$(".week_select_box_wrap").css("display","block");
 			draw_week_calendar($(".calendar_select_date").val(), get_employeeList_byType("therapist"), "therapist", idx);
 			draw_normalOff_in_weektable();
+			draw_fixOff_in_weektable();
 			break;
 		case 7:
 			$(".week_select_box_wrap").css("display","none");
@@ -1200,10 +1209,8 @@ function draw_simple_reservation_view(type, rno){
 		overMinute = (minute+clinic_time)-60;
 		
 		if(overMinute >= 0){
-			//console.log(overMinute);
 			if(overMinute < 10){
 				overMinute = "0"+overMinute;
-				//console.log(overMinute);
 			}
 			end_time = (hour+1)+":"+overMinute;
 		}else{
@@ -1223,10 +1230,8 @@ function draw_simple_reservation_view(type, rno){
 		minute = rtime%60;
 		overMinute = (minute+clinic_time)-60;
 		if(overMinute >= 0){
-			//console.log(overMinute);
 			if(overMinute < 10){
 				overMinute = "0"+overMinute;
-				//console.log(overMinute);
 			}
 			end_time = (hour+1)+":"+overMinute;
 		}else{
@@ -1261,8 +1266,6 @@ function draw_simple_reservation_view(type, rno){
 }
 
 function post_ncReservation_register(vo, stbn){
-	console.log("post_ncReservation_register 진입");
-	console.log(vo);
 	$.ajax({
 		url:"${pageContext.request.contextPath}/ncReservationRegister",
 		type:"post",
@@ -1270,7 +1273,6 @@ function post_ncReservation_register(vo, stbn){
 		data:vo,
 		async:false,
 		success:function(json){
-			console.log(json);
 			if(json == "OK"){
 				alert("예약등록이 완료되었습니다.");
 				$("#reservation_view_btn").html("");
@@ -1295,7 +1297,6 @@ function post_ntReservation_register(vo, stbn){
 		data:vo,
 		async:false,
 		success:function(json){
-			console.log(json);
 			if(json == "OK"){
 				alert("예약등록이 완료되었습니다.");
 				$("#reservation_view_btn").html("");
@@ -1324,7 +1325,6 @@ function post_fcReservation_register(vo, stbn){
 		async:false,
 		contentType : "application/json; charset=UTF-8",
 		success:function(json){
-			console.log(json);
 			if(json == "OK"){
 				alert("예약등록이 완료되었습니다.");
 				$("#reservation_view_btn").html("");
@@ -1356,7 +1356,6 @@ function post_ftReservation_register(vo, stbn){
 		async:false,
 		contentType : "application/json; charset=UTF-8",
 		success:function(json){
-			console.log(json);
 			if(json == "OK"){
 				alert("예약등록이 완료되었습니다.");
 				$("#reservation_view_btn").html("");
@@ -1450,7 +1449,6 @@ function draw_week_timetable(etype, idxx){
 }
 
 function draw_week_reservation(week, etype, eno, idxx){
-	console.log(etype+"/"+eno+"/"+idxx);
 	var json;
 	var str="";
 	var target_tag = "";
@@ -1467,7 +1465,6 @@ function draw_week_reservation(week, etype, eno, idxx){
 	var overMinute;
 	if(idxx == 3 || idxx == 6){//고정 View
 		json = get_fixReservationList_byDate_byEmployee(etype, eno, week);
-	console.log(json);
 		if(etype == "doctor"){//진료고정 view
 			$(json).each(function(){
 				$($(this.vo)).each(function(){
@@ -1779,7 +1776,6 @@ function get_between_date(date1, date2){
 		
 		arrDate[i]= year+"-"+month+"-"+day;
 	}
-	//console.log(arrDate);
 	return arrDate;
 }
 
@@ -1860,7 +1856,6 @@ function draw_reservation_update_view(rno, rtype){
 	patient = get_patient_by_pno(json.pno);
 	var rdate_rtime = json.rdate+" "+parseInt(Number(json.rtime)/60)+":"+((Number(json.rtime)%60>9?'':'0')+Number(json.rtime)%60);
 	var str;
-	console.log(emp);
 	$(emp).each(function(){
 		str += "<option value='"+this.eno+"'>"+this.name+"</option>";
 	});
@@ -1923,7 +1918,6 @@ function update_reservation_info(){
 		async:false,
 		contentType : "application/json; charset=UTF-8",
 		success:function(json){
-			console.log(json);
 			if(json == "ok"){
 				alert("일정변경이 완료되었습니다.");
 			}else{
@@ -1941,14 +1935,13 @@ function update_reservation_deskState(rtype, rno, state, writer, regdate, stbn){
 	if(reason == ""){
 		reason = "_";
 	}
-	console.log(rtype+"/"+rno+"/"+state+"/"+writer+"/"+regdate+"/"+reason+"/"+stbn);
+
 	$.ajax({
 		url:"${pageContext.request.contextPath}/updateReservationDeskState/"+rtype+"/"+rno+"/"+state+"/"+writer+"/"+regdate+"/"+reason,
 		type:"post",
 		dataType:"text",
 		async:false,
 		success:function(json){
-			console.log(json);
 			if(json == "ok"){
 								
 				alert(state+" 되었습니다.");
@@ -2195,7 +2188,7 @@ function draw_normalOff_in_weektable(){
 	}
 	
 	var offData = get_normalOff_byWeek(arrWeek, eno);
-	console.log(offData);
+
 	var target_class;
 	
 	for(var i=1; i<arrWeek.length; i++){
@@ -2205,7 +2198,6 @@ function draw_normalOff_in_weektable(){
 				$(target_class).html();
 				$(target_class).append("<p style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>");
 			}
-			console.log(this.no);
 		});
 	}
 }
@@ -2266,7 +2258,79 @@ function draw_normalOff_table(info){
 }
 
 function get_fixOff_byDate(date){
+	var dt;
+	$.ajax({
+		url:"${pageContext.request.contextPath}/selectFixOffByDate/"+date,
+		type:"get",
+		dataType:"json",
+		async:false,
+		success:function(json){
+			dt = json;
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	});
+	return dt;
+}
+
+function draw_fixOff_in_timetable(date){
+	var offData = get_fixOff_byDate(date);
+	var timeTableClass = "";
 	
+	$(offData).each(function(){
+		for(var i=((this.starttime)/60) ; i<((this.endtime)/60) ; i++){
+			timeTableClass = "."+this.etype+"_"+this.eno+"_"+i;
+			$(timeTableClass).html("");
+			$(timeTableClass).append("<p style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>")
+		}
+	});
+}
+
+function get_fixOff_byWeek(week, eno){
+	var dt;
+	$.ajax({
+		url:"${pageContext.request.contextPath}/selectFixOffByWeek/"+week+"/"+eno,
+		type:"get",
+		dataType:"json",
+		async:false,
+		success:function(json){
+			dt = json;
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	});
+	return dt;
+}
+
+function draw_fixOff_in_weektable(){
+	var select_week = $("#sh_week").val();
+	var eno = $(".week_select_box_wrap > select[name='employee']").val();
+	var sWeek =select_week.split("|")[0];
+	var arrWeek=[];
+	var strDate;
+	arrWeek.push(sWeek);
+	var date = new Date(sWeek);
+	for(var i=1; i<7; i++){
+		date.setDate(date.getDate()+1);
+		strDate = date.getFullYear()+"-"+(((date.getMonth()+1)>9?'':'0')+(date.getMonth()+1))+"-"+((date.getDate()>9?'':'0')+date.getDate());
+		arrWeek.push(strDate);
+	}
+	
+	var offData = get_fixOff_byWeek(arrWeek, eno);
+
+	var target_class;
+	
+	for(var i=1; i<arrWeek.length; i++){
+		$(offData[arrWeek[i]]).each(function(){
+			for(var n=Number(this.starttime)/60; n<Number(this.endtime)/60; n++){
+				target_class = "."+this.eno+"_"+arrWeek[i]+"_"+n;
+				$(target_class).html();
+				$(target_class).append("<p style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>");
+			}
+		});
+	}
 }
 
 function get_fixOff_all(info){
@@ -2294,7 +2358,7 @@ function draw_fixOff_table(info){
 	
 	str = "<table class='tbl_fix_off'><tr><th>이름</th><th>휴무종류</th><th>요일</th><th>시작일시</th><th>종료일시</th><th>등록일시</th><th>관리</th></tr>";
 	if(json.list.length == 0){
-		str += "<tr><td colspan='6'>등록된 정보가 없습니다.</td></tr>";
+		str += "<tr><td colspan='7'>등록된 정보가 없습니다.</td></tr>";
 	}else{
 		$(json.list).each(function(){
 			emp = get_employee_byEno(this.eno);
@@ -2323,6 +2387,7 @@ function draw_fixOff_table(info){
 	}
 	$(".time_table_wrap").html(str);
 }
+
 
 $(function(){
 	//진료view에서 무슨 탭 눌러졌는지 기억하기 위한 변수
@@ -2487,7 +2552,6 @@ $(function(){
 		mouseenter:function(){
 			var rno = $(this).find("input[name='rno']").val();
 			var type = $(this).find("input[name='type']").val();
-			console.log(type+"/"+rno);
 			draw_simple_reservation_view(type, rno);
 			
 		},
@@ -2606,10 +2670,9 @@ $(function(){
 					desk_state = "접수완료";
 					result = "접수완료";
 				}
-				console.log(desk_state_writer+"/"+desk_state_regdate);
+
 				if(rtype == "nc"){
 					vo = {pno:pno, eno:eno, rtype:rtype, rdate:rdate, rtime:rtime, clinic:clinic, memo:memo, writer:writer, regdate:regdate, updatewriter:"", updatedate:"", desk_state:desk_state, desk_state_writer:desk_state_writer, desk_state_regdate:desk_state_regdate, result:result, result_memo:""};
-					console.log(vo);
 					post_ncReservation_register(vo, storage_timetable_btn_num);
 				}else if(rtype == "fc"){
 					vo = {rno:"0", pno:pno, eno:eno, fix_day:fix_day, rdate:rdate, rtime:rtime, fix_day_start:fix_day_start, fix_day_end:fix_day_end, rtype:rtype, clinic:clinic, memo:memo, writer:writer, regdate:regdate, updatewriter:"", updatedate:"", desk_state:desk_state, desk_state_writer:desk_state_writer, desk_state_regdate:desk_state_regdate, result:result, result_memo:""};
@@ -2677,9 +2740,11 @@ $(function(){
 		if(storage_timetable_btn_num == 2 || storage_timetable_btn_num == 3){
 			draw_week_timetable("doctor", storage_timetable_btn_num);
 			draw_normalOff_in_weektable();
+			draw_fixOff_in_weektable();
 		}else if(storage_timetable_btn_num == 5 || storage_timetable_btn_num == 6){
 			draw_week_timetable("therapist", storage_timetable_btn_num);
 			draw_normalOff_in_weektable();
+			draw_fixOff_in_weektable();
 		}
 		
 	})
@@ -2688,9 +2753,11 @@ $(function(){
 		if(storage_timetable_btn_num == 2 || storage_timetable_btn_num == 3){
 			draw_week_timetable("doctor", storage_timetable_btn_num);
 			draw_normalOff_in_weektable();
+			draw_fixOff_in_weektable();
 		}else if(storage_timetable_btn_num == 5 || storage_timetable_btn_num == 6){
 			draw_week_timetable("therapist", storage_timetable_btn_num);
 			draw_normalOff_in_weektable();
+			draw_fixOff_in_weektable();
 		} 
 	});
 	

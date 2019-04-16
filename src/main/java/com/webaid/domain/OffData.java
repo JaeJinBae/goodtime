@@ -2,6 +2,7 @@ package com.webaid.domain;
 
 public class OffData {
 	private int eno;
+	private String dow;
 	private String yearmonth;
 	private String select_date;
 
@@ -15,6 +16,14 @@ public class OffData {
 
 	public void setEno(int eno) {
 		this.eno = eno;
+	}
+
+	public String getDow() {
+		return dow;
+	}
+
+	public void setDow(String dow) {
+		this.dow = dow;
 	}
 
 	public String getYearmonth() {
@@ -35,7 +44,8 @@ public class OffData {
 
 	@Override
 	public String toString() {
-		return "OffData [eno=" + eno + ", yearmonth=" + yearmonth + ", select_date=" + select_date + "]";
+		return "OffData [eno=" + eno + ", dow=" + dow + ", yearmonth=" + yearmonth + ", select_date=" + select_date
+				+ "]";
 	}
 
 }

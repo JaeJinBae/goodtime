@@ -16,7 +16,7 @@ public class DayGetUtil {
 		int dayNum =  cal.get(Calendar.DAY_OF_WEEK);
 		
 		String day = getSelectDay(dayNum+"");
-		System.out.println("날짜 값은 "+dateFormat.parse(date));
+		
 		return day;
 	}
 	

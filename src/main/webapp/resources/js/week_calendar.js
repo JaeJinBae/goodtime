@@ -50,5 +50,7 @@ function makeWeekSelectOptions(type, idxx) {
     if(seled) obj.value = seled;
     
     draw_week_timetable(type, idxx);
+    draw_normalOff_in_weektable();
+	draw_fixOff_in_weektable();
     
 }

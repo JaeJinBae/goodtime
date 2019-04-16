@@ -1105,6 +1105,43 @@ public class HomeController {
 		return entity;
 	}
 	
+	
+	@RequestMapping(value="/selectNormalOffByDate/{date}", method=RequestMethod.GET)
+	public ResponseEntity<List<NormalOffVO>> normalOffSelectByDate(@PathVariable("date") String date){
+		ResponseEntity<List<NormalOffVO>> entity = null;
+		OffData offdata = new OffData();
+		String[] str = date.split("-");
+		offdata.setYearmonth(str[0]+"-"+str[1]);
+		offdata.setSelect_date(date);
+		
+		List<NormalOffVO> list = noService.selectByDate(offdata);
+		
+		entity = new ResponseEntity<List<NormalOffVO>>(list, HttpStatus.OK);
+		return entity;
+	}
+	
+	
+	@RequestMapping(value="/selectNormalOffByWeek/{week}/{eno}", method=RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> normalOffSelectByWeek(@PathVariable("week") List<String> week, @PathVariable("eno") int eno){
+		ResponseEntity<Map<String, Object>> entity = null;
+		HashMap<String, Object> map = new HashMap<>();
+		OffData offdata = new OffData();
+		offdata.setEno(eno);
+		String[] str;
+		for(int i=1; i<week.size(); i++){
+			str = week.get(i).split("-");
+			offdata.setYearmonth(str[0]+"-"+str[1]);
+			offdata.setSelect_date(week.get(i));
+			List<NormalOffVO> list=noService.selectByEnoDate(offdata);
+			if(list.size() != 0){
+				map.put(week.get(i), list);
+			}
+		}
+		entity = new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
+		return entity;
+	}
+	
+	
 	@RequestMapping(value="/fixOffGetAll", method=RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> fixOffGetAll(@ModelAttribute("cri") SearchCriteriaRR cri){
 		ResponseEntity<Map<String, Object>> entity = null;
@@ -1145,44 +1182,55 @@ public class HomeController {
 		return entity;
 	}
 	
-	@RequestMapping(value="/selectNormalOffByDate/{date}", method=RequestMethod.GET)
-	public ResponseEntity<List<NormalOffVO>> normalOffSelectByDate(@PathVariable("date") String date){
-		ResponseEntity<List<NormalOffVO>> entity = null;
+	@RequestMapping(value="/selectFixOffByDate/{date}", method=RequestMethod.GET)
+	public ResponseEntity<List<FixOffVO>> fixOffSelectByDate(@PathVariable("date") String date){
+		ResponseEntity<List<FixOffVO>> entity = null;
+		DayGetUtil dgu= new DayGetUtil();
 		OffData offdata = new OffData();
 		String[] str = date.split("-");
-		offdata.setYearmonth(str[0]+"-"+str[1]);
-		offdata.setSelect_date(date);
-		
-		List<NormalOffVO> list = noService.selectByDate(offdata);
-		
-		entity = new ResponseEntity<List<NormalOffVO>>(list, HttpStatus.OK);
+		try {
+			offdata.setDow(dgu.getDay(date));
+			offdata.setYearmonth(str[0]+"-"+str[1]);
+			offdata.setSelect_date(date);
+			
+			List<FixOffVO> list = foService.selectByDate(offdata);
+			entity = new ResponseEntity<List<FixOffVO>>(list, HttpStatus.OK);
+		} catch (ParseException e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+		}
 		return entity;
 	}
 	
-	
-	@RequestMapping(value="/selectNormalOffByWeek/{week}/{eno}", method=RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> normalOffSelectByWeek(@PathVariable("week") List<String> week, @PathVariable("eno") int eno){
+	@RequestMapping(value="/selectFixOffByWeek/{week}/{eno}", method=RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> fixOffSelectByWeek(@PathVariable("week") List<String> week, @PathVariable("eno") int eno){
 		ResponseEntity<Map<String, Object>> entity = null;
+		
 		HashMap<String, Object> map = new HashMap<>();
+		DayGetUtil dgu= new DayGetUtil();
 		OffData offdata = new OffData();
 		offdata.setEno(eno);
 		String[] str;
-		for(int i=1; i<week.size(); i++){
-			str = week.get(i).split("-");
-			offdata.setYearmonth(str[0]+"-"+str[1]);
-			offdata.setSelect_date(week.get(i));
-			List<NormalOffVO> list=noService.selectByEnoDate(offdata);
-			if(list.size() != 0){
-				map.put(week.get(i), list);
+		
+		try {
+			for(int i=1; i<week.size(); i++){
+				offdata.setDow(dgu.getDay(week.get(i)));
+				str = week.get(i).split("-");
+				offdata.setYearmonth(str[0]+"-"+str[1]);
+				offdata.setSelect_date(week.get(i));
+				List<FixOffVO> list=foService.selectByEnoDate(offdata);
+				if(list.size() != 0){
+					map.put(week.get(i), list);
+				}
 			}
+			
+		} catch (ParseException e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
+		
 		entity = new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
 		return entity;
 	}
-	
-	
-	
-	
-	
 	
 }

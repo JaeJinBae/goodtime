@@ -1093,7 +1093,7 @@ public class HomeController {
 			pageMaker.setCri(cri);
 			pageMaker.makeSearch(cri.getPage());
 			pageMaker.setTotalCount(noService.listSearchCount(cri));
-			
+			System.out.println("조건에 맞는 일반 휴무는 "+list);
 			map.put("list", list);
 			map.put("pageMaker", pageMaker);
 			
@@ -1161,7 +1161,10 @@ public class HomeController {
 			if(cri.getKeyword2() == null){
 				cri.setKeyword2("");
 			}
-			cri.setKeyword3("");
+			if(cri.getKeyword3() == null){
+				cri.setKeyword3("");
+			}
+			
 			cri.setKeyword4("");
 			
 			List<FixOffVO> list = foService.listSearch(cri);

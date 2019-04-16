@@ -21,7 +21,12 @@
 	</select>
 	
 	<sql id="search">
-		where startdate like concat('%',#{keyword1},'%') and eno like concat('%',#{keyword2},'%')
+		<if test="keyword2==''.toString()">
+			where startdate like concat('%',#{keyword1},'%') and eno like concat('%',#{keyword2},'%')
+		</if>
+		<if test="keyword2!=''.toString()">
+			where startdate like concat('%',#{keyword1},'%') and eno = #{keyword2}
+		</if>
 	</sql>
 	
 	<select id="listSearchCount" resultType="int">

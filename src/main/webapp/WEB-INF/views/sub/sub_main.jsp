@@ -359,6 +359,55 @@
 		font-size:1.1em;
 		line-height: 30px;
 	}
+	.normal_off_page{
+		float:right;
+		/* width:626px; */ 
+		margin:15px;
+		margin-bottom:80px;
+	}
+	.normal_off_page > ul{
+		text-align: center;
+	}
+	.normal_off_page ul li{
+		
+		margin:0 auto;
+		list-style: none;
+		display: inline-block;
+		text-align:center;
+		border:1px solid #e9e9e9;
+	}
+	.normal_off_page ul li a{
+		display:inline-block;
+		width:35px;
+		height:30px;
+		font-size:1.1em;
+		line-height: 30px;
+	}
+	
+	.fix_off_page{
+		float:right;
+		/* width:626px; */ 
+		margin:15px;
+		margin-bottom:80px;
+	}
+	.fix_off_page > ul{
+		text-align: center;
+	}
+	.fix_off_page ul li{
+		
+		margin:0 auto;
+		list-style: none;
+		display: inline-block;
+		text-align:center;
+		border:1px solid #e9e9e9;
+	}
+	.fix_off_page ul li a{
+		display:inline-block;
+		width:35px;
+		height:30px;
+		font-size:1.1em;
+		line-height: 30px;
+	}
 	
 	.timetable_btn_wrap{
 		width:100%;
@@ -421,7 +470,13 @@
 	.reservation_record_selectBox_wrap{
 		display:none;
 	}
-	reservation_update_record_selectBox_wrap{
+	.reservation_update_record_selectBox_wrap{
+		display:none;
+	}
+	.normal_off_selectBox_wrap{
+		display:none;
+	}
+	.fix_off_selectBox_wrap{
 		display:none;
 	}
 </style> 
@@ -705,6 +760,8 @@ function draw_time_table_by_case(idx){
 	var table_txt;
 	$(".reservation_record_selectBox_wrap").css("display","none");
 	$(".reservation_update_record_selectBox_wrap").css("display","none");
+	$(".normal_off_selectBox_wrap").css("display","none");
+	$(".fix_off_selectBox_wrap").css("display","none");
 	
 	switch (idx){
 		case 0:
@@ -778,11 +835,13 @@ function draw_time_table_by_case(idx){
 			break;
 		case 9:
 			$(".week_select_box_wrap").css("display","none");
+			$(".normal_off_selectBox_wrap").css("display","block");
 			$(".time_table_wrap").html("");
 			draw_normalOff_table();
 			break;
 		case 10:
 			$(".week_select_box_wrap").css("display","none");
+			$(".fix_off_selectBox_wrap").css("display","block");
 			$(".time_table_wrap").html("");
 			draw_fixOff_table();
 			break;
@@ -2195,7 +2254,7 @@ function draw_normalOff_in_weektable(){
 		$(offData[arrWeek[i]]).each(function(){
 			for(var n=Number(this.starttime)/60; n<Number(this.endtime)/60; n++){
 				target_class = "."+this.eno+"_"+arrWeek[i]+"_"+n;
-				$(target_class).html();
+				$(target_class).html("");
 				$(target_class).append("<p style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>");
 			}
 		});
@@ -2231,7 +2290,7 @@ function draw_normalOff_table(info){
 	}else{
 		$(json.list).each(function(){
 			emp = get_employee_byEno(this.eno);
-			str += "<tr><td>"+emp.name+"</td><td>"+this.offtype+"</td><td>"+this.startdate+" "+(Number(this.starttime)/60)+"시</td><td>"+this.enddate+" "+(Number(this.endtime)/60)+"시</td><td>"+this.regdate+"</td><td>"+this.writer+"</td><td><button>수정</button></td></tr>";
+			str += "<tr><td>"+emp.name+"</td><td>"+this.offtype+"</td><td>"+this.startdate+" "+(Number(this.starttime)/60)+"시</td><td>"+this.enddate+" "+(Number(this.endtime)/60)+"시</td><td>"+this.regdate+" "+this.writer+"</td><td><button>수정</button></td></tr>";
 			/* str += "<tr><td>"+emp.name+"</td><td>"+this.offtype+"</td>"
 			+ "<td>"+this.startdate+" "+(Number(this.starttime)/60)+"시</td><td>"+this.enddate+" "+(Number(this.endtime)/60)+"시</td><td>"+this.regdate+" "+this.writer+"</td><td><button>수정</button></td></tr>"; */
 		});
@@ -2255,6 +2314,11 @@ function draw_normalOff_table(info){
 		str += "</ul></div>";	
 	}
 	$(".time_table_wrap").html(str);
+	var today = get_today();
+	var todayArr = today.split("-");
+	
+	$(".normal_off_selectBox_wrap > select[name='year'] > option[value='"+todayArr[0]+"']").prop("selected", true);
+	$(".normal_off_selectBox_wrap > select[name='month'] > option[value='"+todayArr[1]+"']").prop("selected", true);
 }
 
 function get_fixOff_byDate(date){
@@ -2368,7 +2432,7 @@ function draw_fixOff_table(info){
 		});
 		str += "</table>";
 		
-		str += "<div class='normal_off_page'><ul>";
+		str += "<div class='fix_off_page'><ul>";
 		if(json.pageMaker.prev){
 			str += "<li><a href='page="+(json.pageMaker.startPage-1)+"&perPageNum=10&keyword1="+json.pageMaker.cri.keyword1+"&keyword2="+json.pageMaker.cri.keyword2+"'>&laquo;</a></li>";
 		}
@@ -2386,6 +2450,12 @@ function draw_fixOff_table(info){
 		str += "</ul></div>";	
 	}
 	$(".time_table_wrap").html(str);
+	
+	var today = get_today();
+	var todayArr = today.split("-");
+	
+	$(".fix_off_selectBox_wrap > select[name='year'] > option[value='"+todayArr[0]+"']").prop("selected", true);
+	$(".fix_off_selectBox_wrap > select[name='month'] > option[value='"+todayArr[1]+"']").prop("selected", true);
 }
 
 
@@ -2820,7 +2890,7 @@ $(function(){
 		draw_reservation_record_table($(this).attr("href"));
 	});
 	
-	//예약이력에서 검색 눌렀을 때
+	//변경이력에서 검색 눌렀을 때
 	$(".reservation_update_record_selectBox_wrap > button").click(function(){
 		var keyword = encodeURIComponent($(".reservation_update_record_selectBox_wrap > select[name='rtype']").val());
 
@@ -2832,6 +2902,40 @@ $(function(){
 		e.preventDefault();
 		draw_reservation_update_record_table($(this).attr("href"));
 	});
+	
+	//일반휴무 조건 검색
+	$(".normal_off_selectBox_wrap > .normal_off_search_btn").click(function(){
+		var year = $(".normal_off_selectBox_wrap > select[name='year']").val();
+		var month = $(".normal_off_selectBox_wrap > select[name='month']").val();
+		var keyword1 = encodeURIComponent(year+"-"+month);
+		var keyword2 = encodeURIComponent($(".normal_off_selectBox_wrap > select[name='emp']").val());
+		draw_normalOff_table("page=1&perPageNum=10&keyword1="+keyword1+"&keyword2="+keyword2);
+	});
+	//일반휴무 페이징
+	$(document).on("click",".normal_off_page", function(e){
+		e.preventDefault();
+		draw_normalOff_table($(this).attr("href"));
+	});
+	
+	//고정휴무 조건 검색
+	$(".fix_off_selectBox_wrap > .fix_off_search_btn").click(function(){
+		var year = $(".fix_off_selectBox_wrap > select[name='year']").val();
+		var month = $(".fix_off_selectBox_wrap > select[name='month']").val();
+		var keyword1 = encodeURIComponent(year+"-"+month);
+		var keyword2 = encodeURIComponent($(".fix_off_selectBox_wrap > select[name='emp']").val());
+		var keyword3 = encodeURIComponent($(".fix_off_selectBox_wrap > select[name='dow']").val());
+		draw_fixOff_table("page=1&perPageNum=10&keyword1="+keyword1+"&keyword2="+keyword2+"&keyword3"+keyword3);
+	});
+	//고정휴무 페이징
+	$(document).on("click",".fix_off_page", function(e){
+		e.preventDefault();
+		draw_fixOff_table($(this).attr("href"));
+	})
+	
+	$(document).on("click", ".active2", function(e){
+		e.preventDefault();
+		return false;
+	})
 });
 </script> 
 </head> 
@@ -2970,6 +3074,97 @@ $(function(){
 						</select>
 						<button>검색</button>
 					</div><!-- reservation_update_record_selectBox_wrap end -->
+					<div class="normal_off_selectBox_wrap">
+						<select name="year">
+							<option value="2019">2019년</option>
+							<option value="2020">2020년</option>
+							<option value="2021">2021년</option>
+							<option value="2022">2022년</option>
+							<option value="2023">2023년</option>
+							<option value="2024">2024년</option>
+							<option value="2025">2025년</option>
+							<option value="2026">2026년</option>
+							<option value="2027">2027년</option>
+							<option value="2028">2028년</option>
+							<option value="2029">2029년</option>
+							<option value="2030">2030년</option>
+						</select>
+						<select name="month">
+							<option value="01">1월</option>
+							<option value="02">2월</option>
+							<option value="03">3월</option>
+							<option value="04">4월</option>
+							<option value="05">5월</option>
+							<option value="06">6월</option>
+							<option value="07">7월</option>
+							<option value="08">8월</option>
+							<option value="09">9월</option>
+							<option value="10">10월</option>
+							<option value="11">11월</option>
+							<option value="12">12월</option>
+						</select>
+						<select name="emp">
+							<option value="">직원전체</option>
+							<c:forEach var="dList" items="${doctorList}">
+								<option value="${dList.eno}">${dList.name}</option>
+							</c:forEach>
+							<c:forEach var="tList" items="${therapistList}">
+								<option value="${tList.eno}">${tList.name}</option>
+							</c:forEach>
+						</select>
+						<button class="normal_off_search_btn">검색</button>
+						<button class="normal_off_register_btn">추가</button>
+					</div><!-- normal_off_selectBox_wrap end -->
+					<div class="fix_off_selectBox_wrap">
+						<select name="year">
+							<option value="2019">2019년</option>
+							<option value="2020">2020년</option>
+							<option value="2021">2021년</option>
+							<option value="2022">2022년</option>
+							<option value="2023">2023년</option>
+							<option value="2024">2024년</option>
+							<option value="2025">2025년</option>
+							<option value="2026">2026년</option>
+							<option value="2027">2027년</option>
+							<option value="2028">2028년</option>
+							<option value="2029">2029년</option>
+							<option value="2030">2030년</option>
+						</select>
+						<select name="month">
+							<option value="01">1월</option>
+							<option value="02">2월</option>
+							<option value="03">3월</option>
+							<option value="04">4월</option>
+							<option value="05">5월</option>
+							<option value="06">6월</option>
+							<option value="07">7월</option>
+							<option value="08">8월</option>
+							<option value="09">9월</option>
+							<option value="10">10월</option>
+							<option value="11">11월</option>
+							<option value="12">12월</option>
+						</select>
+						<select name="dow">
+							<option value="">전체요일</option>
+							<option value="월">월</option>
+							<option value="화">화</option>
+							<option value="수">수</option>
+							<option value="목">목</option>
+							<option value="금">금</option>
+							<option value="토">토</option>
+						</select>
+						<select name="emp">
+							<option value="">직원전체</option>
+							<c:forEach var="dList" items="${doctorList}">
+								<option value="${dList.eno}">${dList.name}</option>
+							</c:forEach>
+							<c:forEach var="tList" items="${therapistList}">
+								<option value="${tList.eno}">${tList.name}</option>
+							</c:forEach>
+						</select>
+						<button class="fix_off_search_btn">검색</button>
+						<button class="fix_off_register_btn">추가</button>
+					</div><!-- fix_off_selectBox_wrap end -->
 					<div class="time_table_wrap">
 					
 					</div><!-- time_table_wrap -->

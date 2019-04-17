@@ -45,6 +45,11 @@ public class FixTherapyReservationServiceImpl implements FixTherapyReservationSe
 	}
 
 	@Override
+	public void updateTherapistState(FixTherapyReservationVO vo) {
+		dao.updateTherapistState(vo);
+	}
+
+	@Override
 	public void updateInfo(FixTherapyReservationVO vo) {
 		dao.updateInfo(vo);
 	}

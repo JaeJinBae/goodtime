@@ -49,7 +49,9 @@
 				data: user,
 				success:function(json){
 					console.log(json);
-					if(json == 'ok'){
+					if(json == 'therapist'){
+						location.href="${pageContext.request.contextPath}/therapist";
+					}else if(json == "manager" || json == "doctor"){
 						location.href="${pageContext.request.contextPath}/sub_main";
 					}else{
 						alert("아이디와 비밀번호가 맞지 않습니다.");

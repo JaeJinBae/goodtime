@@ -125,7 +125,7 @@ public class HomeController {
 				session.setAttribute("type", vo.getType());
 				session.setAttribute("eno", vo.getEno());
 				logger.info("이름= "+session.getAttribute("name")+", 아이디= "+session.getAttribute("id")+", 타입= "+session.getAttribute("type"));
-				entity = new ResponseEntity<String>("ok", HttpStatus.OK);
+				entity = new ResponseEntity<String>(vo.getType(), HttpStatus.OK);
 				
 			}else{
 				entity = new ResponseEntity<String>("no", HttpStatus.OK);
@@ -164,6 +164,24 @@ public class HomeController {
 		model.addAttribute("clinicList", clinicList);
 		model.addAttribute("therapyList", therapyList);
 		return "sub/sub_main";
+	}
+	
+	@RequestMapping(value = "/therapist", method = RequestMethod.GET)
+	public String therapistView(Model model, HttpSession session) {
+		logger.info("therapistView GET");
+		
+		//HospitalInfoVO hospitalInfo = hService.selectOne(day); 
+		List<EmployeeVO> doctorList = empService.selectByType("doctor");
+		List<EmployeeVO> therapistList = empService.selectByType("therapist");
+		List<ClinicVO> clinicList = cService.selectByCodeType("진료");
+		List<ClinicVO> therapyList = cService.selectByCodeType("치료");
+		
+		//model.addAttribute("hospitalInfo", hospitalInfo);
+		model.addAttribute("doctorList", doctorList);
+		model.addAttribute("therapistList", therapistList);
+		model.addAttribute("clinicList", clinicList);
+		model.addAttribute("therapyList", therapyList);
+		return "sub/therapistView";
 	}
 	
 	@RequestMapping(value="/getDay/{date}", method=RequestMethod.GET)
@@ -992,6 +1010,46 @@ public class HomeController {
 		return entity;
 	}
 	
+	@RequestMapping(value="/updateReservationTherapistState/{rtype}/{rno}/{state}/{writer}/{regdate}", method=RequestMethod.POST)
+	public ResponseEntity<String> updateReservationTherapistState(@PathVariable("rtype") String rtype, @PathVariable("rno") String rno, @PathVariable("state") String state, @PathVariable("writer") String writer, @PathVariable("regdate") String regdate){
+		ResponseEntity<String> entity = null;
+		System.out.println(rtype+"\n"+rno);
+		try {
+			if(rtype.equals("nt")){
+				NormalTherapyReservationVO vo = new NormalTherapyReservationVO();
+				vo.setRno(Integer.parseInt(rno));
+				vo.setTherapist_state(state);
+				vo.setTherapist_state_writer(writer);
+				vo.setTherapist_state_regdate(regdate);
+				vo.setResult(state);
+				
+				ntrService.updateTherapistState(vo);
+			}else if(rtype.equals("ft")){
+				FixTherapyReservationVO vo = new FixTherapyReservationVO();
+				vo.setRno(Integer.parseInt(rno));
+				vo.setTherapist_state(state);
+				vo.setTherapist_state_writer(writer);
+				vo.setTherapist_state_regdate(regdate);
+				vo.setResult(state);
+				
+				ftrService.updateTherapistState(vo);
+			}
+			ReservationRecordVO rrvo = new ReservationRecordVO();
+			
+			rrvo.setRno(Integer.parseInt(rno));
+			rrvo.setRtype(rtype);
+			rrvo.setTherapy_info(regdate+" "+writer);
+			rrvo.setResult(state);
+			
+			rrService.updateTherapyInfo(rrvo);
+			
+			entity = new ResponseEntity<String>("ok", HttpStatus.OK);
+		} catch (Exception e) {
+			entity = new ResponseEntity<String>("no", HttpStatus.OK);
+		}
+		
+		return entity;
+	}
 	
 	@RequestMapping(value="/reservationRecordGetAll", method=RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> reservationRecordGetAll(@ModelAttribute("cri") SearchCriteriaRR cri){

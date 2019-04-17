@@ -48,6 +48,11 @@ public class FixTherapyReservationDaoImpl implements FixTherapyReservationDao {
 	}
 
 	@Override
+	public void updateTherapistState(FixTherapyReservationVO vo) {
+		session.update(namespace + ".updateTherapistState", vo);
+	}
+
+	@Override
 	public void updateInfo(FixTherapyReservationVO vo) {
 		session.update(namespace + ".updateInfo", vo);
 	}

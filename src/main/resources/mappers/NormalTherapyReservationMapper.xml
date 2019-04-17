@@ -28,6 +28,10 @@
 		update normal_therapy_reservation set desk_state=#{desk_state}, desk_state_writer=#{desk_state_writer}, desk_state_regdate=#{desk_state_regdate}, result=#{result} where rno=#{rno}
 	</update>
 	
+	<update id="updateTherapistState">
+		update normal_therapy_reservation set therapist_state=#{therapist_state}, therapist_state_writer=#{therapist_state_writer}, therapist_state_regdate=#{therapist_state_regdate}, result=#{result} where rno=#{rno}
+	</update>
+	
 	<update id="updateInfo">
 		update normal_therapy_reservation set rdate=#{rdate}, rtime=#{rtime}, eno=#{eno}, clinic=#{clinic}, memo=#{memo} where rno=#{rno}
 	</update>

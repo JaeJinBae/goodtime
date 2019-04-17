@@ -486,7 +486,7 @@
 	}
 	.timetable_btn_wrap > ul > li{
 		float:left;
-		border: 1px solid gray;
+		border: 2px solid gray;
 		border-bottom:0;
 		border-radius: 7px 7px 0 0;
 		font-size:15px;
@@ -496,12 +496,30 @@
 	}
 	.timetable_btn_wrap > ul > li:first-child{
 		background: #d3e5f6;
+		margin-right:30px;
+		font-weight:bold;
+	}
+	.timetable_btn_wrap > ul > li:nth-child(4){
+		margin-right:30px;
+	}
+	.timetable_btn_wrap > ul > li:nth-child(7){
+		margin-right:30px;
+	}
+	.timetable_btn_wrap > ul > li:nth-child(9){
+		margin-right:30px;
+	}
+	.timetable_btn_wrap > ul > li:nth-child(11){
+		margin-right:30px;
 	}
 	.time_table_wrap > table{
 		width:100%;
 	}
-	.time_table_wrap table td{
+	.time_table_wrap table tr > td{
 		border: 1px solid black;
+		font-size:15px;
+	}
+	.time_table_wrap table tr > td:first-child{
+		text-align: center;
 	}
 	.patient_p_tag{
 		font-size:14px;
@@ -509,16 +527,6 @@
 		line-height: 22px;
 		padding: 2px 0;
 		color: #fff;
-	}
-	.doctor_name{
-		text-align: center;
-	}
-	.ar_tbl_wrap_3 {
-		width:100%;
-		margin-top: 100px;
-	}
-	.therapist_name{
-		text-align: center;
 	}
 	.reservation_register_btn{
 		display:none;
@@ -542,6 +550,12 @@
 	}
 	.fix_off_selectBox_wrap{
 		display:none;
+	}
+	.normal_off, .fix_off{
+		width:100%;
+		font-size:14px;
+		text-align: center;
+		padding:3px 0;
 	}
 </style> 
 <script>
@@ -2109,7 +2123,7 @@ function draw_normalOff_in_timetable(date){
 		for(var i=sTime; i<=eTime; i++){
 			timeTableClass = "."+this.etype+"_"+this.eno+"_"+i;
 			$(timeTableClass).html("");
-			$(timeTableClass).append("<p style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>")
+			$(timeTableClass).append("<p class='normal_off' style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>")
 		}
 	});
 }
@@ -2155,7 +2169,7 @@ function draw_normalOff_in_weektable(){
 			for(var n=Number(this.starttime)/60; n<Number(this.endtime)/60; n++){
 				target_class = "."+this.eno+"_"+arrWeek[i]+"_"+n;
 				$(target_class).html("");
-				$(target_class).append("<p style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>");
+				$(target_class).append("<p class='normal_off' style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>");
 			}
 		});
 	}
@@ -2256,19 +2270,6 @@ function get_fixOff_byDate(date){
 	return dt;
 }
 
-function draw_fixOff_in_timetable(date){
-	var offData = get_fixOff_byDate(date);
-	var timeTableClass = "";
-	
-	$(offData).each(function(){
-		for(var i=(Number(this.starttime)/60) ; i<=(Number(this.endtime)/60) ; i++){
-			timeTableClass = "."+this.etype+"_"+this.eno+"_"+i;
-			$(timeTableClass).html("");
-			$(timeTableClass).append("<p style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>")
-		}
-	});
-}
-
 function get_fixOff_byWeek(week, eno){
 	var dt;
 	$.ajax({
@@ -2284,6 +2285,19 @@ function get_fixOff_byWeek(week, eno){
 		}
 	});
 	return dt;
+}
+
+function draw_fixOff_in_timetable(date){
+	var offData = get_fixOff_byDate(date);
+	var timeTableClass = "";
+	
+	$(offData).each(function(){
+		for(var i=(Number(this.starttime)/60) ; i<=(Number(this.endtime)/60) ; i++){
+			timeTableClass = "."+this.etype+"_"+this.eno+"_"+i;
+			$(timeTableClass).html("");
+			$(timeTableClass).append("<p class='fix_off' style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>")
+		}
+	});
 }
 
 function draw_fixOff_in_weektable(){
@@ -2309,7 +2323,7 @@ function draw_fixOff_in_weektable(){
 			for(var n=Number(this.starttime)/60; n<Number(this.endtime)/60; n++){
 				target_class = "."+this.eno+"_"+arrWeek[i]+"_"+n;
 				$(target_class).html();
-				$(target_class).append("<p style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>");
+				$(target_class).append("<p class='fix_off' style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>");
 			}
 		});
 	}
@@ -2412,8 +2426,9 @@ $(function(){
 	//table 선택 버튼(진료&치료종합, 진료종합, 주간, 고정 등등)
 	$(".timetable_btn_wrap > ul > li").click(function(){
 		var idx = $(this).index();
-		$(".timetable_btn_wrap > ul > li").css("background","#fff");
-		$(this).css("background","#d3e5f6");
+		$(".timetable_btn_wrap > ul > li").css({"background":"#fff", "font-weight":"500"});
+		$(this).css({"background":"#d3e5f6", "font-weight":"bold"});
+		
 		draw_time_table_by_case(idx);
 		storage_timetable_btn_num = idx;
 	});

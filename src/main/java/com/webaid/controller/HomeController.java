@@ -1141,6 +1141,18 @@ public class HomeController {
 		return entity;
 	}
 	
+	@RequestMapping(value="/normalOffRegister", method=RequestMethod.GET)
+	public ResponseEntity<String> normalOffRegister(NormalOffVO vo){
+		ResponseEntity<String> entity = null;
+		try {
+			noService.register(vo);
+			entity = new ResponseEntity<String>("ok", HttpStatus.OK);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			entity = new ResponseEntity<String>("no", HttpStatus.BAD_REQUEST);
+		}
+		return entity;
+	}
 	
 	@RequestMapping(value="/fixOffGetAll", method=RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> fixOffGetAll(@ModelAttribute("cri") SearchCriteriaRR cri){
@@ -1233,6 +1245,19 @@ public class HomeController {
 		}
 		
 		entity = new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
+		return entity;
+	}
+	
+	@RequestMapping(value="/fixOffRegister", method=RequestMethod.GET)
+	public ResponseEntity<String> fixOffRegister(FixOffVO vo){
+		ResponseEntity<String> entity = null;
+		try {
+			foService.register(vo);
+			entity = new ResponseEntity<String>("ok", HttpStatus.OK);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			entity = new ResponseEntity<String>("no", HttpStatus.BAD_REQUEST);
+		}
 		return entity;
 	}
 	

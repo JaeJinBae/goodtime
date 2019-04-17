@@ -101,6 +101,38 @@
 	.popup_reservation_update{
 		display:none;
 	}
+	.popup_normal_off_register{
+		display:none;
+	}
+	.popup_normal_off_register > .popup_normalOff_register_btn_wrap{
+		width:500px;
+		margin:0 auto;
+		text-align: center;
+	}
+	.popup_normal_off_register > .popup_normalOff_register_btn_wrap > p{
+		display: inline-block;
+		padding:10px;
+		font-size:15px;
+		margin-left:20px;
+		cursor: pointer;
+		border:1px solid lightgray;
+	}
+	.popup_fix_off_register{
+		display:none;
+	}
+	.popup_fix_off_register > .popup_fixOff_register_btn_wrap{
+		width:500px;
+		margin:0 auto;
+		text-align: center;
+	}
+	.popup_fix_off_register > .popup_fixOff_register_btn_wrap > p{
+		display: inline-block;
+		padding:10px;
+		font-size:15px;
+		margin-left:20px;
+		cursor: pointer;
+		border:1px solid lightgray;
+	}
 	
 	.all_wrap{
 		width: 100%;
@@ -2415,6 +2447,31 @@ function get_fixOff_all(info){
 	return dt;
 }
 
+function post_normalOff_register(vo){
+	$.ajax({
+		url:"${pageContext.request.contextPath}/normalOffRegister",
+		type:"get",
+		data:vo,
+		dataType:"text",
+		async:false,
+		success:function(json){
+			alert("휴무 등록이 완료되었습니다.");
+			$(".popup_normal_off_register > table tr > td > select[name='emp'] > option[value='']").prop("selected", true);
+			$(".popup_normal_off_register > table tr > td > input[name='offType']").val("휴무");
+			$(".popup_normal_off_register > table tr > td > input[name='startdate']").val("");
+			$(".popup_normal_off_register > table tr > td > select[name='starttime'] > option[value='8']").prop("selected", true);
+			$(".popup_normal_off_register > table tr > td > input[name='enddate']").val("");
+			$(".popup_normal_off_register > table tr > td > select[name='endtime'] > option[value='23']").prop("selected", true);
+			
+			$(".popup_normal_off_register").css("display","none");
+			$(".popup_wrap").css("display","none");
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	});	
+}
+
 function draw_fixOff_table(info){
 	var json = get_fixOff_all(info);
 	var str = "";
@@ -2456,6 +2513,32 @@ function draw_fixOff_table(info){
 	
 	$(".fix_off_selectBox_wrap > select[name='year'] > option[value='"+todayArr[0]+"']").prop("selected", true);
 	$(".fix_off_selectBox_wrap > select[name='month'] > option[value='"+todayArr[1]+"']").prop("selected", true);
+}
+
+function post_fixOff_register(vo){
+	$.ajax({
+		url:"${pageContext.request.contextPath}/fixOffRegister",
+		type:"get",
+		data:vo,
+		dataType:"text",
+		async:false,
+		success:function(json){
+			alert("고정휴무 등록이 완료되었습니다.");
+			$(".popup_fix_off_register > table tr > td > select[name='emp'] > option[value='']").prop("selected", true);
+			$(".popup_fix_off_register > table tr > td > input[name='offType']").val("고정휴무");
+			$(".popup_fix_off_register > table tr > td > select[name='dow'] > option[value='']").prop("selected", true);
+			$(".popup_fix_off_register > table tr > td > input[name='startdate']").val("");
+			$(".popup_fix_off_register > table tr > td > select[name='starttime'] > option[value='8']").prop("selected", true);
+			$(".popup_fix_off_register > table tr > td > input[name='enddate']").val("");
+			$(".popup_fix_off_register > table tr > td > select[name='endtime'] > option[value='23']").prop("selected", true);
+			
+			$(".popup_fix_off_register").css("display","none");
+			$(".popup_wrap").css("display","none");
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	});	
 }
 
 
@@ -2916,6 +2999,30 @@ $(function(){
 		e.preventDefault();
 		draw_normalOff_table($(this).attr("href"));
 	});
+	//일반휴무 추가 클릭
+	$(".normal_off_selectBox_wrap > .normal_off_register_btn").click(function(){
+		$(".popup_wrap").css("display","block");
+		$(".popup_normal_off_register").css("display","block");
+		
+	});
+	//일반휴무 휴무등록 클릭
+	$(".popup_normal_off_register > .popup_normalOff_register_btn_wrap > p").click(function(){
+		var emp = $(".popup_normal_off_register > table tr > td > select[name='emp']").val();
+		var eno = emp.split("_")[0];
+		var etype = emp.split("_")[1];
+		var offtype = $(".popup_normal_off_register > table tr > td > input[name='offType']").val();
+		var sDate = $(".popup_normal_off_register > table tr > td > input[name='startdate']").val();
+		var sTime = Number($(".popup_normal_off_register > table tr > td > select[name='starttime']").val())*60;
+		var eDate = $(".popup_normal_off_register > table tr > td > input[name='enddate']").val();
+		var eTime = Number($(".popup_normal_off_register > table tr > td > select[name='endtime']").val())*60;
+		var now = new Date();
+		var regdate = now.getFullYear() + "-" + (((now.getMonth()+1)>9?'':'0')+(now.getMonth()+1)) + "-" + ((now.getDate()>9?'':'0')+now.getDate()) 
+					+ " " + now.getHours() + ":" + ((now.getMinutes()>9?'':'0')+now.getMinutes());
+		var writer = $("#session_login_name").val();
+		var vo = {no:0, eno:eno, etype:etype, offtype:offtype, startdate:sDate, enddate:eDate, starttime:sTime, endtime:eTime, regdate:regdate, writer:writer};
+		console.log(offtype);
+		post_normalOff_register(vo);
+	});
 	
 	//고정휴무 조건 검색
 	$(".fix_off_selectBox_wrap > .fix_off_search_btn").click(function(){
@@ -2931,6 +3038,31 @@ $(function(){
 		e.preventDefault();
 		draw_fixOff_table($(this).attr("href"));
 	})
+	//고정휴무 추가 클릭
+	$(".fix_off_selectBox_wrap > .fix_off_register_btn").click(function(){
+		$(".popup_wrap").css("display","block");
+		$(".popup_fix_off_register").css("display","block");
+		
+	});
+	//고정휴무 휴무등록 클릭
+	$(".popup_fix_off_register > .popup_fixOff_register_btn_wrap > p").click(function(){
+		var emp = $(".popup_fix_off_register > table tr > td > select[name='emp']").val();
+		var eno = emp.split("_")[0];
+		var etype = emp.split("_")[1];
+		var offtype = $(".popup_fix_off_register > table tr > td > input[name='offType']").val();
+		var dow = $(".popup_fix_off_register > table tr > td > select[name='dow']").val();
+		var sDate = $(".popup_fix_off_register > table tr > td > input[name='startdate']").val();
+		var sTime = Number($(".popup_fix_off_register > table tr > td > select[name='starttime']").val())*60;
+		var eDate = $(".popup_fix_off_register > table tr > td > input[name='enddate']").val();
+		var eTime = Number($(".popup_fix_off_register > table tr > td > select[name='endtime']").val())*60;
+		var now = new Date();
+		var regdate = now.getFullYear() + "-" + (((now.getMonth()+1)>9?'':'0')+(now.getMonth()+1)) + "-" + ((now.getDate()>9?'':'0')+now.getDate()) 
+					+ " " + now.getHours() + ":" + ((now.getMinutes()>9?'':'0')+now.getMinutes());
+		var writer = $("#session_login_name").val();
+		var vo = {no:0, eno:eno, etype:etype, offtype:offtype, dow:dow, startdate:sDate, enddate:eDate, starttime:sTime, endtime:eTime, regdate:regdate, writer:writer};
+		console.log(vo);
+		post_fixOff_register(vo);
+	});
 	
 	$(document).on("click", ".active2", function(e){
 		e.preventDefault();

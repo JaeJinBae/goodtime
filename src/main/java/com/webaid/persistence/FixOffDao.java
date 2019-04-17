@@ -8,6 +8,7 @@ import com.webaid.domain.SearchCriteriaRR;
 
 public interface FixOffDao {
 	public List<FixOffVO> selectAll();
+	public FixOffVO selectByNo(int no);
 	public List<FixOffVO> selectByDate(OffData offdata);
 	public List<FixOffVO> selectByEnoDate(OffData offdata);
 	public List<FixOffVO> listSearch(SearchCriteriaRR cri);

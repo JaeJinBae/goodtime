@@ -24,6 +24,11 @@ public class FixOffDaoImpl implements FixOffDao {
 	}
 
 	@Override
+	public FixOffVO selectByNo(int no) {
+		return session.selectOne(namespace + ".selectByNo", no);
+	}
+
+	@Override
 	public List<FixOffVO> selectByDate(OffData offdata) {
 		return session.selectList(namespace + ".selectByDate", offdata);
 	}

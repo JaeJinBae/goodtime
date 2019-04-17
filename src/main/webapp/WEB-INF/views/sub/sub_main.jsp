@@ -133,6 +133,38 @@
 		cursor: pointer;
 		border:1px solid lightgray;
 	}
+	.popup_normal_off_update{
+		display:none;
+	}
+	.popup_normal_off_update > .popup_normalOff_update_btn_wrap{
+		width:500px;
+		margin:0 auto;
+		text-align: center;
+	}
+	.popup_normal_off_update > .popup_normalOff_update_btn_wrap > p{
+		display: inline-block;
+		padding:10px;
+		font-size:15px;
+		margin-left:20px;
+		cursor: pointer;
+		border:1px solid lightgray;
+	}
+	.popup_fix_off_update{
+		display:none;
+	}
+	.popup_fix_off_update > .popup_fixOff_update_btn_wrap{
+		width:500px;
+		margin:0 auto;
+		text-align: center;
+	}
+	.popup_fix_off_update > .popup_fixOff_update_btn_wrap > p{
+		display: inline-block;
+		padding:10px;
+		font-size:15px;
+		margin-left:20px;
+		cursor: pointer;
+		border:1px solid lightgray;
+	}
 	
 	.all_wrap{
 		width: 100%;
@@ -2214,7 +2246,40 @@ function draw_reservation_update_record_table(info){
 	$(".time_table_wrap").html(str);
 }
 
+function get_normalOff_all(info){
+	var dt;
+	$.ajax({
+		url:"${pageContext.request.contextPath}/normalOffGetAll",
+		type:"get",
+		data:info,
+		dataType:"json",
+		async:false,
+		success:function(json){
+			dt = json;
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	});
+	return dt;
+}
 
+function get_normalOff_byNo(no){
+	var dt;
+	$.ajax({
+		url:"${pageContext.request.contextPath}/normalOffGetByNo/"+no,
+		type:"get",
+		dataType:"json",
+		async:false,
+		success:function(json){
+			dt = json;
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	});
+	return dt;
+}
 function get_normalOff_byDate(date){
 	var dt;
 	$.ajax({
@@ -2236,9 +2301,14 @@ function get_normalOff_byDate(date){
 function draw_normalOff_in_timetable(date){
 	var offData = get_normalOff_byDate(date);
 	var timeTableClass = "";
-	
+	var sTime;
+	var eTime;
 	$(offData).each(function(){
-		for(var i=((this.starttime)/60) ; i<((this.endtime)/60) ; i++){
+		console.log(this);
+		sTime = Number(this.starttime)/60;
+		eTime = Number(this.endtime)/60;
+		
+		for(var i=sTime; i<=eTime; i++){
 			timeTableClass = "."+this.etype+"_"+this.eno+"_"+i;
 			$(timeTableClass).html("");
 			$(timeTableClass).append("<p style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>")
@@ -2293,24 +2363,6 @@ function draw_normalOff_in_weektable(){
 	}
 }
 
-function get_normalOff_all(info){
-	var dt;
-	$.ajax({
-		url:"${pageContext.request.contextPath}/normalOffGetAll",
-		type:"get",
-		data:info,
-		dataType:"json",
-		async:false,
-		success:function(json){
-			dt = json;
-		},
-		error:function(request,status,error){
-			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-		}
-	});
-	return dt;
-}
-
 function draw_normalOff_table(info){
 	var json = get_normalOff_all(info);
 	var str = "";
@@ -2322,9 +2374,8 @@ function draw_normalOff_table(info){
 	}else{
 		$(json.list).each(function(){
 			emp = get_employee_byEno(this.eno);
-			str += "<tr><td>"+emp.name+"</td><td>"+this.offtype+"</td><td>"+this.startdate+" "+(Number(this.starttime)/60)+"시</td><td>"+this.enddate+" "+(Number(this.endtime)/60)+"시</td><td>"+this.regdate+" "+this.writer+"</td><td><button>수정</button></td></tr>";
-			/* str += "<tr><td>"+emp.name+"</td><td>"+this.offtype+"</td>"
-			+ "<td>"+this.startdate+" "+(Number(this.starttime)/60)+"시</td><td>"+this.enddate+" "+(Number(this.endtime)/60)+"시</td><td>"+this.regdate+" "+this.writer+"</td><td><button>수정</button></td></tr>"; */
+			str += "<tr><td>"+emp.name+"</td><td>"+this.offtype+"</td><td>"+this.startdate+" "+(Number(this.starttime)/60)+"시</td><td>"+this.enddate+" "+(Number(this.endtime)/60)+"시</td>"
+				+"<td>"+this.regdate+" "+this.writer+"</td><td><button>수정</button><input type='hidden' name='no' value='"+this.no+"'></td></tr>";
 		});
 		str += "</table>";
 		
@@ -2353,6 +2404,116 @@ function draw_normalOff_table(info){
 	$(".normal_off_selectBox_wrap > select[name='month'] > option[value='"+todayArr[1]+"']").prop("selected", true);
 }
 
+function post_normalOff_register(){
+	var emp = $(".popup_normal_off_register > table tr > td > select[name='emp']").val();
+	var eno = emp.split("_")[0];
+	var etype = emp.split("_")[1];
+	var offtype = $(".popup_normal_off_register > table tr > td > input[name='offType']").val();
+	var sDate = $(".popup_normal_off_register > table tr > td > input[name='startdate']").val();
+	var sTime = Number($(".popup_normal_off_register > table tr > td > select[name='starttime']").val())*60;
+	var eDate = $(".popup_normal_off_register > table tr > td > input[name='enddate']").val();
+	var eTime = Number($(".popup_normal_off_register > table tr > td > select[name='endtime']").val())*60;
+	var now = new Date();
+	var regdate = now.getFullYear() + "-" + (((now.getMonth()+1)>9?'':'0')+(now.getMonth()+1)) + "-" + ((now.getDate()>9?'':'0')+now.getDate()) 
+				+ " " + now.getHours() + ":" + ((now.getMinutes()>9?'':'0')+now.getMinutes());
+	var writer = $("#session_login_name").val();
+	var vo = {no:0, eno:eno, etype:etype, offtype:offtype, startdate:sDate, enddate:eDate, starttime:sTime, endtime:eTime, regdate:regdate, writer:writer};
+	
+	$.ajax({
+		url:"${pageContext.request.contextPath}/normalOffRegister",
+		type:"get",
+		data:vo,
+		dataType:"text",
+		async:false,
+		success:function(json){
+			alert("휴무 등록이 완료되었습니다.");
+			$(".popup_normal_off_register > table tr > td > select[name='emp'] > option[value='']").prop("selected", true);
+			$(".popup_normal_off_register > table tr > td > input[name='offType']").val("휴무");
+			$(".popup_normal_off_register > table tr > td > input[name='startdate']").val("");
+			$(".popup_normal_off_register > table tr > td > select[name='starttime'] > option[value='8']").prop("selected", true);
+			$(".popup_normal_off_register > table tr > td > input[name='enddate']").val("");
+			$(".popup_normal_off_register > table tr > td > select[name='endtime'] > option[value='23']").prop("selected", true);
+			
+			$(".popup_normal_off_register").css("display","none");
+			$(".popup_wrap").css("display","none");
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	});	
+}
+
+function post_normalOff_update(no){
+	var emp = $(".popup_normal_off_update > table tr > td > select[name='emp']").val();
+	var eno = emp.split("_")[0];
+	var etype = emp.split("_")[1];
+	var offtype = $(".popup_normal_off_update > table tr > td > input[name='offType']").val();
+	var sDate = $(".popup_normal_off_update > table tr > td > input[name='startdate']").val();
+	var sTime = Number($(".popup_normal_off_update > table tr > td > select[name='starttime']").val())*60;
+	var eDate = $(".popup_normal_off_update > table tr > td > input[name='enddate']").val();
+	var eTime = Number($(".popup_normal_off_update > table tr > td > select[name='endtime']").val())*60;
+	var vo = {no:no, eno:eno, etype:etype, offtype:offtype, startdate:sDate, enddate:eDate, starttime:sTime, endtime:eTime, regdate:"", writer:""};
+	
+	$.ajax({
+		url:"${pageContext.request.contextPath}/normalOffUpdate",
+		type:"get",
+		data:vo,
+		dataType:"text",
+		async:false,
+		success:function(json){
+			alert("휴무 수정이 완료되었습니다.");
+			$(".popup_normal_off_update > table tr > td > select[name='emp'] > option[value='']").prop("selected", true);
+			$(".popup_normal_off_update > table tr > td > input[name='offType']").val("휴무");
+			$(".popup_normal_off_update > table tr > td > input[name='startdate']").val("");
+			$(".popup_normal_off_update > table tr > td > select[name='starttime'] > option[value='8']").prop("selected", true);
+			$(".popup_normal_off_update > table tr > td > input[name='enddate']").val("");
+			$(".popup_normal_off_update > table tr > td > select[name='endtime'] > option[value='23']").prop("selected", true);
+			
+			$(".popup_normal_off_update").css("display","none");
+			$(".popup_wrap").css("display","none");
+			draw_normalOff_table();
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	});	
+}
+
+function get_fixOff_all(info){
+	var dt;
+	$.ajax({
+		url:"${pageContext.request.contextPath}/fixOffGetAll",
+		type:"get",
+		data:info,
+		dataType:"json",
+		async:false,
+		success:function(json){
+			dt = json;
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	});
+	return dt;
+}
+
+function get_fixOff_byNo(no){
+	var dt;
+	$.ajax({
+		url:"${pageContext.request.contextPath}/fixOffGetByNo/"+no,
+		type:"get",
+		dataType:"json",
+		async:false,
+		success:function(json){
+			dt = json;
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	});
+	return dt;
+}
+
 function get_fixOff_byDate(date){
 	var dt;
 	$.ajax({
@@ -2375,7 +2536,7 @@ function draw_fixOff_in_timetable(date){
 	var timeTableClass = "";
 	
 	$(offData).each(function(){
-		for(var i=((this.starttime)/60) ; i<((this.endtime)/60) ; i++){
+		for(var i=(Number(this.starttime)/60) ; i<=(Number(this.endtime)/60) ; i++){
 			timeTableClass = "."+this.etype+"_"+this.eno+"_"+i;
 			$(timeTableClass).html("");
 			$(timeTableClass).append("<p style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>")
@@ -2429,48 +2590,6 @@ function draw_fixOff_in_weektable(){
 	}
 }
 
-function get_fixOff_all(info){
-	var dt;
-	$.ajax({
-		url:"${pageContext.request.contextPath}/fixOffGetAll",
-		type:"get",
-		data:info,
-		dataType:"json",
-		async:false,
-		success:function(json){
-			dt = json;
-		},
-		error:function(request,status,error){
-			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-		}
-	});
-	return dt;
-}
-
-function post_normalOff_register(vo){
-	$.ajax({
-		url:"${pageContext.request.contextPath}/normalOffRegister",
-		type:"get",
-		data:vo,
-		dataType:"text",
-		async:false,
-		success:function(json){
-			alert("휴무 등록이 완료되었습니다.");
-			$(".popup_normal_off_register > table tr > td > select[name='emp'] > option[value='']").prop("selected", true);
-			$(".popup_normal_off_register > table tr > td > input[name='offType']").val("휴무");
-			$(".popup_normal_off_register > table tr > td > input[name='startdate']").val("");
-			$(".popup_normal_off_register > table tr > td > select[name='starttime'] > option[value='8']").prop("selected", true);
-			$(".popup_normal_off_register > table tr > td > input[name='enddate']").val("");
-			$(".popup_normal_off_register > table tr > td > select[name='endtime'] > option[value='23']").prop("selected", true);
-			
-			$(".popup_normal_off_register").css("display","none");
-			$(".popup_wrap").css("display","none");
-		},
-		error:function(request,status,error){
-			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-		}
-	});	
-}
 
 function draw_fixOff_table(info){
 	var json = get_fixOff_all(info);
@@ -2485,7 +2604,8 @@ function draw_fixOff_table(info){
 			emp = get_employee_byEno(this.eno);
 			
 			str += "<tr><td>"+emp.name+"</td><td>"+this.offtype+"</td><td>"+this.dow+"</td>"
-				+ "<td>"+this.startdate+" "+(Number(this.starttime)/60)+"시</td><td>"+this.enddate+" "+(Number(this.endtime)/60)+"시</td><td>"+this.regdate+" "+this.writer+"</td><td><button>수정</button></td></tr>";
+				+ "<td>"+this.startdate+" "+(Number(this.starttime)/60)+"시</td><td>"+this.enddate+" "+(Number(this.endtime)/60)+"시</td>"
+				+"<td>"+this.regdate+" "+this.writer+"</td><td><button>수정</button><input type='hidden' name='no' value='"+this.no+"'></td></tr>";
 		});
 		str += "</table>";
 		
@@ -2515,7 +2635,22 @@ function draw_fixOff_table(info){
 	$(".fix_off_selectBox_wrap > select[name='month'] > option[value='"+todayArr[1]+"']").prop("selected", true);
 }
 
-function post_fixOff_register(vo){
+function post_fixOff_register(){
+	var emp = $(".popup_fix_off_register > table tr > td > select[name='emp']").val();
+	var eno = emp.split("_")[0];
+	var etype = emp.split("_")[1];
+	var offtype = $(".popup_fix_off_register > table tr > td > input[name='offType']").val();
+	var dow = $(".popup_fix_off_register > table tr > td > select[name='dow']").val();
+	var sDate = $(".popup_fix_off_register > table tr > td > input[name='startdate']").val();
+	var sTime = Number($(".popup_fix_off_register > table tr > td > select[name='starttime']").val())*60;
+	var eDate = $(".popup_fix_off_register > table tr > td > input[name='enddate']").val();
+	var eTime = Number($(".popup_fix_off_register > table tr > td > select[name='endtime']").val())*60;
+	var now = new Date();
+	var regdate = now.getFullYear() + "-" + (((now.getMonth()+1)>9?'':'0')+(now.getMonth()+1)) + "-" + ((now.getDate()>9?'':'0')+now.getDate()) 
+				+ " " + now.getHours() + ":" + ((now.getMinutes()>9?'':'0')+now.getMinutes());
+	var writer = $("#session_login_name").val();
+	var vo = {no:0, eno:eno, etype:etype, offtype:offtype, dow:dow, startdate:sDate, enddate:eDate, starttime:sTime, endtime:eTime, regdate:regdate, writer:writer};
+	
 	$.ajax({
 		url:"${pageContext.request.contextPath}/fixOffRegister",
 		type:"get",
@@ -2541,6 +2676,45 @@ function post_fixOff_register(vo){
 	});	
 }
 
+function post_fixOff_update(no){
+	var emp = $(".popup_fix_off_update > table tr > td > select[name='emp']").val();
+	var eno = emp.split("_")[0];
+	var etype = emp.split("_")[1];
+	var offtype = $(".popup_fix_off_update > table tr > td > input[name='offType']").val();
+	var dow = $(".popup_fix_off_update > table tr > td > select[name='dow']").val();
+	var sDate = $(".popup_fix_off_update > table tr > td > input[name='startdate']").val();
+	var sTime = Number($(".popup_fix_off_update > table tr > td > select[name='starttime']").val())*60;
+	var eDate = $(".popup_fix_off_update > table tr > td > input[name='enddate']").val();
+	var eTime = Number($(".popup_fix_off_update > table tr > td > select[name='endtime']").val())*60;
+	
+	var vo = {no:no, eno:eno, etype:etype, offtype:offtype, dow:dow, startdate:sDate, enddate:eDate, starttime:sTime, endtime:eTime, regdate:"", writer:""};
+	
+	$.ajax({
+		url:"${pageContext.request.contextPath}/fixOffUpdate",
+		type:"get",
+		data:vo,
+		dataType:"text",
+		async:false,
+		success:function(json){
+			alert("고정휴무 수정이 완료되었습니다.");
+			
+			$(".popup_fix_off_update > table tr > td > select[name='emp'] > option[value='']").prop("selected", true);
+			$(".popup_fix_off_update > table tr > td > input[name='offType']").val("고정휴무");
+			$(".popup_fix_off_update > table tr > td > select[name='dow'] > option[value='']").prop("selected", true);
+			$(".popup_fix_off_update > table tr > td > input[name='startdate']").val("");
+			$(".popup_fix_off_update > table tr > td > select[name='starttime'] > option[value='8']").prop("selected", true);
+			$(".popup_fix_off_update > table tr > td > input[name='enddate']").val("");
+			$(".popup_fix_off_update > table tr > td > select[name='endtime'] > option[value='23']").prop("selected", true);
+			
+			$(".popup_fix_off_update").css("display","none");
+			$(".popup_wrap").css("display","none");
+			draw_fixOff_table();
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	});
+}
 
 $(function(){
 	//진료view에서 무슨 탭 눌러졌는지 기억하기 위한 변수
@@ -3007,21 +3181,36 @@ $(function(){
 	});
 	//일반휴무 휴무등록 클릭
 	$(".popup_normal_off_register > .popup_normalOff_register_btn_wrap > p").click(function(){
-		var emp = $(".popup_normal_off_register > table tr > td > select[name='emp']").val();
-		var eno = emp.split("_")[0];
-		var etype = emp.split("_")[1];
-		var offtype = $(".popup_normal_off_register > table tr > td > input[name='offType']").val();
-		var sDate = $(".popup_normal_off_register > table tr > td > input[name='startdate']").val();
-		var sTime = Number($(".popup_normal_off_register > table tr > td > select[name='starttime']").val())*60;
-		var eDate = $(".popup_normal_off_register > table tr > td > input[name='enddate']").val();
-		var eTime = Number($(".popup_normal_off_register > table tr > td > select[name='endtime']").val())*60;
-		var now = new Date();
-		var regdate = now.getFullYear() + "-" + (((now.getMonth()+1)>9?'':'0')+(now.getMonth()+1)) + "-" + ((now.getDate()>9?'':'0')+now.getDate()) 
-					+ " " + now.getHours() + ":" + ((now.getMinutes()>9?'':'0')+now.getMinutes());
-		var writer = $("#session_login_name").val();
-		var vo = {no:0, eno:eno, etype:etype, offtype:offtype, startdate:sDate, enddate:eDate, starttime:sTime, endtime:eTime, regdate:regdate, writer:writer};
-		console.log(offtype);
-		post_normalOff_register(vo);
+		post_normalOff_register();
+	});
+	
+	//일반휴무 수정view
+	$(document).on("click", ".tbl_normal_off tr > td > button", function(){
+		var no = $(this).parent().find("input[name='no']").val();
+		var json = get_normalOff_byNo(no);
+		
+		$(".popup_normal_off_update > span > input[name='no']").val(no);
+		$(".popup_normal_off_update > table tr > td > select[name='emp'] > option[value='"+json.eno+"_"+json.etype+"']").prop("selected", true);
+		$(".popup_normal_off_update > table tr > td > input[name='offType']").val(json.offtype);
+		$(".popup_normal_off_update > table tr > td > input[name='startdate']").val(json.startdate);
+		$(".popup_normal_off_update > table tr > td > select[name='starttime'] > option[value='"+(Number(json.starttime)/60)+"']").prop("selected", true);
+		$(".popup_normal_off_update > table tr > td > input[name='enddate']").val(json.enddate);
+		$(".popup_normal_off_update > table tr > td > select[name='endtime'] > option[value='"+(Number(json.endtime)/60)+"']").prop("selected", true);
+		
+		$(".popup_wrap").css("display", "block");
+		$(".popup_normal_off_update").css("display","block");
+	});
+	
+	//일반휴무 수정 등록/삭제 클릭
+	$(".popup_normalOff_update_btn_wrap > p").click(function(){
+		var idx = $(this).index();
+		var no = $(".popup_normal_off_update > span > input[name='no']").val();
+		
+		if(idx == 0){
+			post_normalOff_update(no);
+		}else if(idx == 1){
+			post_normalOff_delete(no);
+		}
 	});
 	
 	//고정휴무 조건 검색
@@ -3046,27 +3235,43 @@ $(function(){
 	});
 	//고정휴무 휴무등록 클릭
 	$(".popup_fix_off_register > .popup_fixOff_register_btn_wrap > p").click(function(){
-		var emp = $(".popup_fix_off_register > table tr > td > select[name='emp']").val();
-		var eno = emp.split("_")[0];
-		var etype = emp.split("_")[1];
-		var offtype = $(".popup_fix_off_register > table tr > td > input[name='offType']").val();
-		var dow = $(".popup_fix_off_register > table tr > td > select[name='dow']").val();
-		var sDate = $(".popup_fix_off_register > table tr > td > input[name='startdate']").val();
-		var sTime = Number($(".popup_fix_off_register > table tr > td > select[name='starttime']").val())*60;
-		var eDate = $(".popup_fix_off_register > table tr > td > input[name='enddate']").val();
-		var eTime = Number($(".popup_fix_off_register > table tr > td > select[name='endtime']").val())*60;
-		var now = new Date();
-		var regdate = now.getFullYear() + "-" + (((now.getMonth()+1)>9?'':'0')+(now.getMonth()+1)) + "-" + ((now.getDate()>9?'':'0')+now.getDate()) 
-					+ " " + now.getHours() + ":" + ((now.getMinutes()>9?'':'0')+now.getMinutes());
-		var writer = $("#session_login_name").val();
-		var vo = {no:0, eno:eno, etype:etype, offtype:offtype, dow:dow, startdate:sDate, enddate:eDate, starttime:sTime, endtime:eTime, regdate:regdate, writer:writer};
-		console.log(vo);
 		post_fixOff_register(vo);
 	});
 	
+	//고정휴무 수정view
+	$(document).on("click", ".tbl_fix_off tr > td > button", function(){
+		var no = $(this).parent().find("input[name='no']").val();
+		var json = get_fixOff_byNo(no);
+		
+		$(".popup_fix_off_update > span > input[name='no']").val(no);
+		$(".popup_fix_off_update > table tr > td > select[name='emp'] > option[value='"+json.eno+"_"+json.etype+"']").prop("selected", true);
+		$(".popup_fix_off_update > table tr > td > input[name='offType']").val(json.offtype);
+		$(".popup_fix_off_update > table tr > td > select[name='dow'] > option[value='"+json.dow+"']").prop("selected", true);
+		$(".popup_fix_off_update > table tr > td > input[name='startdate']").val(json.startdate);
+		$(".popup_fix_off_update > table tr > td > select[name='starttime'] > option[value='"+(Number(json.starttime)/60)+"']").prop("selected", true);
+		$(".popup_fix_off_update > table tr > td > input[name='enddate']").val(json.enddate);
+		$(".popup_fix_off_update > table tr > td > select[name='endtime'] > option[value='"+(Number(json.endtime)/60)+"']").prop("selected", true);
+		
+		$(".popup_wrap").css("display", "block");
+		$(".popup_fix_off_update").css("display","block");
+	});
+	
+	//고정휴무 수정 등록/삭제 클릭
+	$(".popup_fixOff_update_btn_wrap > p").click(function(){
+		var idx = $(this).index();
+		var no = $(".popup_fix_off_update > span > input[name='no']").val();
+		
+		if(idx == 0){
+			post_fixOff_update(no);
+		}else if(idx == 1){
+			post_fixOff_delete(no);
+		}
+	});
+	
+	
+	//모든 페이징에서 선택된 페이지 클릭 막음
 	$(document).on("click", ".active2", function(e){
 		e.preventDefault();
-		
 		return false;
 	})
 });
@@ -3076,7 +3281,6 @@ $(function(){
 	<div class="popup_wrap">
 		<jsp:include page="../include/popup.jsp"></jsp:include>
 	</div><!-- popup_wrap end -->
-	
 	
 	<div class="all_wrap">
 		<div class="header">

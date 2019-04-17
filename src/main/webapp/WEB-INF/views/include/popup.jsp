@@ -456,8 +456,60 @@
 		</div>
 	</div><!-- popup_normal_off_register -->
 	
+	<div class="popup_normal_off_update popup_content">
+		<h2>일반휴무 수정</h2>
+		<span><input type="hidden" name="no" value=""></span>
+		<table>
+			<tr>
+				<th>휴무자</th>
+				<td>
+					<select name="emp" disabled>
+						<option value="">선택해주세요.</option>
+						<c:forEach var="list" items="${doctorList}">
+							<option value="${list.eno}_${list.type}">${list.name}</option>
+						</c:forEach>
+						<c:forEach var="list" items="${therapistList}">
+							<option value="${list.eno}_${list.type}">${list.name}</option>
+						</c:forEach>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th>휴무종류</th>
+				<td><input type="text" name="offType" value="휴무" placeholder="ex) 휴무"></td>
+			</tr>
+			<tr>
+				<th>시작일</th>
+				<td>
+					<input type="date" name="startdate" value="">
+					<select name="starttime">
+						<c:forEach var="idx" begin="8" end="23">
+							<option value="${idx}">${idx}시</option>
+						</c:forEach>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th>종료일</th>
+				<td>
+					<input type="date" name="enddate" value="">
+					<select name="endtime">
+						<c:forEach var="idx" begin="8" end="23">
+							<option value="${idx}">${idx}시</option>
+						</c:forEach>
+					</select>
+				</td>
+			</tr>
+		</table>
+		<div class="popup_normalOff_update_btn_wrap">
+			<p>수정</p>
+			<p>삭제</p>
+		</div>
+	</div><!-- popup_normal_off_update end -->
+	
 	<div class="popup_fix_off_register popup_content">
 		<h2>고정휴무 추가</h2>
+		<span><input type="hidden" name="no" value=""></span>
 		<table>
 			<tr>
 				<th>휴무자</th>
@@ -519,3 +571,67 @@
 		</div>
 	</div><!-- popup_fix_off_register -->
 	
+	<div class="popup_fix_off_update popup_content">
+		<h2>고정휴무 수정</h2>
+		<span><input type="hidden" name="no" value=""></span>
+		<table>
+			<tr>
+				<th>휴무자</th>
+				<td>
+					<select name="emp" disabled>
+						<option value="">선택해주세요.</option>
+						<c:forEach var="list" items="${doctorList}">
+							<option value="${list.eno}_${list.type}">${list.name}</option>
+						</c:forEach>
+						<c:forEach var="list" items="${therapistList}">
+							<option value="${list.eno}_${list.type}">${list.name}</option>
+						</c:forEach>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th>휴무종류</th>
+				<td><input type="text" name="offType" value="고정휴무" placeholder="ex) 고정휴무"></td>
+			</tr>
+			<tr>
+				<th>요일</th>
+				<td>
+					<select name="dow">
+						<option value="">요일선택</option>
+						<option value="월">월</option>
+						<option value="화">화</option>
+						<option value="수">수</option>
+						<option value="목">목</option>
+						<option value="금">금</option>
+						<option value="토">토</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th>시작일</th>
+				<td>
+					<input type="date" name="startdate" value="">
+					<select name="starttime">
+						<c:forEach var="idx" begin="8" end="23">
+							<option value="${idx}">${idx}시</option>
+						</c:forEach>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th>종료일</th>
+				<td>
+					<input type="date" name="enddate" value="">
+					<select name="endtime">
+						<c:forEach var="idx" begin="8" end="23">
+							<option value="${idx}">${idx}시</option>
+						</c:forEach>
+					</select>
+				</td>
+			</tr>
+		</table>
+		<div class="popup_fixOff_update_btn_wrap">
+			<p>수정</p>
+			<p>삭제</p>
+		</div>
+	</div><!-- popup_fix_off_update end -->

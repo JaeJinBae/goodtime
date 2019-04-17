@@ -24,6 +24,11 @@ public class NormalOffDaoImpl implements NormalOffDao {
 	}
 
 	@Override
+	public NormalOffVO selectByNo(int no) {
+		return session.selectOne(namespace + ".selectByNo", no);
+	}
+
+	@Override
 	public List<NormalOffVO> selectByDate(OffData offdata) {
 		return session.selectList(namespace + ".selectByDate", offdata);
 	}

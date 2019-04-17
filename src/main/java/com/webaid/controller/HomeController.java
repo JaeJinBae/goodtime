@@ -1093,7 +1093,7 @@ public class HomeController {
 			pageMaker.setCri(cri);
 			pageMaker.makeSearch(cri.getPage());
 			pageMaker.setTotalCount(noService.listSearchCount(cri));
-			System.out.println("조건에 맞는 일반 휴무는 "+list);
+			
 			map.put("list", list);
 			map.put("pageMaker", pageMaker);
 			
@@ -1105,6 +1105,20 @@ public class HomeController {
 		return entity;
 	}
 	
+	@RequestMapping(value="/normalOffGetByNo/{no}", method=RequestMethod.GET)
+	public ResponseEntity<NormalOffVO> normalOffGetByNo(@PathVariable("no") int no){
+		ResponseEntity<NormalOffVO> entity = null;
+		try {
+			NormalOffVO vo = noService.selectByNo(no);
+			
+			entity = new ResponseEntity<NormalOffVO>(vo, HttpStatus.OK);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			entity = new ResponseEntity<NormalOffVO>(HttpStatus.BAD_REQUEST);
+		}
+		
+		return entity;
+	}
 	
 	@RequestMapping(value="/selectNormalOffByDate/{date}", method=RequestMethod.GET)
 	public ResponseEntity<List<NormalOffVO>> normalOffSelectByDate(@PathVariable("date") String date){
@@ -1154,6 +1168,20 @@ public class HomeController {
 		return entity;
 	}
 	
+	@RequestMapping(value="/normalOffUpdate", method=RequestMethod.GET)
+	public ResponseEntity<String> normalOffUpdate(NormalOffVO vo){
+		ResponseEntity<String> entity = null;
+		
+		try {
+			noService.update(vo);
+			entity = new ResponseEntity<String>("ok", HttpStatus.OK);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			entity = new ResponseEntity<String>("no", HttpStatus.BAD_REQUEST);
+		}
+		return entity;
+	}
+	
 	@RequestMapping(value="/fixOffGetAll", method=RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> fixOffGetAll(@ModelAttribute("cri") SearchCriteriaRR cri){
 		ResponseEntity<Map<String, Object>> entity = null;
@@ -1192,6 +1220,21 @@ public class HomeController {
 			entity = new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
+		}
+		
+		return entity;
+	}
+	
+	@RequestMapping(value="/fixOffGetByNo/{no}", method=RequestMethod.GET)
+	public ResponseEntity<FixOffVO> fixOffGetByNo(@PathVariable("no") int no){
+		ResponseEntity<FixOffVO> entity = null;
+		try {
+			FixOffVO vo = foService.selectByNo(no);
+			
+			entity = new ResponseEntity<FixOffVO>(vo, HttpStatus.OK);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			entity = new ResponseEntity<FixOffVO>(HttpStatus.BAD_REQUEST);
 		}
 		
 		return entity;
@@ -1261,4 +1304,17 @@ public class HomeController {
 		return entity;
 	}
 	
+	@RequestMapping(value="/fixOffUpdate", method=RequestMethod.GET)
+	public ResponseEntity<String> fixOffUpdate(FixOffVO vo){
+		ResponseEntity<String> entity = null;
+		System.out.println("받은 vo= \n"+vo);
+		try {
+			foService.update(vo);
+			entity = new ResponseEntity<String>("ok", HttpStatus.OK);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			entity = new ResponseEntity<String>("no", HttpStatus.BAD_REQUEST);
+		}
+		return entity;
+	}
 }

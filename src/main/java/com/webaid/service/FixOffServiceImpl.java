@@ -22,6 +22,11 @@ public class FixOffServiceImpl implements FixOffService {
 	}
 
 	@Override
+	public FixOffVO selectByNo(int no) {
+		return dao.selectByNo(no);
+	}
+
+	@Override
 	public List<FixOffVO> selectByDate(OffData offdata) {
 		return dao.selectByDate(offdata);
 	}

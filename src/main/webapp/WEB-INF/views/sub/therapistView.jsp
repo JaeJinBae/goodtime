@@ -1634,116 +1634,6 @@ function draw_simple_reservation_view(type, rno){
 	$(".al_tbl_wrap2").css("display","block");
 }
 
-function post_ncReservation_register(vo, stbn){
-	$.ajax({
-		url:"${pageContext.request.contextPath}/ncReservationRegister",
-		type:"post",
-		dataType:"text",
-		data:vo,
-		async:false,
-		success:function(json){
-			if(json == "OK"){
-				alert("예약등록이 완료되었습니다.");
-				$("#reservation_view_btn").html("");
-				$(".reservation_register_btn").css("display", "none");
-				$("#reservation_view_btn").css("display", "none");
-				$(".popup_clinic_reservation_register").css("display", "none");
-				$(".popup_therapy_reservation_register").css("display", "none");
-				$(".popup_wrap").css("display","none");
-				
-				draw_time_table_by_case(stbn);
-			}else{
-				alert("예약등록이 정상적으로 등록되지 않았습니다. 다시 한번 등록하세요.");
-			}
-		}
-	});
-}
-function post_ntReservation_register(vo, stbn){
-	$.ajax({
-		url:"${pageContext.request.contextPath}/ntReservationRegister",
-		type:"post",
-		dataType:"text",
-		data:vo,
-		async:false,
-		success:function(json){
-			if(json == "OK"){
-				alert("예약등록이 완료되었습니다.");
-				$("#reservation_view_btn").html("");
-				$(".reservation_register_btn").css("display", "none");
-				$("#reservation_view_btn").css("display", "none");
-				$(".popup_clinic_reservation_register").css("display", "none");
-				$(".popup_therapy_reservation_register").css("display", "none");
-				$(".popup_wrap").css("display","none");
-				
-				draw_time_table_by_case(stbn);
-			}else{
-				alert("예약등록이 정상적으로 등록되지 않았습니다. 다시 한번 등록하세요.");
-			}
-		}
-	});
-}
-function post_fcReservation_register(vo, stbn){
-	var arrDate = get_between_date(vo.fix_day_start, vo.fix_day_end);
-	var data = {"vo":vo, "date":arrDate};
-	
-	$.ajax({
-		url:"${pageContext.request.contextPath}/fcReservationRegister",
-		type:"post",
-		dataType:"text",
-		data:JSON.stringify(data),
-		async:false,
-		contentType : "application/json; charset=UTF-8",
-		success:function(json){
-			if(json == "OK"){
-				alert("예약등록이 완료되었습니다.");
-				$("#reservation_view_btn").html("");
-				$(".reservation_register_btn").css("display", "none");
-				$("#reservation_view_btn").css("display", "none");
-				$(".popup_clinic_reservation_register").css("display", "none");
-				$(".popup_therapy_reservation_register").css("display", "none");
-				$(".popup_wrap").css("display","none");
-				
-				draw_time_table_by_case(stbn);
-			}else{
-				alert("예약등록이 정상적으로 등록되지 않았습니다. 다시 한번 등록하세요.");
-			}
-		},
-		error:function(request,status,error){
-			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-		}
-	});
-}
-function post_ftReservation_register(vo, stbn){
-	var arrDate = get_between_date(vo.fix_day_start, vo.fix_day_end);
-	var data = {"vo":vo, "date":arrDate};
-	
-	$.ajax({
-		url:"${pageContext.request.contextPath}/ftReservationRegister",
-		type:"post",
-		dataType:"text",
-		data:JSON.stringify(data),
-		async:false,
-		contentType : "application/json; charset=UTF-8",
-		success:function(json){
-			if(json == "OK"){
-				alert("예약등록이 완료되었습니다.");
-				$("#reservation_view_btn").html("");
-				$(".reservation_register_btn").css("display", "none");
-				$("#reservation_view_btn").css("display", "none");
-				$(".popup_clinic_reservation_register").css("display", "none");
-				$(".popup_therapy_reservation_register").css("display", "none");
-				$(".popup_wrap").css("display","none");
-				
-				draw_time_table_by_case(stbn);
-			}else{
-				alert("예약등록이 정상적으로 등록되지 않았습니다. 다시 한번 등록하세요.");
-			}
-		},
-		error:function(request,status,error){
-			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-		}
-	});
-}
 
 //주간 선택하면 select 태그에 값 설정
 function draw_week_calendar(date, emp, type, idxx){
@@ -2345,7 +2235,7 @@ function draw_normalOff_in_timetable(date){
 		sTime = Number(this.starttime)/60;
 		eTime = Number(this.endtime)/60;
 		
-		for(var i=sTime; i<=eTime; i++){
+		for(var i=sTime; i<eTime; i++){
 			timeTableClass = "."+this.etype+"_"+this.eno+"_"+i;
 			$(timeTableClass).html("");
 			$(timeTableClass).append("<p class='normal_off' style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>")
@@ -2517,7 +2407,7 @@ function draw_fixOff_in_timetable(date){
 	var timeTableClass = "";
 	
 	$(offData).each(function(){
-		for(var i=(Number(this.starttime)/60) ; i<=(Number(this.endtime)/60) ; i++){
+		for(var i=(Number(this.starttime)/60) ; i<(Number(this.endtime)/60) ; i++){
 			timeTableClass = "."+this.etype+"_"+this.eno+"_"+i;
 			$(timeTableClass).html("");
 			$(timeTableClass).append("<p class='fix_off' style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>")

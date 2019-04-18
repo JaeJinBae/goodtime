@@ -2584,26 +2584,26 @@ function draw_normalOff_in_timetable(date){
 		eTime = Number(this.endtime)/60;
 		
 		if(this.startdate == date && this.enddate == date){
-			for(var i=sTime; i<=eTime; i++){
+			for(var i=sTime; i<eTime; i++){
 				timeTableClass = "."+this.etype+"_"+this.eno+"_"+i;
 				$(timeTableClass).html("");
 				$(timeTableClass).append("<p class='normal_off' style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>");
 			}
 		}else{
 			if(this.startdate == date){
-				for(var i=sTime; i<=23; i++){
+				for(var i=sTime; i<23; i++){
 					timeTableClass = "."+this.etype+"_"+this.eno+"_"+i;
 					$(timeTableClass).html("");
 					$(timeTableClass).append("<p class='normal_off' style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>");
 				}
 			}else if(this.enddate == date){
-				for(var i=7; i<=eTime; i++){
+				for(var i=7; i<eTime; i++){
 					timeTableClass = "."+this.etype+"_"+this.eno+"_"+i;
 					$(timeTableClass).html("");
 					$(timeTableClass).append("<p class='normal_off' style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>");
 				}
 			}else{
-				for(var i=7; i<=23; i++){
+				for(var i=7; i<23; i++){
 					timeTableClass = "."+this.etype+"_"+this.eno+"_"+i;
 					$(timeTableClass).html("");
 					$(timeTableClass).append("<p class='normal_off' style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>");
@@ -2632,13 +2632,45 @@ function draw_normalOff_in_weektable(){
 	var offData = get_normalOff_byWeek(arrWeek, eno);
 
 	var target_class;
+	var sTime;
+	var eTime;
 	
 	for(var i=1; i<arrWeek.length; i++){
 		$(offData[arrWeek[i]]).each(function(){
-			for(var n=Number(this.starttime)/60; n<Number(this.endtime)/60; n++){
+			sTime = Number(this.starttime)/60;
+			eTime = Number(this.endtime)/60;
+			/* for(var n = sTime; n < eTime; n++){
 				target_class = "."+this.eno+"_"+arrWeek[i]+"_"+n;
 				$(target_class).html("");
 				$(target_class).append("<p class='normal_off' style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>");
+			} */
+			console.log(this.startdate+"/"+this.enddate+"/"+arrWeek[i]);
+			if(this.startdate == arrWeek[i] && this.enddate == arrWeek[i]){
+				for(var n=sTime; n<eTime; n++){
+					target_class = "."+this.eno+"_"+arrWeek[i]+"_"+n;
+					$(target_class).html("");
+					$(target_class).append("<p class='normal_off' style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>");
+				}
+			}else{
+				if(this.startdate == arrWeek[i]){
+					for(var n=sTime; n<23; n++){
+						target_class = "."+this.eno+"_"+arrWeek[i]+"_"+n;
+						$(target_class).html("");
+						$(target_class).append("<p class='normal_off' style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>");
+					}
+				}else if(this.enddate == arrWeek[i]){
+					for(var n=7; n<eTime; n++){
+						target_class = "."+this.eno+"_"+arrWeek[i]+"_"+n;
+						$(target_class).html("");
+						$(target_class).append("<p class='normal_off' style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>");
+					}
+				}else{
+					for(var n=7; n<23; n++){
+						target_class = "."+this.eno+"_"+arrWeek[i]+"_"+n;
+						$(target_class).html("");
+						$(target_class).append("<p class='normal_off' style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>");
+					}
+				}
 			}
 		});
 	}
@@ -2834,7 +2866,7 @@ function draw_fixOff_in_timetable(date){
 	var timeTableClass = "";
 	
 	$(offData).each(function(){
-		for(var i=(Number(this.starttime)/60) ; i<=(Number(this.endtime)/60) ; i++){
+		for(var i=(Number(this.starttime)/60) ; i<(Number(this.endtime)/60) ; i++){
 			timeTableClass = "."+this.etype+"_"+this.eno+"_"+i;
 			$(timeTableClass).html("");
 			$(timeTableClass).append("<p class='fix_off' style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>")

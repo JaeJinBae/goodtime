@@ -3497,7 +3497,7 @@ $(function(){
 	});
 	//고정휴무 휴무등록 클릭
 	$(".popup_fix_off_register > .popup_fixOff_register_btn_wrap > p").click(function(){
-		post_fixOff_register(vo);
+		post_fixOff_register();
 	});
 	
 	//고정휴무 수정view

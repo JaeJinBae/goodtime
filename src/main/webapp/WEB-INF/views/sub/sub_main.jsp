@@ -2578,15 +2578,37 @@ function draw_normalOff_in_timetable(date){
 	var timeTableClass = "";
 	var sTime;
 	var eTime;
+	
 	$(offData).each(function(){
-		console.log(this);
 		sTime = Number(this.starttime)/60;
 		eTime = Number(this.endtime)/60;
 		
-		for(var i=sTime; i<=eTime; i++){
-			timeTableClass = "."+this.etype+"_"+this.eno+"_"+i;
-			$(timeTableClass).html("");
-			$(timeTableClass).append("<p class='normal_off' style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>")
+		if(this.startdate == date && this.enddate == date){
+			for(var i=sTime; i<=eTime; i++){
+				timeTableClass = "."+this.etype+"_"+this.eno+"_"+i;
+				$(timeTableClass).html("");
+				$(timeTableClass).append("<p class='normal_off' style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>");
+			}
+		}else{
+			if(this.startdate == date){
+				for(var i=sTime; i<=23; i++){
+					timeTableClass = "."+this.etype+"_"+this.eno+"_"+i;
+					$(timeTableClass).html("");
+					$(timeTableClass).append("<p class='normal_off' style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>");
+				}
+			}else if(this.enddate == date){
+				for(var i=7; i<=eTime; i++){
+					timeTableClass = "."+this.etype+"_"+this.eno+"_"+i;
+					$(timeTableClass).html("");
+					$(timeTableClass).append("<p class='normal_off' style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>");
+				}
+			}else{
+				for(var i=7; i<=23; i++){
+					timeTableClass = "."+this.etype+"_"+this.eno+"_"+i;
+					$(timeTableClass).html("");
+					$(timeTableClass).append("<p class='normal_off' style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>");
+				}
+			}
 		}
 	});
 }

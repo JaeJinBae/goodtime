@@ -2913,7 +2913,7 @@ function post_fixOff_register(){
 	var vo = {no:0, eno:eno, etype:etype, offtype:offtype, dow:dow, startdate:sDate, enddate:eDate, starttime:sTime, endtime:eTime, regdate:regdate, writer:writer};
 	
 	$.ajax({
-		url:"${pageContext.request.contextPath}/fixOffRegister",
+		url:"${pageContext.request.contextPath}/fixOffRegister", 
 		type:"get",
 		data:vo,
 		dataType:"text",

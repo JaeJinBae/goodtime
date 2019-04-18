@@ -14,12 +14,16 @@
 <script src="${pageContext.request.contextPath}/resources/js/week_calendar.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/mainFunction.js"></script>
 <style>
+	html{
+		overflow: hidden;
+	}
 	.popup_wrap{
 		width:100%;
 		position:fixed;
 		top:0;
 		left:0;
 		display:none;
+		z-index: 9999;
 	}
 	.popup_bg{
 		position: fixed;
@@ -31,33 +35,66 @@
 		opacity: 0.5;
 	}
 	.popup_content{
-		width:600px;
-		height:700px;
+		width:400px;
 		background:#fff;
 		margin:0 auto;
 		margin-top:100px;
+		padding:50px 0;
 		position: relative;
 		z-index: 999;
+		text-align: center;
+	}
+	.popup_content > table{
+		margin: 0 auto;
+		margin-bottom:30px;
 	}
 	.popup_content > table tr{
 		display:block;
 		margin-top:30px;
 	}
 	.popup_content > table tr > th{
-		font-size:15px;
+		font-size:16px;
 		width:100px;
+		color:#057be8;
+		font-weight: bold;
+		letter-spacing: 0.3px;
 	}
 	.popup_content > table tr > td{
 		font-size:15px;
 	}
+	.popup_content > table tr > td > span{
+		vertical-align: middle;
+	}
+	.popup_content > table tr > td > input{
+		font-size:15px;
+	}
 	.popup_content > table tr > td > select{
 		font-size: 15px;
+	}
+	.popup_content > table tr > td > button{
+		font-size: 15px;
+		padding:3px 5px;
+		border: 1px solid lightgray;
+		margin-left:10px;
 	}
 	.popup_patient_register{
 		display: none;
 	}
 	.popup_patientUpdate{
 		display:none;
+	}
+	.popup_patientUpdate > .popup_patient_update_submit_wrap{
+		width:100%;
+		margin: 0 auto;
+		text-align: center;
+	}
+	.popup_patientUpdate > .popup_patient_update_submit_wrap > p{
+		display: inline-block;
+		padding:10px;
+		font-size:15px;
+		margin-left:20px;
+		cursor: pointer;
+		border:1px solid lightgray;
 	}
 	.popup_clinic_reservation_register{
 		display:none;
@@ -77,7 +114,7 @@
 		display:none;
 	}
 	.popup_reservation_info_view > .popup_reservation_info_btn_wrap{
-		width:500px;
+		width:100%;
 		margin:0 auto;
 		text-align: center;
 	}
@@ -91,7 +128,7 @@
 	}
 	.popup_reservation_info_cancel_wrap{
 		display:none;
-		width:500px;
+		width:100%;
 		margin: 0 auto;
 		background: #efefef;
 	}
@@ -101,11 +138,23 @@
 	.popup_reservation_update{
 		display:none;
 	}
+	.popup_reservation_update > .popup_res_update_btn_wrap{
+		width:100%;
+		margin:0 auto;
+		text-align: center;
+	}
+	.popup_reservation_update > .popup_res_update_btn_wrap > p{
+		display: inline-block;
+		padding:10px;
+		font-size:15px;
+		cursor: pointer;
+		border:1px solid lightgray;
+	}
 	.popup_normal_off_register{
 		display:none;
 	}
 	.popup_normal_off_register > .popup_normalOff_register_btn_wrap{
-		width:500px;
+		width:100%;
 		margin:0 auto;
 		text-align: center;
 	}
@@ -121,7 +170,7 @@
 		display:none;
 	}
 	.popup_fix_off_register > .popup_fixOff_register_btn_wrap{
-		width:500px;
+		width:100%;
 		margin:0 auto;
 		text-align: center;
 	}
@@ -137,7 +186,7 @@
 		display:none;
 	}
 	.popup_normal_off_update > .popup_normalOff_update_btn_wrap{
-		width:500px;
+		width:100%;
 		margin:0 auto;
 		text-align: center;
 	}
@@ -153,7 +202,7 @@
 		display:none;
 	}
 	.popup_fix_off_update > .popup_fixOff_update_btn_wrap{
-		width:500px;
+		width:100%;
 		margin:0 auto;
 		text-align: center;
 	}
@@ -168,20 +217,27 @@
 	
 	.all_wrap{
 		width: 100%;
-		/* height: 100%; */
+		height: 100%;
 		padding-bottom:50px;
+		position: relative;
 	}
 	.header{
 		width:100%;
+		position: fixed;
+		top:0;
+		background: #fff;
 	}
 	.section{
+		margin-top:70px;
 		width:100%;
 		height: 100%;
-		overflow: hidden;
+		/* overflow: scroll; */
+		position: relative;
 	}
 	.aside_left{
-		width:15%;
-		min-width:230px;
+		position:fixed;
+		left:0;
+		width: 250px;
 		height:100%;
 		float:left;
 		border-right: 1px solid lightgray;
@@ -196,7 +252,7 @@
 	.aside_left > .al_tbl_wrap_1 > #calendar td{
 		width:30px;
 		height:30px;
-		font-size:15px;
+		font-size:16px;
 		font-weight: bold;
 		text-align: center;
 		cursor: pointer;
@@ -215,6 +271,7 @@
 	}
 	.al_tbl_wrap2_title{
 		width: 95%;
+		text-align: center;
 		margin: 0 auto;
 		background: #057be8;
 		color: #fff;
@@ -223,9 +280,12 @@
 		text-align: center;
 		padding: 15px 0;
 		letter-spacing: 5px;
+		position: relative;
 	}
 	.al_tbl_wrap2 > .al_tbl_wrap2_title > span{
 		cursor: pointer;
+		position: absolute;
+		right:10px;
 	}
 	.al_tbl_wrap2 > #tbl_simple_reservation{
 		width:95%;
@@ -255,10 +315,15 @@
 		font-size:15px;
 	}
 	.aside_right {
+		position:fixed;
+		left: 260px;
 		float:left;
-		width:80%;
+		/* width:80%; */
 		min-width:1000px;
 		height:100%;
+		overflow: scroll;
+		padding-bottom:100px;
+		padding-right:30px;
 	}
 	.ar_tbl_wrap_1{
 		width:100%;
@@ -266,9 +331,32 @@
 	}
 	.search_wrap{
 		float:left;
+		margin-bottom:20px;
+	}
+	.search_wrap > select{
+		font-size: 15px;
+		padding: 3px 5px;
+	}
+	.search_wrap > input {
+		font-size: 15px;
+		padding: 3px 5px;
+	}
+	.search_wrap > button{
+		font-size:15px;
+		border: 1px solid lightgray;
+		padding: 3px 7px;
+		margin-left:10px;
+		letter-spacing: 1px;
 	}
 	.patient_register_btn_wrap{
 		float:right;
+	}
+	.patient_register_btn_wrap > button{
+		font-size:15px;
+		border: 1px solid lightgray;
+		padding: 3px 7px;
+		margin-left:10px;
+		letter-spacing: 1px;
 	}
 	.ar_tbl_wrap_1 > #inner_tbl_wrap{
 		clear: both;
@@ -372,7 +460,69 @@
 	.ar_tbl_wrap_2 {
 		width:100%;
 	}
-	
+	.ar_tbl_wrap_2 > .selectBox_wrap{
+		margin-bottom:20px;
+	}
+	.ar_tbl_wrap_2 > .selectBox_wrap > select{
+		font-size: 15px;
+		padding: 3px 5px;
+	}
+	.ar_tbl_wrap_2 > .selectBox_wrap > input {
+		font-size: 15px;
+		padding: 3px 5px;
+	}
+	.ar_tbl_wrap_2 > .selectBox_wrap > button{
+		font-size:15px;
+		border: 1px solid lightgray;
+		padding: 3px 7px;
+		margin-left:10px;
+		letter-spacing: 1px;
+	}
+	.ar_tbl_wrap_2 > .time_table_wrap > table tr:first-child{
+		background: lightgoldenrodyellow;
+	}
+	.ar_tbl_wrap_2 > .time_table_wrap > table tr th{
+		font-size: 15px;
+	}
+	.ar_tbl_wrap_2 > .time_table_wrap > table tr > td{
+		padding:5px 3px;
+	}
+	.tbl_reservation_record tr > th{
+		border-top:2px solid #5e5e5e;
+		border-bottom:2px solid #5e5e5e;
+		padding:8px 3px;
+		font-weight: bold;
+	}
+	.tbl_reservation_record tr > th:first-child{
+		width:90px;
+	}
+	.tbl_reservation_record tr > th:nth-child(2){
+		width:90px;
+	}
+	.tbl_reservation_record tr > th:nth-child(3){
+		width:90px;
+	}
+	.tbl_reservation_record tr > th:nth-child(4){
+		width:135px;
+	}
+	.tbl_reservation_record tr > th:nth-child(5){
+		width:150px;
+	}
+	.tbl_reservation_record tr > th:nth-child(6){
+		width:180px;
+	}
+	.tbl_reservation_record tr > th:nth-child(7){
+		width:180px;
+	}
+	.tbl_reservation_record tr > th:nth-child(8){
+		width:180px;
+	}
+	.tbl_reservation_record tr > td{
+		text-align: center;
+		padding: 8px 3px !important;
+		border: 0 !important;
+		border-bottom: 1px solid lightgray !important;
+	}
 	.reservation_record_page{
 		float:right;
 		/* width:626px; */ 
@@ -398,7 +548,24 @@
 		line-height: 30px;
 	}
 	
-	
+	.tbl_reservation_update_record tr > th{
+		border-top:2px solid #5e5e5e;
+		border-bottom:2px solid #5e5e5e;
+		padding:8px 3px;
+		font-weight: bold;
+	}
+	.tbl_reservation_update_record tr > th:first-child{
+		width:90px;
+	}
+	.tbl_reservation_update_record tr > th:last-child{
+		max-width:280px;
+	}
+	.tbl_reservation_update_record tr > td{
+		text-align: center;
+		padding: 8px 3px !important;
+		border: 0 !important;
+		border-bottom: 1px solid lightgray !important;
+	}
 	.reservation_update_record_page{
 		float:right;
 		/* width:626px; */ 
@@ -422,6 +589,27 @@
 		height:30px;
 		font-size:1.1em;
 		line-height: 30px;
+	}
+	
+	.tbl_normal_off tr > th{
+		border-top:2px solid #5e5e5e;
+		border-bottom:2px solid #5e5e5e;
+		padding:8px 3px;
+		font-weight: bold;
+	}
+	.tbl_normal_off tr > td{
+		text-align: center;
+		padding: 5px 3px !important;
+		border: 0 !important;
+		border-bottom: 1px solid lightgray !important;
+	}
+	.tbl_normal_off tr > td > button{
+		font-size:15px;
+		border:1px solid lightgray;
+		border-radius: 3px;
+		background: gray;
+		color:#fff;
+		padding:5px 10px;
 	}
 	.normal_off_page{
 		float:right;
@@ -448,6 +636,29 @@
 		line-height: 30px;
 	}
 	
+	.tbl_fix_off tr > th{
+		border-top:2px solid #5e5e5e;
+		border-bottom:2px solid #5e5e5e;
+		padding:8px 3px;
+		font-weight: bold;
+	}
+	.tbl_fix_off tr > th:nth-child(3){
+		width:100px;
+	}
+	.tbl_fix_off tr > td{
+		text-align: center;
+		padding: 5px 3px !important;
+		border: 0 !important;
+		border-bottom: 1px solid lightgray !important;
+	}
+	.tbl_fix_off tr > td > button{
+		font-size:15px;
+		border:1px solid lightgray;
+		border-radius: 3px;
+		background: gray;
+		color:#fff;
+		padding:5px 10px;
+	}
 	.fix_off_page{
 		float:right;
 		/* width:626px; */ 
@@ -515,18 +726,30 @@
 		width:100%;
 	}
 	.time_table_wrap table tr > td{
-		border: 1px solid black;
+		border: 1px solid lightgray;
 		font-size:15px;
 	}
 	.time_table_wrap table tr > td:first-child{
 		text-align: center;
+		width: 80px;
 	}
 	.patient_p_tag{
 		font-size:14px;
 		cursor: pointer;
 		line-height: 22px;
-		padding: 2px 0;
+		padding: 4px 3px;
 		color: #fff;
+		border:1px solid lightgray;
+		border-radius: 3px;
+	}
+	.patient_p_tag > img{
+		margin-left:3px;
+	}
+	.res_no{
+		font-size:14px;
+		padding: 4px 3px;
+		border-radius: 3px;
+		line-height: 22px;
 	}
 	.reservation_register_btn{
 		display:none;
@@ -553,9 +776,11 @@
 	}
 	.normal_off, .fix_off{
 		width:100%;
-		font-size:14px;
+		font-size:15px;
 		text-align: center;
 		padding:3px 0;
+		font-weight: bold;
+		letter-spacing: 1px;
 	}
 </style> 
 <script>
@@ -1027,13 +1252,13 @@ function draw_reservation(date){
 		
 		if(this.result == "예약취소"){
 			target_tag = ".doctor_"+this.eno+"_"+hour;
-			txt = "<p class='patient_p_tag' style='background:#e9e9e9;border:1px solid gray;color:gray;'>"+minute+"~"+end_time+" "+patient.name
+			txt = "<p class='patient_p_tag' style='background:#e9e9e9;color:gray;'>"+minute+"~"+end_time+" "+patient.name
 				+ "<input type='hidden' name='rno' value='"+this.rno+"'><input type='hidden' name='type' value='nc'></p>";
 			
 			$(target_tag).append(txt);
 		}else{
 			target_tag = ".doctor_"+this.eno+"_"+hour;
-			txt = "<p class='patient_p_tag' style='background:"+clinic.color+";border:1px solid gray;'>"+minute+"~"+end_time+" "+patient.name;
+			txt = "<p class='patient_p_tag' style='background:"+clinic.color+";'>"+minute+"~"+end_time+" "+patient.name;
 			if(this.desk_state == "접수완료"){
 				txt += "<img style='width:15px;' class='footImg' src='${pageContext.request.contextPath}/resources/images/foot.png'>";
 			}
@@ -1043,7 +1268,7 @@ function draw_reservation(date){
 			
 			if(overMinute > 0){
 				target_tag = ".doctor_"+this.eno+"_"+(hour+1);
-				txt = "<p style='background:black;color:#fff;'>~"+end_time+"예약불가</p>";
+				txt = "<p class='res_no' style='background:black;color:#fff;'>~"+end_time+"예약불가</p>";
 				$(target_tag).append(txt);
 			}
 		}
@@ -1075,13 +1300,13 @@ function draw_reservation(date){
 		
 		if(this.result == "예약취소"){
 			target_tag = ".therapist_"+this.eno+"_"+hour;
-			txt = "<p class='patient_p_tag' style='background:#e9e9e9;border:1px solid gray;color:gray;'>"+minute+"~"+end_time+" "+patient.name
+			txt = "<p class='patient_p_tag' style='background:#e9e9e9;color:gray;'>"+minute+"~"+end_time+" "+patient.name
 				+ "<input type='hidden' name='rno' value='"+this.rno+"'><input type='hidden' name='type' value='nt'></p>";
 			
 			$(target_tag).append(txt);
 		}else{
 			target_tag = ".therapist_"+this.eno+"_"+hour;
-			txt = "<p class='patient_p_tag' style='background:"+clinic.color+";border:1px solid gray;'>"+minute+"~"+end_time+" "+patient.name;
+			txt = "<p class='patient_p_tag' style='background:"+clinic.color+";'>"+minute+"~"+end_time+" "+patient.name;
 			if(this.desk_state == "접수완료"){
 				txt += "<img style='width:15px;' class='footImg' src='${pageContext.request.contextPath}/resources/images/foot.png'>";
 			}
@@ -1093,7 +1318,7 @@ function draw_reservation(date){
 			
 			if(overMinute > 0){
 				target_tag = ".therapist_"+this.eno+"_"+(hour+1);
-				txt = "<p style='background:black;color:#fff;'>~"+end_time+"예약불가</p>";
+				txt = "<p class='res_no' style='background:black;color:#fff;'>~"+end_time+"예약불가</p>";
 				$(target_tag).append(txt);
 			}
 		}
@@ -1124,13 +1349,13 @@ function draw_reservation(date){
 		
 		if(this.result == "예약취소"){
 			target_tag = ".doctor_"+this.eno+"_"+hour;
-			txt = "<p class='patient_p_tag' style='background:#e9e9e9;border:1px solid gray;color:gray;'>"+minute+"~"+end_time+" "+patient.name
+			txt = "<p class='patient_p_tag' style='background:#e9e9e9;color:gray;'>"+minute+"~"+end_time+" "+patient.name
 				+ "<input type='hidden' name='rno' value='"+this.rno+"'><input type='hidden' name='type' value='fc'></p>";
 			
 			$(target_tag).append(txt);
 		}else{
 			target_tag = ".doctor_"+this.eno+"_"+hour;
-			txt = "<p class='patient_p_tag' style='background:#ffaf7a;border:1px solid gray;'>"+minute+"~"+end_time+" "+patient.name;
+			txt = "<p class='patient_p_tag' style='background:#ffaf7a;'>"+minute+"~"+end_time+" "+patient.name;
 			if(this.desk_state == "접수완료"){
 				txt += "<img style='width:15px;' class='footImg' src='${pageContext.request.contextPath}/resources/images/foot.png'>";
 			}
@@ -1139,7 +1364,7 @@ function draw_reservation(date){
 			
 			if(overMinute > 0){
 				target_tag = ".doctor_"+this.eno+"_"+(hour+1);
-				txt = "<p style='background:black;color:#fff;'>~"+end_time+"예약불가</p>";
+				txt = "<p class='res_no' style='background:black;color:#fff;'>~"+end_time+"예약불가</p>";
 				$(target_tag).append(txt);
 			}
 		}
@@ -1171,13 +1396,13 @@ function draw_reservation(date){
 		
 		if(this.result == "예약취소"){
 			target_tag = ".therapist_"+this.eno+"_"+hour;
-			txt = "<p class='patient_p_tag' style='background:#e9e9e9;border:1px solid gray;color:gray;'>"+minute+"~"+end_time+" "+patient.name
+			txt = "<p class='patient_p_tag' style='background:#e9e9e9;color:gray;'>"+minute+"~"+end_time+" "+patient.name
 				+ "<input type='hidden' name='rno' value='"+this.rno+"'><input type='hidden' name='type' value='ft'></p>";
 			
 			$(target_tag).append(txt);
 		}else{
 			target_tag = ".therapist_"+this.eno+"_"+hour;
-			txt = "<p class='patient_p_tag' style='background:#ffaf7a;border:1px solid gray;'>"+minute+"~"+end_time+" "+patient.name;
+			txt = "<p class='patient_p_tag' style='background:#ffaf7a;'>"+minute+"~"+end_time+" "+patient.name;
 			if(this.desk_state == "접수완료"){
 				txt += "<img style='width:15px;' class='footImg' src='${pageContext.request.contextPath}/resources/images/foot.png'>";
 			}
@@ -1189,7 +1414,7 @@ function draw_reservation(date){
 			
 			if(overMinute > 0){
 				target_tag = ".therapist_"+this.eno+"_"+(hour+1);
-				txt = "<p style='background:black;color:#fff;'>~"+end_time+"예약불가</p>";
+				txt = "<p class='res_no' style='background:black;color:#fff;'>~"+end_time+"예약불가</p>";
 				$(target_tag).append(txt);
 			}
 		}
@@ -1634,12 +1859,12 @@ function draw_week_reservation(week, etype, eno, idxx){
 					
 					if(this.result == "예약취소"){
 						target_tag = "."+cs+"_"+hour;
-						str = "<p class='patient_p_tag' style='background:#e9e9e9; color:gray; border:1px solid gray;'>"+minute+"~"+end_time+" "+patient.name
+						str = "<p class='patient_p_tag' style='background:#e9e9e9; color:gray;'>"+minute+"~"+end_time+" "+patient.name
 							+ "<input type='hidden' name='rno' value='"+this.rno+"'><input type='hidden' name='type' value='"+this.rtype+"'></p>";
 						$(target_tag).append(str);
 					}else{
 						target_tag = "."+cs+"_"+hour;
-						str = "<p class='patient_p_tag' style='background:#ffaf7a;border:1px solid gray;'>"+minute+"~"+end_time+" "+patient.name;
+						str = "<p class='patient_p_tag' style='background:#ffaf7a;'>"+minute+"~"+end_time+" "+patient.name;
 						if(this.desk_state == "접수완료"){
 							str += "<img style='width:15px;' class='footImg' src='${pageContext.request.contextPath}/resources/images/foot.png'>";
 						}
@@ -1648,7 +1873,7 @@ function draw_week_reservation(week, etype, eno, idxx){
 						
 						if(overMinute > 0){
 							target_tag = "."+cs+"_"+(hour+1);
-							str = "<p style='background:black;color:#fff;'>~"+end_time+"예약불가</p>";
+							str = "<p class='res_no' style='background:black;color:#fff;'>~"+end_time+"예약불가</p>";
 							$(target_tag).append(str);
 						}
 					}
@@ -1682,12 +1907,12 @@ function draw_week_reservation(week, etype, eno, idxx){
 					
 					if(this.result == "예약취소"){
 						target_tag = "."+cs+"_"+hour;
-						str = "<p class='patient_p_tag' style='background:#e9e9e9; color:gray; border:1px solid gray;'>"+minute+"~"+end_time+" "+patient.name
+						str = "<p class='patient_p_tag' style='background:#e9e9e9; color:gray;'>"+minute+"~"+end_time+" "+patient.name
 							+ "<input type='hidden' name='rno' value='"+this.rno+"'><input type='hidden' name='type' value='"+this.rtype+"'></p>";
 						$(target_tag).append(str);
 					}else{
 						target_tag = "."+cs+"_"+hour;
-						str = "<p class='patient_p_tag' style='background:#ffaf7a;border:1px solid gray;'>"+minute+"~"+end_time+" "+patient.name;
+						str = "<p class='patient_p_tag' style='background:#ffaf7a;'>"+minute+"~"+end_time+" "+patient.name;
 						if(this.desk_state == "접수완료"){
 							str += "<img style='width:15px;' class='footImg' src='${pageContext.request.contextPath}/resources/images/foot.png'>";
 						}
@@ -1699,7 +1924,7 @@ function draw_week_reservation(week, etype, eno, idxx){
 						
 						if(overMinute > 0){
 							target_tag = "."+cs+"_"+(hour+1);
-							str = "<p style='background:black;color:#fff;'>~"+end_time+"예약불가</p>";
+							str = "<p class='res_no' style='background:black;color:#fff;'>~"+end_time+"예약불가</p>";
 							$(target_tag).append(str);
 						}
 					}
@@ -1735,12 +1960,12 @@ function draw_week_reservation(week, etype, eno, idxx){
 					
 					if(this.result == "예약취소"){
 						target_tag = "."+eno+"_"+this.rdate+"_"+hour;
-						str = "<p class='patient_p_tag' style='background:#e9e9e9;color:gray;border:1px solid gray;'>"+minute+"~"+end_time+" "+patient.name
+						str = "<p class='patient_p_tag' style='background:#e9e9e9;color:gray;'>"+minute+"~"+end_time+" "+patient.name
 							+ "<input type='hidden' name='rno' value='"+this.rno+"'><input type='hidden' name='type' value='"+this.rtype+"'></p>";
 						$(target_tag).append(str);
 					}else{
 						target_tag = "."+eno+"_"+this.rdate+"_"+hour;
-						str = "<p class='patient_p_tag' style='background:"+clinic.color+";border:1px solid gray;'>"+minute+"~"+end_time+" "+patient.name;
+						str = "<p class='patient_p_tag' style='background:"+clinic.color+";'>"+minute+"~"+end_time+" "+patient.name;
 						if(this.desk_state == "접수완료"){
 							str += "<img style='width:15px;' class='footImg' src='${pageContext.request.contextPath}/resources/images/foot.png'>";
 						}
@@ -1749,7 +1974,7 @@ function draw_week_reservation(week, etype, eno, idxx){
 						
 						if(overMinute > 0){
 							target_tag = "."+eno+"_"+this.rdate+"_"+(hour+1);
-							str = "<p style='background:black;color:#fff;'>~"+end_time+"예약불가</p>";
+							str = "<p class='res_no' style='background:black;color:#fff;'>~"+end_time+"예약불가</p>";
 							$(target_tag).append(str);
 						}
 					}
@@ -1780,12 +2005,12 @@ function draw_week_reservation(week, etype, eno, idxx){
 					
 					if(this.result == "예약취소"){
 						target_tag = "."+cs+"_"+hour;
-						str = "<p class='patient_p_tag' style='background:#e9e9e9;color:gray;border:1px solid gray;'>"+minute+"~"+end_time+" "+patient.name
+						str = "<p class='patient_p_tag' style='background:#e9e9e9;color:gray;'>"+minute+"~"+end_time+" "+patient.name
 							+ "<input type='hidden' name='rno' value='"+this.rno+"'><input type='hidden' name='type' value='"+this.rtype+"'></p>";
 						$(target_tag).append(str);
 					}else{
 						target_tag = "."+cs+"_"+hour;
-						str = "<p class='patient_p_tag' style='background:#ffaf7a;border:1px solid gray;'>"+minute+"~"+end_time+" "+patient.name;
+						str = "<p class='patient_p_tag' style='background:#ffaf7a;'>"+minute+"~"+end_time+" "+patient.name;
 						if(this.desk_state == "접수완료"){
 							str += "<img style='width:15px;' class='footImg' src='${pageContext.request.contextPath}/resources/images/foot.png'>";
 						}
@@ -1794,7 +2019,7 @@ function draw_week_reservation(week, etype, eno, idxx){
 						
 						if(overMinute > 0){
 							target_tag = "."+cs+"_"+(hour+1);
-							str = "<p style='background:black;color:#fff;'>~"+end_time+"예약불가</p>";
+							str = "<p class='res_no' style='background:black;color:#fff;'>~"+end_time+"예약불가</p>";
 							$(target_tag).append(str);
 						}
 					}
@@ -1826,12 +2051,12 @@ function draw_week_reservation(week, etype, eno, idxx){
 					
 					if(this.result == "예약취소"){
 						target_tag = "."+eno+"_"+this.rdate+"_"+hour;
-						str = "<p class='patient_p_tag' style='background:#e9e9e9;color:gray;border:1px solid gray;'>"+minute+"~"+end_time+" "+patient.name
+						str = "<p class='patient_p_tag' style='background:#e9e9e9;color:gray;'>"+minute+"~"+end_time+" "+patient.name
 							+ "<input type='hidden' name='rno' value='"+this.rno+"'><input type='hidden' name='type' value='"+this.rtype+"'></p>";
 						$(target_tag).append(str);
 					}else{
 						target_tag = "."+eno+"_"+this.rdate+"_"+hour;
-						str = "<p class='patient_p_tag' style='background:"+clinic.color+";border:1px solid gray;'>"+minute+"~"+end_time+" "+patient.name;
+						str = "<p class='patient_p_tag' style='background:"+clinic.color+";'>"+minute+"~"+end_time+" "+patient.name;
 						if(this.desk_state == "접수완료"){
 							str += "<img style='width:15px;' class='footImg' src='${pageContext.request.contextPath}/resources/images/foot.png'>";
 						}
@@ -1843,7 +2068,7 @@ function draw_week_reservation(week, etype, eno, idxx){
 						
 						if(overMinute > 0){
 							target_tag = "."+eno+"_"+this.rdate+"_"+(hour+1);
-							str = "<p style='background:black;color:#fff;'>~"+end_time+"예약불가</p>";
+							str = "<p class='res_no' style='background:black;color:#fff;'>~"+end_time+"예약불가</p>";
 							$(target_tag).append(str);
 						}
 					}
@@ -1872,12 +2097,12 @@ function draw_week_reservation(week, etype, eno, idxx){
 					
 					if(this.result == "예약취소"){
 						target_tag = "."+cs+"_"+hour;
-						str = "<p class='patient_p_tag' style='background:#e9e9e9; color:gray; border:1px solid gray;'>"+minute+"~"+end_time+" "+patient.name
+						str = "<p class='patient_p_tag' style='background:#e9e9e9; color:gray;'>"+minute+"~"+end_time+" "+patient.name
 							+ "<input type='hidden' name='rno' value='"+this.rno+"'><input type='hidden' name='type' value='"+this.rtype+"'></p>";
 						$(target_tag).append(str);
 					}else{
 						target_tag = "."+cs+"_"+hour;
-						str = "<p class='patient_p_tag' style='background:#ffaf7a;border:1px solid gray;'>"+minute+"~"+end_time+" "+patient.name;
+						str = "<p class='patient_p_tag' style='background:#ffaf7a;'>"+minute+"~"+end_time+" "+patient.name;
 						if(this.desk_state == "접수완료"){
 							str += "<img style='width:15px;' class='footImg' src='${pageContext.request.contextPath}/resources/images/foot.png'>";
 						}
@@ -1889,7 +2114,7 @@ function draw_week_reservation(week, etype, eno, idxx){
 						
 						if(overMinute > 0){
 							target_tag = "."+cs+"_"+(hour+1);
-							str = "<p style='background:black;color:#fff;'>~"+end_time+"예약불가</p>";
+							str = "<p class='res_no' style='background:black;color:#fff;'>~"+end_time+"예약불가</p>";
 							$(target_tag).append(str);
 						}
 					}
@@ -1955,7 +2180,7 @@ function open_reservation_info_view(type, rno){
 	$(".popup_reservation_info_btn_wrap > p").css({"background":"#fff", "color":"black"});
 	if(rData.result =="예약완료"){
 		$(".popup_reservation_info_btn_wrap > p").eq(0).css({"background":"#057be8", "color":"#fff"});
-	}else if(rData.result == "접수완료"){
+	}else if(rData.result == "접수완료" || rData.result == "치료완료"){
 		$(".popup_reservation_info_btn_wrap > p").eq(1).css({"background":"#057be8", "color":"#fff"});
 	}else if(rData.result == "예약취소"){
 		$(".popup_reservation_info_btn_wrap > p").eq(2).css({"background":"#057be8", "color":"#fff"});
@@ -1966,12 +2191,15 @@ function open_reservation_info_view(type, rno){
 	pData = get_patient_by_pno(rData.pno);
 	eData = get_employee_byEno(rData.eno);
 	cData = get_clinic_by_cno(rData.clinic);
-	
+	var hour = parseInt(Number(rData.rtime)/60);
+	var minute = Number(rData.rtime)%60;
+	minute = (minute>9?'':'0')+minute;
+		
 	var str = rtype+"<span> "+pData.name+"("+pData.cno+")님</span><input type='hidden' name='rtype' value='"+rData.rtype+"'>"
 			+"<input type='hidden' name='rno' value='"+rData.rno+"'>";
 	$(".popup_reservation_info_view > h2").html(str);
 	$(".popup_reservation_info_view > table tr:first-child > td > span").html(pData.phone);
-	$(".popup_reservation_info_view > table tr:nth-child(2) > td > span").html(rData.rdate+" "+rData.rtime);
+	$(".popup_reservation_info_view > table tr:nth-child(2) > td > span").html(rData.rdate+" "+hour+":"+minute);
 	$(".popup_reservation_info_view > table tr:nth-child(3) > td > span").html(cData.code_name+" / "+eData.name);
 	$(".popup_reservation_info_view > table tr:last-child > td > span").html(rData.memo);
 	$(".popup_reservation_info_view").css("display", "block");
@@ -2916,7 +3144,7 @@ $(function(){
 			
 		},
 		mouseleave:function(){}
-		}, ".patient_p_tag");/*  */
+		}, ".patient_p_tag");
 		
 	$(document).on("click", ".al_tbl_wrap2 > .al_tbl_wrap2_title", function(){
 		$(".al_tbl_wrap2").css("display","none");
@@ -3386,7 +3614,7 @@ $(function(){
 							<li>문자종합</li>
 						</ul>
 					</div><!-- timetable_btn_wrap -->
-					<div class="week_select_box_wrap">
+					<div class="week_select_box_wrap selectBox_wrap">
 						<select name="sh_year" id="sh_year" onchange="makeWeekSelectOptions();">
 						</select>
 						<select name="sh_month" id="sh_month" onchange="makeWeekSelectOptions();">
@@ -3408,7 +3636,7 @@ $(function(){
 						<select name="employee">
 						</select>
 					</div><!-- week_select_box_wrap end -->
-					<div class="reservation_record_selectBox_wrap">
+					<div class="reservation_record_selectBox_wrap selectBox_wrap">
 						<input name="rdate" type="text" value="" placeholder="ex) 2019-01-01">
 						<select name="employee">
 							<option value="">직원 전체</option>
@@ -3435,7 +3663,7 @@ $(function(){
 						</select>
 						<button>검색</button>
 					</div><!-- reservation_record_selectBox_wrap -->
-					<div class="reservation_update_record_selectBox_wrap">
+					<div class="reservation_update_record_selectBox_wrap selectBox_wrap">
 						<select name="rtype">
 							<option value="">변경전체보기</option>
 							<option value="nc">일반진료 일정변경</option>
@@ -3445,7 +3673,7 @@ $(function(){
 						</select>
 						<button>검색</button>
 					</div><!-- reservation_update_record_selectBox_wrap end -->
-					<div class="normal_off_selectBox_wrap">
+					<div class="normal_off_selectBox_wrap selectBox_wrap">
 						<select name="year">
 							<option value="2019">2019년</option>
 							<option value="2020">2020년</option>
@@ -3486,7 +3714,7 @@ $(function(){
 						<button class="normal_off_search_btn">검색</button>
 						<button class="normal_off_register_btn">추가</button>
 					</div><!-- normal_off_selectBox_wrap end -->
-					<div class="fix_off_selectBox_wrap">
+					<div class="fix_off_selectBox_wrap selectBox_wrap">
 						<select name="year">
 							<option value="2019">2019년</option>
 							<option value="2020">2020년</option>

@@ -12,7 +12,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/calendar.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/week_calendar.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/mainFunction.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/patient_week_calendar.js"></script>
 <style>
 	html{
 		overflow: hidden;
@@ -318,16 +318,15 @@
 		position:fixed;
 		left: 260px;
 		float:left;
-		/* width:80%; */
 		min-width:1000px;
 		height:100%;
 		overflow: scroll;
 		padding-bottom:100px;
 		padding-right:30px;
+		padding-top:30px;
 	}
 	.ar_tbl_wrap_1{
 		width:100%;
-		margin-top:30px;
 	}
 	.search_wrap{
 		float:left;
@@ -2644,7 +2643,7 @@ function draw_normalOff_in_weektable(){
 				$(target_class).html("");
 				$(target_class).append("<p class='normal_off' style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>");
 			} */
-			console.log(this.startdate+"/"+this.enddate+"/"+arrWeek[i]);
+			
 			if(this.startdate == arrWeek[i] && this.enddate == arrWeek[i]){
 				for(var n=sTime; n<eTime; n++){
 					target_class = "."+this.eno+"_"+arrWeek[i]+"_"+n;
@@ -3031,6 +3030,78 @@ function post_fixOff_update(no){
 	});
 }
 
+function draw_patient_week_calendar(date, emp, type, idxx){
+	
+	var today = $(".calendar_select_date").val();
+	var year = Number(today.substring(0,4));
+	var month = today.substring(5,7);
+	var str  = "";
+	for(i=year-3; i < year+4; i++){
+		if(i == year){
+			str += "<option value='"+i+"' selected='selected'>"+i+"년</option>";
+		}else{
+			str += "<option value='"+i+"'>"+i+"년</option>";
+		}
+	}
+	$("#pwt_year").html(str);
+	str = "";
+	$("#pwt_month > option[value='"+month+"']").prop("selected","selected");
+	
+	$(emp).each(function(){
+		str += "<option value='"+this.eno+"'>"+this.name+"</option>";
+	});
+	$(".week_select_box_wrap > select[name='employee']").html(str);
+	str="";
+	
+	makePatientWeekSelectOptions(type, idxx);
+	
+}
+
+function draw_patient_week_timetable(etype, idxx){
+	
+	var week_time=get_hospitalInfo_byDay("주간");
+	var week_sTime=Number(week_time.start_time)/60;
+	var week_eTime=Number(week_time.end_time)/60;
+	var employee = $(".week_select_box_wrap > select[name='employee']").val();
+	var select_week = $("#pwt_week").val();
+	var select_week_split = select_week.split("|"); 
+	var sDate = new Date(select_week_split[0]);
+	var tomorrow;
+	var arrDay = ["일", "월", "화", "수", "목", "금", "토"];
+	var arrDate = [select_week_split[0]];
+	
+	for(var i=1; i < 7; i++){
+		tomorrow = new Date(sDate.setDate(sDate.getDate()+1));
+		var year1 = tomorrow.getFullYear();//yyyy
+		var month1 = (1 + tomorrow.getMonth());//M
+		month1 = month1 >= 10 ? month1 : '0' + month1;// month 두자리로 저장
+		var day1 = tomorrow.getDate();//d
+		day1 = day1 >= 10 ? day1 : '0' + day1;//day 두자리로 저장
+		tomorrow = year1+'-'+month1+'-'+day1;
+		arrDate.push(tomorrow);
+	}
+	
+	str = "<table><tr><td></td>";
+	
+	for(var i=week_sTime; i < week_eTime; i++){
+		str += "<td >"+i+"시</td>";
+	}
+	str += "</tr>";
+	
+	for(var i=1; i<7; i++){
+		str += "<tr class='"+employee+"_"+arrDate[i]+"'><td>"+arrDay[i]+"("+arrDate[i].split("-")[2]+"일)<input type='hidden' name='day' value='"+arrDay[i]+"'></td>";
+		for(n=8; n < 20; n++){
+			str += "<td class='"+employee+"_"+arrDate[i]+"_"+n+"'></td>";
+		}
+		str += "</tr>";
+	}
+	str += "</table>";
+	
+	$(".ar_tbl_wrap_3").html(str);
+	
+	//draw_week_reservation(arrDate, etype, employee, idxx);
+}
+
 $(function(){
 	//진료view에서 무슨 탭 눌러졌는지 기억하기 위한 변수
 	var storage_timetable_btn_num=0;
@@ -3049,6 +3120,25 @@ $(function(){
 	
 	draw_time_table_by_case(0); 
 	
+	$(".header_inner2 > #patient_view_btn").click(function(){
+		if($(this).css("color") == "rgb(255, 255, 255)"){
+			$(this).css({"background":"#fff", "color":"gray"});
+			$(".ar_tbl_wrap_1").css("display","none");
+		}else{
+			$(this).css({"background":"gray", "color":"#fff"});
+			$(".ar_tbl_wrap_1").css("display","block");
+		}
+	});
+	
+	$(".header_inner2 > #reservation1_view_btn").click(function(){
+		if($(this).css("color") == "rgb(255, 255, 255)"){
+			$(this).css({"background":"#fff", "color":"gray"});
+			$(".ar_tbl_wrap_2").css("display","none");
+		}else{
+			$(this).css({"background":"gray", "color":"#fff"});
+			$(".ar_tbl_wrap_2").css("display","block");
+		}
+	});
 	
 	//달력 날짜 클릭 시 해당 정보GET
 	$(document).on("click", "#calendar td:not(.tr_not > td)", function(){
@@ -3186,7 +3276,8 @@ $(function(){
 		$(this).css("display", "none");
 		$("#reservation_view_btn").html("");
 		$(".reservation_register_btn").css("display", "none");
-		
+		//ar_tbl_wrap_3 지우기
+		draw_patient_week_calendar();
 	});
 
 	//진료, 치료 테이블에서 예약에 마우스 올리고 치웠을때
@@ -3212,6 +3303,9 @@ $(function(){
 		$("#reservation_view_btn").html($(this).parent().parent().find("td").eq(1).html()+"<input type='hidden' name='pno' value='"+reservation_click_pno+"'><input type='hidden' name='cno' value='"+reservation_click_cno+"'>");
 		$("#reservation_view_btn").css("display", "inline-block");
 		$(".reservation_register_btn").css("display", "block");
+		//ar_tbl_wrap_3 그리기
+		draw_patient_week_calendar();
+		
 	});
 	
 	//진료테이블에서 + 클릭
@@ -3822,6 +3916,28 @@ $(function(){
 					
 					</div><!-- time_table_wrap -->
 				</div><!-- ar_tbl_wrap_2 end -->
+				<div class="ar_tbl_wrap_3">
+					<div class="patient_week_tbl_selecBox_wrap">
+						<select name="pwt_year" id="pwt_year" onchange="makeWeekSelectOptions();">
+						</select>
+						<select name="pwt_month" id="pwt_month" onchange="makeWeekSelectOptions();">
+							<option value='01'>01월</option>
+							<option value='02'>02월</option>
+							<option value='03'>03월</option>
+							<option value='04'>04월</option>
+							<option value='05'>05월</option>
+							<option value='06'>06월</option>
+							<option value='07'>07월</option>
+							<option value='08'>08월</option>
+							<option value='09'>09월</option>
+							<option value='10'>10월</option>
+							<option value='11'>11월</option>
+							<option value='12'>12월</option>
+						</select>
+						<select name="pwt_week" id="pwt_week">
+						</select>
+					</div>
+				</div><!-- ar_tbl_wrap_3 end -->
 			</div><!-- aside_right end -->
 		</div><!-- section end -->
 		<div class="footer">

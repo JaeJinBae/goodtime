@@ -39,6 +39,7 @@
 		border-radius: 3px;
 		padding:5px;
 		margin-right:10px;
+		border:1px solid gray;
 	}
 	#reservation_view_btn{
 		display:none;

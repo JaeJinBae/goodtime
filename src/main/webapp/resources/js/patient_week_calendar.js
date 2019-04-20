@@ -50,7 +50,5 @@ function makePatientWeekSelectOptions(type, idxx) {
     if(seled) obj.value = seled;
     
     draw_patient_week_timetable(type, idxx);
-    draw_normalOff_in_weektable();
-	draw_fixOff_in_weektable();
     
 }

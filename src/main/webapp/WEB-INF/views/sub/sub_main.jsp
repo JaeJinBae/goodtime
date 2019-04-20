@@ -3097,7 +3097,7 @@ function draw_patient_week_timetable(etype, idxx){
 	}
 	str += "</table>";
 	
-	$(".ar_tbl_wrap_3").html(str);
+	$(".patient_time_table_wrap").html(str); 
 	
 	//draw_week_reservation(arrDate, etype, employee, idxx);
 }
@@ -3936,6 +3936,9 @@ $(function(){
 						</select>
 						<select name="pwt_week" id="pwt_week">
 						</select>
+					</div>
+					<div class="patient_time_table_wrap">
+					
 					</div>
 				</div><!-- ar_tbl_wrap_3 end -->
 			</div><!-- aside_right end -->

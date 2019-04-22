@@ -543,6 +543,19 @@ public class HomeController {
 		return entity;
 	}
 	
+	@RequestMapping(value="/reservationListByPno/{pno}/{week}/{rtype}", method=RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> getReservationListByPno(@PathVariable("pno") String pno, @PathVariable("week") String week, @PathVariable("rtype")String rtype){
+		ResponseEntity<Map<String,Object>> entity = null;
+		if(rtype.equals("clinic")){
+			
+		}else if(rtype.equals("therapy")){
+			
+		}
+		
+		
+		return entity;
+	}
+	
 	
 	@RequestMapping(value="/fixReservationListByDateEno/{type}/{eno}/{week}", method=RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> get_fixReservationList_byDate_byEmployee(@PathVariable("type") String type, @PathVariable("eno") String eno, @PathVariable("week") String week) throws ParseException{

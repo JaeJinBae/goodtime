@@ -781,6 +781,56 @@
 		font-weight: bold;
 		letter-spacing: 1px;
 	}
+	.ar_tbl_wrap_3{
+		width:100%;
+	}
+	.ar_tbl_wrap_3 > .timetable_btn_wrap2{
+		display:none;
+		width:100%;
+		border-bottom:2px solid black;
+		overflow:hidden;
+		margin-bottom:20px;
+		padding:0 10px;
+	}
+	.timetable_btn_wrap2 > ul{
+		float:left;
+		margin-right:30px;
+	}
+	.timetable_btn_wrap2 > ul > li{
+		float:left;
+		border: 2px solid gray;
+		border-bottom:0;
+		border-radius: 7px 7px 0 0;
+		font-size:15px;
+		padding:5px;
+		margin-right:3px;
+		cursor: pointer;
+	}
+	.timetable_btn_wrap2 > ul > li:first-child{
+		background: #d3e5f6;
+		font-weight:bold;
+	}
+	.timetable_btn_wrap2 > ul > li:nth-child(2){
+		margin-right:30px;
+	}
+	
+	.ar_tbl_wrap_3 > .patient_week_tbl_selectBox_wrap{
+		display: none;
+	}
+	.ar_tbl_wrap_3 > .patient_time_table_wrap{
+		width:100%;
+	}
+	.patient_time_table_wrap > table{
+		width:100%;
+	}
+	.patient_time_table_wrap table tr > td{
+		border: 1px solid lightgray;
+		font-size:15px;
+	}
+	.patient_time_table_wrap table tr > td:first-child{
+		text-align: center;
+		width: 80px;
+	}
 </style> 
 <script>
 
@@ -3047,12 +3097,7 @@ function draw_patient_week_calendar(date, emp, type, idxx){
 	str = "";
 	$("#pwt_month > option[value='"+month+"']").prop("selected","selected");
 	
-	$(emp).each(function(){
-		str += "<option value='"+this.eno+"'>"+this.name+"</option>";
-	});
-	$(".week_select_box_wrap > select[name='employee']").html(str);
-	str="";
-	
+	$(".patient_week_tbl_selectBox_wrap").css("display","block");
 	makePatientWeekSelectOptions(type, idxx);
 	
 }
@@ -3062,7 +3107,6 @@ function draw_patient_week_timetable(etype, idxx){
 	var week_time=get_hospitalInfo_byDay("주간");
 	var week_sTime=Number(week_time.start_time)/60;
 	var week_eTime=Number(week_time.end_time)/60;
-	var employee = $(".week_select_box_wrap > select[name='employee']").val();
 	var select_week = $("#pwt_week").val();
 	var select_week_split = select_week.split("|"); 
 	var sDate = new Date(select_week_split[0]);
@@ -3080,7 +3124,7 @@ function draw_patient_week_timetable(etype, idxx){
 		tomorrow = year1+'-'+month1+'-'+day1;
 		arrDate.push(tomorrow);
 	}
-	
+	console.log(arrDate);
 	str = "<table><tr><td></td>";
 	
 	for(var i=week_sTime; i < week_eTime; i++){
@@ -3089,9 +3133,9 @@ function draw_patient_week_timetable(etype, idxx){
 	str += "</tr>";
 	
 	for(var i=1; i<7; i++){
-		str += "<tr class='"+employee+"_"+arrDate[i]+"'><td>"+arrDay[i]+"("+arrDate[i].split("-")[2]+"일)<input type='hidden' name='day' value='"+arrDay[i]+"'></td>";
+		str += "<tr class='"+arrDate[i]+"'><td>"+arrDay[i]+"("+arrDate[i].split("-")[2]+"일)<input type='hidden' name='day' value='"+arrDay[i]+"'></td>";
 		for(n=8; n < 20; n++){
-			str += "<td class='"+employee+"_"+arrDate[i]+"_"+n+"'></td>";
+			str += "<td class='"+arrDate[i]+"_"+n+"'></td>";
 		}
 		str += "</tr>";
 	}
@@ -3099,7 +3143,28 @@ function draw_patient_week_timetable(etype, idxx){
 	
 	$(".patient_time_table_wrap").html(str); 
 	
-	//draw_week_reservation(arrDate, etype, employee, idxx);
+	draw_patient_week_reservation(arrDate, etype, employee, idxx);
+}
+
+function get_reservationList_byWeekPno(pno, week, rtype){
+	var dt;
+	$.ajax({
+		url:"${pageContext.request.contextPath}/reservationListByPno/"+pno+"/"+week,
+		type:"get",
+		dataType:"json",
+		async:false,
+		success:function(json){
+			dt = json;
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	});
+	return dt;
+}
+
+function draw_patient_week_reservation(pno, week){
+	
 }
 
 $(function(){
@@ -3917,10 +3982,18 @@ $(function(){
 					</div><!-- time_table_wrap -->
 				</div><!-- ar_tbl_wrap_2 end -->
 				<div class="ar_tbl_wrap_3">
-					<div class="patient_week_tbl_selecBox_wrap">
-						<select name="pwt_year" id="pwt_year" onchange="makeWeekSelectOptions();">
+					<div class="timetable_btn_wrap2">
+						<ul>
+							<li>진료일정</li>
+							<li>치료일정</li>
+							<li>예약이력</li>
+							<li>변경이력</li>
+						</ul>
+					</div><!-- timetable_btn_wrap2 -->
+					<div class="patient_week_tbl_selectBox_wrap">
+						<select name="pwt_year" id="pwt_year" onchange="makePatientWeekSelectOptions();">
 						</select>
-						<select name="pwt_month" id="pwt_month" onchange="makeWeekSelectOptions();">
+						<select name="pwt_month" id="pwt_month" onchange="makePatientWeekSelectOptions();">
 							<option value='01'>01월</option>
 							<option value='02'>02월</option>
 							<option value='03'>03월</option>
@@ -3934,7 +4007,7 @@ $(function(){
 							<option value='11'>11월</option>
 							<option value='12'>12월</option>
 						</select>
-						<select name="pwt_week" id="pwt_week">
+						<select name="pwt_week" id="pwt_week" onchange="draw_patient_week_timetable();">
 						</select>
 					</div>
 					<div class="patient_time_table_wrap">

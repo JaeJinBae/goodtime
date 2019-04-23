@@ -3169,6 +3169,8 @@ function draw_patient_week_reservation(pno, week, rtype){
 	var json = get_reservationList_byWeekPno(pno, week, rtype)
 	var target_tag;
 	var str;
+	console.log(json);
+	//일반 진료, 치료
 	$(json.nr).each(function(){
 		var patient = get_patient_by_pno(this.pno);
 		var clinic = get_clinic_by_cno(this.clinic);
@@ -3198,6 +3200,52 @@ function draw_patient_week_reservation(pno, week, rtype){
 			$(target_tag).append(str);
 		}else{
 			str = "<p class='patient_p_tag' style='background:"+clinic.color+";'>"+minute+"~"+end_time+" "+patient.name;
+			if(this.desk_state == "접수완료"){
+				str += "<img style='width:15px;' class='footImg' src='${pageContext.request.contextPath}/resources/images/foot.png'>";
+			}
+			if(this.result == "치료완료"){
+				str += "<img style='width:15px;' class='handImg' src='${pageContext.request.contextPath}/resources/images/hand.png'>";
+			}
+			str	+= "<input type='hidden' name='rno' value='"+this.rno+"'><input type='hidden' name='type' value='"+this.rtype+"'></p>";
+			$(target_tag).append(str);
+			
+			if(overMinute > 0){
+				target_tag = "."+this.rdate+"_"+(hour+1);
+				str = "<p class='res_no' style='background:black;color:#fff;'>~"+end_time+"예약불가</p>";
+				$(target_tag).append(str);
+			}
+		}
+	});
+	//고정 진료/치료
+	$(json.fr).each(function(){
+		var patient = get_patient_by_pno(this.pno);
+		var clinic = get_clinic_by_cno(this.clinic);
+		var clinic_time = Number(clinic.time);
+		var time = Number(this.rtime);
+		var hour = parseInt(time/60);
+		var minute = time%60;
+		var overMinute = (minute+clinic_time)-60;
+		var end_time;
+		
+		if(overMinute >= 0){
+			if(overMinute < 10){
+				overMinute = "0"+overMinute;
+			}
+			end_time = (hour+1)+":"+overMinute;
+		}else{
+			end_time = minute+clinic_time;
+		}
+		if(minute == 0){
+			minute = "0"+minute;
+		}
+	
+		target_tag = "."+this.rdate+"_"+parseInt(Number(this.rtime)/60);
+		if(this.result == "예약취소"){
+			str = "<p class='patient_p_tag' style='background:#e9e9e9;color:gray;'>"+minute+"~"+end_time+" "+patient.name
+				+ "<input type='hidden' name='rno' value='"+this.rno+"'><input type='hidden' name='type' value='"+this.rtype+"'></p>";
+			$(target_tag).append(str);
+		}else{
+			str = "<p class='patient_p_tag' style='background:#ffaf7a;'>"+minute+"~"+end_time+" "+patient.name;
 			if(this.desk_state == "접수완료"){
 				str += "<img style='width:15px;' class='footImg' src='${pageContext.request.contextPath}/resources/images/foot.png'>";
 			}

@@ -36,6 +36,11 @@ public class NormalClinicReservationServiceImpl implements NormalClinicReservati
 	}
 
 	@Override
+	public List<NormalClinicReservationVO> selectByDatePno(NormalClinicReservationVO vo) {
+		return dao.selectByDatePno(vo);
+	}
+
+	@Override
 	public void register(NormalClinicReservationVO vo) {
 		dao.register(vo);
 	}

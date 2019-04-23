@@ -37,6 +37,11 @@ public class FixClinicReservationDaoImpl implements FixClinicReservationDao {
 	}
 
 	@Override
+	public List<FixClinicReservationVO> selectByDatePno(FixClinicReservationVO vo) {
+		return session.selectList(namespace + ".selectByDatePno", vo);
+	}
+
+	@Override
 	public void register(FixClinicReservationVO vo) {
 		session.insert(namespace + ".register", vo);
 	}

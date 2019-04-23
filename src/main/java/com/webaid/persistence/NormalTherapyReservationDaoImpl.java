@@ -38,6 +38,11 @@ public class NormalTherapyReservationDaoImpl implements NormalTherapyReservation
 	}
 
 	@Override
+	public List<NormalTherapyReservationVO> selectByDatePno(NormalTherapyReservationVO vo) {
+		return session.selectList(namespace + ".selectByDatePno", vo);
+	}
+
+	@Override
 	public void register(NormalTherapyReservationVO vo) {
 		session.insert(namespace + ".register", vo);
 	}

@@ -57,4 +57,9 @@ public class NormalClinicReservationDaoImpl implements NormalClinicReservationDa
 		session.update(namespace + ".cancel", vo);
 	}
 
+	@Override
+	public List<NormalClinicReservationVO> selectByDatePno(NormalClinicReservationVO vo) {
+		return session.selectList(namespace+".selectByDatePno", vo);
+	}
+
 }

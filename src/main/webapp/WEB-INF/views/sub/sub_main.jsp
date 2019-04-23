@@ -3080,7 +3080,7 @@ function post_fixOff_update(no){
 	});
 }
 
-function draw_patient_week_calendar(date, emp, type, idxx){
+function draw_patient_week_calendar(type, idxx){
 	
 	var today = $(".calendar_select_date").val();
 	var year = Number(today.substring(0,4));
@@ -3098,11 +3098,12 @@ function draw_patient_week_calendar(date, emp, type, idxx){
 	$("#pwt_month > option[value='"+month+"']").prop("selected","selected");
 	
 	$(".patient_week_tbl_selectBox_wrap").css("display","block");
+	$(".timetable_btn_wrap2").css("display","block");
 	makePatientWeekSelectOptions(type, idxx);
 	
 }
 
-function draw_patient_week_timetable(etype, idxx){
+function draw_patient_week_timetable(type, idxx){
 	
 	var week_time=get_hospitalInfo_byDay("주간");
 	var week_sTime=Number(week_time.start_time)/60;
@@ -3124,7 +3125,6 @@ function draw_patient_week_timetable(etype, idxx){
 		tomorrow = year1+'-'+month1+'-'+day1;
 		arrDate.push(tomorrow);
 	}
-	console.log(arrDate);
 	str = "<table><tr><td></td>";
 	
 	for(var i=week_sTime; i < week_eTime; i++){
@@ -3143,13 +3143,15 @@ function draw_patient_week_timetable(etype, idxx){
 	
 	$(".patient_time_table_wrap").html(str); 
 	
-	draw_patient_week_reservation(arrDate, etype, employee, idxx);
+	var pno = $("#reservation_view_btn").find("input[name='pno']").val();
+
+	draw_patient_week_reservation(pno, arrDate, type);
 }
 
 function get_reservationList_byWeekPno(pno, week, rtype){
 	var dt;
 	$.ajax({
-		url:"${pageContext.request.contextPath}/reservationListByPno/"+pno+"/"+week,
+		url:"${pageContext.request.contextPath}/reservationListByPno/"+pno+"/"+week+"/"+rtype,
 		type:"get",
 		dataType:"json",
 		async:false,
@@ -3163,13 +3165,32 @@ function get_reservationList_byWeekPno(pno, week, rtype){
 	return dt;
 }
 
-function draw_patient_week_reservation(pno, week){
-	
+function draw_patient_week_reservation(pno, week, rtype){
+	var json = get_reservationList_byWeekPno(pno, week, rtype)
+	console.log(json);
 }
 
+function draw_patient_reservation_byCase(idx){
+	switch(idx){
+	case 0:
+		draw_patient_week_calendar("clinic", idx);
+		break;
+	case 1:
+		
+		draw_patient_week_calendar("therapy", idx);
+		break;
+	case 2:
+		break;
+	case 3:
+		break;
+	default:
+		break;
+	}
+}
 $(function(){
 	//진료view에서 무슨 탭 눌러졌는지 기억하기 위한 변수
-	var storage_timetable_btn_num=0;
+	var storage_timetable_btn_num = 0;
+	var storage_timetable2_btn_num = 0;
 	
 	//달력 생성
 	buildCalendar();
@@ -3342,7 +3363,10 @@ $(function(){
 		$("#reservation_view_btn").html("");
 		$(".reservation_register_btn").css("display", "none");
 		//ar_tbl_wrap_3 지우기
-		draw_patient_week_calendar();
+		//$(".ar_tbl_wrap_3").css("display","none");
+		$(".patient_week_tbl_selectBox_wrap").css("display","none");
+		$(".patient_time_table_wrap").html("");
+		$(".timetable_btn_wrap2").css("display","none");
 	});
 
 	//진료, 치료 테이블에서 예약에 마우스 올리고 치웠을때
@@ -3369,9 +3393,39 @@ $(function(){
 		$("#reservation_view_btn").css("display", "inline-block");
 		$(".reservation_register_btn").css("display", "block");
 		//ar_tbl_wrap_3 그리기
-		draw_patient_week_calendar();
+		draw_patient_reservation_byCase(0);
 		
 	});
+	
+	$(".timetable_btn_wrap2 > ul > li").click(function(){
+		var idx = $(this).index();
+		storage_timetable2_btn_num = idx;
+		$(".timetable_btn_wrap2 > ul > li").css({"background":"#fff","font-weight":"500"});
+		$(this).css({"background":"#d3e5f6", "font-weight":"bold"});
+		draw_patient_reservation_byCase(idx);
+	});
+	
+	$(document).on("change", "#pwt_month, #pwt_year", function(){
+		var type;
+		if(storage_timetable2_btn_num == 0){
+			type = "clinic";
+		}else if(storage_timetable2_btn_num == 1){
+			type = "therapy";
+		}
+		makePatientWeekSelectOptions(type, storage_timetable2_btn_num);
+	});
+	
+	$(document).on("change", "#pwt_week", function(){
+		var type;
+		if(storage_timetable2_btn_num == 0){
+			type = "clinic";
+		}else if(storage_timetable2_btn_num == 1){
+			type = "therapy";
+		}
+		draw_patient_week_timetable(type, storage_timetable2_btn_num);
+	});
+	
+	
 	
 	//진료테이블에서 + 클릭
 	$(document).on("click", ".doctor_time_table .reservation_register_btn", function(){
@@ -3991,9 +4045,9 @@ $(function(){
 						</ul>
 					</div><!-- timetable_btn_wrap2 -->
 					<div class="patient_week_tbl_selectBox_wrap">
-						<select name="pwt_year" id="pwt_year" onchange="makePatientWeekSelectOptions();">
+						<select name="pwt_year" id="pwt_year">
 						</select>
-						<select name="pwt_month" id="pwt_month" onchange="makePatientWeekSelectOptions();">
+						<select name="pwt_month" id="pwt_month">
 							<option value='01'>01월</option>
 							<option value='02'>02월</option>
 							<option value='03'>03월</option>
@@ -4007,7 +4061,7 @@ $(function(){
 							<option value='11'>11월</option>
 							<option value='12'>12월</option>
 						</select>
-						<select name="pwt_week" id="pwt_week" onchange="draw_patient_week_timetable();">
+						<select name="pwt_week" id="pwt_week">
 						</select>
 					</div>
 					<div class="patient_time_table_wrap">

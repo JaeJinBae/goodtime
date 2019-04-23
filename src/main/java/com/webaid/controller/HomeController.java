@@ -544,14 +544,74 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value="/reservationListByPno/{pno}/{week}/{rtype}", method=RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> getReservationListByPno(@PathVariable("pno") String pno, @PathVariable("week") String week, @PathVariable("rtype")String rtype){
+	public ResponseEntity<Map<String, Object>> getReservationListByPno(@PathVariable("pno") int pno, @PathVariable("week") String week, @PathVariable("rtype")String rtype){
 		ResponseEntity<Map<String,Object>> entity = null;
+		Map<String, Object> map = new HashMap<>();
+		
+		
+		String[] splitWeek = week.split(",");
+		
 		if(rtype.equals("clinic")){
+			List<NormalClinicReservationVO> ncrList = new ArrayList<NormalClinicReservationVO>();
+			List<FixClinicReservationVO> fcrList = new ArrayList<FixClinicReservationVO>();
+			
+			NormalClinicReservationVO ncrVO = new NormalClinicReservationVO();
+			FixClinicReservationVO fcrVO = new FixClinicReservationVO(); 
+			ncrVO.setPno(pno);
+			fcrVO.setPno(pno);
+			
+			for(int i = 1; i <= splitWeek.length-1; i++){
+				ncrVO.setRdate(splitWeek[i]);	
+				fcrVO.setRdate(splitWeek[i]);
+				
+				List<NormalClinicReservationVO> ncrVOlist = ncrService.selectByDatePno(ncrVO);
+				List<FixClinicReservationVO> fcrVOlist = fcrService.selectByDatePno(fcrVO);
+				
+				if(ncrVOlist.size() != 0){
+					for(int j=0; j<ncrVOlist.size(); j++){
+						ncrList.add(ncrVOlist.get(j));
+					}
+				}
+				if(fcrVOlist.size() != 0){
+					for(int j=0; j<fcrVOlist.size(); j++){
+						fcrList.add(fcrVOlist.get(j));
+					}
+				}
+			}
+			map.put("nr", ncrList);
+			map.put("fr", fcrList);
 			
 		}else if(rtype.equals("therapy")){
+			List<NormalTherapyReservationVO> ntrList = new ArrayList<NormalTherapyReservationVO>();
+			List<FixTherapyReservationVO> ftrList = new ArrayList<FixTherapyReservationVO>();
 			
+			NormalTherapyReservationVO ntrVO = new NormalTherapyReservationVO();
+			FixTherapyReservationVO ftrVO = new FixTherapyReservationVO(); 
+			ntrVO.setPno(pno);
+			ftrVO.setPno(pno);
+			
+			for(int i = 1; i <= splitWeek.length-1; i++){
+				ntrVO.setRdate(splitWeek[i]);	
+				ftrVO.setRdate(splitWeek[i]);
+				
+				List<NormalTherapyReservationVO> ntrVOlist = ntrService.selectByDatePno(ntrVO);
+				List<FixTherapyReservationVO> ftrVOlist = ftrService.selectByDatePno(ftrVO);
+				
+				if(ntrVOlist.size() != 0){
+					for(int j=0; j<ntrVOlist.size(); j++){
+						ntrList.add(ntrVOlist.get(j));
+					}
+				}
+				if(ftrVOlist.size() != 0){
+					for(int j=0; j<ftrVOlist.size(); j++){
+						ftrList.add(ftrVOlist.get(j));
+					}
+				}
+			}
+			map.put("nr", ntrList);
+			map.put("fr", ftrList);
 		}
-		
+		entity = new ResponseEntity<Map<String,Object>>(map, HttpStatus.OK);
 		
 		return entity;
 	}

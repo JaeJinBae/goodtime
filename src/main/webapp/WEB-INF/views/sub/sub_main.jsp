@@ -1207,15 +1207,11 @@ function draw_time_table_by_case(idx){
 			$(".time_table_wrap").html("");
 			$(".week_select_box_wrap").css("display","block");
 			draw_week_calendar($(".calendar_select_date").val(), get_employeeList_byType("doctor"), "doctor", idx);
-			draw_normalOff_in_weektable();
-			draw_fixOff_in_weektable();
 			break;
 		case 3:
 			$(".time_table_wrap").html("");
 			$(".week_select_box_wrap").css("display","block");
 			draw_week_calendar($(".calendar_select_date").val(), get_employeeList_byType("doctor"), "doctor", idx);
-			draw_normalOff_in_weektable();
-			draw_fixOff_in_weektable();
 			break;
 		case 4:
 			$(".week_select_box_wrap").css("display","none");
@@ -1230,15 +1226,11 @@ function draw_time_table_by_case(idx){
 			$(".time_table_wrap").html("");
 			$(".week_select_box_wrap").css("display","block");
 			draw_week_calendar($(".calendar_select_date").val(), get_employeeList_byType("therapist"), "therapist", idx);
-			draw_normalOff_in_weektable();
-			draw_fixOff_in_weektable();
 			break;
 		case 6:
 			$(".time_table_wrap").html("");
 			$(".week_select_box_wrap").css("display","block");
 			draw_week_calendar($(".calendar_select_date").val(), get_employeeList_byType("therapist"), "therapist", idx);
-			draw_normalOff_in_weektable();
-			draw_fixOff_in_weektable();
 			break;
 		case 7:
 			$(".week_select_box_wrap").css("display","none");
@@ -1271,6 +1263,10 @@ function draw_time_table_by_case(idx){
 			break;
 		default:
 			console.log(idx);
+	}
+	
+	if($("#reservation_view_btn").css("display") == "inline-block"){
+		$(".reservation_register_btn").css("display","block");
 	}
 }
 
@@ -1921,7 +1917,7 @@ function draw_week_timetable(etype, idxx){
 	for(var i=1; i<7; i++){
 		str += "<tr class='"+employee+"_"+arrDate[i]+"'><td>"+arrDay[i]+"("+arrDate[i].split("-")[2]+"일)<input type='hidden' name='day' value='"+arrDay[i]+"'></td>";
 		for(n=8; n < 20; n++){
-			str += "<td class='"+employee+"_"+arrDate[i]+"_"+n+"'></td>";
+			str += "<td class='"+employee+"_"+arrDate[i]+"_"+n+"'><p class='reservation_register_btn'>+</p></td>";
 		}
 		str += "</tr>";
 	}
@@ -2980,7 +2976,7 @@ function get_fixOff_byWeek(week, eno){
 function draw_fixOff_in_timetable(date){
 	var offData = get_fixOff_byDate(date);
 	var timeTableClass = "";
-	
+
 	$(offData).each(function(){
 		for(var i=(Number(this.starttime)/60) ; i<(Number(this.endtime)/60) ; i++){
 			timeTableClass = "."+this.etype+"_"+this.eno+"_"+i;
@@ -3009,12 +3005,12 @@ function draw_fixOff_in_weektable(){
 	var offData = get_fixOff_byWeek(arrWeek, eno);
 
 	var target_class;
-	
+	console.log(offData);
 	for(var i=1; i<arrWeek.length; i++){
 		$(offData[arrWeek[i]]).each(function(){
 			for(var n=Number(this.starttime)/60; n<Number(this.endtime)/60; n++){
 				target_class = "."+this.eno+"_"+arrWeek[i]+"_"+n;
-				$(target_class).html();
+				$(target_class).html("");
 				$(target_class).append("<p class='fix_off' style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>");
 			}
 		});

@@ -3652,7 +3652,6 @@ $(function(){
 		$("#reservation_view_btn").html("");
 		$(".reservation_register_btn").css("display", "none");
 		//ar_tbl_wrap_3 지우기
-		//$(".ar_tbl_wrap_3").css("display","none");
 		$(".patient_week_tbl_selectBox_wrap").css("display","none");
 		$(".patient_time_table_wrap").html("");
 		$(".timetable_btn_wrap2").css("display","none");
@@ -3682,6 +3681,8 @@ $(function(){
 		$("#reservation_view_btn").css("display", "inline-block");
 		$(".reservation_register_btn").css("display", "block");
 		//ar_tbl_wrap_3 그리기
+		$(".timetable_btn_wrap2 > ul > li").css({"background":"#fff","font-weight":"500"});
+		$(".timetable_btn_wrap2 > ul > li:first-child").css({"background":"#d3e5f6", "font-weight":"bold"});
 		draw_patient_reservation_byCase(0);
 		
 	});

@@ -8,6 +8,10 @@
 		select * from reservation_update_record order by no desc;
 	</select>
 	
+	<select id="selectByPno" resultType="ReservationUpdateRecordVO">
+		select * from reservation_update_record where pno=#{pno} order by no desc
+	</select>
+	
 	<select id="listSearch" resultType="ReservationUpdateRecordVO">
 		select * from reservation_update_record <include refid="search"></include> order by no desc limit #{pageStart},#{perPageNum}
 	</select>
@@ -23,7 +27,7 @@
 	</select>
 	
 	<insert id="register">
-		insert into reservation_update_record values(0, #{rno}, #{rtype}, #{pname}, #{before_info}, #{after_info}, #{update_type}, #{update_info}, #{update_memo})
+		insert into reservation_update_record values(0, #{rno}, #{rtype}, #{pno}, #{pname}, #{before_info}, #{after_info}, #{update_type}, #{update_info}, #{update_memo})
 	</insert>
 	
 </mapper>

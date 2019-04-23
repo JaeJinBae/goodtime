@@ -4,6 +4,7 @@ public class ReservationUpdateRecordVO {
 	private int no;
 	private int rno;
 	private String rtype;
+	private int pno;
 	private String pname;
 	private String before_info;
 	private String after_info;
@@ -37,6 +38,14 @@ public class ReservationUpdateRecordVO {
 
 	public void setRtype(String rtype) {
 		this.rtype = rtype;
+	}
+
+	public int getPno() {
+		return pno;
+	}
+
+	public void setPno(int pno) {
+		this.pno = pno;
 	}
 
 	public String getPname() {
@@ -89,8 +98,8 @@ public class ReservationUpdateRecordVO {
 
 	@Override
 	public String toString() {
-		return "ReservationUpdateRecordVO [no=" + no + ", rno=" + rno + ", rtype=" + rtype + ", pname=" + pname
-				+ ", before_info=" + before_info + ", after_info=" + after_info + ", update_type=" + update_type
+		return "ReservationUpdateRecordVO [no=" + no + ", rno=" + rno + ", rtype=" + rtype + ", pno=" + pno + ", pname="
+				+ pname + ", before_info=" + before_info + ", after_info=" + after_info + ", update_type=" + update_type
 				+ ", update_info=" + update_info + ", update_memo=" + update_memo + "]";
 	}
 

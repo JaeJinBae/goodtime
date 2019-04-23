@@ -2,6 +2,7 @@ package com.webaid.domain;
 
 public class ReservationRecordVO {
 	private int no;
+	private int pno;
 	private String pname;
 	private String ename;
 	private int rno;
@@ -24,6 +25,14 @@ public class ReservationRecordVO {
 
 	public void setNo(int no) {
 		this.no = no;
+	}
+
+	public int getPno() {
+		return pno;
+	}
+
+	public void setPno(int pno) {
+		this.pno = pno;
 	}
 
 	public String getPname() {
@@ -116,10 +125,10 @@ public class ReservationRecordVO {
 
 	@Override
 	public String toString() {
-		return "ReservationRecordVO [no=" + no + ", pname=" + pname + ", ename=" + ename + ", rno=" + rno + ", rtype="
-				+ rtype + ", cname=" + cname + ", rdate=" + rdate + ", rtime=" + rtime + ", reception_info="
-				+ reception_info + ", therapy_info=" + therapy_info + ", register_info=" + register_info + ", result="
-				+ result + "]";
+		return "ReservationRecordVO [no=" + no + ", pno=" + pno + ", pname=" + pname + ", ename=" + ename + ", rno="
+				+ rno + ", rtype=" + rtype + ", cname=" + cname + ", rdate=" + rdate + ", rtime=" + rtime
+				+ ", reception_info=" + reception_info + ", therapy_info=" + therapy_info + ", register_info="
+				+ register_info + ", result=" + result + "]";
 	}
 
 }

@@ -13,28 +13,33 @@ import com.webaid.domain.SearchCriteria;
 public class ReservationUpdateRecordDaoImpl implements ReservationUpdateRecordDao {
 
 	private static final String namespce = "com.webaid.mappers.ReservationUpdateRecordMapper";
-	
+
 	@Autowired
 	private SqlSession session;
-	
+
 	@Override
 	public List<ReservationUpdateRecordVO> selectAll() {
-		return session.selectList(namespce+".selectAll");
+		return session.selectList(namespce + ".selectAll");
+	}
+
+	@Override
+	public List<ReservationUpdateRecordVO> selectByPno(int pno) {
+		return session.selectList(namespce + ".selectByPno", pno);
 	}
 
 	@Override
 	public List<ReservationUpdateRecordVO> listSearch(SearchCriteria cri) {
-		return session.selectList(namespce+".listSearch", cri);
+		return session.selectList(namespce + ".listSearch", cri);
 	}
 
 	@Override
 	public int listSearchCount(SearchCriteria cri) {
-		return session.selectOne(namespce+".listSearchCount", cri);
+		return session.selectOne(namespce + ".listSearchCount", cri);
 	}
 
 	@Override
 	public void register(ReservationUpdateRecordVO vo) {
-		session.insert(namespce+".register", vo);
+		session.insert(namespce + ".register", vo);
 	}
 
 }

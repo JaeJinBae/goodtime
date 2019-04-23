@@ -831,6 +831,73 @@
 		text-align: center;
 		width: 80px;
 	}
+	.patient_res_record_wrap{
+		width:100%;
+		height:300px;
+		overflow: auto;
+		overflow-x:hidden;
+	}
+	.tbl_patient_reservation_record{
+		width:100%;
+	}
+	.tbl_patient_reservation_record tr > th{
+		border-top:2px solid #5e5e5e;
+		border-bottom:2px solid #5e5e5e;
+		padding:8px 3px;
+		font-weight: bold;
+		font-size:15px;
+	}
+	.tbl_patient_reservation_record tr > th:first-child{
+		width:90px;
+	}
+	.tbl_patient_reservation_record tr > th:nth-child(2){
+		width:90px;
+	}
+	.tbl_patient_reservation_record tr > th:nth-child(3){
+		width:90px;
+	}
+	.tbl_patient_reservation_record tr > th:nth-child(4){
+		width:135px;
+	}
+	.tbl_patient_reservation_record tr > th:nth-child(5){
+		width:150px;
+	}
+	.tbl_patient_reservation_record tr > th:nth-child(6){
+		width:180px;
+	}
+	.tbl_patient_reservation_record tr > th:nth-child(7){
+		width:180px;
+	}
+	.tbl_patient_reservation_record tr > th:nth-child(8){
+		width:180px;
+	}
+	.tbl_patient_reservation_record tr > td{
+		text-align: center;
+		padding: 8px 3px !important;
+		border: 0 !important;
+		border-bottom: 1px solid lightgray !important;
+	}
+	.tbl_patient_reservation_update_record{
+		width:100%;
+	}
+	.tbl_patient_reservation_update_record tr > th{
+		border-top:2px solid #5e5e5e;
+		border-bottom:2px solid #5e5e5e;
+		padding:8px 3px;
+		font-weight: bold;
+	}
+	.tbl_patient_reservation_update_record tr > th:first-child{
+		width:90px;
+	}
+	.tbl_patient_reservation_update_record tr > th:last-child{
+		max-width:280px;
+	}
+	.tbl_patient_reservation_update_record tr > td{
+		text-align: center;
+		padding: 8px 3px !important;
+		border: 0 !important;
+		border-bottom: 1px solid lightgray !important;
+	}
 </style> 
 <script>
 
@@ -3264,7 +3331,129 @@ function draw_patient_week_reservation(pno, week, rtype){
 	});
 }
 
-function draw_patient_reservation_byCase(idx){
+function get_reservation_record_byPno(pno){
+	var dt;
+	$.ajax({
+		url:"${pageContext.request.contextPath}/reservationRecordByPno/"+pno,
+		type:"get",
+		dataType:"json",
+		async:false,
+		success:function(json){
+			dt = json;
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	});
+	return dt;
+}
+
+function draw_patient_reservation_record(){
+	var pno = $("#reservation_view_btn").find("input[name='pno']").val();
+	json = get_reservation_record_byPno(pno);
+	var str="";
+	var str = "";
+	var time;
+	var hour;
+	var minute;
+	var overMinute;
+	
+	str = "<div class='patient_res_record_wrap'><table class='tbl_patient_reservation_record'><tr><th>환자명</th><th>담당자</th><th>분류</th><th>종류</th><th>예정일시</th><th>접수일시</th><th>치료완료일시</th><th>최초등록일시</th></tr>";
+	if(json.length == 0){
+		str += "<tr><td colspan='8'>등록된 정보가 없습니다.</td></tr>";
+	}else{
+		$(json).each(function(){
+			time = Number(this.rtime);
+			hour = parseInt(time/60);
+			minute = time%60;
+
+			if(minute < 10){
+				minute = "0"+minute;
+			}
+			if(hour < 10){
+				hour = "0"+hour;
+			}
+			
+			str += "<tr><td>"+this.pname+"</td><td>"+this.ename+"</td>";
+			if(this.rtype == "nc"){
+				str += "<td>일반진료</td>";
+			}else if(this.rtype == "fc"){
+				str += "<td>고정진료</td>";
+			}else if(this.rtype == "nt"){
+				str += "<td>일반치료</td>";
+			}else if(this.rtype == "ft"){
+				str += "<td>고정진료</td>";
+			}
+			str += "<td>"+this.cname+"</td><td>"+this.rdate+" "+hour+":"+minute+"</td><td>"+this.reception_info+"</td><td>"+this.therapy_info+"</td><td>"+this.register_info+"</td></tr>";
+		});
+		str += "</table></div>";
+		
+	}
+	$(".patient_time_table_wrap").html(str);
+	
+}
+
+function get_reservation_update_record_byPno(pno){
+	var dt;
+	$.ajax({
+		url:"${pageContext.request.contextPath}/reservationUpdateRecordByPno/"+pno,
+		type:"get",
+		dataType:"json",
+		async:false,
+		success:function(json){
+			dt = json;
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	});
+	return dt;
+}
+
+function draw_patient_reservation_update_record(){
+	var pno = $("#reservation_view_btn").find("input[name='pno']").val();
+	var json = get_reservation_update_record_byPno(pno);
+	var str = "";
+	var time;
+	var hour;
+	var minute;
+	var overMinute;
+	
+	str = "<div class='patient_res_record_wrap'><table class='tbl_patient_reservation_update_record'><tr><th>환자명</th><th>예정시간</th><th>변경종류</th><th>변경내용</th><th>변경등록일시</th><th>변경메모</th></tr>";
+	if(json.length == 0){
+		str += "<tr><td colspan='6'>등록된 정보가 없습니다.</td></tr>";
+	}else{
+		$(json).each(function(){
+			time = Number(this.rtime);
+			hour = parseInt(time/60);
+			minute = time%60;
+
+			if(minute < 10){
+				minute = "0"+minute;
+			}
+			if(hour < 10){
+				hour = "0"+hour;
+			}
+			
+			str += "<tr><td>"+this.pname+"</td><td>"+this.before_info+"</td>";
+			if(this.rtype == "nc"){
+				str += "<td>일반진료 일정변경</td>";
+			}else if(this.rtype == "fc"){
+				str += "<td>고정진료 일정변경</td>";
+			}else if(this.rtype == "nt"){
+				str += "<td>일반치료 일정변경</td>";
+			}else if(this.rtype == "ft"){
+				str += "<td>고정치료 일정변경</td>";
+			}
+			str += "<td>"+this.after_info+"</td><td>"+this.update_info+"</td><td>"+this.update_memo+"</td></tr>";
+		});
+		str += "</table></div>";
+		
+	}
+	$(".patient_time_table_wrap").html(str);
+}
+
+function draw_patient_reservation_byCase(idx){ 
 	switch(idx){
 	case 0:
 		draw_patient_week_calendar("clinic", idx);
@@ -3274,8 +3463,14 @@ function draw_patient_reservation_byCase(idx){
 		draw_patient_week_calendar("therapy", idx);
 		break;
 	case 2:
+		$(".patient_time_table_wrap").html("");
+		$(".patient_week_tbl_selectBox_wrap").css("display","none");
+		draw_patient_reservation_record();
 		break;
 	case 3:
+		$(".patient_time_table_wrap").html("");
+		$(".patient_week_tbl_selectBox_wrap").css("display","none");
+		draw_patient_reservation_update_record();
 		break;
 	default:
 		break;

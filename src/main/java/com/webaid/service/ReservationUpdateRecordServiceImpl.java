@@ -14,10 +14,15 @@ public class ReservationUpdateRecordServiceImpl implements ReservationUpdateReco
 
 	@Autowired
 	private ReservationUpdateRecordDao dao;
-	
+
 	@Override
 	public List<ReservationUpdateRecordVO> selectAll() {
 		return dao.selectAll();
+	}
+
+	@Override
+	public List<ReservationUpdateRecordVO> selectByPno(int pno) {
+		return dao.selectByPno(pno);
 	}
 
 	@Override

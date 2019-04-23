@@ -23,6 +23,11 @@ public class ReservationRecordDaoImpl implements ReservationRecordDao {
 	}
 
 	@Override
+	public List<ReservationRecordVO> selectByPno(int pno) {
+		return session.selectList(namespace + ".selectByPno", pno);
+	}
+
+	@Override
 	public List<ReservationRecordVO> listSearch(SearchCriteriaRR cri) {
 		return session.selectList(namespace + ".listSearch", cri);
 	}
@@ -49,7 +54,7 @@ public class ReservationRecordDaoImpl implements ReservationRecordDao {
 
 	@Override
 	public void updateRdateRtime(ReservationRecordVO vo) {
-		session.update(namespace+".updateRdateRtime", vo);
+		session.update(namespace + ".updateRdateRtime", vo);
 	}
 
 }

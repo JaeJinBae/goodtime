@@ -21,6 +21,11 @@ public class ReservationRecordServiceImpl implements ReservationRecordService {
 	}
 
 	@Override
+	public List<ReservationRecordVO> selectByPno(int pno) {
+		return dao.selectByPno(pno);
+	}
+
+	@Override
 	public List<ReservationRecordVO> listSearch(SearchCriteriaRR cri) {
 		return dao.listSearch(cri);
 	}

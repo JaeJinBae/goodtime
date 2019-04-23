@@ -729,6 +729,7 @@ public class HomeController {
 		try {
 			ncrService.register(vo);
 			rrvo.setNo(0);
+			rrvo.setPno(vo.getPno());
 			rrvo.setPname(pvo.getName());
 			rrvo.setEname(evo.getName());
 			rrvo.setRno(vo.getRno());
@@ -765,6 +766,7 @@ public class HomeController {
 		try {
 			ntrService.register(vo);
 			rrvo.setNo(0);
+			rrvo.setPno(vo.getPno());
 			rrvo.setPname(pvo.getName());
 			rrvo.setEname(evo.getName());
 			rrvo.setRno(vo.getRno());
@@ -812,6 +814,7 @@ public class HomeController {
 				vo.setRdate(splitDate[i]);
 				fcrService.register(vo);
 				rrvo.setNo(0);
+				rrvo.setPno(vo.getPno());
 				rrvo.setPname(pvo.getName());
 				rrvo.setEname(evo.getName());
 				rrvo.setRno(vo.getRno());
@@ -861,6 +864,7 @@ public class HomeController {
 				vo.setRdate(splitDate[i]);
 				ftrService.register(vo);
 				rrvo.setNo(0);
+				rrvo.setPno(vo.getPno());
 				rrvo.setPname(pvo.getName());
 				rrvo.setEname(evo.getName());
 				rrvo.setRno(vo.getRno());
@@ -948,6 +952,7 @@ public class HomeController {
 			
 			rurvo.setRno(Integer.parseInt(rno));
 			rurvo.setRtype(rtype);
+			rurvo.setPno(Integer.parseInt(pno));
 			rurvo.setPname(pService.selectByPno(pno).getName());
 			rurvo.setBefore_info(before_info);
 			rurvo.setAfter_info(after_info);
@@ -1163,6 +1168,19 @@ public class HomeController {
 		return entity;
 	}
 	
+	@RequestMapping(value="reservationRecordByPno/{pno}", method=RequestMethod.GET)
+	public ResponseEntity<List<ReservationRecordVO>> reservationRecordByPno(@PathVariable("pno") int pno){
+		ResponseEntity<List<ReservationRecordVO>> entity = null;
+		try {
+			List<ReservationRecordVO> list = rrService.selectByPno(pno);
+			entity = new ResponseEntity<List<ReservationRecordVO>>(list, HttpStatus.OK);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		return entity;
+	}
+	
 	@RequestMapping(value="/reservationUpdateRecordGetAll", method=RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> reservationUpdateRecordGetAll(@ModelAttribute("cri") SearchCriteria cri){
 		logger.info("reservation update record get all");
@@ -1191,6 +1209,18 @@ public class HomeController {
 			entity = new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
 		} catch (Exception e) {
 			entity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			System.out.println(e.getMessage());
+		}
+		return entity;
+	}
+	
+	@RequestMapping(value="reservationUpdateRecordByPno/{pno}", method=RequestMethod.GET)
+	public ResponseEntity<List<ReservationUpdateRecordVO>> reservationUpdateRecordByPno(@PathVariable("pno") int pno){
+		ResponseEntity<List<ReservationUpdateRecordVO>> entity = null;
+		try {
+			List<ReservationUpdateRecordVO> list = rurService.selectByPno(pno);
+			entity = new ResponseEntity<List<ReservationUpdateRecordVO>>(list, HttpStatus.OK);
+		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
 		return entity;

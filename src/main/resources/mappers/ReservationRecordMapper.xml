@@ -5,7 +5,11 @@
 <mapper namespace="com.webaid.mappers.ReservationRecordMapper">
 
 	<select id="selectAll" resultType="ReservationRecordVO">
-		select * from reservation_record order by no desc;
+		select * from reservation_record order by no desc
+	</select>
+	
+	<select id="selectByPno" resultType="ReservationRecordVO">
+		select * from reservation_record where pno=#{pno} order by no desc
 	</select>
 	
 	<select id="listSearch" resultType="ReservationRecordVO">
@@ -21,7 +25,7 @@
 	</select>
 	
 	<insert id="register">
-		insert into reservation_record values(0, #{pname}, #{ename}, #{rno}, #{rtype}, #{cname}, #{rdate}, #{rtime}, #{reception_info}, #{therapy_info}, #{register_info}, #{result})
+		insert into reservation_record values(0, #{pno}, #{pname}, #{ename}, #{rno}, #{rtype}, #{cname}, #{rdate}, #{rtime}, #{reception_info}, #{therapy_info}, #{register_info}, #{result})
 	</insert>
 	
 	<update id="updateReceptionInfo">

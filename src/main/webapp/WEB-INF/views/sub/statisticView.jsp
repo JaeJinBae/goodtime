@@ -78,6 +78,15 @@ function get_reservationCount_byDate(date){
 	return dt;
 }
 
+function draw_cureCnt(date){
+	var json = get_reservationCount_byDate(date);
+	/* $(json).each(function(){
+		console.log($(this)); 
+	}); */
+	console.log(json.length);
+	console.log(json.17_ntr);
+}
+
 function statistic_base_setting(){
 	var nowDate = new Date();
 	var nowYear = nowDate.getFullYear();
@@ -85,8 +94,8 @@ function statistic_base_setting(){
 	$(".aside1_selectBox_wrap > select[name='sb_year'] > option[value='"+nowYear+"']").prop("selected", true);
 	$(".aside1_selectBox_wrap > select[name='sb_month'] > option[value='"+nowMonth+"']").prop("selected", true);
 	nowMonth=(nowMonth>9?'':'0')+nowMonth;
+	draw_cureCnt(nowYear+"-"+nowMonth);
 	
-	console.log(get_reservationCount_byDate(nowYear+"-"+nowMonth));
 }
 
 $(function(){

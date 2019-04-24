@@ -83,8 +83,8 @@ function draw_cureCnt(date){
 	/* $(json).each(function(){
 		console.log($(this)); 
 	}); */
-	console.log(json.length);
-	console.log(json.17_ntr);
+	console.log(Object.keys(json).length);
+	//console.log($(json).find("17_ntr")); 
 }
 
 function statistic_base_setting(){

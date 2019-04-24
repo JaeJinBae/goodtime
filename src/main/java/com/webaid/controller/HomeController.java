@@ -224,13 +224,15 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value="/reservationCountByDate/{date}", method=RequestMethod.GET)
-	public ResponseEntity<Map<String, Integer>> reservationCountByDate(@PathVariable("date") String date){
-		ResponseEntity<Map<String, Integer>> entity = null;
-		Map<String, Integer> map = new HashMap<>();
+	public ResponseEntity<Map<String, Object>> reservationCountByDate(@PathVariable("date") String date){
+		ResponseEntity<Map<String, Object>> entity = null;
+		Map<String, Object> map = new HashMap<>();
 		List<EmployeeVO> empList = empService.selectByType("therapist");
 		List<NormalTherapyReservationVO> ntrList = ntrService.selectCompleteTotalCount(date);
 		List<FixTherapyReservationVO> ftrList = ftrService.selectCompleteTotalCount(date);
+		
 		int num = 0;
+		
 		for(int i=0; i<empList.size(); i++){
 			for(int j=0; j<ntrList.size(); j++){
 				if(empList.get(i).getEno() == ntrList.get(j).getEno()){
@@ -249,7 +251,8 @@ public class HomeController {
 			map.put(empList.get(i).getEno()+"_ftr", num);
 			num = 0;
 		}
-		entity = new ResponseEntity<Map<String,Integer>>(map, HttpStatus.OK);
+		
+		entity = new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
 		
 		return entity;
 	}

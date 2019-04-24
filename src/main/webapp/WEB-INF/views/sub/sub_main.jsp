@@ -1915,7 +1915,7 @@ function draw_week_timetable(etype, idxx){
 	
 	for(var i=1; i<7; i++){
 		str += "<tr class='"+employee+"_"+arrDate[i]+"'><td>"+arrDay[i]+"("+arrDate[i].split("-")[2]+"일)<input type='hidden' name='day' value='"+arrDay[i]+"'></td>";
-		for(n=8; n < 20; n++){
+		for(n=week_sTime; n < week_eTime; n++){
 			str += "<td class='"+employee+"_"+arrDate[i]+"_"+n+"'><p class='reservation_register_btn'>+</p></td>";
 		}
 		str += "</tr>";

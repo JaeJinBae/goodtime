@@ -197,6 +197,64 @@ public class HomeController {
 		return entity;
 	}
 	
+	@RequestMapping(value="/statistic", method=RequestMethod.GET)
+	public String statisticView(Model model){
+		logger.info("statisticView Get");
+		Calendar now = Calendar.getInstance();
+		String nowYear = now.get(Calendar.YEAR)+"";
+		String nowMonth = ((now.get(Calendar.MONTH)+1)<10)?"0"+(now.get(Calendar.MONTH)+1):(now.get(Calendar.MONTH)+1)+"";
+		String yearMonth = nowYear+"-"+nowMonth;
+		Map<String, Object> map = new HashMap<>();
+		
+		
+		int ntrCnt = ntrService.selectCompleteTotalCount(yearMonth).size(); 
+		int ftrCnt = ftrService.selectCompleteTotalCount(yearMonth).size();
+		
+		List<EmployeeVO> empList = empService.selectByType("therapist");
+		
+		
+		map.put("therapistList", empList);
+		map.put("ntrCnt", ntrCnt);
+		map.put("ftrCnt", ftrCnt);
+		map.put("totalCnt", ntrCnt+ftrCnt);
+		
+		model.addAttribute("data", map);
+		
+		return "sub/statisticView";
+	}
+	
+	@RequestMapping(value="/reservationCountByDate/{date}", method=RequestMethod.GET)
+	public ResponseEntity<Map<String, Integer>> reservationCountByDate(@PathVariable("date") String date){
+		ResponseEntity<Map<String, Integer>> entity = null;
+		Map<String, Integer> map = new HashMap<>();
+		List<EmployeeVO> empList = empService.selectByType("therapist");
+		List<NormalTherapyReservationVO> ntrList = ntrService.selectCompleteTotalCount(date);
+		List<FixTherapyReservationVO> ftrList = ftrService.selectCompleteTotalCount(date);
+		int num = 0;
+		for(int i=0; i<empList.size(); i++){
+			for(int j=0; j<ntrList.size(); j++){
+				if(empList.get(i).getEno() == ntrList.get(j).getEno()){
+					num++;
+				}	
+			}
+			
+			map.put(empList.get(i).getEno()+"_ntr", num);
+			num = 0;
+			
+			for(int j=0; j<ftrList.size(); j++){
+				if(empList.get(i).getEno() == ftrList.get(j).getEno()){
+					num++;
+				}
+			}
+			map.put(empList.get(i).getEno()+"_ftr", num);
+			num = 0;
+		}
+		entity = new ResponseEntity<Map<String,Integer>>(map, HttpStatus.OK);
+		
+		return entity;
+	}
+	
+	
 	@RequestMapping(value="/hospitalInfo", method=RequestMethod.GET)
 	public String hospitalInfoView(Model model){
 		logger.info("hospitalInfo view Get");

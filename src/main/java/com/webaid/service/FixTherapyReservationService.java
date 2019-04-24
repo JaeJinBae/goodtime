@@ -11,6 +11,7 @@ public interface FixTherapyReservationService {
 	public FixTherapyReservationVO selectByRno(int rno);
 	public List<FixTherapyReservationVO> selectByDateEno(SelectByDateEmployeeVO vo);
 	public List<FixTherapyReservationVO> selectByDatePno(FixTherapyReservationVO vo);
+	public List<FixTherapyReservationVO> selectCompleteTotalCount(String rdate);
 	public void register(FixTherapyReservationVO vo);
 	public void updateDeskState(FixTherapyReservationVO vo);
 	public void updateTherapistState(FixTherapyReservationVO vo);

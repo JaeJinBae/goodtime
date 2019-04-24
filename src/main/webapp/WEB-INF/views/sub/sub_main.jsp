@@ -3196,7 +3196,7 @@ function draw_patient_week_timetable(type, idxx){
 	
 	for(var i=1; i<7; i++){
 		str += "<tr class='"+arrDate[i]+"'><td>"+arrDay[i]+"("+arrDate[i].split("-")[2]+"일)<input type='hidden' name='day' value='"+arrDay[i]+"'></td>";
-		for(n=8; n < 20; n++){
+		for(n=week_sTime; n < week_eTime; n++){
 			str += "<td class='"+arrDate[i]+"_"+n+"'></td>";
 		}
 		str += "</tr>";

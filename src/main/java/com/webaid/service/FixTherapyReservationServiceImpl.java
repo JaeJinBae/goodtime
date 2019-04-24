@@ -40,6 +40,11 @@ public class FixTherapyReservationServiceImpl implements FixTherapyReservationSe
 	}
 
 	@Override
+	public List<FixTherapyReservationVO> selectCompleteTotalCount(String rdate) {
+		return dao.selectCompleteTotalCount(rdate);
+	}
+
+	@Override
 	public void register(FixTherapyReservationVO vo) {
 		dao.register(vo);
 	}

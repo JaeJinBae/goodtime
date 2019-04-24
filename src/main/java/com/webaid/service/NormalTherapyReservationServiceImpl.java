@@ -40,6 +40,11 @@ public class NormalTherapyReservationServiceImpl implements NormalTherapyReserva
 	}
 
 	@Override
+	public List<NormalTherapyReservationVO> selectCompleteTotalCount(String rdate) {
+		return dao.selectCompleteTotalCount(rdate);
+	}
+
+	@Override
 	public void register(NormalTherapyReservationVO vo) {
 		dao.register(vo);
 	}

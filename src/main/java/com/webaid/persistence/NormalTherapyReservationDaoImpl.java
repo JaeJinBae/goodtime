@@ -43,6 +43,11 @@ public class NormalTherapyReservationDaoImpl implements NormalTherapyReservation
 	}
 
 	@Override
+	public List<NormalTherapyReservationVO> selectCompleteTotalCount(String rdate) {
+		return session.selectList(namespace + ".selectCompleteTotalCount", rdate);
+	}
+
+	@Override
 	public void register(NormalTherapyReservationVO vo) {
 		session.insert(namespace + ".register", vo);
 	}

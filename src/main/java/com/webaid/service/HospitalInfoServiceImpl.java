@@ -24,4 +24,9 @@ public class HospitalInfoServiceImpl implements HospitalInfoService {
 		return dao.selectOne(day);
 	}
 
+	@Override
+	public void updateTime(HospitalInfoVO vo) {
+		dao.updateTime(vo);
+	}
+
 }

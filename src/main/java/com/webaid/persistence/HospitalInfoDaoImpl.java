@@ -26,4 +26,9 @@ public class HospitalInfoDaoImpl implements HospitalInfoDao {
 		return session.selectOne(namespace+".selectOne", day);
 	}
 
+	@Override
+	public void updateTime(HospitalInfoVO vo) {
+		session.update(namespace+".updateTime", vo);
+	}
+
 }

@@ -429,7 +429,6 @@
 		float:right;
 		/* width:626px; */ 
 		margin:15px;
-		margin-bottom:80px;
 	}
 	.page > ul{
 		text-align: center;
@@ -458,6 +457,8 @@
 	}
 	.ar_tbl_wrap_2 {
 		width:100%;
+		margin-top:50px;
+		margin-bottom:50px;
 	}
 	.ar_tbl_wrap_2 > .selectBox_wrap{
 		margin-bottom:20px;
@@ -526,7 +527,6 @@
 		float:right;
 		/* width:626px; */ 
 		margin:15px;
-		margin-bottom:80px;
 	}
 	.reservation_record_page > ul{
 		text-align: center;
@@ -569,7 +569,6 @@
 		float:right;
 		/* width:626px; */ 
 		margin:15px;
-		margin-bottom:80px;
 	}
 	.reservation_update_record_page > ul{
 		text-align: center;
@@ -614,7 +613,6 @@
 		float:right;
 		/* width:626px; */ 
 		margin:15px;
-		margin-bottom:80px;
 	}
 	.normal_off_page > ul{
 		text-align: center;
@@ -662,7 +660,6 @@
 		float:right;
 		/* width:626px; */ 
 		margin:15px;
-		margin-bottom:80px;
 	}
 	.fix_off_page > ul{
 		text-align: center;
@@ -783,6 +780,8 @@
 	}
 	.ar_tbl_wrap_3{
 		width:100%;
+		margin-top:50px;
+		margin-bottom:50px;
 	}
 	.ar_tbl_wrap_3 > .timetable_btn_wrap2{
 		display:none;

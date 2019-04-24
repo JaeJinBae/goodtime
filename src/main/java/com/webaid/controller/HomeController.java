@@ -197,6 +197,49 @@ public class HomeController {
 		return entity;
 	}
 	
+	@RequestMapping(value="/hospitalInfo", method=RequestMethod.GET)
+	public String hospitalInfoView(Model model){
+		logger.info("hospitalInfo view Get");
+		
+		return "sub/hospitalInfoView";
+	}
+	
+	@RequestMapping(value="/hospitalInfoGetAll", method=RequestMethod.GET)
+	public ResponseEntity<List<HospitalInfoVO>> hospitalInfoGetAll(){
+		ResponseEntity<List<HospitalInfoVO>> entity = null;
+		try {
+			List<HospitalInfoVO> list = hService.selectAll();
+			entity = new ResponseEntity<List<HospitalInfoVO>>(list, HttpStatus.OK);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+
+		return entity;
+	}
+	
+	@RequestMapping(value="/updateHospitalInfo", method=RequestMethod.POST)
+	public ResponseEntity<String> updateHospitalInfo(@RequestBody List<HospitalInfoVO> list){
+		ResponseEntity<String> entity= null;
+		HospitalInfoVO vo = new HospitalInfoVO();
+		String[] arrDOW = {"월", "화", "수", "목", "금", "토", "주간"};
+		try {
+			for(int i=0; i<list.size(); i++){
+				System.out.println(list.get(i).getDay());
+				vo.setDay(arrDOW[i]);
+				vo.setStart_time(list.get(i).getStart_time());
+				vo.setEnd_time(list.get(i).getEnd_time());
+				hService.updateTime(vo);
+			}
+			entity = new ResponseEntity<String>("ok", HttpStatus.OK);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			entity = new ResponseEntity<String>("no", HttpStatus.OK);
+		}
+		
+		return entity;
+	}
+	
 	@RequestMapping(value="/hospitalInfoGetByDay/{date}", method=RequestMethod.GET)
 	public ResponseEntity<HospitalInfoVO> hospitalInfoGet(@PathVariable("date") String date) throws ParseException{
 		ResponseEntity<HospitalInfoVO> entity = null;

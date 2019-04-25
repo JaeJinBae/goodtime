@@ -130,6 +130,7 @@ function statistic_base_setting(){
 }
 
 function excelDown(eno, date){
+	console.log(eno+"/"+date);
 	$.ajax({
 		url:"${pageContext.request.contextPath}/statisticDown/"+eno+"/"+date,
 		type:"post",
@@ -161,7 +162,7 @@ $(function(){
 		var selMonth = $(".aside1_selectBox_wrap > select[name='sb_month']").val();
 		selMonth=(selMonth>9?'':'0')+selMonth;
 		
-		//excelDown(eno, selYear+"-"+selMonth);
+		excelDown(eno, selYear+"-"+selMonth);
 		//window.open('data:application/vnd.ms-excel,'+$(".table_wrap").html());
 
 	});

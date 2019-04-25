@@ -45,6 +45,11 @@ public class FixTherapyReservationServiceImpl implements FixTherapyReservationSe
 	}
 
 	@Override
+	public List<FixTherapyReservationVO> selectCompleteByDateEno(FixTherapyReservationVO vo) {
+		return dao.selectCompleteByDateEno(vo);
+	}
+
+	@Override
 	public void register(FixTherapyReservationVO vo) {
 		dao.register(vo);
 	}

@@ -13,6 +13,7 @@ public interface NormalTherapyReservationDao {
 	public List<NormalTherapyReservationVO> selectByDateEno(SelectByDateEmployeeVO vo);
 	public List<NormalTherapyReservationVO> selectByDatePno(NormalTherapyReservationVO vo);
 	public List<NormalTherapyReservationVO> selectCompleteTotalCount(String rdate);
+	public List<NormalTherapyReservationVO> selectCompleteByDateEno(NormalTherapyReservationVO vo);
 	public void register(NormalTherapyReservationVO vo);
 	public void updateDeskState(NormalTherapyReservationVO vo);
 	public void updateTherapistState(NormalTherapyReservationVO vo);

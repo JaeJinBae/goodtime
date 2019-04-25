@@ -236,87 +236,31 @@ public class HomeController {
 		}
 	}*/
 	@RequestMapping(value="/statisticDown/{eno}/{date}", method=RequestMethod.POST)
-	public void excelDown(@PathVariable("eno") int eno, @PathVariable("date") String ndate, HttpServletResponse response) throws IOException {
+	public void excelDown(@PathVariable("eno") int eno, @PathVariable("date") String date, HttpServletResponse response) throws IOException {
 		logger.info("엑셀 다운 진입");
-		try {
-			Map<String, Object> data;
-			XSSFWorkbook objWorkBook = new XSSFWorkbook();
-			XSSFSheet objSheet = null;
-			XSSFRow objRow = null;
-			XSSFCell objCell = null;
-	
-			Date date = new Date();
-			SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
-			String nowDate = format.format(date);
-	
-			DateFormat format2 = DateFormat.getDateInstance(DateFormat.MEDIUM);
-	
-			objSheet = objWorkBook.createSheet("TestSheet");
-	
-			objRow = objSheet.createRow(0);
-	
-			// 행 높이 지정
-			objRow.setHeight((short) 0x150);
-	
-			// 셀에 데이터 넣지
-			objCell = objRow.createCell(0);
-			objCell.setCellValue("아이디");
-	
-			objCell = objRow.createCell(1);
-			objCell.setCellValue("비밀번호");
-	
-			objCell = objRow.createCell(2);
-			objCell.setCellValue("이름");
-	
-			objCell = objRow.createCell(3);
-			objCell.setCellValue("메일");
-	
-			objCell = objRow.createCell(4);
-			objCell.setCellValue("등록일");
-	
-			List<EmployeeVO> memberList = empService.selectAll();
-	
-			int index = 1;
-	
-			for (EmployeeVO vo : memberList) {
-	
-				objRow = objSheet.createRow(index);
-	
-				objCell = objRow.createCell(0);
-				objCell.setCellValue(vo.getId());
-	
-				objCell = objRow.createCell(1);
-				objCell.setCellValue(vo.getPw());
-	
-				objCell = objRow.createCell(2);
-				objCell.setCellValue(vo.getName());
-	
-				objCell = objRow.createCell(3);
-				objCell.setCellValue(vo.getMail());
-	
-	
-				index++;
-			}
-	
-			for (int i = 0; i < memberList.size(); i++) {
-				objSheet.autoSizeColumn(i);
-			}
-	
-			response.setContentType("Application/Msexcel");
-			response.setHeader("Content-Disposition",
-					"ATTachment; Filename=" + URLEncoder.encode("관심고객현황_" + nowDate, "UTF-8") + ".xlsx");
-	
-			OutputStream fileOut = response.getOutputStream();
-			objWorkBook.write(fileOut);
-			fileOut.close();
-	
-			response.getOutputStream().flush();
-			response.getOutputStream().close();
-		
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-			//e.printStackTrace();
+		NormalTherapyReservationVO ntrVO = new NormalTherapyReservationVO();
+		FixTherapyReservationVO ftrVO = new FixTherapyReservationVO();
+		ntrVO.setEno(eno);
+		ntrVO.setRdate(date);
+		ftrVO.setEno(eno);
+		ftrVO.setRdate(date);
+		List<NormalTherapyReservationVO> ntrList = ntrService.selectCompleteByDateEno(ntrVO);
+		List<FixTherapyReservationVO> ftrList = ftrService.selectCompleteByDateEno(ftrVO);
+		ArrayList<Integer> pnoList = new ArrayList<Integer>();
+		ArrayList<Integer> pnoList2 = new ArrayList<Integer>();
+		for(int i=0; i<ntrList.size(); i++){
+			pnoList.add(ntrList.get(i).getPno());
 		}
+		for(int i=0; i<ftrList.size(); i++){
+			pnoList.add(ftrList.get(i).getPno());
+		}
+		System.out.println(pnoList);
+		for(int i=0; i< pnoList.size(); i++){
+			if(!pnoList2.contains(pnoList.get(i))){
+				pnoList2.add(pnoList.get(i));
+			}
+		}
+		System.out.println(pnoList2);
 	}
 	
 	@RequestMapping(value="/reservationCountByDate/{date}", method=RequestMethod.GET)

@@ -1,5 +1,6 @@
 package com.webaid.controller;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URLEncoder;
@@ -11,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.beanutils.BeanUtils;
@@ -59,6 +61,7 @@ import com.webaid.service.PatientService;
 import com.webaid.service.ReservationRecordService;
 import com.webaid.service.ReservationUpdateRecordService;
 import com.webaid.util.DayGetUtil;
+import com.webaid.util.ExcelDown;
 
 
 @Controller
@@ -204,32 +207,35 @@ public class HomeController {
 		String nowYear = now.get(Calendar.YEAR)+"";
 		String nowMonth = ((now.get(Calendar.MONTH)+1)<10)?"0"+(now.get(Calendar.MONTH)+1):(now.get(Calendar.MONTH)+1)+"";
 		String yearMonth = nowYear+"-"+nowMonth;
-		Map<String, Object> map = new HashMap<>();
-		
-		
-		int ntrCnt = ntrService.selectCompleteTotalCount(yearMonth).size(); 
-		int ftrCnt = ftrService.selectCompleteTotalCount(yearMonth).size();
 		
 		List<EmployeeVO> empList = empService.selectByType("therapist");
-		
-		
-		map.put("therapistList", empList);
-		map.put("ntrCnt", ntrCnt);
-		map.put("ftrCnt", ftrCnt);
-		map.put("totalCnt", ntrCnt+ftrCnt);
-		
-		model.addAttribute("data", map);
+
+		model.addAttribute("list", empList);
 		
 		return "sub/statisticView";
 	}
 	
+	@RequestMapping(value="/statisticDown", method=RequestMethod.POST)
+	public void statisticExcelDown(HttpServletResponse response){
+		logger.info("엑셀 다운 get");
+		Map<String, Object> data = new HashMap<>();
+		ExcelDown ed = new ExcelDown();
+		
+		try {
+			ed.excelDown(data, response);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	@RequestMapping(value="/reservationCountByDate/{date}", method=RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> reservationCountByDate(@PathVariable("date") String date){
-		ResponseEntity<Map<String, Object>> entity = null;
+	public ResponseEntity<List<String>> reservationCountByDate(@PathVariable("date") String date){
+		ResponseEntity<List<String>> entity = null;
 		Map<String, Object> map = new HashMap<>();
 		List<EmployeeVO> empList = empService.selectByType("therapist");
 		List<NormalTherapyReservationVO> ntrList = ntrService.selectCompleteTotalCount(date);
 		List<FixTherapyReservationVO> ftrList = ftrService.selectCompleteTotalCount(date);
+		List<String> str = new ArrayList();
 		
 		int num = 0;
 		
@@ -237,10 +243,9 @@ public class HomeController {
 			for(int j=0; j<ntrList.size(); j++){
 				if(empList.get(i).getEno() == ntrList.get(j).getEno()){
 					num++;
-				}	
+				}
 			}
-			
-			map.put(empList.get(i).getEno()+"_ntr", num);
+			str.add(empList.get(i).getEno()+"_ntr_"+num);
 			num = 0;
 			
 			for(int j=0; j<ftrList.size(); j++){
@@ -248,14 +253,15 @@ public class HomeController {
 					num++;
 				}
 			}
-			map.put(empList.get(i).getEno()+"_ftr", num);
+			str.add(empList.get(i).getEno()+"_ftr_"+num);
 			num = 0;
 		}
 		
-		entity = new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
+		entity = new ResponseEntity<List<String>>(str, HttpStatus.OK);
 		
 		return entity;
 	}
+	
 	
 	
 	@RequestMapping(value="/hospitalInfo", method=RequestMethod.GET)

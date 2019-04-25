@@ -66,7 +66,7 @@ function get_reservationCount_byDate(date){
 	$.ajax({
 		url:"${pageContext.request.contextPath}/reservationCountByDate/"+date,
 		type:"get",
-		dataType:"text",
+		dataType:"json",
 		async:false,
 		success:function(json){
 			dt = json;
@@ -80,11 +80,42 @@ function get_reservationCount_byDate(date){
 
 function draw_cureCnt(date){
 	var json = get_reservationCount_byDate(date);
-	/* $(json).each(function(){
-		console.log($(this)); 
-	}); */
-	console.log(Object.keys(json).length);
-	//console.log($(json).find("17_ntr")); 
+	var splitStr;
+	var target;
+	var ntrTotal = 0;
+	var ftrTotal = 0;
+	var ntrNum;
+	var ftrNum;
+	var totalNum;
+	
+	//각 tr에 ntr, ftr 값 넣기
+	$(json).each(function(){
+		splitStr = this.split("_");
+		target = "."+splitStr[0]+"_"+splitStr[1];
+		$(target).text(splitStr[2]);
+		
+		if(splitStr[1] == "ntr"){
+			ntrTotal += Number(splitStr[2]);
+		}else if(splitStr[1] == "ftr"){
+			ftrTotal += Number(splitStr[2])
+		}
+		
+		$("."+splitStr[0]+"_total").text();
+	});
+	
+	//전체 ntr, ftr total값
+	 $(".total_ntr").text(ntrTotal);
+	 $(".total_ftr").text(ftrTotal);
+	
+	 //각 tr의 total값 계산해서 넣기
+	 $(".table_wrap > table tr").each(function(){
+		if($(this).index() > 0){
+			ntrNum = Number($(this).find("td").eq(1).text());
+			ftrNum = Number($(this).find("td").eq(2).text());
+			totalNum = ntrNum+ftrNum;
+			$(this).find("td").eq(3).text(totalNum);
+		}
+	 });
 }
 
 function statistic_base_setting(){
@@ -94,13 +125,20 @@ function statistic_base_setting(){
 	$(".aside1_selectBox_wrap > select[name='sb_year'] > option[value='"+nowYear+"']").prop("selected", true);
 	$(".aside1_selectBox_wrap > select[name='sb_month'] > option[value='"+nowMonth+"']").prop("selected", true);
 	nowMonth=(nowMonth>9?'':'0')+nowMonth;
-	draw_cureCnt(nowYear+"-"+nowMonth);
 	
+	draw_cureCnt(nowYear+"-"+nowMonth);
 }
 
 $(function(){
 	statistic_base_setting();
 	
+	$(document).on("click", ".aside1_selectBox_wrap > button", function(){
+		var selYear = $(".aside1_selectBox_wrap > select[name='sb_year']").val();
+		var selMonth = $(".aside1_selectBox_wrap > select[name='sb_month']").val();
+		selMonth=(selMonth>9?'':'0')+selMonth;
+		
+		draw_cureCnt(selYear+"-"+selMonth);
+	});
 });
 
 </script>
@@ -140,12 +178,12 @@ $(function(){
 						</tr>
 						<tr>
 							<td>Total</td>
-							<td>${data.ntrCnt}</td>
-							<td>${data.ftrCnt}</td>
-							<td>${data.totalCnt}</td>
+							<td class="total_ntr"></td>
+							<td class="total_ftr"></td>
+							<td class="totalAll"></td>
 							<td>내려받기</td>
 						</tr>
-						<c:forEach var="item" items="${data.therapistList}">
+						<c:forEach var="item" items="${list}">
 							<tr class="${item.eno}_tr">
 								<td class="${item.eno}_name">${item.name}<input type="hidden" name="eno" value="${item.eno}"></td>
 								<td class="${item.eno}_ntr"></td>

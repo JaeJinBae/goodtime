@@ -162,13 +162,9 @@ $(function(){
 		selMonth=(selMonth>9?'':'0')+selMonth;
 		
 		//excelDown(eno, selYear+"-"+selMonth);
-		//window.open('data:application/vnd.ms-excel,'+$(".table_wrap").html());
-
+		window.open('data:application/vnd.ms-excel,'+$(".table_wrap").html());
 	});
 });
-
-
-
 
 </script>
 </head>

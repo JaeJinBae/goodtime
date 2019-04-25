@@ -1,12 +1,16 @@
 package com.webaid.controller;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URLEncoder;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +20,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -215,8 +223,8 @@ public class HomeController {
 		return "sub/statisticView";
 	}
 	
-	@RequestMapping(value="/statisticDown", method=RequestMethod.POST)
-	public void statisticExcelDown(HttpServletResponse response){
+	/*@RequestMapping(value="/statisticDown/{eno}/{date}", method=RequestMethod.POST)
+	public void statisticExcelDown(HttpServletResponse response, @PathVariable("eno") int eno, @PathVariable("date") String date){
 		logger.info("엑셀 다운 get");
 		Map<String, Object> data = new HashMap<>();
 		ExcelDown ed = new ExcelDown();
@@ -225,6 +233,89 @@ public class HomeController {
 			ed.excelDown(data, response);
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+	}*/
+	@RequestMapping(value="/statisticDown/{eno}/{date}", method=RequestMethod.POST)
+	public void excelDown(@PathVariable("eno") int eno, @PathVariable("date") String ndate, HttpServletResponse response) throws IOException {
+		logger.info("엑셀 다운 진입");
+		try {
+			Map<String, Object> data;
+			XSSFWorkbook objWorkBook = new XSSFWorkbook();
+			XSSFSheet objSheet = null;
+			XSSFRow objRow = null;
+			XSSFCell objCell = null;
+	
+			Date date = new Date();
+			SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+			String nowDate = format.format(date);
+	
+			DateFormat format2 = DateFormat.getDateInstance(DateFormat.MEDIUM);
+	
+			objSheet = objWorkBook.createSheet("TestSheet");
+	
+			objRow = objSheet.createRow(0);
+	
+			// 행 높이 지정
+			objRow.setHeight((short) 0x150);
+	
+			// 셀에 데이터 넣지
+			objCell = objRow.createCell(0);
+			objCell.setCellValue("아이디");
+	
+			objCell = objRow.createCell(1);
+			objCell.setCellValue("비밀번호");
+	
+			objCell = objRow.createCell(2);
+			objCell.setCellValue("이름");
+	
+			objCell = objRow.createCell(3);
+			objCell.setCellValue("메일");
+	
+			objCell = objRow.createCell(4);
+			objCell.setCellValue("등록일");
+	
+			List<EmployeeVO> memberList = empService.selectAll();
+	
+			int index = 1;
+	
+			for (EmployeeVO vo : memberList) {
+	
+				objRow = objSheet.createRow(index);
+	
+				objCell = objRow.createCell(0);
+				objCell.setCellValue(vo.getId());
+	
+				objCell = objRow.createCell(1);
+				objCell.setCellValue(vo.getPw());
+	
+				objCell = objRow.createCell(2);
+				objCell.setCellValue(vo.getName());
+	
+				objCell = objRow.createCell(3);
+				objCell.setCellValue(vo.getMail());
+	
+	
+				index++;
+			}
+	
+			for (int i = 0; i < memberList.size(); i++) {
+				objSheet.autoSizeColumn(i);
+			}
+	
+			response.setContentType("Application/Msexcel");
+			response.setHeader("Content-Disposition",
+					"ATTachment; Filename=" + URLEncoder.encode("관심고객현황_" + nowDate, "UTF-8") + ".xlsx");
+	
+			OutputStream fileOut = response.getOutputStream();
+			objWorkBook.write(fileOut);
+			fileOut.close();
+	
+			response.getOutputStream().flush();
+			response.getOutputStream().close();
+		
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			//e.printStackTrace();
 		}
 	}
 	

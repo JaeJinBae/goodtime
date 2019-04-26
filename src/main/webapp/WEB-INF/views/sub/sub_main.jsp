@@ -1341,7 +1341,6 @@ function draw_reservation(date){
 	
 	//일반진료
 	$(json.ncReservationList).each(function(){
-		//patient = get_patient_by_pno(this.pno);
 		clinic = get_clinic_by_cno(this.clinic);
 		clinic_time = Number(clinic.time);
 		time = Number(this.rtime);
@@ -1389,7 +1388,6 @@ function draw_reservation(date){
 	
 	//일반치료
 	$(json.ntReservationList).each(function(){
-		//patient = get_patient_by_pno(this.pno);
 		clinic = get_clinic_by_cno(this.clinic);
 		clinic_time = Number(clinic.time);
 		time = Number(this.rtime);
@@ -1438,7 +1436,6 @@ function draw_reservation(date){
 	
 	//고정진료
 	$(json.fcReservationList).each(function(){
-		//patient = get_patient_by_pno(this.pno);
 		clinic = get_clinic_by_cno(this.clinic);
 		clinic_time = Number(clinic.time);
 		time = Number(this.rtime);
@@ -1485,7 +1482,6 @@ function draw_reservation(date){
 	
 	//고정치료
 	$(json.ftReservationList).each(function(){
-		//patient = get_patient_by_pno(this.pno);
 		clinic = get_clinic_by_cno(this.clinic);
 		clinic_time = Number(clinic.time);
 		time = Number(this.rtime);
@@ -1654,7 +1650,6 @@ function draw_simple_reservation_view(type, rno){
 		json = get_ftReservation_byRno(rno);
 	}
 	
-	//var patient = get_patient_by_pno(json.pno);
 	var clinic = get_clinic_by_cno(json.clinic);
 	var clinic_time = Number(clinic.time);
 	var rtime;
@@ -1935,7 +1930,6 @@ function draw_week_reservation(week, etype, eno, idxx){
 	var week_eDate = week[6];
 	var date;
 	var rtype;
-	//var patient;
 	var clinic;
 	var clinic_time;
 	var time;
@@ -1947,7 +1941,6 @@ function draw_week_reservation(week, etype, eno, idxx){
 		if(etype == "doctor"){//진료고정 view
 			$(json).each(function(){
 				$($(this.vo)).each(function(){
-					//patient = get_patient_by_pno(this.pno);
 					clinic = get_clinic_by_cno(this.clinic);
 					clinic_time = Number(clinic.time);
 					time = Number(this.rtime);
@@ -1995,7 +1988,6 @@ function draw_week_reservation(week, etype, eno, idxx){
 		}else if(etype == "therapist"){//치료고정 view
 			$(json).each(function(){
 				$($(this.vo)).each(function(){
-					//patient = get_patient_by_pno(this.pno);
 					clinic = get_clinic_by_cno(this.clinic);
 					clinic_time = Number(clinic.time);
 					time = Number(this.rtime);
@@ -2049,7 +2041,6 @@ function draw_week_reservation(week, etype, eno, idxx){
 		if(etype == "doctor"){//진료주간 view
 			$(json).each(function(){
 				$($(this.ncr)).each(function(){
-					//patient = get_patient_by_pno(this.pno);
 					clinic = get_clinic_by_cno(this.clinic);
 					clinic_time = Number(clinic.time);
 					time = Number(this.rtime);
@@ -2093,7 +2084,6 @@ function draw_week_reservation(week, etype, eno, idxx){
 					
 				})
 				$($(this.fcr)).each(function(){
-					//patient = get_patient_by_pno(this.pno);
 					clinic = get_clinic_by_cno(this.clinic);
 					clinic_time = Number(clinic.time);
 					time = Number(this.rtime);
@@ -2140,7 +2130,6 @@ function draw_week_reservation(week, etype, eno, idxx){
 		}else if(etype == "therapist"){//치료주간 view
 			$(json).each(function(){
 				$($(this.ntr)).each(function(){
-					//patient = get_patient_by_pno(this.pno);
 					clinic = get_clinic_by_cno(this.clinic);
 					clinic_time = Number(clinic.time);
 					time = Number(this.rtime);
@@ -2185,7 +2174,6 @@ function draw_week_reservation(week, etype, eno, idxx){
 					}
 				})
 				$($(this.ftr)).each(function(){
-					//patient = get_patient_by_pno(this.pno);
 					clinic = get_clinic_by_cno(this.clinic);
 					clinic_time = Number(clinic.time);
 					time = Number(this.rtime);
@@ -2269,7 +2257,7 @@ function get_between_date(date1, date2){
 
 function open_reservation_info_view(type, rno){
 	var rData;
-	//var pData;
+	var pData;
 	var eData;
 	var cData;
 	var time;
@@ -3235,7 +3223,6 @@ function draw_patient_week_reservation(pno, week, rtype){
 	console.log(json);
 	//일반 진료, 치료
 	$(json.nr).each(function(){
-		//var patient = get_patient_by_pno(this.pno);
 		var clinic = get_clinic_by_cno(this.clinic);
 		var clinic_time = Number(clinic.time);
 		var time = Number(this.rtime);
@@ -3281,7 +3268,6 @@ function draw_patient_week_reservation(pno, week, rtype){
 	});
 	//고정 진료/치료
 	$(json.fr).each(function(){
-		//var patient = get_patient_by_pno(this.pno);
 		var clinic = get_clinic_by_cno(this.clinic);
 		var clinic_time = Number(clinic.time);
 		var time = Number(this.rtime);

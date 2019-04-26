@@ -3,9 +3,12 @@ package com.webaid.domain;
 public class FixClinicReservationVO {
 	private int rno;
 	private int pno;
+	private String pname;
+	private int chart_no;
 	private int eno;
 	private String memo;
 	private String clinic;
+	private String clinic_name;
 	private String rtype;
 	private String rdate;
 	private String rtime;
@@ -14,8 +17,6 @@ public class FixClinicReservationVO {
 	private String fix_day_end;
 	private String writer;
 	private String regdate;
-	private String updatewriter;
-	private String updatedate;
 	private String desk_state;
 	private String desk_state_writer;
 	private String desk_state_regdate;
@@ -42,6 +43,22 @@ public class FixClinicReservationVO {
 		this.pno = pno;
 	}
 
+	public String getPname() {
+		return pname;
+	}
+
+	public void setPname(String pname) {
+		this.pname = pname;
+	}
+
+	public int getChart_no() {
+		return chart_no;
+	}
+
+	public void setChart_no(int chart_no) {
+		this.chart_no = chart_no;
+	}
+
 	public int getEno() {
 		return eno;
 	}
@@ -64,6 +81,14 @@ public class FixClinicReservationVO {
 
 	public void setClinic(String clinic) {
 		this.clinic = clinic;
+	}
+
+	public String getClinic_name() {
+		return clinic_name;
+	}
+
+	public void setClinic_name(String clinic_name) {
+		this.clinic_name = clinic_name;
 	}
 
 	public String getRtype() {
@@ -130,22 +155,6 @@ public class FixClinicReservationVO {
 		this.regdate = regdate;
 	}
 
-	public String getUpdatewriter() {
-		return updatewriter;
-	}
-
-	public void setUpdatewriter(String updatewriter) {
-		this.updatewriter = updatewriter;
-	}
-
-	public String getUpdatedate() {
-		return updatedate;
-	}
-
-	public void setUpdatedate(String updatedate) {
-		this.updatedate = updatedate;
-	}
-
 	public String getDesk_state() {
 		return desk_state;
 	}
@@ -188,10 +197,10 @@ public class FixClinicReservationVO {
 
 	@Override
 	public String toString() {
-		return "FixClinicReservationVO [rno=" + rno + ", pno=" + pno + ", eno=" + eno + ", memo=" + memo + ", clinic="
-				+ clinic + ", rtype=" + rtype + ", rdate=" + rdate + ", rtime=" + rtime + ", fix_day=" + fix_day
-				+ ", fix_day_start=" + fix_day_start + ", fix_day_end=" + fix_day_end + ", writer=" + writer
-				+ ", regdate=" + regdate + ", updatewriter=" + updatewriter + ", updatedate=" + updatedate
+		return "FixClinicReservationVO [rno=" + rno + ", pno=" + pno + ", pname=" + pname + ", chart_no=" + chart_no
+				+ ", eno=" + eno + ", memo=" + memo + ", clinic=" + clinic + ", clinic_name=" + clinic_name + ", rtype="
+				+ rtype + ", rdate=" + rdate + ", rtime=" + rtime + ", fix_day=" + fix_day + ", fix_day_start="
+				+ fix_day_start + ", fix_day_end=" + fix_day_end + ", writer=" + writer + ", regdate=" + regdate
 				+ ", desk_state=" + desk_state + ", desk_state_writer=" + desk_state_writer + ", desk_state_regdate="
 				+ desk_state_regdate + ", result=" + result + ", result_memo=" + result_memo + "]";
 	}

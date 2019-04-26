@@ -25,7 +25,7 @@
 	</select>
 	
 	<insert id="register" useGeneratedKeys="true" keyProperty="rno">
-		insert into normal_clinic_reservation values(0, #{pno}, #{eno}, #{memo}, #{clinic}, #{rtype}, #{rdate}, #{rtime}, #{writer}, #{regdate}, #{updatewriter}, #{updatedate}, #{desk_state}, #{desk_state_writer}, #{desk_state_regdate}, #{result}, #{result_memo})
+		insert into normal_clinic_reservation values(0, #{pno}, #{pname}, #{chart_no}, #{eno}, #{memo}, #{clinic}, #{clinic_name}, #{rtype}, #{rdate}, #{rtime}, #{writer}, #{regdate}, #{desk_state}, #{desk_state_writer}, #{desk_state_regdate}, #{result}, #{result_memo})
 	</insert>
 	
 	<update id="updateDeskState">
@@ -33,7 +33,7 @@
 	</update>
 	
 	<update id="updateInfo">
-		update normal_clinic_reservation set rdate=#{rdate}, rtime=#{rtime}, eno=#{eno}, clinic=#{clinic}, memo=#{memo} where rno=#{rno}
+		update normal_clinic_reservation set rdate=#{rdate}, rtime=#{rtime}, eno=#{eno}, clinic=#{clinic}, clinic_name=#{clinic_name}, memo=#{memo} where rno=#{rno}
 	</update>
 	
 	<update id="cancel">

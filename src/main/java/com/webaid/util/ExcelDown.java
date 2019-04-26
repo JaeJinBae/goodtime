@@ -13,6 +13,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -31,12 +32,13 @@ public class ExcelDown {
 	@Autowired
 	FixTherapyReservationService ftrService;
 	
-	public void excelDown(int eno, String date, Map<String, Object> list, HttpServletResponse response) throws IOException {
+	public void excelDown(int eno, String ename, String date, Map<String, Object> list, HttpServletResponse response) throws IOException {
 		System.out.println("엑셀다운 Util 진입");
 		int year = Integer.parseInt(date.split("-")[0]);
 		int month = Integer.parseInt(date.split("-")[1])-1;
+		String yearMonth = year+""+(month+1);
 		Calendar cal = Calendar.getInstance();
-		cal.set(year, 1, 1);
+		cal.set(year, month, 1);
 		int lastDate = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
 		System.out.println(lastDate);
 		
@@ -64,15 +66,16 @@ public class ExcelDown {
 			XSSFRow objRow = null;
 			XSSFCell objCell = null;
 
-			Date datee = new Date();
-			SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
-			String nowDate = format.format(datee);
-
-			DateFormat format2 = DateFormat.getDateInstance(DateFormat.MEDIUM);
-
 			objSheet = objWorkBook.createSheet("TestSheet");
 
 			objRow = objSheet.createRow(0);
+
+			objCell = objRow.createCell(0);
+			objCell.setCellValue(ename+" 치료사 "+year+"년"+month+"월"+"통계");
+			
+			objRow.getSheet().addMergedRegion(new CellRangeAddress(0, 0, 0, 4));
+
+			objRow = objSheet.createRow(1);
 
 			// 행 높이 지정
 			objRow.setHeight((short) 0x150);
@@ -92,10 +95,7 @@ public class ExcelDown {
 				objCell.setCellValue(i-2+"일");
 			}
 			
-
-			//List<MemberVO> memberList = mService.selectAll();
-
-			int index = 1;
+			objRow = objSheet.createRow(2);
 			
 			/*for (MemberVO vo : memberList) {
 
@@ -125,7 +125,7 @@ public class ExcelDown {
 
 			response.setContentType("Application/Msexcel");
 			response.setHeader("Content-Disposition",
-					"ATTachment; Filename=" + URLEncoder.encode("관심고객현황_" + nowDate, "UTF-8") + ".xlsx");
+					"ATTachment; Filename=" + URLEncoder.encode("통계_"+ename+"치료사_" +year+"년"+month+"월", "UTF-8") + ".xlsx");
 
 			OutputStream fileOut = response.getOutputStream();
 			objWorkBook.write(fileOut);

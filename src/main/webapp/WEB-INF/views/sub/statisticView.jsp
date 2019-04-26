@@ -168,11 +168,13 @@ $(function(){
 	$(".excelDownF").submit(function(e){
 		//e.preventDefault();
 		var eno = $(this).parent().parent().find("input[name='eno']").val();
+		var ename = $(this).parent().parent().find("td").prop("class");
+		ename=$("."+ename).text();
 		var selYear = $(".aside1_selectBox_wrap > select[name='sb_year']").val();
 		var selMonth = $(".aside1_selectBox_wrap > select[name='sb_month']").val();
 		selMonth=(selMonth>9?'':'0')+selMonth;
-		console.log(eno+"/"+selYear+"-"+selMonth);
-		$(this).prop("action","statisticDown/"+eno+"/"+selYear+"-"+selMonth);
+		console.log(ename);
+		$(this).prop("action","statisticDown/"+eno+"/"+ename+"/"+(selYear+"-"+selMonth));
 	});
 });
 
@@ -228,7 +230,7 @@ $(function(){
 								<td class="${item.eno}_ftr"></td>
 								<td class="${item.eno}_total"></td>
 								<td>
-									<form class="excelDownF" method="post" action="statisticDown/${item.eno}/">
+									<form class="excelDownF" method="post" action="statisticDown/">
 										<input type="submit" value="down">
 									</form>
 								</td>

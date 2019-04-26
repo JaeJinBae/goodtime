@@ -238,29 +238,25 @@ public class HomeController {
 	@RequestMapping(value="/statisticDown/{eno}/{date}", method=RequestMethod.POST)
 	public void excelDown(@PathVariable("eno") int eno, @PathVariable("date") String date, HttpServletResponse response) throws IOException {
 		logger.info("엑셀 다운 진입");
+		System.out.println(eno+"/"+date);
+		ExcelDown exdn = new ExcelDown();
+		Map<String, Object> list = new HashMap<>();
+		
 		NormalTherapyReservationVO ntrVO = new NormalTherapyReservationVO();
 		FixTherapyReservationVO ftrVO = new FixTherapyReservationVO();
+		
 		ntrVO.setEno(eno);
 		ntrVO.setRdate(date);
 		ftrVO.setEno(eno);
 		ftrVO.setRdate(date);
+		
 		List<NormalTherapyReservationVO> ntrList = ntrService.selectCompleteByDateEno(ntrVO);
 		List<FixTherapyReservationVO> ftrList = ftrService.selectCompleteByDateEno(ftrVO);
-		ArrayList<Integer> pnoList = new ArrayList<Integer>();
-		ArrayList<Integer> pnoList2 = new ArrayList<Integer>();
-		for(int i=0; i<ntrList.size(); i++){
-			pnoList.add(ntrList.get(i).getPno());
-		}
-		for(int i=0; i<ftrList.size(); i++){
-			pnoList.add(ftrList.get(i).getPno());
-		}
-		System.out.println(pnoList);
-		for(int i=0; i< pnoList.size(); i++){
-			if(!pnoList2.contains(pnoList.get(i))){
-				pnoList2.add(pnoList.get(i));
-			}
-		}
-		System.out.println(pnoList2);
+		
+		list.put("ntrList", ntrList);
+		list.put("ftrList", ftrList);
+		exdn.excelDown(eno, date, list, response);
+		
 	}
 	
 	@RequestMapping(value="/reservationCountByDate/{date}", method=RequestMethod.GET)

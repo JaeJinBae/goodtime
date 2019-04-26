@@ -163,8 +163,16 @@ $(function(){
 		selMonth=(selMonth>9?'':'0')+selMonth;
 		
 		excelDown(eno, selYear+"-"+selMonth);
-		//window.open('data:application/vnd.ms-excel,'+$(".table_wrap").html());
-
+	});
+	
+	$(".excelDownF").submit(function(e){
+		//e.preventDefault();
+		var eno = $(this).parent().parent().find("input[name='eno']").val();
+		var selYear = $(".aside1_selectBox_wrap > select[name='sb_year']").val();
+		var selMonth = $(".aside1_selectBox_wrap > select[name='sb_month']").val();
+		selMonth=(selMonth>9?'':'0')+selMonth;
+		console.log(eno+"/"+selYear+"-"+selMonth);
+		$(this).prop("action","statisticDown/"+eno+"/"+selYear+"-"+selMonth);
 	});
 });
 
@@ -219,7 +227,11 @@ $(function(){
 								<td class="${item.eno}_ntr"></td>
 								<td class="${item.eno}_ftr"></td>
 								<td class="${item.eno}_total"></td>
-								<td><button>내려받기</button></td>
+								<td>
+									<form class="excelDownF" method="post" action="statisticDown/${item.eno}/">
+										<input type="submit" value="down">
+									</form>
+								</td>
 							</tr>
 						</c:forEach>
 						

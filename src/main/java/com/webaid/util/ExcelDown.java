@@ -11,8 +11,10 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -63,15 +65,17 @@ public class ExcelDown{
 			XSSFSheet objSheet = null;
 			XSSFRow objRow = null;
 			XSSFCell objCell = null;
-
-			objSheet = objWorkBook.createSheet("TestSheet");
-
+			XSSFCellStyle objStyle = objWorkBook.createCellStyle();
+			objStyle.setAlignment(CellStyle.ALIGN_CENTER);
+			
+			objSheet = objWorkBook.createSheet("Sheet1");
+			
 			objRow = objSheet.createRow(0);
 
 			objCell = objRow.createCell(0);
 			objCell.setCellValue(ename+" 치료사 "+year+"년"+(month+1)+"월"+"통계");
-			
-			objRow.getSheet().addMergedRegion(new CellRangeAddress(0, 0, 0, 4));
+			objCell.setCellStyle(objStyle);
+			objRow.getSheet().addMergedRegion(new CellRangeAddress(0, 0, 0, 3));
 
 			objRow = objSheet.createRow(1);
 
@@ -81,16 +85,19 @@ public class ExcelDown{
 			// 셀에 데이터 넣지
 			objCell = objRow.createCell(0);
 			objCell.setCellValue("번호");
-
+			objCell.setCellStyle(objStyle);
+			
 			objCell = objRow.createCell(1);
 			objCell.setCellValue("환자명");
-
+			objCell.setCellStyle(objStyle);
 			objCell = objRow.createCell(2);
 			objCell.setCellValue("차트번호");
+			objCell.setCellStyle(objStyle);
 			
 			for(int i=3; i<lastDate+3; i++){
 				objCell = objRow.createCell(i);
 				objCell.setCellValue(i-2+"일");
+				objCell.setCellStyle(objStyle);
 			}
 			
 			//순번, 환자명, 차트번호 엑셀에 입력
@@ -102,15 +109,17 @@ public class ExcelDown{
 
 				objCell = objRow.createCell(0);
 				objCell.setCellValue(i+1);
-
+				objCell.setCellStyle(objStyle);
+				
 				objCell = objRow.createCell(1);
 				objCell.setCellValue(strArr[0]);
-
+				objCell.setCellStyle(objStyle);
+				
 				objCell = objRow.createCell(2);
 				objCell.setCellValue(strArr[1]);
-				
+				objCell.setCellStyle(objStyle);
 				for(int j=3; j<lastDate+3; j++){
-					objRow.createCell(j);
+					objRow.createCell(j).setCellStyle(objStyle);;
 				}
 			}
 			
@@ -136,7 +145,9 @@ public class ExcelDown{
 			}
 			
 			objRow = objSheet.createRow(objSheet.getLastRowNum()+1);
-			objRow.createCell(0).setCellValue("Total");
+			objCell = objRow.createCell(0);
+			objCell.setCellValue("Total");
+			objCell.setCellStyle(objStyle);
 			objSheet.addMergedRegion(new CellRangeAddress(objRow.getRowNum(), objRow.getRowNum(), 0, 2));
 			
 			String sCell;
@@ -146,35 +157,55 @@ public class ExcelDown{
 			for(int i=3; i<objSheet.getRow(1).getLastCellNum(); i++){
 				sCell = objSheet.getRow(2).getCell(i).getReference();
 				eCell = objSheet.getRow(eRowNum).getCell(i).getReference();
-				objRow.createCell(i).setCellFormula("COUNTA("+sCell+":"+eCell+")");
+				objCell = objRow.createCell(i);
+				objCell.setCellFormula("COUNTA("+sCell+":"+eCell+")");
+				objCell.setCellStyle(objStyle);
 			}
 			
 			//치료 종류별 현황 제목
 			objRow = objSheet.createRow(objSheet.getLastRowNum()+2); 
 			objCell = objRow.createCell(0);
 			objCell.setCellValue("치료 종류별 현황");
+			objCell.setCellStyle(objStyle);
 			objSheet.addMergedRegion(new CellRangeAddress(objRow.getRowNum(), objRow.getRowNum(), 0, 2));
 			
 			
 			//치료 종류별 현황 내용
 			objRow = objSheet.createRow(objSheet.getLastRowNum()+1);
-			objRow.createCell(0).setCellValue("번호");
-			objRow.createCell(1).setCellValue("치료명");
-			objRow.createCell(2).setCellValue("Total");
+			objCell = objRow.createCell(0);
+			objCell.setCellValue("번호");
+			objCell.setCellStyle(objStyle);
+			
+			objCell = objRow.createCell(1);
+			objCell.setCellValue("치료명");
+			objCell.setCellStyle(objStyle);
+			
+			objCell = objRow.createCell(2);
+			objCell.setCellValue("Total");
+			objCell.setCellStyle(objStyle);
 			
 			for(int i=0; i<clinicList.size(); i++){
 				objRow = objSheet.createRow(objSheet.getLastRowNum()+1);
-				objRow.createCell(0).setCellValue(i+1);
-				objRow.createCell(1).setCellValue(clinicList.get(i).getCode_name());
-				objRow.createCell(2);
+				
+				objCell = objRow.createCell(0);
+				objCell.setCellValue(i+1);
+				objCell.setCellStyle(objStyle);
+				
+				objCell = objRow.createCell(1);
+				objCell.setCellValue(clinicList.get(i).getCode_name());
+				objCell.setCellStyle(objStyle);
+				
+				objCell = objRow.createCell(2);
+				objCell.setCellStyle(objStyle);
 				for(int j=3; j<objSheet.getRow(1).getLastCellNum(); j++){
 					sCell = objSheet.getRow(2).getCell(j).getReference();
 					eCell = objSheet.getRow(eRowNum).getCell(j).getReference();
-					objRow.createCell(j).setCellFormula("COUNTIF("+sCell+":"+eCell+",\""+clinicList.get(i).getCode_name()+"\")");	
+					objCell = objRow.createCell(j);
+					objCell.setCellFormula("COUNTIF("+sCell+":"+eCell+",\""+clinicList.get(i).getCode_name()+"\")");
+					objCell.setCellStyle(objStyle);
 				}
 				objRow.getCell(2).setCellFormula("SUM("+objRow.getCell(3).getReference()+":"+objRow.getCell(objRow.getLastCellNum()-1).getReference()+")");
 			}
-			
 			
 			response.setContentType("Application/Msexcel");
 			response.setHeader("Content-Disposition",

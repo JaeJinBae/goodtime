@@ -31,17 +31,13 @@ import com.webaid.service.FixTherapyReservationService;
 import com.webaid.service.NormalTherapyReservationService;
 
 public class ExcelDown{
-	@Autowired
-	NormalTherapyReservationService ntrService;
-	
-	@Autowired
-	FixTherapyReservationService ftrService;
+
 	
 	public void excelDown(int eno, String ename, String date, Map<String, Object> list, HttpServletResponse response) throws IOException {
 		System.out.println("엑셀다운 Util 진입");
 		int year = Integer.parseInt(date.split("-")[0]);
 		int month = Integer.parseInt(date.split("-")[1])-1;
-		String yearMonth = year+""+(month+1);
+
 		Calendar cal = Calendar.getInstance();
 		cal.set(year, month, 1);
 		int lastDate = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
@@ -80,7 +76,7 @@ public class ExcelDown{
 			objRow = objSheet.createRow(0);
 
 			objCell = objRow.createCell(0);
-			objCell.setCellValue(ename+" 치료사 "+year+"년"+month+"월"+"통계");
+			objCell.setCellValue(ename+" 치료사 "+year+"년"+(month+1)+"월"+"통계");
 			
 			objRow.getSheet().addMergedRegion(new CellRangeAddress(0, 0, 0, 4));
 
@@ -104,10 +100,6 @@ public class ExcelDown{
 				objCell.setCellValue(i-2+"일");
 			}
 			
-			//선택한 행렬의 값 가져오기
-			/*objRow=objSheet.getRow(1);
-			objRow.getCell(3).getStringCellValue();*/
-			
 			//순번, 환자명, 차트번호 엑셀에 입력
 			String[] strArr;
 			for (int i=0; i<pList.size(); i++) {
@@ -123,9 +115,14 @@ public class ExcelDown{
 
 				objCell = objRow.createCell(2);
 				objCell.setCellValue(strArr[1]);
+				
+				for(int j=3; j<lastDate+3; j++){
+					objRow.createCell(j);
+				}
 			}
-			String selectCell;
 			
+			//환자별 날짜에 받은 치료 입력
+			String selectCell;
 			for(int i=0;i<pList.size(); i++){
 				objRow = objSheet.getRow(i+2);
 				selectCell = objRow.getCell(2).getStringCellValue();
@@ -133,22 +130,34 @@ public class ExcelDown{
 					if(selectCell.equals(ntrList.get(j).getChart_no()+"")){
 						int idx = Integer.parseInt(ntrList.get(j).getRdate().split("-")[2]);
 						
-						objRow.createCell(idx+2).setCellValue(ntrList.get(j).getClinic_name());
+						objRow.getCell(idx+2).setCellValue(ntrList.get(j).getClinic_name());
 					}
 				}
 				for(int j=0;j<ftrList.size(); j++){
 					if(selectCell.equals(ftrList.get(j).getChart_no()+"")){
 						int idx = Integer.parseInt(ftrList.get(j).getRdate().split("-")[2]);
 						
-						objRow.createCell(idx+2).setCellValue(ftrList.get(j).getClinic_name());
+						objRow.getCell(idx+2).setCellValue(ftrList.get(j).getClinic_name());
 					}
 				}
 			}
-
+			
+			objRow = objSheet.createRow(objSheet.getLastRowNum()+1);
+			objRow.createCell(2).setCellValue("합계");
+			
+			String sCell;
+			String eCell;
+			for(int i=3; i<objSheet.getRow(1).getLastCellNum()-2; i++){
+				sCell = objSheet.getRow(2).getCell(i).getReference();
+				eCell = objSheet.getRow(objSheet.getLastRowNum()-1).getCell(i).getReference();
+				objRow.createCell(i).setCellFormula("COUNTA("+sCell+":"+eCell+")");
+			}
+			
+			
 
 			response.setContentType("Application/Msexcel");
 			response.setHeader("Content-Disposition",
-					"ATTachment; Filename=" + URLEncoder.encode("통계_"+ename+"치료사_" +year+"년"+month+"월", "UTF-8") + ".xlsx");
+					"ATTachment; Filename=" + URLEncoder.encode("통계_"+ename+"치료사_" +year+"년"+(month+1)+"월", "UTF-8") + ".xlsx");
 
 			OutputStream fileOut = response.getOutputStream();
 			objWorkBook.write(fileOut);

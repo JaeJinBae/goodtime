@@ -3,32 +3,23 @@ package com.webaid.util;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLEncoder;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collector;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.swing.plaf.synth.SynthSplitPaneUI;
 
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.beans.factory.annotation.Autowired;
 
+import com.webaid.domain.ClinicVO;
 import com.webaid.domain.FixTherapyReservationVO;
 import com.webaid.domain.NormalTherapyReservationVO;
-import com.webaid.service.FixTherapyReservationService;
-import com.webaid.service.NormalTherapyReservationService;
 
 public class ExcelDown{
 
@@ -44,6 +35,8 @@ public class ExcelDown{
 		
 		List<NormalTherapyReservationVO> ntrList = (List<NormalTherapyReservationVO>) list.get("ntrList");
 		List<FixTherapyReservationVO> ftrList = (List<FixTherapyReservationVO>) list.get("ftrList");
+		List<ClinicVO> clinicList = (List<ClinicVO>) list.get("clinicList");
+		
 		Collections.sort(ntrList);
 		Collections.sort(ftrList);
 		
@@ -143,18 +136,45 @@ public class ExcelDown{
 			}
 			
 			objRow = objSheet.createRow(objSheet.getLastRowNum()+1);
-			objRow.createCell(2).setCellValue("합계");
+			objRow.createCell(0).setCellValue("Total");
+			objSheet.addMergedRegion(new CellRangeAddress(objRow.getRowNum(), objRow.getRowNum(), 0, 2));
 			
 			String sCell;
 			String eCell;
-			for(int i=3; i<objSheet.getRow(1).getLastCellNum()-2; i++){
+			int eRowNum = objSheet.getLastRowNum()-1;//치료종류별 현황에 반복문에 쓰려고 미리 생성
+			//날짜별 치료 합계
+			for(int i=3; i<objSheet.getRow(1).getLastCellNum(); i++){
 				sCell = objSheet.getRow(2).getCell(i).getReference();
-				eCell = objSheet.getRow(objSheet.getLastRowNum()-1).getCell(i).getReference();
+				eCell = objSheet.getRow(eRowNum).getCell(i).getReference();
 				objRow.createCell(i).setCellFormula("COUNTA("+sCell+":"+eCell+")");
 			}
 			
+			//치료 종류별 현황 제목
+			objRow = objSheet.createRow(objSheet.getLastRowNum()+2); 
+			objCell = objRow.createCell(0);
+			objCell.setCellValue("치료 종류별 현황");
+			objSheet.addMergedRegion(new CellRangeAddress(objRow.getRowNum(), objRow.getRowNum(), 0, 2));
 			
-
+			
+			//치료 종류별 현황 내용
+			objRow = objSheet.createRow(objSheet.getLastRowNum()+1);
+			objRow.createCell(0).setCellValue("번호");
+			objRow.createCell(1).setCellValue("치료명");
+			objRow.createCell(2).setCellValue("Total");
+			
+			for(int i=0; i<clinicList.size(); i++){
+				objRow = objSheet.createRow(objSheet.getLastRowNum()+1);
+				objRow.createCell(0).setCellValue(i+1);
+				objRow.createCell(1).setCellValue(clinicList.get(i).getCode_name());
+				objRow.createCell(2);
+				for(int j=3; j<objSheet.getRow(1).getLastCellNum(); j++){
+					sCell = objSheet.getRow(2).getCell(j).getReference();
+					eCell = objSheet.getRow(eRowNum).getCell(j).getReference();
+					objRow.createCell(j).setCellFormula("COUNTIF("+sCell+":"+eCell+",\""+clinicList.get(i).getCode_name()+"\")");	
+				}
+			}
+			
+			
 			response.setContentType("Application/Msexcel");
 			response.setHeader("Content-Disposition",
 					"ATTachment; Filename=" + URLEncoder.encode("통계_"+ename+"치료사_" +year+"년"+(month+1)+"월", "UTF-8") + ".xlsx");

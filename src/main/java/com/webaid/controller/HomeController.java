@@ -252,9 +252,11 @@ public class HomeController {
 		
 		List<NormalTherapyReservationVO> ntrList = ntrService.selectCompleteByDateEno(ntrVO);
 		List<FixTherapyReservationVO> ftrList = ftrService.selectCompleteByDateEno(ftrVO);
+		List<ClinicVO> clinicList = cService.selectByCodeType("치료");
 		
 		list.put("ntrList", ntrList);
 		list.put("ftrList", ftrList);
+		list.put("clinicList", clinicList);
 		exdn.excelDown(eno, ename, date, list, response);
 		
 	}

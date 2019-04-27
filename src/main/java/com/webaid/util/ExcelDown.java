@@ -7,11 +7,16 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collector;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.plaf.synth.SynthSplitPaneUI;
 
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -25,7 +30,7 @@ import com.webaid.domain.NormalTherapyReservationVO;
 import com.webaid.service.FixTherapyReservationService;
 import com.webaid.service.NormalTherapyReservationService;
 
-public class ExcelDown {
+public class ExcelDown{
 	@Autowired
 	NormalTherapyReservationService ntrService;
 	
@@ -40,18 +45,24 @@ public class ExcelDown {
 		Calendar cal = Calendar.getInstance();
 		cal.set(year, month, 1);
 		int lastDate = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
-		System.out.println(lastDate);
 		
 		List<NormalTherapyReservationVO> ntrList = (List<NormalTherapyReservationVO>) list.get("ntrList");
+		for(int i=0; i<ntrList.size(); i++){
+			System.out.println(ntrList.get(i));
+		}
+		System.out.println("=====================================");
 		List<FixTherapyReservationVO> ftrList = (List<FixTherapyReservationVO>) list.get("ftrList");
-		
+		Collections.sort(ntrList);
+		for(int i=0; i<ntrList.size(); i++){
+			System.out.println(ntrList.get(i));
+		}
 		ArrayList<String> pnoList = new ArrayList<String>();
 		ArrayList<String> pnoList2 = new ArrayList<String>();
 		for(int i=0; i<ntrList.size(); i++){
-			pnoList.add(ntrList.get(i).getPname());
+			pnoList.add(ntrList.get(i).getPname()+"-"+ntrList.get(i).getChart_no());
 		}
 		for(int i=0; i<ftrList.size(); i++){
-			pnoList.add(ftrList.get(i).getPname());
+			pnoList.add(ftrList.get(i).getPname()+"-"+ftrList.get(i).getChart_no());
 		}
 		
 		for(int i=0; i< pnoList.size(); i++){
@@ -59,6 +70,8 @@ public class ExcelDown {
 				pnoList2.add(pnoList.get(i));
 			}
 		}
+		Collections.sort(pnoList2);
+		System.out.println(pnoList2);
 		
 		try {
 			XSSFWorkbook objWorkBook = new XSSFWorkbook();
@@ -95,33 +108,27 @@ public class ExcelDown {
 				objCell.setCellValue(i-2+"일");
 			}
 			
-			objRow = objSheet.createRow(2);
 			
-			/*for (MemberVO vo : memberList) {
-
-				objRow = objSheet.createRow(index);
+			
+			//선택한 행렬의 값 가져오기
+			/*objRow=objSheet.getRow(1);
+			objRow.getCell(3).getStringCellValue();*/
+			String[] strArr;
+			for (int i=0; i<pnoList2.size(); i++) {
+				strArr = pnoList2.get(i).split("-");
+				
+				objRow = objSheet.createRow(i+2);
 
 				objCell = objRow.createCell(0);
-				objCell.setCellValue(vo.getId());
+				objCell.setCellValue(i+1);
 
 				objCell = objRow.createCell(1);
-				objCell.setCellValue(vo.getPw());
+				objCell.setCellValue(strArr[0]);
 
 				objCell = objRow.createCell(2);
-				objCell.setCellValue(vo.getName());
-
-				objCell = objRow.createCell(3);
-				objCell.setCellValue(vo.getMail());
-
-				objCell = objRow.createCell(4);
-				objCell.setCellValue(format2.format(vo.getRegdate()));
-
-				index++;
+				objCell.setCellValue(strArr[1]);
 			}
 
-			for (int i = 0; i < memberList.size(); i++) {
-				objSheet.autoSizeColumn(i);
-			}*/
 
 			response.setContentType("Application/Msexcel");
 			response.setHeader("Content-Disposition",

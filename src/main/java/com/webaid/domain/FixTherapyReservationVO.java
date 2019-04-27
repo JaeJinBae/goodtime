@@ -1,6 +1,6 @@
 package com.webaid.domain;
 
-public class FixTherapyReservationVO {
+public class FixTherapyReservationVO  implements Comparable<FixTherapyReservationVO>{
 	private int rno;
 	private int pno;
 	private String pname;
@@ -232,6 +232,11 @@ public class FixTherapyReservationVO {
 				+ desk_state_regdate + ", therapist_state=" + therapist_state + ", therapist_state_writer="
 				+ therapist_state_writer + ", therapist_state_regdate=" + therapist_state_regdate + ", result=" + result
 				+ ", result_memo=" + result_memo + "]";
+	}
+
+	@Override
+	public int compareTo(FixTherapyReservationVO o) {
+		return pname.compareTo(o.getPname());
 	}
 
 }

@@ -47,17 +47,13 @@ public class ExcelDown{
 		int lastDate = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
 		
 		List<NormalTherapyReservationVO> ntrList = (List<NormalTherapyReservationVO>) list.get("ntrList");
-		for(int i=0; i<ntrList.size(); i++){
-			System.out.println(ntrList.get(i));
-		}
-		System.out.println("=====================================");
 		List<FixTherapyReservationVO> ftrList = (List<FixTherapyReservationVO>) list.get("ftrList");
 		Collections.sort(ntrList);
-		for(int i=0; i<ntrList.size(); i++){
-			System.out.println(ntrList.get(i));
-		}
+		Collections.sort(ftrList);
+		
+		//엑셀에 환자명 넣기 위해 환자이름-차트번호 비교해서 중복제거
 		ArrayList<String> pnoList = new ArrayList<String>();
-		ArrayList<String> pnoList2 = new ArrayList<String>();
+		ArrayList<String> pList = new ArrayList<String>();
 		for(int i=0; i<ntrList.size(); i++){
 			pnoList.add(ntrList.get(i).getPname()+"-"+ntrList.get(i).getChart_no());
 		}
@@ -66,12 +62,12 @@ public class ExcelDown{
 		}
 		
 		for(int i=0; i< pnoList.size(); i++){
-			if(!pnoList2.contains(pnoList.get(i))){
-				pnoList2.add(pnoList.get(i));
+			if(!pList.contains(pnoList.get(i))){
+				pList.add(pnoList.get(i));
 			}
 		}
-		Collections.sort(pnoList2);
-		System.out.println(pnoList2);
+		//환자명 가나다 순으로 정렬
+		Collections.sort(pList);
 		
 		try {
 			XSSFWorkbook objWorkBook = new XSSFWorkbook();
@@ -108,14 +104,14 @@ public class ExcelDown{
 				objCell.setCellValue(i-2+"일");
 			}
 			
-			
-			
 			//선택한 행렬의 값 가져오기
 			/*objRow=objSheet.getRow(1);
 			objRow.getCell(3).getStringCellValue();*/
+			
+			//순번, 환자명, 차트번호 엑셀에 입력
 			String[] strArr;
-			for (int i=0; i<pnoList2.size(); i++) {
-				strArr = pnoList2.get(i).split("-");
+			for (int i=0; i<pList.size(); i++) {
+				strArr = pList.get(i).split("-");
 				
 				objRow = objSheet.createRow(i+2);
 
@@ -127,6 +123,26 @@ public class ExcelDown{
 
 				objCell = objRow.createCell(2);
 				objCell.setCellValue(strArr[1]);
+			}
+			String selectCell;
+			
+			for(int i=0;i<pList.size(); i++){
+				objRow = objSheet.getRow(i+2);
+				selectCell = objRow.getCell(2).getStringCellValue();
+				for(int j=0;j<ntrList.size(); j++){
+					if(selectCell.equals(ntrList.get(j).getChart_no()+"")){
+						int idx = Integer.parseInt(ntrList.get(j).getRdate().split("-")[2]);
+						
+						objRow.createCell(idx+2).setCellValue(ntrList.get(j).getClinic_name());
+					}
+				}
+				for(int j=0;j<ftrList.size(); j++){
+					if(selectCell.equals(ftrList.get(j).getChart_no()+"")){
+						int idx = Integer.parseInt(ftrList.get(j).getRdate().split("-")[2]);
+						
+						objRow.createCell(idx+2).setCellValue(ftrList.get(j).getClinic_name());
+					}
+				}
 			}
 
 

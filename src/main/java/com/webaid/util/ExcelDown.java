@@ -172,6 +172,7 @@ public class ExcelDown{
 					eCell = objSheet.getRow(eRowNum).getCell(j).getReference();
 					objRow.createCell(j).setCellFormula("COUNTIF("+sCell+":"+eCell+",\""+clinicList.get(i).getCode_name()+"\")");	
 				}
+				objRow.getCell(2).setCellFormula("SUM("+objRow.getCell(3).getReference()+":"+objRow.getCell(objRow.getLastCellNum()-1).getReference()+")");
 			}
 			
 			

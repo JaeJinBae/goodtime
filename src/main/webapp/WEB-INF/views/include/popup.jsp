@@ -10,7 +10,7 @@
 		<table>
 			<tr>
 				<th>차트번호</th>
-				<td><input type="text" name="cno" value=""></td>
+				<td><input type="text" name="cno" value=""><button>중복확인</button></td>
 			</tr>
 			<tr>
 				<th>이름</th>
@@ -61,7 +61,7 @@
 		<table>
 			<tr>
 				<th>차트번호</th>
-				<td><input type="text" name="cno" value=""></td>
+				<td><input type="text" name="cno" value=""><button>중복확인</button></td>
 			</tr>
 			<tr>
 				<th>이름</th>
@@ -94,21 +94,6 @@
 						</c:forEach>
 					</select>
 				</td>
-			</tr>
-			<tr>
-				<th>담당치료사</th>
-				<td>
-					<select name="main_therapist">
-						<option value="">선택해주세요.</option>
-						<c:forEach var="list" items="${therapistList}">
-							<option value="${list.eno}">${list.name}</option>
-						</c:forEach>
-					</select>
-				</td>
-			</tr>
-			<tr>
-				<th>이메일</th>
-				<td><input type="text" name="mail" value=""></td>
 			</tr>
 			<tr>
 				<th>메모</th>

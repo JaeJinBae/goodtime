@@ -977,13 +977,13 @@ function draw_patient_table(info){
 
 	$("#inner_tbl_wrap").empty();
 	
-	str ="<table><tr><th></th><th>이름</th><th>설정</th><th>예약</th><th>담당의사</th><th>담당치료사</th><th>회원등급</th><th>생년월일</th><th>연락처</th><th>차트번호</th><th>메모</th><th>문자</th></tr>";
+	str ="<table><tr><th></th><th>이름</th><th>설정</th><th>예약</th><th>담당의사</th><th>회원등급</th><th>생년월일</th><th>연락처</th><th>차트번호</th><th>메모</th><th>문자</th></tr>";
 	
 	if(json.patientListAll.length == 0){
-		str += "<tr><td colspan='12'>등록된 회원이 없습니다.</td></tr>";
+		str += "<tr><td colspan='11'>등록된 회원이 없습니다.</td></tr>";
 	}else{
 		$(json.patientListAll).each(function(){
-			str += "<tr><td><input type='hidden' value='"+this.pno+"'></td><td>"+this.name+"</td><td><p class='patient_update_btn'>수정</p></td><td><p class='reservation_select_btn'>선택</p></td><td>"+this.main_doctor_name+"</td><td>"+this.main_therapist+"</td><td>환자</td><td>"+this.birth+"</td><td>"+this.phone+"</td><td>"+this.cno+"</td><td>"+this.memo+"</td><td><p class='sms_open_btn'>열기</p></td></tr>";
+			str += "<tr><td><input type='hidden' value='"+this.pno+"'></td><td>"+this.name+"</td><td><p class='patient_update_btn'>수정</p></td><td><p class='reservation_select_btn'>선택</p></td><td>"+this.main_doctor_name+"</td><td>환자</td><td>"+this.birth+"</td><td>"+this.phone+"</td><td>"+this.cno+"</td><td>"+this.memo+"</td><td><p class='sms_open_btn'>열기</p></td></tr>";
 		});
 	}
 	str += "</table>";
@@ -3556,7 +3556,6 @@ $(function(){
 			var gender = $(".popup_patient_register > table tr td > select[name='gender']").val();
 			var main_doctor = $(".popup_patient_register > table tr td > select[name='main_doctor']").val();
 			var main_doctor_name = $(".popup_patient_register > table tr td > select[name='main_doctor'] option:selected").html();
-			var mail = $(".popup_patient_register > table tr td > input[name='mail']").val();
 			var memo = $(".popup_patient_register > table tr td > input[name='memo']").val();
 			if(main_therapist_name == "선택해주세요."){
 				main_therapist_name = "";
@@ -3570,7 +3569,6 @@ $(function(){
 					gender:gender,
 					main_doctor:main_doctor,
 					main_doctor_name:main_doctor_name,
-					mail:mail,
 					memo:memo,
 					activation:"",
 					sub_therapist:""

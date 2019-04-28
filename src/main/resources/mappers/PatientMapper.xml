@@ -41,10 +41,10 @@
 	</select>
 	
 	<update id="update">
-		update patient set cno=#{cno}, name=#{name}, phone=#{phone}, birth=#{birth}, gender=#{gender}, mail=#{mail}, main_doctor=#{main_doctor}, main_doctor_name=#{main_doctor_name}, main_therapist=#{main_therapist}, memo=#{memo} where pno=#{pno} 
+		update patient set cno=#{cno}, name=#{name}, phone=#{phone}, birth=#{birth}, gender=#{gender}, main_doctor=#{main_doctor}, main_doctor_name=#{main_doctor_name}, memo=#{memo} where pno=#{pno} 
 	</update>
 	
 	<insert id="register">
-		insert into patient values(#{pno}, #{cno}, #{name}, #{phone}, #{birth}, #{gender}, #{mail}, #{main_doctor}, #{main_doctor_name}, #{main_therapist}, #{main_therapist_name}, #{sub_therapist}, #{memo}, #{activation})
+		insert into patient values(#{pno}, #{cno}, #{name}, #{phone}, #{birth}, #{gender}, #{main_doctor}, #{main_doctor_name}, #{memo}, #{activation})
 	</insert>
 </mapper>

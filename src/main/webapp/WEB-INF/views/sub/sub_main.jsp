@@ -3466,8 +3466,8 @@ $(function(){
 	//달력 생성
 	buildCalendar();
 	
-	$(".calendar_select_date").val(get_today());
-	//$(".calendar_select_date").val("2019-04-15");
+	//$(".calendar_select_date").val(get_today());
+	$(".calendar_select_date").val("2019-04-29");
 	
 	//날짜마다 요일 표시
 	write_yoil();
@@ -3556,8 +3556,6 @@ $(function(){
 			var gender = $(".popup_patient_register > table tr td > select[name='gender']").val();
 			var main_doctor = $(".popup_patient_register > table tr td > select[name='main_doctor']").val();
 			var main_doctor_name = $(".popup_patient_register > table tr td > select[name='main_doctor'] option:selected").html();
-			var main_therapist = $(".popup_patient_register > table tr td > select[name='main_therapist']").val();
-			var main_therapist_name = $(".popup_patient_register > table tr td > select[name='main_therapist'] option:selected").html();
 			var mail = $(".popup_patient_register > table tr td > input[name='mail']").val();
 			var memo = $(".popup_patient_register > table tr td > input[name='memo']").val();
 			if(main_therapist_name == "선택해주세요."){
@@ -3572,8 +3570,6 @@ $(function(){
 					gender:gender,
 					main_doctor:main_doctor,
 					main_doctor_name:main_doctor_name,
-					main_therapist:main_therapist,
-					main_therapist_name:main_therapist_name,
 					mail:mail,
 					memo:memo,
 					activation:"",

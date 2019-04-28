@@ -45,21 +45,6 @@
 				</td>
 			</tr>
 			<tr>
-				<th>담당치료사</th>
-				<td>
-					<select name="main_therapist">
-						<option value="">선택해주세요.</option>
-						<c:forEach var="list" items="${therapistList}">
-							<option value="${list.eno}">${list.name}</option>
-						</c:forEach>
-					</select>
-				</td>
-			</tr>
-			<tr>
-				<th>이메일</th>
-				<td><input type="text" name="mail" value=""></td>
-			</tr>
-			<tr>
 				<th>메모</th>
 				<td><input type="text" name="memo" value=""></td>
 			</tr>

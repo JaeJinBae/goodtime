@@ -237,11 +237,30 @@
 	.aside_left{
 		position:fixed;
 		left:0;
-		width: 250px;
+		width: 265px;
 		height:100%;
 		float:left;
 		border-right: 1px solid lightgray;
-		padding-top:50px;
+		padding-top:20px;
+	}
+	.topView_btn{
+		margin: 0 auto;
+		margin-bottom: 20px;
+		text-align: center;
+	}
+	.topView_btn > p{
+		cursor: pointer;
+		display:inline-block;
+		font-size:15px;
+		background: #105340;
+		color: #fff;
+		border-radius: 3px;
+		padding:5px;
+		border:1px solid gray;
+	}
+	.topView_btn > p > img{
+		width:17px;
+		margin-right: 2px;
 	}
 	.aside_left > .al_tbl_wrap_1{
 		width: 100%;
@@ -316,15 +335,16 @@
 	}
 	.aside_right {
 		position:fixed;
-		left: 260px;
+		left: 275px;
 		float:left;
 		min-width:1000px;
 		height:100%;
 		overflow: scroll;
 		padding-bottom:100px;
-		padding-right:30px;
-		padding-top:30px;
+		padding-right:15px;
+		padding-top:20px; 
 	}
+	
 	.ar_tbl_wrap_1{
 		width:100%;
 	}
@@ -3472,22 +3492,26 @@ $(function(){
 	
 	draw_time_table_by_case(0); 
 	
-	$(".header_inner2 > #patient_view_btn").click(function(){
+	$(".topView_btn > #patient_view_btn").click(function(){
 		if($(this).css("color") == "rgb(255, 255, 255)"){
-			$(this).css({"background":"#fff", "color":"gray"});
+			$(this).css({"background":"#fff", "color":"#105340"});
+			$(this).find("img").prop("src","${pageContext.request.contextPath}/resources/images/icon_person.png");
 			$(".ar_tbl_wrap_1").css("display","none");
 		}else{
-			$(this).css({"background":"gray", "color":"#fff"});
+			$(this).css({"background":"#105340", "color":"#fff"});
+			$(this).find("img").prop("src","${pageContext.request.contextPath}/resources/images/icon_person_white.png");
 			$(".ar_tbl_wrap_1").css("display","block");
 		}
 	});
 	
-	$(".header_inner2 > #reservation1_view_btn").click(function(){
+	$(".topView_btn > #reservation1_view_btn").click(function(){
 		if($(this).css("color") == "rgb(255, 255, 255)"){
-			$(this).css({"background":"#fff", "color":"gray"});
+			$(this).css({"background":"#fff", "color":"#105340"});
+			$(this).find("img").prop("src","${pageContext.request.contextPath}/resources/images/icon_clock.png");
 			$(".ar_tbl_wrap_2").css("display","none");
 		}else{
-			$(this).css({"background":"gray", "color":"#fff"});
+			$(this).css({"background":"#105340", "color":"#fff"});
+			$(this).find("img").prop("src","${pageContext.request.contextPath}/resources/images/icon_clock_white.png");
 			$(".ar_tbl_wrap_2").css("display","block");
 		}
 	});
@@ -4084,6 +4108,11 @@ $(function(){
 		</div>
 		<div class="section">
 			<div class="aside_left">
+				<div class="topView_btn">
+					<p id="patient_view_btn"><img src="${pageContext.request.contextPath}/resources/images/icon_person_white.png">환자VIEW</p>
+					<p id="reservation1_view_btn"><img src="${pageContext.request.contextPath}/resources/images/icon_clock_white.png">예약VIEW</p>
+					<p id="reservation_view_btn"><img src="${pageContext.request.contextPath}/resources/images/icon_person_white.png"></p>
+				</div>
 				<div class="al_tbl_wrap_1">
 				<input class='calendar_select_date' type="hidden" value=''>
 					<table id="calendar" border="3" align="center" style="border-color:#3333FF ">

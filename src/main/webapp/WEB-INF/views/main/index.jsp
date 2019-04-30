@@ -26,9 +26,8 @@
 		width: 300px;
 		position: absolute;
 		left:50%;
-		top: 50%;
-		margin-left: -150px;
-		margin-top: -350px; 
+		top: 140px;
+		margin-left: -150px; 
 	}
 	.logo{
 		width:300px;

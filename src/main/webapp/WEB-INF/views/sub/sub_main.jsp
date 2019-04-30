@@ -426,23 +426,22 @@
 		text-align: center;
 	}
 	.page{
-		float:right;
-		/* width:626px; */ 
-		margin:15px;
+		margin: 15px auto;
 	}
 	.page > ul{
 		text-align: center;
 	}
 	.page ul li{
-		
 		margin:0 auto;
 		list-style: none;
 		display: inline-block;
 		text-align:center;
 		border:1px solid #e9e9e9;
+		border-radius: 8px;
+		margin: 0 1px;
 	}
 	.active1{
-		background: #ed1c24;
+		background: #e02c4f;
 	}
 	.active2{
 		font-weight: bold;
@@ -524,20 +523,19 @@
 		border-bottom: 1px solid lightgray !important;
 	}
 	.reservation_record_page{
-		float:right;
-		/* width:626px; */ 
-		margin:15px;
+		margin: 15px auto;
 	}
 	.reservation_record_page > ul{
 		text-align: center;
 	}
 	.reservation_record_page ul li{
-		
 		margin:0 auto;
 		list-style: none;
 		display: inline-block;
 		text-align:center;
 		border:1px solid #e9e9e9;
+		border-radius: 8px;
+		margin: 0 1px;
 	}
 	.reservation_record_page ul li a{
 		display:inline-block;
@@ -566,20 +564,19 @@
 		border-bottom: 1px solid lightgray !important;
 	}
 	.reservation_update_record_page{
-		float:right;
-		/* width:626px; */ 
-		margin:15px;
+		margin: 15px auto;
 	}
 	.reservation_update_record_page > ul{
 		text-align: center;
 	}
 	.reservation_update_record_page ul li{
-		
 		margin:0 auto;
 		list-style: none;
 		display: inline-block;
 		text-align:center;
 		border:1px solid #e9e9e9;
+		border-radius: 8px;
+		margin: 0 1px;
 	}
 	.reservation_update_record_page ul li a{
 		display:inline-block;
@@ -610,20 +607,19 @@
 		padding:5px 10px;
 	}
 	.normal_off_page{
-		float:right;
-		/* width:626px; */ 
-		margin:15px;
+		margin: 15px auto;
 	}
 	.normal_off_page > ul{
 		text-align: center;
 	}
 	.normal_off_page ul li{
-		
 		margin:0 auto;
 		list-style: none;
 		display: inline-block;
 		text-align:center;
 		border:1px solid #e9e9e9;
+		border-radius: 8px;
+		margin: 0 1px;
 	}
 	.normal_off_page ul li a{
 		display:inline-block;
@@ -657,20 +653,19 @@
 		padding:5px 10px;
 	}
 	.fix_off_page{
-		float:right;
-		/* width:626px; */ 
-		margin:15px;
+		margin: 15px auto;
 	}
 	.fix_off_page > ul{
 		text-align: center;
 	}
 	.fix_off_page ul li{
-		
 		margin:0 auto;
 		list-style: none;
 		display: inline-block;
 		text-align:center;
 		border:1px solid #e9e9e9;
+		border-radius: 8px;
+		margin: 0 1px;
 	}
 	.fix_off_page ul li a{
 		display:inline-block;

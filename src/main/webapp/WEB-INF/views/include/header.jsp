@@ -69,8 +69,11 @@
 		font-weight: bold;
 	}
 	.header_inner3 > ul > li > a{
-		color: #fff;
-		
+		color: #fff;	
+	}
+	.header_inner3 > ul > li > a > img{
+		width: 20px;
+		vertical-align: text-bottom;
 	}
 	
 </style>
@@ -106,7 +109,7 @@
 			<div class="header_inner header_inner3">
 				<ul>
 					<li><span>${sessionScope.name}(${sessionScope.type})</span>님 반갑습니다.</li>
-					<li><a href="${pageContext.request.contextPath}/">마이페이지</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/logout">로그아웃</a></li>
+					<li><a href="${pageContext.request.contextPath}/"><img src="${pageContext.request.contextPath}/resources/images/icon_info_white.png">MyPage</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/logout">Logout</a></li>
 				</ul>
 			</div>
 		</c:if>

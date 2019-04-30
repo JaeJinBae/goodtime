@@ -362,10 +362,12 @@
 	}
 	.search_wrap > button{
 		font-size:15px;
-		border: 1px solid lightgray;
-		padding: 3px 7px;
+		padding: 5px 10px;
 		margin-left:10px;
 		letter-spacing: 1px;
+		background: #1e866a;
+		border-radius: 3px;
+		color: #fff;
 	}
 	.patient_register_btn_wrap{
 		float:right;
@@ -373,9 +375,11 @@
 	.patient_register_btn_wrap > button{
 		font-size:15px;
 		border: 1px solid lightgray;
-		padding: 3px 7px;
-		margin-left:10px;
+		padding: 5px 10px;
 		letter-spacing: 1px;
+		background: #1e866a;
+		border-radius: 4px;
+		color: #fff;
 	}
 	.ar_tbl_wrap_1 > #inner_tbl_wrap{
 		clear: both;
@@ -394,6 +398,9 @@
 		font-weight: bold;
 		border-bottom: 2px solid #efefef;
 		padding: 7px 0;
+	}
+	.ar_tbl_wrap_1 > #inner_tbl_wrap > table tr:first-child{
+		background: #f5f5f5;
 	}
 	.ar_tbl_wrap_1 > #inner_tbl_wrap > table tr:first-child > th:first-child{
 		width:0;
@@ -420,10 +427,10 @@
 		width:110px;
 	}
 	.ar_tbl_wrap_1 > #inner_tbl_wrap > table tr:first-child > th:nth-child(9){
-		width:130px;
+		width:70px;
 	}
 	.ar_tbl_wrap_1 > #inner_tbl_wrap > table tr:first-child > th:nth-child(10){
-		width:70px;
+		width:130px;
 	}
 	.ar_tbl_wrap_1 > #inner_tbl_wrap > table tr:first-child > th:last-child{
 		width:60px;
@@ -434,15 +441,19 @@
 		border-bottom: 1px solid lightgray;
 		padding: 2px 0;
 	}
+	.ar_tbl_wrap_1 > #inner_tbl_wrap > table tr td > p > img{
+		width: 20px;
+	}
 	.patient_update_btn, .sms_open_btn, .reservation_select_btn{
-		width:40px;
+		width:60px;
 		margin: 0 auto;
 		padding: 4px 0;
 		font-size:15px;
-		background: gray;
-		color: #fff;
+		background: #f3f3f3;
+		color: #777;
 		cursor: pointer;
-		border-radius: 4px;
+		border: 1px solid #a0a0a0;
+		border-radius: 6px;
 		text-align: center;
 	}
 	.page{
@@ -459,9 +470,10 @@
 		border:1px solid #e9e9e9;
 		border-radius: 8px;
 		margin: 0 1px;
+		background: #fafafa;
 	}
 	.active1{
-		background: #e02c4f;
+		background: #e02c4f !important;
 	}
 	.active2{
 		font-weight: bold;
@@ -556,6 +568,7 @@
 		border:1px solid #e9e9e9;
 		border-radius: 8px;
 		margin: 0 1px;
+		background: #fafafa;
 	}
 	.reservation_record_page ul li a{
 		display:inline-block;
@@ -597,6 +610,7 @@
 		border:1px solid #e9e9e9;
 		border-radius: 8px;
 		margin: 0 1px;
+		background: #fafafa;
 	}
 	.reservation_update_record_page ul li a{
 		display:inline-block;
@@ -640,6 +654,7 @@
 		border:1px solid #e9e9e9;
 		border-radius: 8px;
 		margin: 0 1px;
+		background: #fafafa;
 	}
 	.normal_off_page ul li a{
 		display:inline-block;
@@ -686,6 +701,7 @@
 		border:1px solid #e9e9e9;
 		border-radius: 8px;
 		margin: 0 1px;
+		background: #fafafa;
 	}
 	.fix_off_page ul li a{
 		display:inline-block;
@@ -767,10 +783,11 @@
 		width:20px;
 		height:20px;
 		color:#fff;
+		font-weight: bold;
 		text-align:center;
 		font-size:20px;
-		background:gray;
-		border:1px solid lightgray;
+		background: #e63839;
+		border-radius: 7px;
 		cursor:pointer;
 	}
 	.reservation_record_selectBox_wrap{
@@ -998,7 +1015,9 @@ function draw_patient_table(info){
 		str += "<tr><td colspan='11'>등록된 회원이 없습니다.</td></tr>";
 	}else{
 		$(json.patientListAll).each(function(){
-			str += "<tr><td><input type='hidden' value='"+this.pno+"'></td><td>"+this.name+"</td><td><p class='patient_update_btn'>수정</p></td><td><p class='reservation_select_btn'>선택</p></td><td>"+this.main_doctor_name+"</td><td>환자</td><td>"+this.birth+"</td><td>"+this.phone+"</td><td>"+this.cno+"</td><td>"+this.memo+"</td><td><p class='sms_open_btn'>열기</p></td></tr>";
+			str += "<tr><td><input type='hidden' value='"+this.pno+"'></td><td>"+this.name+"</td><td><p class='patient_update_btn'>수정</p></td>"
+				+"<td><p class='reservation_select_btn'><img src='${pageContext.request.contextPath}/resources/images/icon_clock.png'>선택</p></td><td>"+this.main_doctor_name+"</td><td>환자</td><td>"+this.birth+"</td>"
+				+"<td>"+this.phone+"</td><td>"+this.cno+"</td><td>"+this.memo+"</td><td><p class='sms_open_btn'>열기</p></td></tr>";
 		});
 	}
 	str += "</table>";

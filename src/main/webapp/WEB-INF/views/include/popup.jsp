@@ -191,6 +191,11 @@
 	border:1px solid lightgray;
 }
 </style>
+<script>
+	$(function(){
+		console.log("asdf");
+	});
+</script>
 	<div class="popup_bg">
 	</div>
 	<div class="popup_patient_register popup_content">
@@ -198,7 +203,7 @@
 		<table>
 			<tr>
 				<th>차트번호</th>
-				<td><input type="text" name="cno" value=""><button>중복확인</button></td>
+				<td><input type="text" name="cno" value=""><button>중복확인</button><input type="hidden" name="dupliChkNum" value="0"></td>
 			</tr>
 			<tr>
 				<th>이름</th>
@@ -239,7 +244,7 @@
 		</table>
 		<div class="popup_patient_register_submit_wrap">
 			<p>저장</p>
-			<p>취소</p>
+			<p>닫기</p>
 		</div>
 	</div><!-- popup_patient_register end -->
 	
@@ -249,7 +254,7 @@
 		<table>
 			<tr>
 				<th>차트번호</th>
-				<td><input type="text" name="cno" value=""><button>중복확인</button></td>
+				<td><input type="text" name="cno" value=""><button>중복확인</button><input type="hidden" name="dupliChkNum" value="1"></td>
 			</tr>
 			<tr>
 				<th>이름</th>
@@ -290,7 +295,7 @@
 		</table>
 		<div class="popup_patient_update_submit_wrap">
 			<p>저장</p>
-			<p>취소</p>
+			<p>닫기</p>
 		</div>
 	</div><!-- popup_patientUpdate end -->
 	
@@ -372,7 +377,7 @@
 		<div class="popup_reservation_register_btn_wrap">
 			<p>예약추가</p>
 			<p>진료접수</p>
-			<p>취소</p>
+			<p>닫기</p>
 		</div>
 	</div><!-- popup_reservation_register -->
 	
@@ -454,7 +459,7 @@
 		<div class="popup_reservation_register_btn_wrap">
 			<p>예약추가</p>
 			<p>진료접수</p>
-			<p>취소</p>
+			<p>닫기</p>
 		</div>
 	</div><!-- popup_therapy_reservation_register end -->
 	
@@ -482,6 +487,7 @@
 			<p>예약완료</p>
 			<p>접수완료</p>
 			<p>예약취소</p>
+			<p>닫기</p>
 		</div>
 		<div class="popup_reservation_info_cancel_wrap">
 			<table>
@@ -489,6 +495,7 @@
 					<th>취소사유</th>
 					<td><textarea name="cancel_reason"></textarea></td>
 					<td><button>저장</button></td>
+					<td><p>닫기</p></td>
 				</tr>
 			</table>
 		</div>
@@ -562,6 +569,7 @@
 		</table>
 		<div class="popup_res_update_btn_wrap">
 			<p>변경일정저장</p>
+			<p>닫기</p>
 		</div>
 	</div><!-- popup_normal_reservation_update -->
 	
@@ -611,6 +619,7 @@
 		</table>
 		<div class="popup_normalOff_register_btn_wrap">
 			<p>휴무 등록</p>
+			<p>닫기</p>
 		</div>
 	</div><!-- popup_normal_off_register -->
 	
@@ -662,6 +671,7 @@
 		<div class="popup_normalOff_update_btn_wrap">
 			<p>수정</p>
 			<p>삭제</p>
+			<p>닫기</p>
 		</div>
 	</div><!-- popup_normal_off_update end -->
 	
@@ -726,6 +736,7 @@
 		</table>
 		<div class="popup_fixOff_register_btn_wrap">
 			<p>휴무 등록</p>
+			<p>닫기</p>
 		</div>
 	</div><!-- popup_fix_off_register -->
 	
@@ -791,5 +802,6 @@
 		<div class="popup_fixOff_update_btn_wrap">
 			<p>수정</p>
 			<p>삭제</p>
+			<p>닫기</p>
 		</div>
 	</div><!-- popup_fix_off_update end -->

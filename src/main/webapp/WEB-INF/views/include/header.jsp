@@ -59,7 +59,7 @@
 		line-height: 30px;
 	}
 	.header_inner3 > ul > li > span{
-		font-weight: bold;
+		/* font-weight: bold; */
 	}
 	.header_inner3 > ul > li > a{
 		color: #fff;	
@@ -77,7 +77,6 @@
 		if(session_id == null || session_id == ""){
 			location.replace("${pageContext.request.contextPath}/");
 		}
-		console.log("asd");
 	});
 </script>
 <div class="header_wrap">

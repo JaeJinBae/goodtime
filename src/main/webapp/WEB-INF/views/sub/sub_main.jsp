@@ -176,7 +176,7 @@
 		float:left;
 		min-width:1000px;
 		height:100%;
-		overflow: scroll;
+		overflow: auto;
 		padding-bottom:100px;
 		padding-right:15px;
 		padding-top:20px; 
@@ -930,6 +930,23 @@ function get_patient_by_pno(pno){
 	return dt;
 }
 
+function patient_cno_duplication_check(cno){
+	var dt;
+	$.ajax({
+		url:"${pageContext.request.contextPath}/patientCnoDuplicationChk/"+cno,
+		type:"get",
+		dataType:"text",
+		async:false,
+		success:function(json){
+			dt = json;
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	});
+	return dt;
+}
+
 function post_patient_register(patient){
 	$.ajax({
 		url:"${pageContext.request.contextPath}/patientRegister",
@@ -960,8 +977,6 @@ function draw_patient_update_view(pno){
 	$(".popup_patientUpdate > table tr td > input[name='birth']").val(json.birth);
 	$(".popup_patientUpdate > table tr td > select[name='gender'] option[value='"+json.gender+"']").prop("selected", true);
 	$(".popup_patientUpdate > table tr > td > select[name='main_doctor'] option[value='"+json.main_doctor+"']").prop("selected", true);
-	$(".popup_patientUpdate > table tr > td > select[name='main_therapist'] option[value='"+json.main_therapist+"']").prop("selected", true);
-	$(".popup_patientUpdate > table tr td > input[name='mail']").val(json.mail);
 	$(".popup_patientUpdate > table tr td > input[name='memo']").val(json.memo);
 	
 	$(".popup_wrap").css("display","block");
@@ -3468,10 +3483,23 @@ $(function(){
 		$(".popup_patient_register").css("display","block");
 	});
 	
-	//환자등록 view에서 버튼 클릭
+	//환자등록 popup 차트번호 중복확인
+	$(".popup_patient_register > table tr:first-child > td > button").click(function(){
+		var cno = $(".popup_patient_register > table tr:first-child > td > input[name='cno']").val();
+		var resNum = patient_cno_duplication_check(cno);
+		if(resNum == "ok"){
+			alert("사용가능한 차트번호입니다.");
+			$(".popup_patient_register > table tr:first-child > td > input[name='dupliChkNum']").val(1);
+		}else{
+			alert("사용할 수 없는 차트번호입니다.");
+		}
+	});
+	
+	//환자등록 popup에서 등록 클릭
 	$(".popup_patient_register_submit_wrap > p").click(function(){
 		var idx = $(this).index();
 		if(idx == 0){
+			
 			var cno = $(".popup_patient_register > table tr td > input[name='cno']").val();
 			var name =  $(".popup_patient_register > table tr td > input[name='name']").val();
 			var phone = $(".popup_patient_register > table tr td > input[name='phone']").val();
@@ -3482,6 +3510,26 @@ $(function(){
 			var memo = $(".popup_patient_register > table tr td > input[name='memo']").val();
 			if(main_doctor_name == "선택해주세요."){
 				main_doctor_name = "";
+			}
+			if(cno == ""){
+				alert("차트번호를 입력해주세요.");
+				return false;
+			}
+			if($(".popup_patient_register > table tr:first-child > td > input[name='dupliChkNum']").val() != "1"){
+				alert("차트번호 중복확인을 해주세요.");
+				return false;
+			}
+			if(name == ""){
+				alert("이름을 입력해주세요.");
+				return false;
+			}
+			if(phone == ""){
+				alert("연락처를 입력해주세요.");
+				return false;
+			}
+			if(birth == ""){
+				alert("생년월일을 입력해주세요.");
+				return false;
 			}
 			var patient={
 					pno:"0",
@@ -3521,6 +3569,23 @@ $(function(){
 		draw_patient_update_view(pno);
 	});
 	
+	//환자정보수정 popup에서 차트번호 변경되었을 때
+	$(".popup_patientUpdate > table tr:first-child > td > input[name='cno']").keyup(function(){
+		$(".popup_patientUpdate > table tr:first-child > td > input[name='dupliChkNum']").val(0);
+	});
+	
+	//환자정보수정 popup 차트번호 중복확인
+	$(".popup_patientUpdate > table tr:first-child > td > button").click(function(){
+		var cno = $(".popup_patientUpdate > table tr:first-child > td > input[name='cno']").val();
+		var resNum = patient_cno_duplication_check(cno);
+		if(resNum == "ok"){
+			alert("사용가능한 차트번호입니다.");
+			$(".popup_patientUpdate > table tr:first-child > td > input[name='dupliChkNum']").val(1);
+		}else{
+			alert("사용할 수 없는 차트번호입니다.");
+		}
+	});
+	
 	//환자정보수정 view에서 버튼 클릭
 	$(".popup_patient_update_submit_wrap > p").click(function(){
 		var idx = $(this).index();
@@ -3533,11 +3598,34 @@ $(function(){
 			var gender = $(".popup_patientUpdate > table tr td > select[name='gender']").val();
 			var main_doctor = $(".popup_patientUpdate > table tr td > select[name='main_doctor']").val();
 			var main_doctor_name = $(".popup_patientUpdate > table tr td > select[name='main_doctor'] option:selected").html();
-			var main_therapist = $(".popup_patientUpdate > table tr td > select[name='main_therapist']").val();
-			var mail = $(".popup_patientUpdate > table tr td > input[name='mail']").val();
 			var memo = $(".popup_patientUpdate > table tr td > input[name='memo']").val();
-			var patient={pno:pno, cno:cno, name:name, phone:phone, birth:birth, gender:gender, main_doctor:main_doctor, main_doctor_name:main_doctor_name, main_therapist:main_therapist, mail:mail, memo:memo};
+			var patient;
 			
+			if(main_doctor_name == "선택해주세요."){
+				main_doctor_name = "";
+			}
+			patient={pno:pno, cno:cno, name:name, phone:phone, birth:birth, gender:gender, main_doctor:main_doctor, main_doctor_name:main_doctor_name, memo:memo};
+			
+			if(cno == ""){
+				alert("차트번호를 입력해주세요.");
+				return false;
+			}
+			if($(".popup_patientUpdate > table tr:first-child > td > input[name='dupliChkNum']").val() != "1"){
+				alert("차트번호 중복확인을 해주세요.");
+				return false;
+			}
+			if(name == ""){
+				alert("이름을 입력해주세요.");
+				return false;
+			}
+			if(phone == ""){
+				alert("연락처를 입력해주세요.");
+				return false;
+			}
+			if(birth == ""){
+				alert("생년월일을 입력해주세요.");
+				return false;
+			}
 			post_patient_update_info(patient);
 		}else{
 			$(".popup_patientUpdate").css("display", "none");

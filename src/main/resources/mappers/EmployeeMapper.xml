@@ -41,10 +41,10 @@
 	</select>
 	
 	<update id="update">
-		update employee set type=#{type}, name=#{name}, phone=#{phone}, birth=#{birth}, gender=#{gender}, mail=#{mail}, level=#{level}, id=#{id}, pw=#{pw}, memo=#{memo} where eno=#{eno} 
+		update employee set type=#{type}, name=#{name}, phone=#{phone}, birth=#{birth}, gender=#{gender}, level=#{level}, id=#{id}, pw=#{pw}, memo=#{memo} where eno=#{eno} 
 	</update>
 	
 	<insert id="register">
-		insert into employee(eno, type, name, phone, birth, gender, mail, level, id, pw, memo) values(#{eno}, #{type}, #{name}, #{phone}, #{birth}, #{gender}, #{mail}, #{level}, #{id}, #{pw},  #{memo})
+		insert into employee(eno, type, name, phone, birth, gender, level, id, pw, memo) values(#{eno}, #{type}, #{name}, #{phone}, #{birth}, #{gender}, #{level}, #{id}, #{pw},  #{memo})
 	</insert>
 </mapper>

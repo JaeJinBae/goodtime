@@ -272,7 +272,6 @@ function draw_employee_update_view(eno){
 	$(".popup_employee_update > table tr td > select[name='level'] option[value='"+json.level+"']").prop("selected", true);
 	$(".popup_employee_update > table tr td > input[name='id']").val(json.id);
 	$(".popup_employee_update > table tr td > input[name='birth']").val(json.birth);
-	$(".popup_employee_update > table tr td > input[name='mail']").val(json.mail);
 	$(".popup_employee_update > table tr td > select[name='gender'] option[value='"+json.gender+"']").prop("selected", true);
 	$(".popup_employee_update > table tr td > input[name='memo']").val(json.memo);
 	
@@ -300,7 +299,6 @@ function post_employee_register(vo){
 			$(".popup_employee_register > table tr > td > input[name='pw']").val("");
 			$(".popup_employee_register > table tr > td > input[name='pwconfirm']").val("");
 			$(".popup_employee_register > table tr > td > input[name='birth']").val("");
-			$(".popup_employee_register > table tr > td > input[name='mail']").val("");
 			$(".popup_employee_register > table tr > td > select[name='gender']").val();
 			$(".popup_employee_register > table tr > td > input[name='memo']").val("");
 			
@@ -387,7 +385,6 @@ $(function(){
 			var pw = $(".popup_employee_register > table tr > td > input[name='pw']").val();
 			var pwConfirm = $(".popup_employee_register > table tr > td > input[name='pwconfirm']").val();
 			var birth = $(".popup_employee_register > table tr > td > input[name='birth']").val();
-			var mail = $(".popup_employee_register > table tr > td > input[name='mail']").val();
 			var gender = $(".popup_employee_register > table tr > td > select[name='gender']").val();
 			var memo = $(".popup_employee_register > table tr > td > input[name='memo']").val();
 			
@@ -414,7 +411,7 @@ $(function(){
 				alert("생년월일을 입력해주세요.");
 				return false;
 			}else{
-				var vo = {eno:eno, name:name, phone:phone, type:type, level:level, id:id, pw:pw, birth:birth, mail:mail, gender:gender, memo:memo, offday_fix:"", offday_normal:""}
+				var vo = {eno:eno, name:name, phone:phone, type:type, level:level, id:id, pw:pw, birth:birth, gender:gender, memo:memo, offday_fix:"", offday_normal:""}
 				
 				post_employee_register(vo);
 			}

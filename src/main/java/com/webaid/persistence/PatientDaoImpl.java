@@ -12,49 +12,54 @@ import com.webaid.domain.SearchCriteria;
 @Repository
 public class PatientDaoImpl implements PatientDao {
 
-	private static final String namespace="com.webaid.mappers.PatientMapper";
-	
+	private static final String namespace = "com.webaid.mappers.PatientMapper";
+
 	@Autowired
 	private SqlSession session;
-	
+
 	@Override
 	public List<PatientVO> selectAll() {
-		return session.selectList(namespace+".selectAll");
+		return session.selectList(namespace + ".selectAll");
 	}
 
 	@Override
 	public List<PatientVO> selectByName(String name) {
-		return session.selectList(namespace+".selectByName", name);
+		return session.selectList(namespace + ".selectByName", name);
 	}
 
 	@Override
 	public PatientVO selectByPhone(String phone) {
-		return session.selectOne(namespace+".selectByPhone", phone);
+		return session.selectOne(namespace + ".selectByPhone", phone);
+	}
+
+	@Override
+	public int selectByCno(int cno) {
+		return session.selectOne(namespace + ".selectByCno", cno);
 	}
 
 	@Override
 	public int listSearchCount(SearchCriteria cri) {
-		return session.selectOne(namespace+".listSearchCount", cri);
+		return session.selectOne(namespace + ".listSearchCount", cri);
 	}
 
 	@Override
 	public List<PatientVO> listSearch(SearchCriteria cri) throws Exception {
-		return session.selectList(namespace+".listSearch", cri);
+		return session.selectList(namespace + ".listSearch", cri);
 	}
 
 	@Override
 	public PatientVO selectByPno(String pno) {
-		return session.selectOne(namespace+".selectByPno", pno);
+		return session.selectOne(namespace + ".selectByPno", pno);
 	}
 
 	@Override
 	public void update(PatientVO vo) {
-		session.update(namespace+".update", vo);
+		session.update(namespace + ".update", vo);
 	}
 
 	@Override
 	public void register(PatientVO vo) {
-		session.insert(namespace+".register", vo);
+		session.insert(namespace + ".register", vo);
 	}
 
 }

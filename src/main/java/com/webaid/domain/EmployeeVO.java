@@ -6,14 +6,11 @@ public class EmployeeVO {
 	private String name;
 	private String phone;
 	private String birth;
-	private String mail;
 	private String gender;
 	private String level;
 	private String id;
 	private String pw;
 	private String memo;
-	private String offday_fix;
-	private String offday_normal;
 
 	public EmployeeVO() {
 		super();
@@ -59,14 +56,6 @@ public class EmployeeVO {
 		this.birth = birth;
 	}
 
-	public String getMail() {
-		return mail;
-	}
-
-	public void setMail(String mail) {
-		this.mail = mail;
-	}
-
 	public String getGender() {
 		return gender;
 	}
@@ -107,27 +96,10 @@ public class EmployeeVO {
 		this.memo = memo;
 	}
 
-	public String getOffday_fix() {
-		return offday_fix;
-	}
-
-	public void setOffday_fix(String offday_fix) {
-		this.offday_fix = offday_fix;
-	}
-
-	public String getOffday_normal() {
-		return offday_normal;
-	}
-
-	public void setOffday_normal(String offday_normal) {
-		this.offday_normal = offday_normal;
-	}
-
 	@Override
 	public String toString() {
 		return "EmployeeVO [eno=" + eno + ", type=" + type + ", name=" + name + ", phone=" + phone + ", birth=" + birth
-				+ ", mail=" + mail + ", gender=" + gender + ", level=" + level + ", id=" + id + ", pw=" + pw + ", memo="
-				+ memo + ", offday_fix=" + offday_fix + ", offday_normal=" + offday_normal + "]";
+				+ ", gender=" + gender + ", level=" + level + ", id=" + id + ", pw=" + pw + ", memo=" + memo + "]";
 	}
 
 }

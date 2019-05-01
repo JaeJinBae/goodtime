@@ -67,10 +67,6 @@
 				<td><input type="text" name="birth" value="" placeholder="ex)1988-12-12"></td>
 			</tr>
 			<tr>
-				<th>이메일</th>
-				<td><input type="text" name="mail" value="" placeholder="ex)test@domain.com"></td>
-			</tr>
-			<tr>
 				<th>성별</th>
 				<td>
 					<select name="gender">
@@ -86,7 +82,7 @@
 		</table>
 		<div class="popup_employee_register_submit_wrap">
 			<p>저장</p>
-			<p>취소</p>
+			<p>닫기</p>
 		</div>
 	</div><!-- popup_employee_register end -->
 	
@@ -153,10 +149,6 @@
 				<td><input type="text" name="birth" value="" placeholder="ex)1988-12-12"></td>
 			</tr>
 			<tr>
-				<th>이메일</th>
-				<td><input type="text" name="mail" value="" placeholder="ex)test@domain.com"></td>
-			</tr>
-			<tr>
 				<th>성별</th>
 				<td>
 					<select name="gender">
@@ -172,6 +164,6 @@
 		</table>
 		<div class="popup_employee_update_submit_wrap">
 			<p>저장</p>
-			<p>취소</p>
+			<p>닫기</p>
 		</div>
 	</div><!-- popup_employee_update end -->

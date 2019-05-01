@@ -28,6 +28,7 @@
 		</table>
 		<div class="popup_reservation_info_btn_wrap">
 			<p>치료완료</p>
+			<p>닫기</p>
 		</div>
 	</div><!-- popup_reservation_info_view -->
 	

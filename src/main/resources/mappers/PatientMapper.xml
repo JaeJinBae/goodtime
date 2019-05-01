@@ -20,6 +20,10 @@
 		select * from patient where phone=#{phone}
 	</select>
 	
+	<select id="selectByCno" resultType="int">
+		select count(pno) from patient where cno=#{cno}
+	</select>
+	
 	<select id="listSearch" resultType="PatientVO">
 		select * from patient <include refid="search"></include> order by pno desc limit #{pageStart},#{perPageNum}  
 	</select>

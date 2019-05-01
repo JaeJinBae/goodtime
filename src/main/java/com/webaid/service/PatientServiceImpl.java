@@ -14,17 +14,17 @@ public class PatientServiceImpl implements PatientService {
 
 	@Autowired
 	private PatientDao dao;
-	
+
 	@Override
 	public List<PatientVO> selectAll() {
 		return dao.selectAll();
 	}
-	
+
 	@Override
 	public PatientVO selectByPno(String pno) {
 		return dao.selectByPno(pno);
 	}
-	
+
 	@Override
 	public List<PatientVO> selectByName(String name) {
 		return dao.selectByName(name);
@@ -36,10 +36,15 @@ public class PatientServiceImpl implements PatientService {
 	}
 
 	@Override
+	public int selectByCno(int cno) {
+		return dao.selectByCno(cno);
+	}
+
+	@Override
 	public List<PatientVO> listSearch(SearchCriteria cri) throws Exception {
 		return dao.listSearch(cri);
 	}
-	
+
 	@Override
 	public int listSearchCount(SearchCriteria cri) {
 		return dao.listSearchCount(cri);
@@ -54,9 +59,5 @@ public class PatientServiceImpl implements PatientService {
 	public void register(PatientVO vo) {
 		dao.register(vo);
 	}
-
-	
-
-	
 
 }

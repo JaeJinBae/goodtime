@@ -42,7 +42,7 @@
 		</table>
 		<div class="popup_clinic_register_submit_wrap">
 			<p>저장</p>
-			<p>취소</p>
+			<p>닫기</p>
 		</div>
 	</div><!-- popup_clinic_register end -->
 	
@@ -84,6 +84,6 @@
 		</table>
 		<div class="popup_clinic_update_submit_wrap">
 			<p>저장</p>
-			<p>취소</p>
+			<p>닫기</p>
 		</div>
 	</div><!-- popup_clinic_update end -->

@@ -865,19 +865,17 @@ public class HomeController {
 		logger.info("ncReservationRegister Post");
 		ResponseEntity<String> entity= null;
 		ReservationRecordVO rrvo = new ReservationRecordVO();
-		ClinicVO cvo = cService.selectOneByCno(Integer.parseInt(vo.getClinic()));
-		PatientVO pvo = pService.selectByPno(vo.getPno()+"");
 		EmployeeVO evo = empService.selectByEno(vo.getEno());
 		
 		try {
 			ncrService.register(vo);
 			rrvo.setNo(0);
 			rrvo.setPno(vo.getPno());
-			rrvo.setPname(pvo.getName());
+			rrvo.setPname(vo.getPname());
 			rrvo.setEname(evo.getName());
 			rrvo.setRno(vo.getRno());
 			rrvo.setRtype(vo.getRtype());
-			rrvo.setCname(cvo.getCode_name());
+			rrvo.setCname(vo.getClinic_name());
 			rrvo.setRdate(vo.getRdate());
 			rrvo.setRtime(vo.getRtime());
 			if(vo.getResult().equals("예약완료")){
@@ -903,18 +901,16 @@ public class HomeController {
 		logger.info("ntReservationRegister Post");
 		ResponseEntity<String> entity= null;
 		ReservationRecordVO rrvo = new ReservationRecordVO();
-		ClinicVO cvo = cService.selectOneByCno(Integer.parseInt(vo.getClinic()));
-		PatientVO pvo = pService.selectByPno(vo.getPno()+"");
 		EmployeeVO evo = empService.selectByEno(vo.getEno());
 		try {
 			ntrService.register(vo);
 			rrvo.setNo(0);
 			rrvo.setPno(vo.getPno());
-			rrvo.setPname(pvo.getName());
+			rrvo.setPname(vo.getPname());
 			rrvo.setEname(evo.getName());
 			rrvo.setRno(vo.getRno());
 			rrvo.setRtype(vo.getRtype());
-			rrvo.setCname(cvo.getCode_name());
+			rrvo.setCname(vo.getClinic_name());
 			rrvo.setRdate(vo.getRdate());
 			rrvo.setRtime(vo.getRtime());
 			if(vo.getResult().equals("예약완료")){
@@ -948,8 +944,6 @@ public class HomeController {
 		String[] splitDate = str2.split(", ");
 		
 		ReservationRecordVO rrvo = new ReservationRecordVO();
-		ClinicVO cvo = cService.selectOneByCno(Integer.parseInt(vo.getClinic()));
-		PatientVO pvo = pService.selectByPno(vo.getPno()+"");
 		EmployeeVO evo = empService.selectByEno(vo.getEno());
 		System.out.println(vo);
 		try {
@@ -958,11 +952,11 @@ public class HomeController {
 				fcrService.register(vo);
 				rrvo.setNo(0);
 				rrvo.setPno(vo.getPno());
-				rrvo.setPname(pvo.getName());
+				rrvo.setPname(vo.getPname());
 				rrvo.setEname(evo.getName());
 				rrvo.setRno(vo.getRno());
 				rrvo.setRtype(vo.getRtype());
-				rrvo.setCname(cvo.getCode_name());
+				rrvo.setCname(vo.getClinic_name());
 				rrvo.setRdate(vo.getRdate());
 				rrvo.setRtime(vo.getRtime());
 				if(vo.getResult().equals("예약완료")){
@@ -998,8 +992,6 @@ public class HomeController {
 		String[] splitDate = str2.split(", ");
 		
 		ReservationRecordVO rrvo = new ReservationRecordVO();
-		ClinicVO cvo = cService.selectOneByCno(Integer.parseInt(vo.getClinic()));
-		PatientVO pvo = pService.selectByPno(vo.getPno()+"");
 		EmployeeVO evo = empService.selectByEno(vo.getEno());
 		
 		try {
@@ -1008,11 +1000,11 @@ public class HomeController {
 				ftrService.register(vo);
 				rrvo.setNo(0);
 				rrvo.setPno(vo.getPno());
-				rrvo.setPname(pvo.getName());
+				rrvo.setPname(vo.getPname());
 				rrvo.setEname(evo.getName());
 				rrvo.setRno(vo.getRno());
 				rrvo.setRtype(vo.getRtype());
-				rrvo.setCname(cvo.getCode_name());
+				rrvo.setCname(vo.getClinic_name());
 				rrvo.setRdate(vo.getRdate());
 				rrvo.setRtime(vo.getRtime());
 				if(vo.getResult().equals("예약완료")){

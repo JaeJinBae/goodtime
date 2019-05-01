@@ -510,7 +510,7 @@
 		letter-spacing: 1px;
 	}
 	.ar_tbl_wrap_2 > .time_table_wrap > table tr:first-child{
-		background: lightgoldenrodyellow;
+		background: #f3f3f3;
 	}
 	.ar_tbl_wrap_2 > .time_table_wrap > table tr th{
 		font-size: 15px;
@@ -713,7 +713,7 @@
 	
 	.timetable_btn_wrap{
 		width:100%;
-		border-bottom:2px solid black;
+		border-bottom:2px solid #a1a1a1;
 		overflow:hidden;
 		margin-bottom:20px;
 		padding:0 10px;
@@ -723,31 +723,57 @@
 		margin-right:30px;
 	}
 	.timetable_btn_wrap > ul > li{
-		float:left;
-		border: 2px solid gray;
+		display: inline-block;
+		vertical-align: bottom;
 		border-bottom:0;
 		border-radius: 7px 7px 0 0;
 		font-size:15px;
-		padding:5px;
-		margin-right:3px;
+		color: #fff;
+		padding:6px; 
 		cursor: pointer;
 	}
 	.timetable_btn_wrap > ul > li:first-child{
-		background: #d3e5f6;
+		background: #33bd91;
 		margin-right:30px;
-		font-weight:bold;
+		font-size:16px;
+		padding: 8px 10px;
+	}
+	.timetable_btn_wrap > ul > li:nth-child(2){
+		background: #74be28;
+	}
+	.timetable_btn_wrap > ul > li:nth-child(3){
+		background: #74be28;
 	}
 	.timetable_btn_wrap > ul > li:nth-child(4){
 		margin-right:30px;
+		background: #74be28;
+	}
+	.timetable_btn_wrap > ul > li:nth-child(5){
+		background: #27a7fb;
+	}
+	.timetable_btn_wrap > ul > li:nth-child(6){
+		background: #27a7fb;
 	}
 	.timetable_btn_wrap > ul > li:nth-child(7){
 		margin-right:30px;
+		background: #27a7fb;
+	}
+	.timetable_btn_wrap > ul > li:nth-child(8){
+		background: #2277ae;
 	}
 	.timetable_btn_wrap > ul > li:nth-child(9){
 		margin-right:30px;
+		background: #2277ae;
+	}
+	.timetable_btn_wrap > ul > li:nth-child(10){
+		background: #973bbb;
 	}
 	.timetable_btn_wrap > ul > li:nth-child(11){
 		margin-right:30px;
+		background: #973bbb;
+	}
+	.timetable_btn_wrap > ul > li:last-child{
+		background: #5c3bbb;
 	}
 	.time_table_wrap > table{
 		width:100%;
@@ -766,7 +792,6 @@
 		line-height: 22px;
 		padding: 4px 3px;
 		color: #fff;
-		border:1px solid lightgray;
 		border-radius: 3px;
 	}
 	.patient_p_tag > img{
@@ -828,23 +853,31 @@
 		margin-right:30px;
 	}
 	.timetable_btn_wrap2 > ul > li{
-		float:left;
-		border: 2px solid gray;
+		display: inline-block;
+		vertical-align: bottom;
 		border-bottom:0;
 		border-radius: 7px 7px 0 0;
 		font-size:15px;
-		padding:5px;
+		padding:6px;
 		margin-right:3px;
 		cursor: pointer;
+		color: #fff;
 	}
 	.timetable_btn_wrap2 > ul > li:first-child{
-		background: #d3e5f6;
-		font-weight:bold;
+		background: #74be28;
+		font-size:16px;
+		padding: 8px 10px;
 	}
 	.timetable_btn_wrap2 > ul > li:nth-child(2){
 		margin-right:30px;
+		background: #27a7fb;
 	}
-	
+	.timetable_btn_wrap2 > ul > li:nth-child(3){
+		background: #2277ae;
+	}
+	.timetable_btn_wrap2 > ul > li:nth-child(4){
+		background: #2277ae;
+	}
 	.ar_tbl_wrap_3 > .patient_week_tbl_selectBox_wrap{
 		display: none;
 	}
@@ -1789,11 +1822,17 @@ function post_ncReservation_register(vo, stbn){
 				$(".popup_clinic_reservation_register").css("display", "none");
 				$(".popup_therapy_reservation_register").css("display", "none");
 				$(".popup_wrap").css("display","none");
+				$(".patient_week_tbl_selectBox_wrap").css("display","none");
+				$(".patient_time_table_wrap").html("");
+				$(".timetable_btn_wrap2").css("display","none");
 				
 				draw_time_table_by_case(stbn);
 			}else{
 				alert("예약등록이 정상적으로 등록되지 않았습니다. 다시 한번 등록하세요.");
 			}
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 		}
 	});
 }
@@ -1813,6 +1852,9 @@ function post_ntReservation_register(vo, stbn){
 				$(".popup_clinic_reservation_register").css("display", "none");
 				$(".popup_therapy_reservation_register").css("display", "none");
 				$(".popup_wrap").css("display","none");
+				$(".patient_week_tbl_selectBox_wrap").css("display","none");
+				$(".patient_time_table_wrap").html("");
+				$(".timetable_btn_wrap2").css("display","none");
 				
 				draw_time_table_by_case(stbn);
 			}else{
@@ -1841,6 +1883,9 @@ function post_fcReservation_register(vo, stbn){
 				$(".popup_clinic_reservation_register").css("display", "none");
 				$(".popup_therapy_reservation_register").css("display", "none");
 				$(".popup_wrap").css("display","none");
+				$(".patient_week_tbl_selectBox_wrap").css("display","none");
+				$(".patient_time_table_wrap").html("");
+				$(".timetable_btn_wrap2").css("display","none");
 				
 				draw_time_table_by_case(stbn);
 			}else{
@@ -1872,6 +1917,9 @@ function post_ftReservation_register(vo, stbn){
 				$(".popup_clinic_reservation_register").css("display", "none");
 				$(".popup_therapy_reservation_register").css("display", "none");
 				$(".popup_wrap").css("display","none");
+				$(".patient_week_tbl_selectBox_wrap").css("display","none");
+				$(".patient_time_table_wrap").html("");
+				$(".timetable_btn_wrap2").css("display","none");
 				
 				draw_time_table_by_case(stbn);
 			}else{
@@ -3500,8 +3548,8 @@ $(function(){
 	//달력 생성
 	buildCalendar();
 	
-	//$(".calendar_select_date").val(get_today());
-	$(".calendar_select_date").val("2019-04-29");
+	$(".calendar_select_date").val(get_today());
+	/* $(".calendar_select_date").val("2019-04-29"); */
 	
 	//날짜마다 요일 표시
 	write_yoil();
@@ -3595,8 +3643,8 @@ $(function(){
 			var main_doctor = $(".popup_patient_register > table tr td > select[name='main_doctor']").val();
 			var main_doctor_name = $(".popup_patient_register > table tr td > select[name='main_doctor'] option:selected").html();
 			var memo = $(".popup_patient_register > table tr td > input[name='memo']").val();
-			if(main_therapist_name == "선택해주세요."){
-				main_therapist_name = "";
+			if(main_doctor_name == "선택해주세요."){
+				main_doctor_name = "";
 			}
 			var patient={
 					pno:"0",
@@ -3690,13 +3738,13 @@ $(function(){
 	//환자 리스트에서 예약-선택 버튼 클릭
 	$(document).on("click", ".reservation_select_btn", function(){
 		var reservation_click_pno = $(this).parent().parent().find("input[type='hidden']").val();
-		var reservation_click_cno = $(this).parent().parent().find("td").eq(9).html();
+		var reservation_click_cno = $(this).parent().parent().find("td").eq(8).html();
 		$("#reservation_view_btn").html($(this).parent().parent().find("td").eq(1).html()+"<input type='hidden' name='pno' value='"+reservation_click_pno+"'><input type='hidden' name='cno' value='"+reservation_click_cno+"'>");
 		$("#reservation_view_btn").css("display", "inline-block");
 		$(".reservation_register_btn").css("display", "block");
 		//ar_tbl_wrap_3 그리기
-		$(".timetable_btn_wrap2 > ul > li").css({"background":"#fff","font-weight":"500"});
-		$(".timetable_btn_wrap2 > ul > li:first-child").css({"background":"#d3e5f6", "font-weight":"bold"});
+		$(".timetable_btn_wrap2 > ul > li").css({"font-size":"15px","padding":"5px"});
+		$(".timetable_btn_wrap2 > ul > li:first-child").css({"font-size":"16px", "padding":"8px 10px"});
 		draw_patient_reservation_byCase(0);
 		
 	});
@@ -3704,8 +3752,8 @@ $(function(){
 	$(".timetable_btn_wrap2 > ul > li").click(function(){
 		var idx = $(this).index();
 		storage_timetable2_btn_num = idx;
-		$(".timetable_btn_wrap2 > ul > li").css({"background":"#fff","font-weight":"500"});
-		$(this).css({"background":"#d3e5f6", "font-weight":"bold"});
+		$(".timetable_btn_wrap2 > ul > li").css({"font-size":"15px","padding":"6px"});
+		$(this).css({"font-size":"16px", "padding":"8px 10px"});
 		draw_patient_reservation_byCase(idx);
 	});
 	
@@ -3835,7 +3883,8 @@ $(function(){
 
 				if(rtype == "nc"){
 					vo = {pno:pno, pname:pname, chart_no:chart_no, eno:eno, rtype:rtype, rdate:rdate, rtime:rtime, clinic:clinic, clinic_name:clinic_name, memo:memo, writer:writer, regdate:regdate, desk_state:desk_state, desk_state_writer:desk_state_writer, desk_state_regdate:desk_state_regdate, result:result, result_memo:""};
-					post_ncReservation_register(vo, storage_timetable_btn_num);
+					console.log(vo);
+					//post_ncReservation_register(vo, storage_timetable_btn_num);
 				}else if(rtype == "fc"){
 					vo = {rno:"0", pno:pno, pname:pname, chart_no:chart_no, eno:eno, fix_day:fix_day, rdate:rdate, rtime:rtime, fix_day_start:fix_day_start, fix_day_end:fix_day_end, rtype:rtype, clinic:clinic, clinic_name:clinic_name, memo:memo, writer:writer, regdate:regdate, desk_state:desk_state, desk_state_writer:desk_state_writer, desk_state_regdate:desk_state_regdate, result:result, result_memo:""};
 					post_fcReservation_register(vo, storage_timetable_btn_num);
@@ -3894,8 +3943,8 @@ $(function(){
 	//table 선택 버튼(진료&치료종합, 진료종합, 주간, 고정 등등)
 	$(".timetable_btn_wrap > ul > li").click(function(){
 		var idx = $(this).index();
-		$(".timetable_btn_wrap > ul > li").css({"background":"#fff", "font-weight":"500"});
-		$(this).css({"background":"#d3e5f6", "font-weight":"bold"});
+		$(".timetable_btn_wrap > ul > li").css({"font-size":"15px", "padding":"6px"});
+		$(this).css({"font-size":"16px", "padding":"8px 10px"});
 		
 		draw_time_table_by_case(idx);
 		storage_timetable_btn_num = idx;

@@ -75,7 +75,13 @@
 .popup_clinic_reservation_register{
 	display:none;
 }
+.popup_clinic_reservation_register .fix_clinic_res_tr{
+	display:none;
+}
 .popup_therapy_reservation_register{
+	display: none;
+}
+.popup_therapy_reservation_register .fix_therapy_res_tr{
 	display: none;
 }
 .popup_reservation_register_btn_wrap{
@@ -193,7 +199,25 @@
 </style>
 <script>
 	$(function(){
-		console.log("asdf");
+		$(".popup_clinic_reservation_register > table tr:nth-child(3) > td > select[name='rtype']").change(function(){
+			var rtype=$(this).val();
+			if(rtype == "fc"){
+				$(".fix_clinic_res_tr").css("display","block");
+			}else{
+				$(".fix_clinic_res_tr").css("display","none");
+			}
+		});
+		
+		$(".popup_therapy_reservation_register > table tr:nth-child(3) > td > select[name='rtype']").change(function(){
+			var rtype=$(this).val();
+			if(rtype == "ft"){
+				$(".fix_therapy_res_tr").css("display","block");
+			}else{
+				$(".fix_therapy_res_tr").css("display","none");
+			}
+		});
+		
+		
 	});
 </script>
 	<div class="popup_bg">
@@ -325,6 +349,16 @@
 				</td>
 			</tr>
 			<tr>
+				<th>예약구분</th>
+				<td>
+					<select name="rtype">
+						<option value="nc">일반예약</option>
+						<option value="fc">고정예약</option>
+						<option value="ch">희망예약</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
 				<th>예약시간</th>
 				<td>
 					<span class="popup_reservation_register_date"></span>시
@@ -338,17 +372,7 @@
 					</select>
 				</td>
 			</tr>
-			<tr>
-				<th>예약구분</th>
-				<td>
-					<select name="rtype">
-						<option value="nc">일반예약</option>
-						<option value="fc">고정예약</option>
-						<option value="ch">희망예약</option>
-					</select>
-				</td>
-			</tr>
-			<tr>
+			<tr class="fix_clinic_res_tr">
 				<th>고정예약요일</th>
 				<td>
 					<select name="fix_day">
@@ -361,13 +385,13 @@
 					</select>
 				</td>
 			</tr>
-			<tr>
+			<tr class="fix_clinic_res_tr">
 				<th>고정예약시작일</th>
-				<td><input type="text" name="fix_day_start" placeholder="ex) 2019-01-01" readonly="readonly"></td>
+				<td><input type="date" name="fix_day_start" readonly="readonly"></td>
 			</tr>
-			<tr>
+			<tr class="fix_clinic_res_tr">
 				<th>고정예약종료일</th>
-				<td><input type="text" name="fix_day_end" placeholder="ex) 2019-01-01"></td>
+				<td><input type="date" name="fix_day_end"></td>
 			</tr>
 			<tr>
 				<th>메모</th>
@@ -396,6 +420,17 @@
 				</td>
 			</tr>
 			<tr>
+				<th>치료종류</th>
+				<td>
+					<select name="clinic">
+						<option value="">선택없음</option>
+						<c:forEach var="item" items="${therapyList}"> 
+							<option value="${item.cno}">${item.code_name}</option>
+						</c:forEach>
+					</select>
+				</td>
+			</tr>
+			<tr>
 				<th>예약구분</th>
 				<td>
 					<select name="rtype">
@@ -419,18 +454,8 @@
 					</select>
 				</td>
 			</tr>
-			<tr>
-				<th>치료종류</th>
-				<td>
-					<select name="clinic">
-						<option value="">선택없음</option>
-						<c:forEach var="item" items="${therapyList}"> 
-							<option value="${item.cno}">${item.code_name}</option>
-						</c:forEach>
-					</select>
-				</td>
-			</tr>
-			<tr>
+			
+			<tr class="fix_therapy_res_tr">
 				<th>고정예약요일</th>
 				<td>
 					<select name="fix_day">
@@ -443,13 +468,13 @@
 					</select>
 				</td>
 			</tr>
-			<tr>
+			<tr class="fix_therapy_res_tr">
 				<th>고정예약시작일</th>
-				<td><input type="text" name="fix_day_start" placeholder="ex) 2019-01-01" readonly="readonly"></td>
+				<td><input type="date" name="fix_day_start" placeholder="ex) 2019-01-01" readonly="readonly"></td>
 			</tr>
-			<tr>
+			<tr class="fix_therapy_res_tr">
 				<th>고정예약종료일</th>
-				<td><input type="text" name="fix_day_end" placeholder="ex) 2019-01-01"></td>
+				<td><input type="date" name="fix_day_end"></td>
 			</tr>
 			<tr>
 				<th>메모</th>

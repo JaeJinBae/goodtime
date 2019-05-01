@@ -109,7 +109,7 @@
 			<div class="header_inner header_inner3">
 				<ul>
 					<li><span>${sessionScope.name}(${sessionScope.type})</span>님 반갑습니다.</li>
-					<li><a href="${pageContext.request.contextPath}/"><img src="${pageContext.request.contextPath}/resources/images/icon_info_white.png">MyPage</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/logout">Logout</a></li>
+					<li><a href="${pageContext.request.contextPath}/"><img src="${pageContext.request.contextPath}/resources/images/icon_info_white.png"> MyPage</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/logout"><img src="${pageContext.request.contextPath}/resources/images/icon_logout_white.png"> Logout</a></li>
 				</ul>
 			</div>
 		</c:if>

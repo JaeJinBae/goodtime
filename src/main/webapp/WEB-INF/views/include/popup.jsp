@@ -3,10 +3,198 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<style>
+.popup_content > h2{
+	width:100%;
+	background: #353c46;
+	color: #fff;
+	letter-spacing: 2px;
+	overflow: hidden;
+	vertical-align: middle;
+}
+.popup_content > h2 > button{
+	color: #fff;
+	font-size: 15px;
+	font-weight: bold;
+	background: #e63839;
+	padding: 11px;
+	float: right;
+}
+.popup_content > table{
+	margin: 0 auto;
+	margin-bottom:30px;
+}
+.popup_content > table tr{
+	display:block;
+	margin-top:30px;
+}
+.popup_content > table tr > th{
+	font-size:16px;
+	width:100px;
+	color:#057be8;
+	font-weight: bold;
+	letter-spacing: 0.3px;
+}
+.popup_content > table tr > td{
+	font-size:15px;
+}
+.popup_content > table tr > td > span{
+	vertical-align: middle;
+}
+.popup_content > table tr > td > input{
+	font-size:15px;
+}
+.popup_content > table tr > td > select{
+	font-size: 15px;
+}
+.popup_content > table tr > td > button{
+	font-size: 15px;
+	padding:3px 5px;
+	border: 1px solid lightgray;
+	margin-left:10px;
+}
+.popup_patient_register{
+	display: none;
+}
+.popup_patientUpdate{
+	display:none;
+}
+.popup_patientUpdate > .popup_patient_update_submit_wrap{
+	width:100%;
+	margin: 0 auto;
+	text-align: center;
+}
+.popup_patientUpdate > .popup_patient_update_submit_wrap > p{
+	display: inline-block;
+	padding:10px;
+	font-size:15px;
+	margin-left:20px;
+	cursor: pointer;
+	border:1px solid lightgray;
+}
+.popup_clinic_reservation_register{
+	display:none;
+}
+.popup_therapy_reservation_register{
+	display: none;
+}
+.popup_reservation_register_btn_wrap{
+	margin-top:30px;
+}
+.popup_reservation_register_btn_wrap > p{
+	display: inline-block;
+	margin-left:20px;
+	cursor: pointer;
+}
+.popup_reservation_info_view{
+	display:none;
+}
+.popup_reservation_info_view > .popup_reservation_info_btn_wrap{
+	width:100%;
+	margin:0 auto;
+	text-align: center;
+}
+.popup_reservation_info_view > .popup_reservation_info_btn_wrap > p{
+	display: inline-block;
+	padding:10px;
+	font-size:15px;
+	margin-left:20px;
+	cursor: pointer;
+	border:1px solid lightgray;
+}
+.popup_reservation_info_cancel_wrap{
+	display:none;
+	width:100%;
+	margin: 0 auto;
+	background: #efefef;
+}
+.popup_reservation_info_cancel_wrap > table{
+	width: 100%;
+}
+.popup_reservation_update{
+	display:none;
+}
+.popup_reservation_update > .popup_res_update_btn_wrap{
+	width:100%;
+	margin:0 auto;
+	text-align: center;
+}
+.popup_reservation_update > .popup_res_update_btn_wrap > p{
+	display: inline-block;
+	padding:10px;
+	font-size:15px;
+	cursor: pointer;
+	border:1px solid lightgray;
+}
+.popup_normal_off_register{
+	display:none;
+}
+.popup_normal_off_register > .popup_normalOff_register_btn_wrap{
+	width:100%;
+	margin:0 auto;
+	text-align: center;
+}
+.popup_normal_off_register > .popup_normalOff_register_btn_wrap > p{
+	display: inline-block;
+	padding:10px;
+	font-size:15px;
+	margin-left:20px;
+	cursor: pointer;
+	border:1px solid lightgray;
+}
+.popup_fix_off_register{
+	display:none;
+}
+.popup_fix_off_register > .popup_fixOff_register_btn_wrap{
+	width:100%;
+	margin:0 auto;
+	text-align: center;
+}
+.popup_fix_off_register > .popup_fixOff_register_btn_wrap > p{
+	display: inline-block;
+	padding:10px;
+	font-size:15px;
+	margin-left:20px;
+	cursor: pointer;
+	border:1px solid lightgray;
+}
+.popup_normal_off_update{
+	display:none;
+}
+.popup_normal_off_update > .popup_normalOff_update_btn_wrap{
+	width:100%;
+	margin:0 auto;
+	text-align: center;
+}
+.popup_normal_off_update > .popup_normalOff_update_btn_wrap > p{
+	display: inline-block;
+	padding:10px;
+	font-size:15px;
+	margin-left:20px;
+	cursor: pointer;
+	border:1px solid lightgray;
+}
+.popup_fix_off_update{
+	display:none;
+}
+.popup_fix_off_update > .popup_fixOff_update_btn_wrap{
+	width:100%;
+	margin:0 auto;
+	text-align: center;
+}
+.popup_fix_off_update > .popup_fixOff_update_btn_wrap > p{
+	display: inline-block;
+	padding:10px;
+	font-size:15px;
+	margin-left:20px;
+	cursor: pointer;
+	border:1px solid lightgray;
+}
+</style>
 	<div class="popup_bg">
 	</div>
 	<div class="popup_patient_register popup_content">
-		<h2>환자등록</h2>
+		<h2><span>환자등록 </span><button>X</button></h2>
 		<table>
 			<tr>
 				<th>차트번호</th>
@@ -56,7 +244,7 @@
 	</div><!-- popup_patient_register end -->
 	
 	<div class="popup_patientUpdate popup_content">
-		<h2>회원정보수정</h2>
+		<h2>회원정보수정<button>X</button></h2>
 		<input name="pno" type="hidden" value="">
 		<table>
 			<tr>
@@ -108,7 +296,7 @@
 	
 	<!-- 진료일정등록 -->
 	<div class="popup_clinic_reservation_register popup_content popup_content2">
-		<h2><span></span>진료일정등록</h2>
+		<h2><span></span>진료일정등록<button>X</button></h2>
 		<table>
 			<tr>
 				<th>담당의사</th>
@@ -190,7 +378,7 @@
 	
 	<!-- 치료일정등록 -->
 	<div class="popup_therapy_reservation_register popup_content popup_content2">
-		<h2><span></span>치료일정등록</h2>
+		<h2><span></span>치료일정등록<button>X</button></h2>
 		<table>
 			<tr>
 				<th>치료사</th>
@@ -271,7 +459,7 @@
 	</div><!-- popup_therapy_reservation_register end -->
 	
 	<div class="popup_reservation_info_view popup_content">
-		<h2></h2>
+		<h2><button>X</button></h2>
 		<table>
 			<tr>
 				<th>연락처</th>
@@ -307,7 +495,7 @@
 	</div><!-- popup_reservation_info_view -->
 	
 	<div class="popup_reservation_update popup_content">
-		<h2><span></span>일정변경</h2>
+		<h2><span></span>일정변경<button>X</button></h2>
 		<table>
 			<tr>
 				<th>변경 전 일시</th>
@@ -378,7 +566,7 @@
 	</div><!-- popup_normal_reservation_update -->
 	
 	<div class="popup_normal_off_register popup_content">
-		<h2>일반휴무 추가</h2>
+		<h2>일반휴무 추가<button>X</button></h2>
 		<table>
 			<tr>
 				<th>휴무자</th>
@@ -427,7 +615,7 @@
 	</div><!-- popup_normal_off_register -->
 	
 	<div class="popup_normal_off_update popup_content">
-		<h2>일반휴무 수정</h2>
+		<h2>일반휴무 수정<button>X</button></h2>
 		<span><input type="hidden" name="no" value=""></span>
 		<table>
 			<tr>
@@ -478,7 +666,7 @@
 	</div><!-- popup_normal_off_update end -->
 	
 	<div class="popup_fix_off_register popup_content">
-		<h2>고정휴무 추가</h2>
+		<h2>고정휴무 추가<button>X</button></h2>
 		<span><input type="hidden" name="no" value=""></span>
 		<table>
 			<tr>
@@ -542,7 +730,7 @@
 	</div><!-- popup_fix_off_register -->
 	
 	<div class="popup_fix_off_update popup_content">
-		<h2>고정휴무 수정</h2>
+		<h2>고정휴무 수정<button>X</button></h2>
 		<span><input type="hidden" name="no" value=""></span>
 		<table>
 			<tr>

@@ -51,14 +51,95 @@
 	.popup_content > table tr > td > select{
 		font-size: 15px;
 	}
-	
+	.header_inner2 > ul > li:nth-child(5){
+		background: #fff;
+	}
+	.header_inner2 > ul > li:nth-child(5) > a{
+		color: #5c5c5c; 
+		font-weight: bold;
+	}
 	.aside1{
 		width:1000px;
-		margin-left:50px;
-		margin-top:50px;
+		margin:50px;
 		overflow:hidden;
 	}
-
+	.aside_title{
+		width: 100%;
+		margin-bottom: 50px;
+	}
+	.aside_title > img {
+		width:30px;
+		vertical-align: middle;
+	}
+	.aside_title > span{
+		font-size:22px;
+		font-weight: bold;
+		margin: 0 30px 0 5px;
+		vertical-align: middle;
+	}
+	.aside_title > .line{
+		width:600px;
+		height:3px;
+		background: #353c46;
+		display: inline-block;
+		vertical-align: middle;
+	}
+	.aside1 > .aside1_selectBox_wrap{
+		float:left;
+	}
+	.aside1_selectBox_wrap > select{
+		font-size: 15px;
+		padding: 3px 5px;
+	}
+	.aside1_selectBox_wrap > input{
+		font-size: 15px;
+		padding: 3px 5px;
+	}
+	.aside1_selectBox_wrap > button{
+		font-size: 15px;
+		padding: 5px 10px;
+		margin-left: 10px;
+		letter-spacing: 1px; 
+		background: #1e866a;
+		border-radius: 3px;
+		color: #fff;
+	}
+	.aside1 > .table_wrap{
+		float:left;
+		margin-top: 20px;
+	}
+	.aside1 > .table_wrap > table {
+		width:100%;
+		border-top: 2px solid gray;
+	}
+	.aside1 > .table_wrap > table tr:first-child{
+		background: #f5f5f5;
+	}
+	.aside1 > .table_wrap > table tr th{
+		font-size:15px;
+		text-align: center;
+		font-weight: bold;
+		border-bottom: 2px solid #efefef;
+		padding: 10px 0;
+	}
+	.aside1 > .table_wrap > table tr > td{
+		font-size:15px;
+		text-align: center;
+		padding: 8px 0;
+		border-bottom: 1px solid lightgray;
+	}
+	.excelDownF > img{
+		width: 20px;
+		display: none;
+	}
+	.excelDownF > input[type='submit']{
+		background: url("${pageContext.request.contextPath}/resources/images/icon_download.png") no-repeat;
+		background-size: contain;
+		width: 30px;
+		height: 30px;
+		border: none;
+		cursor: pointer;
+	}
 </style>
 <script>
 function get_reservationCount_byDate(date){
@@ -193,6 +274,11 @@ $(function(){
 		</div>
 		<div class="section">
 			<div class="aside1">
+				<div class="aside_title">
+					<img src="${pageContext.request.contextPath}/resources/images/icon_wheel.png">
+					<span>통계관리</span>
+					<div class="line"></div> 
+				</div>
 				<div class="aside1_selectBox_wrap">
 					<select name="sb_year">
 						<option value="2019">2019년</option>
@@ -231,7 +317,8 @@ $(function(){
 								<td class="${item.eno}_total"></td>
 								<td>
 									<form class="excelDownF" method="post" action="statisticDown/">
-										<input type="submit" value="down">
+										<img src="${pageContext.request.contextPath}/resources/images/icon_download.png">
+										<input type="submit" value="">
 									</form>
 								</td>
 							</tr>

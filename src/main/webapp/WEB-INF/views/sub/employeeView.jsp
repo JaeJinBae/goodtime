@@ -51,72 +51,128 @@
 	.popup_content > table tr > td > select{
 		font-size: 15px;
 	}
-	
+	.header_inner2 > ul > li:nth-child(2){
+		background: #fff;
+	}
+	.header_inner2 > ul > li:nth-child(2) > a{
+		color: #5c5c5c; 
+		font-weight: bold;
+	}
 	.aside1{
 		width:1000px;
 		margin-left:50px;
 		margin-top:50px;
 		overflow:hidden;
 	}
+	.aside_title{
+		width: 100%;
+		margin-bottom: 50px;
+	}
+	.aside_title > img {
+		width:30px;
+		vertical-align: middle;
+	}
+	.aside_title > span{
+		font-size:22px;
+		font-weight: bold;
+		margin: 0 30px 0 5px;
+		vertical-align: middle;
+	}
+	.aside_title > .line{
+		width:600px;
+		height:3px;
+		background: #353c46;
+		display: inline-block;
+		vertical-align: middle;
+	}
 	.aside1 > .select_btn_wrap{
 		float:left;
+	}
+	.select_btn_wrap > select{
+		font-size: 15px;
+		padding: 3px 5px;
+	}
+	.select_btn_wrap > input{
+		font-size: 15px;
+		padding: 3px 5px;
+	}
+	.select_btn_wrap > button{
+		font-size: 15px;
+		padding: 5px 10px;
+		margin-left: 10px;
+		letter-spacing: 1px; 
+		background: #1e866a;
+		border-radius: 3px;
+		color: #fff;
 	}
 	.employee_register_btn_wrap{
 		float:right;
 	}
+	.employee_register_btn_wrap > button{
+		font-size: 15px;
+		padding: 5px 10px;
+		letter-spacing: 1px; 
+		background: #1e866a;
+		border-radius: 3px;
+		color: #fff;
+	}
+	.aside1 > .table_wrap{
+		float:left;
+		margin-top: 15px;
+	}
 	.aside1 > .table_wrap > table {
 		width:100%;
 		border-top: 2px solid gray;
+	}
+	.aside1 > .table_wrap > table tr:first-child{
+		background: #f5f5f5;
 	}
 	.aside1 > .table_wrap > table tr th{
 		font-size:15px;
 		text-align: center;
 		font-weight: bold;
 		border-bottom: 2px solid #efefef;
-		padding: 7px 0;
+		padding: 10px 0;
 	}
 	.aside1 > .table_wrap > table tr > td{
 		font-size:15px;
 		text-align: center;
-		padding-top: 15px;
+		padding: 8px 0;
+		border-bottom: 1px solid lightgray;
 	}
 	.aside1 > .table_wrap > table tr > th:first-child{
 		width:0;
 	}
-	.aside1 > .table_wrap > table tr > td > p{
-		width:40px;
+	.aside1 > .table_wrap > table tr > td > .employee_update_btn{
+		width: 60px;
 		margin: 0 auto;
 		padding: 4px 0;
-		font-size:15px;
-		background: gray;
-		color: #fff;
+		font-size: 15px;
+		background: #f3f3f3;
+		color: #777;
 		cursor: pointer;
-		border-radius: 4px;
+		border: 1px solid #a0a0a0;
+		border-radius: 6px;
 		text-align: center;
-	}	
+	}
+	.aside1 > .table_wrap > table tr > td > .employee_update_btn > img{
+		width: 20px;
+	}
 	.page{
-		float:right;
-		/* width:626px; */ 
-		margin:15px;
-		margin-bottom:80px;
+		margin: 15px auto;
 	}
 	.page > ul{
 		text-align: center;
 	}
 	.page ul li{
-		
 		margin:0 auto;
 		list-style: none;
 		display: inline-block;
 		text-align:center;
 		border:1px solid #e9e9e9;
-	}
-	.active1{
-		background: #ed1c24;
-	}
-	.active2{
-		font-weight: bold;
-		color:white;
+		border-radius: 8px;
+		margin: 0 1px;
+		background: #fafafa;
 	}
 	.page ul li a{
 		display:inline-block;
@@ -124,6 +180,13 @@
 		height:30px;
 		font-size:1.1em;
 		line-height: 30px;
+	}
+	.active1{
+		background: #e02c4f !important;
+	}
+	.active2{
+		font-weight: bold;
+		color:white;
 	}
 </style>
 <script>
@@ -149,13 +212,13 @@ function draw_employee_table(info){
 
 	$(".aside1 > .table_wrap").empty();
 	
-	str ="<table><tr><th></th><th>이름</th><th><p class='employee_table_update_btn'>설정</p></th><th>직원등급</th><th>생년월일</th><th>연락처</th><th>ID</th><th>메모</th></tr>";
+	str ="<table><tr><th></th><th>이름</th><th>설정</th><th>직원등급</th><th>생년월일</th><th>연락처</th><th>ID</th><th>메모</th></tr>";
 	
 	if(json.employeeListAll.length == 0){
 		str += "<tr><td colspan='8'>등록된 회원이 없습니다.</td></tr>";
 	}else{
 		$(json.employeeListAll).each(function(){
-			str += "<tr><td><input type='hidden' name='eno' value='"+this.eno+"'></td><td>"+this.name+"</td><td><p class='employee_update_btn'>수정</p></td>"
+			str += "<tr><td><input type='hidden' name='eno' value='"+this.eno+"'></td><td>"+this.name+"</td><td><p class='employee_update_btn'><img src='${pageContext.request.contextPath}/resources/images/icon_update.png'>수정</p></td>"
 				+"<td>"+this.type+"</td><td>"+this.birth+"</td><td>"+this.phone+"</td><td>"+this.id+"</td><td>"+this.memo+"</td></tr>";
 		});
 	}
@@ -440,6 +503,11 @@ $(function(){
 		</div>
 		<div class="section">
 			<div class="aside1">
+				<div class="aside_title">
+					<img src="${pageContext.request.contextPath}/resources/images/icon_wheel.png">
+					<span>직원관리</span>
+					<div class="line"></div> 
+				</div>
 				<div class="select_btn_wrap">
 					<select name="searchType">
 						<option value="name" ${cri.searchType=='name'?'selected':''}>이름</option>

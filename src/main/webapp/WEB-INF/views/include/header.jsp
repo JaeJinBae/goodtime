@@ -43,13 +43,6 @@
 		line-height:62px;
 		padding: 0 15px;
 	}
-	.header_inner2 > ul > li:first-child{
-		background: #fff;
-	}
-	.header_inner2 > ul > li:first-child > a{
-		color: #5c5c5c; 
-		font-weight: bold;
-	}
 	.header_inner2 > ul > li > a{
 		color: #fff;
 		font-size:17px;
@@ -84,6 +77,7 @@
 		if(session_id == null || session_id == ""){
 			location.replace("${pageContext.request.contextPath}/");
 		}
+		console.log("asd");
 	});
 </script>
 <div class="header_wrap">

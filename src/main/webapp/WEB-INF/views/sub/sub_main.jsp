@@ -39,181 +39,11 @@
 		background:#fff;
 		margin:0 auto;
 		margin-top:100px;
-		padding:50px 0;
 		position: relative;
 		z-index: 999;
 		text-align: center;
 	}
-	.popup_content > table{
-		margin: 0 auto;
-		margin-bottom:30px;
-	}
-	.popup_content > table tr{
-		display:block;
-		margin-top:30px;
-	}
-	.popup_content > table tr > th{
-		font-size:16px;
-		width:100px;
-		color:#057be8;
-		font-weight: bold;
-		letter-spacing: 0.3px;
-	}
-	.popup_content > table tr > td{
-		font-size:15px;
-	}
-	.popup_content > table tr > td > span{
-		vertical-align: middle;
-	}
-	.popup_content > table tr > td > input{
-		font-size:15px;
-	}
-	.popup_content > table tr > td > select{
-		font-size: 15px;
-	}
-	.popup_content > table tr > td > button{
-		font-size: 15px;
-		padding:3px 5px;
-		border: 1px solid lightgray;
-		margin-left:10px;
-	}
-	.popup_patient_register{
-		display: none;
-	}
-	.popup_patientUpdate{
-		display:none;
-	}
-	.popup_patientUpdate > .popup_patient_update_submit_wrap{
-		width:100%;
-		margin: 0 auto;
-		text-align: center;
-	}
-	.popup_patientUpdate > .popup_patient_update_submit_wrap > p{
-		display: inline-block;
-		padding:10px;
-		font-size:15px;
-		margin-left:20px;
-		cursor: pointer;
-		border:1px solid lightgray;
-	}
-	.popup_clinic_reservation_register{
-		display:none;
-	}
-	.popup_therapy_reservation_register{
-		display: none;
-	}
-	.popup_reservation_register_btn_wrap{
-		margin-top:30px;
-	}
-	.popup_reservation_register_btn_wrap > p{
-		display: inline-block;
-		margin-left:20px;
-		cursor: pointer;
-	}
-	.popup_reservation_info_view{
-		display:none;
-	}
-	.popup_reservation_info_view > .popup_reservation_info_btn_wrap{
-		width:100%;
-		margin:0 auto;
-		text-align: center;
-	}
-	.popup_reservation_info_view > .popup_reservation_info_btn_wrap > p{
-		display: inline-block;
-		padding:10px;
-		font-size:15px;
-		margin-left:20px;
-		cursor: pointer;
-		border:1px solid lightgray;
-	}
-	.popup_reservation_info_cancel_wrap{
-		display:none;
-		width:100%;
-		margin: 0 auto;
-		background: #efefef;
-	}
-	.popup_reservation_info_cancel_wrap > table{
-		width: 100%;
-	}
-	.popup_reservation_update{
-		display:none;
-	}
-	.popup_reservation_update > .popup_res_update_btn_wrap{
-		width:100%;
-		margin:0 auto;
-		text-align: center;
-	}
-	.popup_reservation_update > .popup_res_update_btn_wrap > p{
-		display: inline-block;
-		padding:10px;
-		font-size:15px;
-		cursor: pointer;
-		border:1px solid lightgray;
-	}
-	.popup_normal_off_register{
-		display:none;
-	}
-	.popup_normal_off_register > .popup_normalOff_register_btn_wrap{
-		width:100%;
-		margin:0 auto;
-		text-align: center;
-	}
-	.popup_normal_off_register > .popup_normalOff_register_btn_wrap > p{
-		display: inline-block;
-		padding:10px;
-		font-size:15px;
-		margin-left:20px;
-		cursor: pointer;
-		border:1px solid lightgray;
-	}
-	.popup_fix_off_register{
-		display:none;
-	}
-	.popup_fix_off_register > .popup_fixOff_register_btn_wrap{
-		width:100%;
-		margin:0 auto;
-		text-align: center;
-	}
-	.popup_fix_off_register > .popup_fixOff_register_btn_wrap > p{
-		display: inline-block;
-		padding:10px;
-		font-size:15px;
-		margin-left:20px;
-		cursor: pointer;
-		border:1px solid lightgray;
-	}
-	.popup_normal_off_update{
-		display:none;
-	}
-	.popup_normal_off_update > .popup_normalOff_update_btn_wrap{
-		width:100%;
-		margin:0 auto;
-		text-align: center;
-	}
-	.popup_normal_off_update > .popup_normalOff_update_btn_wrap > p{
-		display: inline-block;
-		padding:10px;
-		font-size:15px;
-		margin-left:20px;
-		cursor: pointer;
-		border:1px solid lightgray;
-	}
-	.popup_fix_off_update{
-		display:none;
-	}
-	.popup_fix_off_update > .popup_fixOff_update_btn_wrap{
-		width:100%;
-		margin:0 auto;
-		text-align: center;
-	}
-	.popup_fix_off_update > .popup_fixOff_update_btn_wrap > p{
-		display: inline-block;
-		padding:10px;
-		font-size:15px;
-		margin-left:20px;
-		cursor: pointer;
-		border:1px solid lightgray;
-	}
+	
 	
 	.all_wrap{
 		width: 100%;
@@ -226,6 +56,13 @@
 		position: fixed;
 		top:0;
 		background: #fff;
+	}
+	.header_inner2 > ul > li:first-child{
+		background: #fff;
+	}
+	.header_inner2 > ul > li:first-child > a{
+		color: #5c5c5c; 
+		font-weight: bold;
 	}
 	.section{
 		margin-top:70px;

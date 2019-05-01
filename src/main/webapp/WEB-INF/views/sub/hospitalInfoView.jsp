@@ -51,52 +51,83 @@
 	.popup_content > table tr > td > select{
 		font-size: 15px;
 	}
-	
+	.header_inner2 > ul > li:nth-child(4){
+		background: #fff;
+	}
+	.header_inner2 > ul > li:nth-child(4) > a{
+		color: #5c5c5c; 
+		font-weight: bold;
+	}
 	.aside1{
 		width:1000px;
 		margin-left:50px;
 		margin-top:50px;
 		overflow:hidden;
 	}
-	.aside1 > h2{
-		margin-bottom:20px;
-		font-size:25px;
+	.aside_title{
+		width: 100%;
+		margin-bottom: 50px;
 	}
-	.tbl_wrap{
-		width:500px;
-	}
-	.tbl_wrap > table{
-		width:100%;
-	}
-	.tbl_wrap > table tr{
-		border-bottom: 1px solid lightgray;
-	}
-	.tbl_wrap > table tr:first-child{
-		border-top:3px solid lightgray;
-		border-bottom:3px solid lightgray;
-	}
-	.tbl_wrap > table tr:first-child > th{
-		font-size:17px;
-		font-weight: bold;
-		padding-top:10px;
-		padding-bottom:10px;
-	}
-	.tbl_wrap > table tr > th{
-		font-size: 17px;
-		font-weight: bold;
+	.aside_title > img {
+		width:30px;
 		vertical-align: middle;
 	}
-	.tbl_wrap > table tr > td{
-		text-align: center;
-		font-size:15px;
-		padding-top: 10px;
-		padding-bottom:10px;
+	.aside_title > span{
+		font-size:22px;
+		font-weight: bold;
+		margin: 0 30px 0 5px;
+		vertical-align: middle;
 	}
-	.tbl_wrap > table tr > td > select{
+	.aside_title > .line{
+		width:600px;
+		height:3px;
+		background: #353c46;
+		display: inline-block;
+		vertical-align: middle;
+	}
+	.aside1 > .table_wrap{
+		float:left;
+		margin-top: 15px;
+		width: 500px;
+	}
+	.aside1 > .table_wrap > table {
+		width:100%;
+		border-top: 2px solid gray;
+	}
+	.aside1 > .table_wrap > table tr:first-child{
+		background: #f5f5f5;
+	}
+	.aside1 > .table_wrap > table tr th{
+		font-size:17px;
+		text-align: center;
+		font-weight: bold;
+		border-bottom: 2px solid #efefef;
+		padding: 10px 0;
+	}
+	.aside1 > .table_wrap > table tr > td{
+		font-size:15px;
+		text-align: center;
+		padding: 8px 0;
+		border-bottom: 1px solid lightgray;
+	}
+	.table_wrap > table tr > td > select{
 		font-size:15px;
 		padding:2px;
 	}
-
+	.hos_time_btn_wrap{
+		width: 100%; 
+		margin: 20px;
+		text-align: center;
+	}
+	.hos_time_btn_wrap > button{
+		margin: 0 auto;
+		font-size: 15px;
+		padding: 5px 10px;
+		letter-spacing: 1px; 
+		background: #1e866a;
+		border-radius: 3px;
+		color: #fff;
+	}
 </style>
 <script>
 function get_hospitalInfo_all(){
@@ -143,8 +174,8 @@ function setting_time(){
 	for(var i=0; i<arrDay.length; i++){
 		st = Number(json[i].start_time)/60;
 		et = Number(json[i].end_time)/60;
-		$(".tbl_wrap > table tr > td select[name='"+arrDay[i]+"_st'] > option[value='"+st+"']").prop("selected", true);
-		$(".tbl_wrap > table tr > td select[name='"+arrDay[i]+"_et'] > option[value='"+et+"']").prop("selected", true);
+		$(".table_wrap > table tr > td select[name='"+arrDay[i]+"_st'] > option[value='"+st+"']").prop("selected", true);
+		$(".table_wrap > table tr > td select[name='"+arrDay[i]+"_et'] > option[value='"+et+"']").prop("selected", true);
 	}
 	
 }
@@ -158,8 +189,8 @@ $(function(){
 		var arrDay = ["", "mon", "tue", "wed", "thu", "fri", "sat", "week"];
 		var arrVO = [];
 		for(var i=1; i<8; i++){
-			st = Number($(".tbl_wrap > table tr:eq("+i+") > td > select[name='"+arrDay[i]+"_st']").val())*60;
-			et = Number($(".tbl_wrap > table tr:eq("+i+") > td > select[name='"+arrDay[i]+"_et']").val())*60;
+			st = Number($(".table_wrap > table tr:eq("+i+") > td > select[name='"+arrDay[i]+"_st']").val())*60;
+			et = Number($(".table_wrap > table tr:eq("+i+") > td > select[name='"+arrDay[i]+"_et']").val())*60;
 			
 			
 			arrVO.push({day:arrDay[i], start_time:st, end_time:et});
@@ -180,8 +211,12 @@ $(function(){
 		</div>
 		<div class="section">
 			<div class="aside1">
-				<h2>- 요일별 시간 설정</h2>
-				<div class="tbl_wrap">
+				<div class="aside_title">
+					<img src="${pageContext.request.contextPath}/resources/images/icon_wheel.png">
+					<span>병원시간관리</span>
+					<div class="line"></div> 
+				</div>
+				<div class="table_wrap">
 					<table>
 						<tr>
 							<th>요일</th>

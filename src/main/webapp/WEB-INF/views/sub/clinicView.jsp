@@ -347,14 +347,18 @@ $(function(){
 			if(code_name == ""){
 				alert("코드명을 입력해주세요.");
 				return false;
-			}else if(color == ""){
+			}
+			if(time == "0"){
+				alert("진행시간을 선택해주세요.");
+				return false;
+			}
+			if(color == ""){
 				alert("색깔을 입력해주세요.");
 				return false;
-			}else{
-				var vo = {cno:cno, code_name:code_name, code_type:code_type, time:time, color:color}
-				
-				post_clinic_register(vo);
 			}
+			
+			var vo = {cno:cno, code_name:code_name, code_type:code_type, time:time, color:color}
+			post_clinic_register(vo);
 
 		}else{
 			$(".popup_clinic_register").css("display", "none");

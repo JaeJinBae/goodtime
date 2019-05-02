@@ -926,6 +926,7 @@ public class HomeController {
 			rrvo.setTherapy_info("");
 			rrvo.setRegister_info(vo.getRegdate()+" "+vo.getWriter());
 			rrvo.setResult(vo.getResult());
+			rrvo.setResult_memo("");
 			rrService.register(rrvo);
 			entity = new ResponseEntity<String>("OK",HttpStatus.OK);
 		} catch (Exception e) {
@@ -961,6 +962,7 @@ public class HomeController {
 			rrvo.setTherapy_info("");
 			rrvo.setRegister_info(vo.getRegdate()+" "+vo.getWriter());
 			rrvo.setResult(vo.getResult());
+			rrvo.setResult_memo("");
 			rrService.register(rrvo);
 			entity = new ResponseEntity<String>("OK",HttpStatus.OK);
 		} catch (Exception e) {
@@ -1007,6 +1009,7 @@ public class HomeController {
 				rrvo.setTherapy_info("");
 				rrvo.setRegister_info(vo.getRegdate()+" "+vo.getWriter());
 				rrvo.setResult(vo.getResult());
+				rrvo.setResult_memo("");
 				rrService.register(rrvo);
 			}
 			entity = new ResponseEntity<String>("OK",HttpStatus.OK);
@@ -1055,6 +1058,7 @@ public class HomeController {
 				rrvo.setTherapy_info("");
 				rrvo.setRegister_info(vo.getRegdate()+" "+vo.getWriter());
 				rrvo.setResult(vo.getResult());
+				rrvo.setResult_memo("");
 				rrService.register(rrvo);
 			}
 			entity = new ResponseEntity<String>("OK",HttpStatus.OK);

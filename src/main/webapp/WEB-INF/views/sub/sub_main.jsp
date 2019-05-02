@@ -3884,7 +3884,7 @@ $(function(){
 	//진료예약view에서 예약등록, 예약접수, 취소 버튼 기능
 	$(".popup_content2 .popup_reservation_register_btn_wrap > p").click(function(){
 		var idx = $(this).index();
-		console.log(idx);
+		
 		//예약등록
 		if(idx == 0 || idx == 1){
 			var vo;
@@ -3914,7 +3914,7 @@ $(function(){
 				var nowDate = new Date();
 				var desk_state_regdate = nowDate.getFullYear()+"-"+(((nowDate.getMonth()+1)>9?'':'0')+(nowDate.getMonth()+1))+"-"+((nowDate.getDate()>9?'':'0')+nowDate.getDate())+" "+nowDate.getHours()+":"+((nowDate.getMinutes()>9?'':'0')+nowDate.getMinutes());
 				var result = "예약완료";
-				var regdate = get_today()+" "+nowDate.getHours()+":"+nowDate.getMinutes();
+				var regdate = get_today()+" "+nowDate.getHours()+":"+((nowDate.getMinutes()>9?'':'0')+nowDate.getMinutes());
 				if(idx == 1){
 					desk_state = "접수완료";
 					result = "접수완료";
@@ -3932,7 +3932,7 @@ $(function(){
 						alert("진료를 선택해주세요.");
 						return false;
 					}
-					if(fix_day_end == ""){
+					if(fix_day_end == ""){ 
 						alert("고정예약 종료일을 선택해주세요.");
 						return false;
 					}
@@ -3965,8 +3965,8 @@ $(function(){
 				var nowDate = new Date();
 				var desk_state_regdate = nowDate.getFullYear()+"-"+(((nowDate.getMonth()+1)>9?'':'0')+(nowDate.getMonth()+1))+"-"+((nowDate.getDate()>9?'':'0')+nowDate.getDate())+" "+nowDate.getHours()+":"+((nowDate.getMinutes()>9?'':'0')+nowDate.getMinutes());
 				var result = "예약완료";
-				var regdate = get_today()+" "+nowDate.getHours()+":"+(nowDate.getMinutes()>9?'':'0'+nowDate.getMinutes());
-				
+				var regdate = get_today()+" "+nowDate.getHours()+":"+((nowDate.getMinutes()>9?'':'0')+nowDate.getMinutes());
+				console.log(regdate);
 				if(idx == 1){
 					desk_state = "접수완료";
 					result = "접수완료";
@@ -4260,7 +4260,7 @@ $(function(){
 		return false;
 	})
 });
-</script> 
+</script>
 </head> 
 <body>
 	<div class="popup_wrap">

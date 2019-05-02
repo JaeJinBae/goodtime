@@ -707,6 +707,11 @@
 	}
 	.ar_tbl_wrap_3 > .patient_week_tbl_selectBox_wrap{
 		display: none;
+		margin-bottom: 20px;
+	}
+	.ar_tbl_wrap_3 > .patient_week_tbl_selectBox_wrap > select{
+		font-size: 15px;
+		padding: 3px 5px;
 	}
 	.ar_tbl_wrap_3 > .patient_time_table_wrap{
 		width:100%;
@@ -714,9 +719,13 @@
 	.patient_time_table_wrap > table{
 		width:100%;
 	}
+	.patient_time_table_wrap > table tr:first-child{
+		background: #f3f3f3;
+	}
 	.patient_time_table_wrap table tr > td{
 		border: 1px solid lightgray;
 		font-size:15px;
+		padding: 5px 3px;
 	}
 	.patient_time_table_wrap table tr > td:first-child{
 		text-align: center;
@@ -3696,7 +3705,7 @@ $(function(){
 		$("#reservation_view_btn").css("display", "inline-block");
 		$(".reservation_register_btn").css("display", "block");
 		//ar_tbl_wrap_3 그리기
-		$(".timetable_btn_wrap2 > ul > li").css({"font-size":"15px","padding":"5px"});
+		$(".timetable_btn_wrap2 > ul > li").css({"font-size":"15px","padding":"6px"});
 		$(".timetable_btn_wrap2 > ul > li:first-child").css({"font-size":"16px", "padding":"8px 10px"});
 		draw_patient_reservation_byCase(0);
 		

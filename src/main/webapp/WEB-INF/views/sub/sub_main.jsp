@@ -33,17 +33,7 @@
 		height:100%;
 		background: #111;
 		opacity: 0.5;
-	}
-	.popup_content{
-		width:400px;
-		background:#fff;
-		margin:0 auto;
-		margin-top:100px;
-		position: relative;
-		z-index: 999;
-		text-align: center;
-	}
-	
+	}	
 	
 	.all_wrap{
 		width: 100%;
@@ -2210,15 +2200,15 @@ function open_reservation_info_view(type, rno){
 		rtype="고정치료예약";
 	}
 	
-	$(".popup_reservation_info_btn_wrap > p").css({"background":"#fff", "color":"black"});
+	$(".popup_reservation_info_btn_wrap > p").css({"background":"#353c46", "color":"#fff"});
 	if(rData.result =="예약완료"){
-		$(".popup_reservation_info_btn_wrap > p").eq(0).css({"background":"#057be8", "color":"#fff"});
+		$(".popup_reservation_info_btn_wrap > p").eq(0).css({"background":"#1e866a", "color":"#fff"});
 	}else if(rData.result == "접수완료" || rData.result == "치료완료"){
-		$(".popup_reservation_info_btn_wrap > p").eq(1).css({"background":"#057be8", "color":"#fff"});
+		$(".popup_reservation_info_btn_wrap > p").eq(1).css({"background":"#1e866a", "color":"#fff"});
 	}else if(rData.result == "예약취소"){
-		$(".popup_reservation_info_btn_wrap > p").eq(2).css({"background":"#057be8", "color":"#fff"});
+		$(".popup_reservation_info_btn_wrap > p").eq(2).css({"background":"#1e866a", "color":"#fff"});
 	}else{
-		$(".popup_reservation_info_btn_wrap > p").eq(0).css({"background":"#057be8", "color":"#fff"});
+		$(".popup_reservation_info_btn_wrap > p").eq(0).css({"background":"#1e866a", "color":"#fff"});
 	}
 	
 	pData = get_patient_by_pno(rData.pno);
@@ -2307,6 +2297,14 @@ function update_reservation_info(){
 	var clinic_name = $(".popup_reservation_update > table tr:nth-child(5) > td > select[name='clinic'] > option:selected").text();
 	var memo = $(".popup_reservation_update > table tr:nth-child(6) > td > input[name='memo']").val();
 	var updateMemo = $(".popup_reservation_update > table tr:nth-child(7) > td > input[name='updateMemo']").val();
+	if(rdate == ""){
+		alert("변경 날짜를 선택해주세요.");
+		return false;
+	}
+	if(updateMemo == ""){
+		alert("변경사유를 작성해주세요.");
+		return false;
+	}
 	var before_reservation;
 	if(rtype == "nc"){
 		before_reservation = get_ncReservation_byRno(rno);
@@ -2321,7 +2319,9 @@ function update_reservation_info(){
 	var after_info = rdate+" "+Number(rtime1/60)+":"+((Number(rtime2)>9?'':'0')+rtime2)+" "+$(".popup_reservation_update > table tr:nth-child(4) > td > select[name='emp'] option:selected").text();
 	var update_info = now.getFullYear()+"-"+(((now.getMonth()+1)>9?'':'0')+(now.getMonth()+1))+"-"+((now.getDate()>9?'':'0')+now.getDate())+" "
 					+ now.getHours()+":"+((now.getMinutes()>9?'':'0')+now.getMinutes())+" "+$("#session_login_name").val();
-	
+	if(memo == ""){
+		memo = "";
+	}
 	var data = {pno:pno, rno:rno, rtype:rtype, rdate:rdate, rtime:rtime, emp:emp, clinic:clinic, clinic_name:clinic_name, memo:memo, updateMemo:updateMemo, before_info:before_info, after_info:after_info, update_type:"일정변경", update_info:update_info};
 	
 	$.ajax({
@@ -2334,6 +2334,8 @@ function update_reservation_info(){
 		success:function(json){
 			if(json == "ok"){
 				alert("일정변경이 완료되었습니다.");
+				$(".popup_reservation_update").css("display", "none");
+				$(".popup_wrap").css("display", "none");
 			}else{
 				alert("예약등록이 정상적으로 등록되지 않았습니다. 다시 한번 등록하세요.");
 			}
@@ -2378,7 +2380,7 @@ function update_reservation_state(idxx, rtype, rno, state, writer, regdate, stbn
 	if(idxx == 0 || idxx == 1){
 		update_reservation_deskState(rtype, rno, state, writer, regdate, stbn);
 	}else if(idxx == 2){
-		$(".popup_reservation_info_cancel_wrap").css("display","block");
+		$(".popup_reservation_info_view > table .cancel_reason").css("display","block");
 	}
 }
 
@@ -3965,13 +3967,24 @@ $(function(){
 	
 	//예약일정 변경 저장 클릭
 	$(".popup_res_update_btn_wrap > p").click(function(){
-		update_reservation_info();
+		var btn_idx = $(this).index();
+		if(btn_idx == 0){
+			update_reservation_info();
+		}else if(btn_idx == 1){
+			$(".popup_reservation_update").css("display", "none");
+			$(".popup_wrap").css("display", "none");
+		}
+		
 	});
 	
 	//예약완료, 접수완료, 예약취소 눌렀을 때
 	$(".popup_reservation_info_btn_wrap > p").click(function(){
 		var btn_idx = $(this).index();
-		
+		if(btn_idx == 3){
+			$(".popup_reservation_info_view").css("display","none");
+			$(".popup_wrap").css("display", "none");
+			return false;
+		}
 		var rtype = $(".popup_reservation_info_view > h2 > input[name='rtype']").val();
 		var rno = $(".popup_reservation_info_view > h2 > input[name='rno']").val();
 		var state = $(this).text();
@@ -3983,7 +3996,7 @@ $(function(){
 	});
 
 	//예약취소 누르고 취소사유 입력 후 저장 눌렀을 때
-	$(".popup_reservation_info_cancel_wrap > table tr td > button").click(function(){
+	$(".popup_reservation_info_view > table .cancel_reason > td > button").click(function(){
 		var rtype = $(".popup_reservation_info_view > h2 > input[name='rtype']").val();
 		var rno = $(".popup_reservation_info_view > h2 > input[name='rno']").val();
 		var state = "예약취소";

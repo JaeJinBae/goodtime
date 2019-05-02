@@ -45,7 +45,7 @@
 	</update>
 	
 	<update id="updateInfo">
-		update normal_therapy_reservation set rdate=#{rdate}, rtime=#{rtime}, eno=#{eno}, clinic=#{clinic}, clinic_name#{clinic_name}, memo=#{memo} where rno=#{rno}
+		update normal_therapy_reservation set rdate=#{rdate}, rtime=#{rtime}, eno=#{eno}, clinic=#{clinic}, clinic_name=#{clinic_name}, memo=#{memo} where rno=#{rno}
 	</update>
 	
 	<update id="cancel">

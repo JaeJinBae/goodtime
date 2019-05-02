@@ -1055,6 +1055,7 @@ public class HomeController {
 		int eno = Integer.parseInt(info.get("emp"));
 		String ename = empService.selectByEno(eno).getName();
 		String clinic = info.get("clinic");
+		String clinic_name = info.get("clinic_name");
 		String memo = info.get("memo");
 		String before_info = info.get("before_info");
 		String after_info = info.get("after_info");
@@ -1070,6 +1071,7 @@ public class HomeController {
 				vo.setRtime(rtime);
 				vo.setEno(eno);
 				vo.setClinic(clinic);
+				vo.setClinic_name(clinic_name);
 				vo.setMemo(memo);
 				ncrService.updateInfo(vo);
 			}else if(rtype.equals("nt")){
@@ -1079,6 +1081,7 @@ public class HomeController {
 				vo.setRtime(rtime);
 				vo.setEno(eno);
 				vo.setClinic(clinic);
+				vo.setClinic_name(clinic_name);
 				vo.setMemo(memo);
 				ntrService.updateInfo(vo);
 			}else if(rtype.equals("fc")){
@@ -1088,6 +1091,7 @@ public class HomeController {
 				vo.setRtime(rtime);
 				vo.setEno(eno);
 				vo.setClinic(clinic);
+				vo.setClinic_name(clinic_name);
 				vo.setMemo(memo);
 				fcrService.updateInfo(vo);
 			}else if(rtype.equals("ft")){
@@ -1097,6 +1101,7 @@ public class HomeController {
 				vo.setRtime(rtime);
 				vo.setEno(eno);
 				vo.setClinic(clinic);
+				vo.setClinic_name(clinic_name);
 				vo.setMemo(memo);
 				ftrService.updateInfo(vo);
 			}

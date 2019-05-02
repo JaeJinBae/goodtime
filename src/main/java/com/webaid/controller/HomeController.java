@@ -1339,6 +1339,20 @@ public class HomeController {
 		return entity;
 	}
 	
+	@RequestMapping(value="reservationRecordGetCompleteByPno/{pno}", method=RequestMethod.GET)
+	public ResponseEntity<List<ReservationRecordVO>> reservationRecordGetCompleteByPno(@PathVariable("pno") int pno){
+		ResponseEntity<List<ReservationRecordVO>> entity = null;
+		
+		try {
+			List<ReservationRecordVO> vo = rrService.selectCompleteByPno(pno);
+			entity = new ResponseEntity<List<ReservationRecordVO>>(vo, HttpStatus.OK);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		return entity;
+	}
+	
 	@RequestMapping(value="/reservationUpdateRecordGetAll", method=RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> reservationUpdateRecordGetAll(@ModelAttribute("cri") SearchCriteria cri){
 		logger.info("reservation update record get all");

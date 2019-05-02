@@ -116,36 +116,46 @@
 		display:none;
 	}
 	.al_tbl_wrap2_title{
-		width: 95%;
+		width: 260px;
 		text-align: center;
 		margin: 0 auto;
-		background: #057be8;
+		background: #de5e5d;
 		color: #fff;
 		font-size:18px;
 		font-weight: bold;
 		text-align: center;
-		padding: 15px 0;
+		padding: 11px 0;
 		letter-spacing: 5px;
 		position: relative;
 	}
 	.al_tbl_wrap2 > .al_tbl_wrap2_title > span{
 		cursor: pointer;
 		position: absolute;
-		right:10px;
+		top: 0px;
+		right: 0px;
+		width: 43px;
+		height: 100%;
+		padding-top: 9px;
+		font-size: 24px;
+		font-weight: bold; 
+		background: red;
+		color: #fff;
 	}
-	.al_tbl_wrap2 > #tbl_simple_reservation{
-		width:95%;
+	.al_tbl_wrap2 > .simple_tbl_wrap{
+		width: 260px;
 		margin: 0 auto;
 		border: 1px solid lightgray;
-		display:block;
-		padding:15px;
-		background: #d3e5f6;
+		padding:15px 0px 15px 7px;
+		background: #fff; 
+	}
+	#tbl_simple_reservation{
+		width:100%;
 	}
 	#tbl_simple_reservation tr{
 		
 	}
 	#tbl_simple_reservation th, #tbl_simple_reservation td{
-		font-size:15px;
+		font-size:14px;
 		font-weight: bold;
 	}
 	#tbl_simple_reservation .tbl_content_title{
@@ -158,7 +168,19 @@
 	}
 	#tbl_simple_reservation .tbl_content_pName{
 		padding:0;
-		font-size:15px;
+		font-size:14px;
+	}
+	#tbl_simple_reservation tr > td .patient_simple_record{
+		width: 100%;
+		max-height:200px;
+		overflow: auto;
+	}
+	#tbl_simple_reservation tr > td .patient_simple_record > p{
+		margin-bottom:5px;
+	}
+	#tbl_simple_reservation tr > td .patient_simple_record > p > span{
+		font-size: 14px;
+		font-weight: bold; 
 	}
 	.aside_right {
 		position:fixed;
@@ -263,7 +285,7 @@
 		width:60px;
 	}
 	.ar_tbl_wrap_1 > #inner_tbl_wrap > table tr td{
-		font-size: 15px;
+		font-size: 14px;
 		text-align: center;
 		border-bottom: 1px solid lightgray;
 		padding: 2px 0;
@@ -274,8 +296,8 @@
 	.patient_update_btn, .sms_open_btn, .reservation_select_btn{
 		width:60px;
 		margin: 0 auto;
-		padding: 4px 0;
-		font-size:15px;
+		padding: 2px 0;
+		font-size:14px;
 		background: #f3f3f3;
 		color: #777;
 		cursor: pointer;
@@ -1557,7 +1579,7 @@ function get_clinic_by_type(type){
 //진료, 치료 테이블에서 예약된환자 이름에 마우스 올리면 좌측하단에 예약정보 나타내는 함수
 function draw_simple_reservation_view(type, rno){
 	var json;
-	
+	var res_record;
 	if(type=="nc"){
 		json = get_ncReservation_byRno(rno);
 	}else if(type == "nt"){
@@ -1567,7 +1589,8 @@ function draw_simple_reservation_view(type, rno){
 	}else{
 		json = get_ftReservation_byRno(rno);
 	}
-	
+	res_record = get_reservation_record_complete_byPno(json.pno);
+	console.log(res_record);
 	var clinic = get_clinic_by_cno(json.clinic);
 	var clinic_time = Number(clinic.time);
 	var rtime;
@@ -1590,7 +1613,7 @@ function draw_simple_reservation_view(type, rno){
 		rtype="고정치료"
 	}
 	var str="";
-	str = "<p class='al_tbl_wrap2_title'>"+rtype+"예약 &nbsp;&nbsp;<span style='color:#333;font-size:14px;letter-spacing:0;'>[닫기]</span></p><table id='tbl_simple_reservation'>"
+	str = "<p class='al_tbl_wrap2_title'>"+rtype+"예약 &nbsp;&nbsp;<span>X</span></p><div class='simple_tbl_wrap'><table id='tbl_simple_reservation'>"
 		+ "<tr><td class='tbl_content_pName'>"+json.pname+"("+json.chart_no+")님 ▶"+ employee.name+"</td></tr>"
 		+"<tr><th class='tbl_content_title'>- 예약일시</th></tr>";
 		
@@ -1649,8 +1672,15 @@ function draw_simple_reservation_view(type, rno){
 		str +=  "<tr><th class='tbl_content_title'>- 메모</th></tr>"
 			+"<tr><td class='tbl_content'>"+json.memo+"</td></tr>";
 	}
+	if(res_record.length != 0){
+		str += "<tr><th class='tbl_content_title'>- 치료이력</th></tr><tr><td class='tbl_content'><div class='patient_simple_record'>";
+		$(res_record).each(function(){
+			str += "<p><span>"+this.rdate+"</span>&nbsp;&nbsp;<span>"+this.cname+"/"+this.ename+"</span></p>";
+		});
+		str += "</div></td></tr>";
+	}
 	
-	str+="</table>";
+	str+="</table></div>";
 		
 	$(".al_tbl_wrap2").html(str);
 		
@@ -2399,6 +2429,23 @@ function get_reservation_record_all(info){
 		url:"${pageContext.request.contextPath}/reservationRecordGetAll",
 		type:"get",
 		data:info,
+		dataType:"json",
+		async:false,
+		success:function(json){
+			dt = json;
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	});
+	return dt;
+}
+
+function get_reservation_record_complete_byPno(pno){
+	var dt;
+	$.ajax({
+		url:"${pageContext.request.contextPath}/reservationRecordGetCompleteByPno/"+pno,
+		type:"get",
 		dataType:"json",
 		async:false,
 		success:function(json){

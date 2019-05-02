@@ -11,7 +11,9 @@
 	<select id="selectByPno" resultType="ReservationRecordVO">
 		select * from reservation_record where pno=#{pno} order by no desc
 	</select>
-	
+	<select id="selectCompleteByPno" resultType="ReservationRecordVO">
+		select * from reservation_record where result='치료완료' and pno=#{pno} order by rdate desc
+	</select>
 	<select id="listSearch" resultType="ReservationRecordVO">
 		select * from reservation_record where rdate like concat('%',#{keyword1},'%') and ename like concat('%',#{keyword2},'%') and rtype like concat('%',#{keyword3},'%') and result like concat('%',#{keyword4},'%') order by no desc limit #{pageStart},#{perPageNum}
 	</select>

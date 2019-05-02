@@ -26,6 +26,11 @@ public class ReservationRecordServiceImpl implements ReservationRecordService {
 	}
 
 	@Override
+	public List<ReservationRecordVO> selectCompleteByPno(int pno) {
+		return dao.selectCompleteByPno(pno);
+	}
+
+	@Override
 	public List<ReservationRecordVO> listSearch(SearchCriteriaRR cri) {
 		return dao.listSearch(cri);
 	}

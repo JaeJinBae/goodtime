@@ -28,6 +28,11 @@ public class ReservationRecordDaoImpl implements ReservationRecordDao {
 	}
 
 	@Override
+	public List<ReservationRecordVO> selectCompleteByPno(int pno) {
+		return session.selectList(namespace + ".selectCompleteByPno", pno);
+	}
+
+	@Override
 	public List<ReservationRecordVO> listSearch(SearchCriteriaRR cri) {
 		return session.selectList(namespace + ".listSearch", cri);
 	}

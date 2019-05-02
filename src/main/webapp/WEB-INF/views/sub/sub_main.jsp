@@ -172,7 +172,7 @@
 	}
 	#tbl_simple_reservation tr > td .patient_simple_record{
 		width: 100%;
-		max-height:200px;
+		max-height:100px;
 		overflow: auto;
 	}
 	#tbl_simple_reservation tr > td .patient_simple_record > p{
@@ -353,10 +353,12 @@
 	}
 	.ar_tbl_wrap_2 > .selectBox_wrap > button{
 		font-size:15px;
-		border: 1px solid lightgray;
-		padding: 3px 7px;
+		padding: 5px 10px;
 		margin-left:10px;
 		letter-spacing: 1px;
+		background: #1e866a;
+		border-radius: 3px;
+		color: #fff;
 	}
 	.ar_tbl_wrap_2 > .time_table_wrap > table tr:first-child{
 		background: #f3f3f3;

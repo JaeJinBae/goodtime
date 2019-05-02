@@ -18,7 +18,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Override
 	public List<EmployeeVO> selectAll() {
 		return dao.selectAll();
-	}	
+	}
+
 	@Override
 	public EmployeeVO selectOneById(String id) {
 		return dao.selectOneById(id);
@@ -28,22 +29,32 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public List<EmployeeVO> selectByType(String type) {
 		return dao.selectByType(type);
 	}
+
 	@Override
 	public EmployeeVO selectByEno(int eno) {
 		return dao.selectByEno(eno);
 	}
+
 	@Override
 	public List<EmployeeVO> listSearch(SearchCriteria cri) {
 		return dao.listSearch(cri);
 	}
+
 	@Override
 	public int listSearchCount(SearchCriteria cri) {
 		return dao.listSearchCount(cri);
 	}
+
 	@Override
 	public void update(EmployeeVO vo) {
 		dao.update(vo);
 	}
+
+	@Override
+	public void update2(EmployeeVO vo) {
+		dao.update2(vo);
+	}
+
 	@Override
 	public void register(EmployeeVO vo) {
 		dao.register(vo);

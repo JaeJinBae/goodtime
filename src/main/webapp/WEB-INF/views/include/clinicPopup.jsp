@@ -76,6 +76,24 @@
 		font-size: 15px;
 		padding: 3px;
 	}
+	.popup_mypage{
+		display:none;
+	}
+	.popup_mypage > .popup_mypage_btn_wrap{
+		width: 100%;
+		margin: 15px auto;
+	}
+	.popup_mypage > .popup_mypage_btn_wrap > p{
+		display: inline-block;
+		padding:8px 10px;
+		font-size:15px;
+		margin-left:20px;
+		cursor: pointer;
+		background: #595959;
+		color: #fff;
+		border-radius: 4px;
+		letter-spacing: 1px;
+	}
 	.popup_clinic_register_submit_wrap{
 		width: 100%;
 		margin: 15px auto;
@@ -109,6 +127,39 @@
 </style>
 <div class="popup_bg">
 </div>
+<div class="popup_mypage popup_content">
+		<h2>내정보 수정</h2>
+		<table>
+			<tr>
+				<th>▶ 이름</th>
+				<td><input type="text" name="name"></td>
+			</tr>
+			<tr>
+				<th>▶ 생년월일</th>
+				<td><input type="text" name="birth"></td>
+			</tr>
+			<tr>
+				<th>▶ 연락처</th>
+				<td><input type="text" name="phone"></td>
+			</tr>
+			<tr>
+				<th>▶ 아이디</th>
+				<td><input type="text" name="id" readonly="readonly"></td>
+			</tr>
+			<tr>
+				<th>▶ 변경 비밀번호</th>
+				<td><input type="password" name="pw" placeholder="변경 시 입력해주세요."></td>
+			</tr>
+			<tr>
+				<th>▶  비밀번호 확인</th>
+				<td><input type="password" name="pwConfirm" placeholder="변경 시 입력해주세요."></td>
+			</tr>
+		</table>
+		<div class="popup_mypage_btn_wrap">
+			<p>저장</p>
+			<p>닫기</p>
+		</div>
+	</div>
 <div class="popup_clinic_register popup_content">
 	<h2>코드등록</h2>
 	<table>

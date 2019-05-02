@@ -13,5 +13,6 @@ public interface EmployeeDao {
 	public List<EmployeeVO> listSearch(SearchCriteria cri);
 	public int listSearchCount(SearchCriteria cri);
 	public void update(EmployeeVO vo);
+	public void update2(EmployeeVO vo);
 	public void register(EmployeeVO vo);
 }

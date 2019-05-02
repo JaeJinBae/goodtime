@@ -71,13 +71,102 @@
 	
 </style>
 <script>
-	$(function(){
-		var session_id=$("#session_value").val();
-		
-		if(session_id == null || session_id == ""){
-			location.replace("${pageContext.request.contextPath}/");
+function get_employee_byEno(eno){
+	var dt;
+	
+	$.ajax({
+		url:"${pageContext.request.contextPath}/employeeGetByEno/"+eno,
+		type:"get",
+		dataTyp:"json",
+		async:false,
+		success:function(json){
+			dt = json;
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 		}
 	});
+	return dt;
+}
+
+function post_employee_update2(employee){
+	$.ajax({
+		url:"${pageContext.request.contextPath}/employeeUpdate2",
+		type:"post",
+		dataType:"text",
+		data:employee,
+		async:false,
+		success:function(json){
+			$(".popup_mypage").css("display", "none");
+			$(".popup_wrap").css("display","none");
+			$(".popup_mypage > table tr > td > input[name='pw']").val("");
+			$(".popup_mypage > table tr > td > input[name='pwConfirm']").val("");
+			alert("정보수정이 완료되었습니다.");
+		}
+	});
+}
+
+$(function(){
+	var session_id=$("#session_value").val();
+	
+	if(session_id == null || session_id == ""){
+		location.replace("${pageContext.request.contextPath}/");
+	}
+	
+	$(".header_inner2 > ul > li:last-child > a").click(function(e){
+		e.preventDefault();
+		alert('this');
+		window.open($(this).prop("href"),"","");
+	});
+	
+	$(".header_inner3 > ul > li:last-child > a:first-child").click(function(e){
+		e.preventDefault();
+		var eno = $("#session_eno").val();
+		var json = get_employee_byEno(eno);
+		$(".popup_mypage > table tr > td > input[name='name']").val(json.name);
+		$(".popup_mypage > table tr > td > input[name='birth']").val(json.birth);
+		$(".popup_mypage > table tr > td > input[name='phone']").val(json.phone);
+		$(".popup_mypage > table tr > td > input[name='id']").val(json.id);
+		$(".popup_wrap").css("display","block");
+		$(".popup_mypage").css("display","block");
+	});
+	
+	$(".popup_mypage_btn_wrap > p").click(function(){
+		var btn_index = $(this).index();
+		if(btn_index == 0){
+			var eno = $("#session_eno").val();
+			var name = $(".popup_mypage > table tr > td > input[name='name']").val();
+			var birth = $(".popup_mypage > table tr > td > input[name='birth']").val();
+			var phone = $(".popup_mypage > table tr > td > input[name='phone']").val();
+			var id = $(".popup_mypage > table tr > td > input[name='id']").val();
+			var pw = $(".popup_mypage > table tr > td > input[name='pw']").val();
+			var pwConfirm = $(".popup_mypage > table tr > td > input[name='pwConfirm']").val();
+			
+			if(name == ""){
+				alert("이름을 입력해주세요.");
+				return false;
+			}
+			if(birth == ""){
+				alert("생년월일을 입력해주세요.");
+				return false;
+			}
+			if(phone == ""){
+				alert("연락처를 입력해주세요.");
+				return false;
+			}
+			if(pw != pwConfirm){
+				alert("비밀번호가 일치하지 않습니다.");
+				return false;
+			}
+			var vo = {eno:eno, name:name, birth:birth, phone:phone, id:id, pw:pw}
+			
+			post_employee_update2(vo);
+		}else{
+			$(".popup_mypage").css("display","none");
+			$(".popup_wrap").css("display","none");
+		}
+	});
+});
 </script>
 <div class="header_wrap">
 	<input id="session_value" type="hidden" value="${sessionScope.id}">
@@ -96,7 +185,7 @@
 					<li><a href="${pageContext.request.contextPath}/clinicView">코드관리</a></li>
 					<li><a href="${pageContext.request.contextPath}/hospitalInfo">병원시간관리</a></li>
 					<li><a href="${pageContext.request.contextPath}/statistic">통계관리</a></li>
-					<li><a href="${pageContext.request.contextPath}/">홈페이지</a></li>
+					<li><a href="http://www.naver.com">홈페이지</a></li>
 				</ul>
 			</div>
 			<div class="header_inner header_inner3">

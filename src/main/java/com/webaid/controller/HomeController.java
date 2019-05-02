@@ -539,6 +539,28 @@ public class HomeController {
 		return entity;
 	}
 	
+	@RequestMapping(value="/employeeUpdate2", method=RequestMethod.POST)
+	public ResponseEntity<String> employeeUpdate2(EmployeeVO employee){
+		logger.info("employee update2 Post");
+		ResponseEntity<String> entity = null;
+		
+		EmployeeVO prevVO = empService.selectByEno(employee.getEno());
+		String prevPw = prevVO.getPw();
+		String newPw = employee.getPw();
+		
+		try {
+			if(newPw.equals("") || newPw == null){
+				employee.setPw(prevPw);
+			}
+			empService.update2(employee);
+			entity = new ResponseEntity<String>("ok", HttpStatus.OK);
+		} catch (Exception e) {
+			entity = new ResponseEntity<String>("no",HttpStatus.OK);
+		}
+		
+		return entity;
+	}
+	
 	@RequestMapping(value="/clinicView", method=RequestMethod.GET)
 	public String clinicViewGet(){
 		logger.info("clinicView Get");

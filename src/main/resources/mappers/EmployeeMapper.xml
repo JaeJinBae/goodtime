@@ -44,6 +44,10 @@
 		update employee set type=#{type}, name=#{name}, phone=#{phone}, birth=#{birth}, gender=#{gender}, level=#{level}, id=#{id}, pw=#{pw}, memo=#{memo} where eno=#{eno} 
 	</update>
 	
+	<update id="update2">
+		update employee set name=#{name}, phone=#{phone}, birth=#{birth}, pw=#{pw} where eno=#{eno} 
+	</update>
+	
 	<insert id="register">
 		insert into employee(eno, type, name, phone, birth, gender, level, id, pw, memo) values(#{eno}, #{type}, #{name}, #{phone}, #{birth}, #{gender}, #{level}, #{id}, #{pw},  #{memo})
 	</insert>

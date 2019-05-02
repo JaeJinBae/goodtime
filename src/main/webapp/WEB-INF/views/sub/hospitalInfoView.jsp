@@ -12,122 +12,172 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <style>
 .popup_wrap{
-		width:100%;
-		position:fixed;
-		top:0;
-		left:0;
-		display:none;
-	}
-	.popup_bg{
-		position: fixed;
-		top:0;
-		left:0;
-		width:100%;
-		height:100%;
-		background: #111;
-		opacity: 0.5;
-	}
-	.popup_content{
-		display:none;
-		width:600px;
-		height:700px;
-		background:#fff;
-		margin:0 auto;
-		margin-top:100px;
-		position: relative;
-		z-index: 999;
-	}
-	.popup_content > table tr{
-		display:block;
-		margin-top:30px;
-	}
-	.popup_content > table tr > th{
-		font-size:15px;
-		width:100px;
-	}
-	.popup_content > table tr > td{
-		font-size:15px;
-	}
-	.popup_content > table tr > td > select{
-		font-size: 15px;
-	}
-	.header_inner2 > ul > li:nth-child(4){
-		background: #fff;
-	}
-	.header_inner2 > ul > li:nth-child(4) > a{
-		color: #5c5c5c; 
-		font-weight: bold;
-	}
-	.aside1{
-		width:1000px;
-		margin-left:50px;
-		margin-top:50px;
-		overflow:hidden;
-	}
-	.aside_title{
-		width: 100%;
-		margin-bottom: 50px;
-	}
-	.aside_title > img {
-		width:30px;
-		vertical-align: middle;
-	}
-	.aside_title > span{
-		font-size:22px;
-		font-weight: bold;
-		margin: 0 30px 0 5px;
-		vertical-align: middle;
-	}
-	.aside_title > .line{
-		width:600px;
-		height:3px;
-		background: #353c46;
-		display: inline-block;
-		vertical-align: middle;
-	}
-	.aside1 > .table_wrap{
-		float:left;
-		margin-top: 15px;
-		width: 500px;
-	}
-	.aside1 > .table_wrap > table {
-		width:100%;
-		border-top: 2px solid gray;
-	}
-	.aside1 > .table_wrap > table tr:first-child{
-		background: #f5f5f5;
-	}
-	.aside1 > .table_wrap > table tr th{
-		font-size:17px;
-		text-align: center;
-		font-weight: bold;
-		border-bottom: 2px solid #efefef;
-		padding: 10px 0;
-	}
-	.aside1 > .table_wrap > table tr > td{
-		font-size:15px;
-		text-align: center;
-		padding: 8px 0;
-		border-bottom: 1px solid lightgray;
-	}
-	.table_wrap > table tr > td > select{
-		font-size:15px;
-		padding:2px;
-	}
-	.hos_time_btn_wrap{
-		width: 100%; 
-		margin: 20px;
-		text-align: center;
-	}
-	.hos_time_btn_wrap > button{
-		margin: 0 auto;
-		font-size: 15px;
-		padding: 5px 10px;
-		letter-spacing: 1px; 
-		background: #1e866a;
-		border-radius: 3px;
-		color: #fff;
-	}
+	width:100%;
+	position:fixed;
+	top:0;
+	left:0;
+	display:none;
+}
+.popup_bg{
+	position: fixed;
+	top:0;
+	left:0;
+	width:100%;
+	height:100%;
+	background: #111;
+	opacity: 0.5;
+}
+.popup_content{
+	display:none;
+	width:400px;
+	background: #f3f3f3;
+	margin:0 auto;
+	margin-top:100px;
+	position: relative;
+	z-index: 999;
+	text-align: center;
+	padding-bottom: 1px;
+}
+.popup_content > h2{
+	width:100%;
+	padding: 10px 0;
+	background: #353c46;
+	color: #fff;
+	letter-spacing: 2px;
+	overflow: hidden;
+	vertical-align: middle;
+	font-size: 25px;
+	font-weight: bold;
+}
+.popup_content > table{
+	width:100%;
+	margin: 0 auto;
+	border-bottom: 2px solid lightgray;
+}
+.popup_content > table tr{
+	display:block;
+}
+.popup_content > table tr > th{
+	font-size:16px;
+	width:145px;
+	background: #e9e9e9;
+	color: #494949; 
+	font-weight: bold;
+	letter-spacing: 0.3px;
+	padding: 15px 0;
+	padding-left: 10px;
+	text-align: left;
+}
+.popup_content > table tr > td{
+	font-size:15px;
+	padding-left: 20px;
+}
+.popup_content > table tr > td > span{
+	vertical-align: middle;
+}
+.popup_content > table tr > td > input{
+	font-size:15px;
+	padding: 3px;
+}
+.popup_content > table tr > td > select{
+	font-size: 15px;
+	padding: 3px;
+}
+.popup_mypage{
+	display:none;
+}
+.popup_mypage > .popup_mypage_btn_wrap{
+	width: 100%;
+	margin: 15px auto;
+}
+.popup_mypage > .popup_mypage_btn_wrap > p{
+	display: inline-block;
+	padding:8px 10px;
+	font-size:15px;
+	margin-left:20px;
+	cursor: pointer;
+	background: #595959;
+	color: #fff;
+	border-radius: 4px;
+	letter-spacing: 1px;
+}
+.header_inner2 > ul > li:nth-child(4){
+	background: #fff;
+}
+.header_inner2 > ul > li:nth-child(4) > a{
+	color: #5c5c5c; 
+	font-weight: bold;
+}
+.aside1{
+	width:1000px;
+	margin-left:50px;
+	margin-top:50px;
+	overflow:hidden;
+}
+.aside_title{
+	width: 100%;
+	margin-bottom: 50px;
+}
+.aside_title > img {
+	width:30px;
+	vertical-align: middle;
+}
+.aside_title > span{
+	font-size:22px;
+	font-weight: bold;
+	margin: 0 30px 0 5px;
+	vertical-align: middle;
+}
+.aside_title > .line{
+	width:600px;
+	height:3px;
+	background: #353c46;
+	display: inline-block;
+	vertical-align: middle;
+}
+.aside1 > .table_wrap{
+	float:left;
+	margin-top: 15px;
+	width: 500px;
+}
+.aside1 > .table_wrap > table {
+	width:100%;
+	border-top: 2px solid gray;
+}
+.aside1 > .table_wrap > table tr:first-child{
+	background: #f5f5f5;
+}
+.aside1 > .table_wrap > table tr th{
+	font-size:17px;
+	text-align: center;
+	font-weight: bold;
+	border-bottom: 2px solid #efefef;
+	padding: 10px 0;
+}
+.aside1 > .table_wrap > table tr > td{
+	font-size:15px;
+	text-align: center;
+	padding: 8px 0;
+	border-bottom: 1px solid lightgray;
+}
+.table_wrap > table tr > td > select{
+	font-size:15px;
+	padding:2px;
+}
+.hos_time_btn_wrap{
+	width: 100%; 
+	margin: 20px;
+	text-align: center;
+}
+.hos_time_btn_wrap > button{
+	margin: 0 auto;
+	font-size: 15px;
+	padding: 5px 10px;
+	letter-spacing: 1px; 
+	background: #1e866a;
+	border-radius: 3px;
+	color: #fff;
+}
 </style>
 <script>
 function get_hospitalInfo_all(){
@@ -203,7 +253,41 @@ $(function(){
 </head>
 <body>
 	<div class="popup_wrap">
-		
+		<div class="popup_bg">
+		</div>
+		<div class="popup_mypage popup_content">
+			<h2>내정보 수정</h2>
+			<table>
+				<tr>
+					<th>▶ 이름</th>
+					<td><input type="text" name="name"></td>
+				</tr>
+				<tr>
+					<th>▶ 생년월일</th>
+					<td><input type="text" name="birth"></td>
+				</tr>
+				<tr>
+					<th>▶ 연락처</th>
+					<td><input type="text" name="phone"></td>
+				</tr>
+				<tr>
+					<th>▶ 아이디</th>
+					<td><input type="text" name="id" readonly="readonly"></td>
+				</tr>
+				<tr>
+					<th>▶ 변경 비밀번호</th>
+					<td><input type="password" name="pw" placeholder="변경 시 입력해주세요."></td>
+				</tr>
+				<tr>
+					<th>▶  비밀번호 확인</th>
+					<td><input type="password" name="pwConfirm" placeholder="변경 시 입력해주세요."></td>
+				</tr>
+			</table>
+			<div class="popup_mypage_btn_wrap">
+				<p>저장</p>
+				<p>닫기</p>
+			</div>
+		</div>
 	</div>
 	<div class="all_wrap">
 		<div class="header">

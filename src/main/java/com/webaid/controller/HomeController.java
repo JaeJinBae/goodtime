@@ -1309,7 +1309,7 @@ public class HomeController {
 			}
 			
 			List<ReservationRecordVO> list = rrService.listSearch(cri);
-			
+			System.out.println(cri);
 			PageMakerRR pageMaker = new PageMakerRR();
 			pageMaker.setCri(cri);
 			pageMaker.makeSearch(cri.getPage());

@@ -3544,7 +3544,6 @@ $(function(){
 		fulldate = year_month+"-"+update_date;
 		var day = $(this).find("input[type='hidden']").val();
 		$(".calendar_select_date").val(fulldate);
-		//draw_time_table(fulldate);
 		$(".time_table_wrap").html("");
 		
 		draw_time_table_by_case(storage_timetable_btn_num);
@@ -3878,13 +3877,12 @@ $(function(){
 				var clinic_name = $(".popup_clinic_reservation_register > table tr td > select[name='clinic'] > option:selected").text(); 
 				var memo = $(".popup_clinic_reservation_register > table tr td input[name='memo']").val();
 				var writer = $("#session_login_name").val();
-				var regdate = get_today();
 				var desk_state="예약완료";
 				var desk_state_writer=$("#session_login_name").val();
 				var nowDate = new Date();
 				var desk_state_regdate = nowDate.getFullYear()+"-"+(((nowDate.getMonth()+1)>9?'':'0')+(nowDate.getMonth()+1))+"-"+((nowDate.getDate()>9?'':'0')+nowDate.getDate())+" "+nowDate.getHours()+":"+((nowDate.getMinutes()>9?'':'0')+nowDate.getMinutes());
 				var result = "예약완료";
-				
+				var regdate = get_today()+" "+nowDate.getHours()+":"+nowDate.getMinutes();
 				if(idx == 1){
 					desk_state = "접수완료";
 					result = "접수완료";
@@ -3930,12 +3928,12 @@ $(function(){
 				var clinic_name = $(".popup_therapy_reservation_register > table tr td > select[name='clinic'] > option:selected").text();
 				var memo = $(".popup_therapy_reservation_register > table tr td input[name='memo']").val();
 				var writer = $("#session_login_name").val();
-				var regdate = get_today();
 				var desk_state="예약완료";
 				var desk_state_writer=$("#session_login_name").val();
 				var nowDate = new Date();
 				var desk_state_regdate = nowDate.getFullYear()+"-"+(((nowDate.getMonth()+1)>9?'':'0')+(nowDate.getMonth()+1))+"-"+((nowDate.getDate()>9?'':'0')+nowDate.getDate())+" "+nowDate.getHours()+":"+((nowDate.getMinutes()>9?'':'0')+nowDate.getMinutes());
 				var result = "예약완료";
+				var regdate = get_today()+" "+nowDate.getHours()+":"+(nowDate.getMinutes()>9?'':'0'+nowDate.getMinutes());
 				
 				if(idx == 1){
 					desk_state = "접수완료";

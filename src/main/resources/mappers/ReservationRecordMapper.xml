@@ -27,11 +27,11 @@
 	</select>
 	
 	<insert id="register">
-		insert into reservation_record values(0, #{pno}, #{pname}, #{ename}, #{rno}, #{rtype}, #{cname}, #{rdate}, #{rtime}, #{reception_info}, #{therapy_info}, #{register_info}, #{result})
+		insert into reservation_record values(0, #{pno}, #{pname}, #{ename}, #{rno}, #{rtype}, #{cname}, #{rdate}, #{rtime}, #{reception_info}, #{therapy_info}, #{register_info}, #{result}, #{result_memo})
 	</insert>
 	
 	<update id="updateReceptionInfo">
-		update reservation_record set reception_info=#{reception_info}, result=#{result} where rno=#{rno} and rtype=#{rtype}
+		update reservation_record set reception_info=#{reception_info}, result=#{result}, result_memo=#{result_memo} where rno=#{rno} and rtype=#{rtype}
 	</update>
 	
 	<update id="updateTherapyInfo">

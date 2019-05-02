@@ -29,7 +29,7 @@
 	</insert>
 	
 	<update id="updateDeskState">
-		update fix_clinic_reservation set desk_state=#{desk_state}, desk_state_writer=#{desk_state_writer}, desk_state_regdate=#{desk_state_regdate}, result=#{result} where rno=#{rno}
+		update fix_clinic_reservation set desk_state=#{desk_state}, desk_state_writer=#{desk_state_writer}, desk_state_regdate=#{desk_state_regdate}, result=#{result}, result_memo=#{result_memo} where rno=#{rno}
 	</update>
 	
 	<update id="updateInfo">

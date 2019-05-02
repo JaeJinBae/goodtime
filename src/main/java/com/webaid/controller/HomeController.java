@@ -1150,18 +1150,22 @@ public class HomeController {
 				vo.setResult(state);
 				if(state.equals("예약취소")){
 					vo.setResult_memo(reason);
+				}else{
+					vo.setResult_memo("");
 				}
 				ncrService.updateDeskState(vo);
 				
 				ReservationRecordVO rrvo = new ReservationRecordVO();
 				rrvo.setRno(Integer.parseInt(rno));
 				rrvo.setRtype(rtype);
+				rrvo.setResult_memo(" ");
 				if(state.equals("예약완료")){
 					rrvo.setReception_info(" ");
 				}else if(state.equals("접수완료")){
 					rrvo.setReception_info(regdate+" "+writer);
 				}else if(state.equals("예약취소")){
 					rrvo.setReception_info("예약취소 "+regdate+" "+writer);
+					rrvo.setResult_memo(reason);
 				}
 				rrvo.setResult(state);
 				rrService.updateReceptionInfo(rrvo);
@@ -1174,18 +1178,22 @@ public class HomeController {
 				vo.setResult(state);
 				if(state.equals("예약취소")){
 					vo.setResult_memo(reason);
+				}else{
+					vo.setResult_memo("");
 				}
 				ntrService.updateDeskState(vo);
 				
 				ReservationRecordVO rrvo = new ReservationRecordVO();
 				rrvo.setRno(Integer.parseInt(rno));
 				rrvo.setRtype(rtype);
+				rrvo.setResult_memo(" ");
 				if(state.equals("예약완료")){
 					rrvo.setReception_info(" ");
 				}else if(state.equals("접수완료")){
 					rrvo.setReception_info(regdate+" "+writer);
 				}else if(state.equals("예약취소")){
 					rrvo.setReception_info("예약취소 "+regdate+" "+writer);
+					rrvo.setResult_memo(reason);
 				}
 				rrvo.setResult(state);
 				rrService.updateReceptionInfo(rrvo);
@@ -1198,18 +1206,22 @@ public class HomeController {
 				vo.setResult(state);
 				if(state.equals("예약취소")){
 					vo.setResult_memo(reason);
+				}else{
+					vo.setResult_memo("");
 				}
 				fcrService.updateDeskState(vo);
 				
 				ReservationRecordVO rrvo = new ReservationRecordVO();
 				rrvo.setRno(Integer.parseInt(rno));
 				rrvo.setRtype(rtype);
+				rrvo.setResult_memo(" ");
 				if(state.equals("예약완료")){
 					rrvo.setReception_info(" ");
 				}else if(state.equals("접수완료")){
 					rrvo.setReception_info(regdate+" "+writer);
 				}else if(state.equals("예약취소")){
 					rrvo.setReception_info("예약취소 "+regdate+" "+writer);
+					rrvo.setResult_memo(reason);
 				}
 				rrvo.setResult(state);
 				rrService.updateReceptionInfo(rrvo);
@@ -1222,18 +1234,22 @@ public class HomeController {
 				vo.setResult(state);
 				if(state.equals("예약취소")){
 					vo.setResult_memo(reason);
+				}else{
+					vo.setResult_memo("");
 				}
 				ftrService.updateDeskState(vo);
 				
 				ReservationRecordVO rrvo = new ReservationRecordVO();
 				rrvo.setRno(Integer.parseInt(rno));
 				rrvo.setRtype(rtype);
+				rrvo.setResult_memo(" ");
 				if(state.equals("예약완료")){
 					rrvo.setReception_info(" ");
 				}else if(state.equals("접수완료")){
 					rrvo.setReception_info(regdate+" "+writer);
 				}else if(state.equals("예약취소")){
 					rrvo.setReception_info("예약취소 "+regdate+" "+writer);
+					rrvo.setResult_memo(reason);
 				}
 				rrvo.setResult(state);
 				rrService.updateReceptionInfo(rrvo);

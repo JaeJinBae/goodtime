@@ -389,13 +389,13 @@
 		width:150px;
 	}
 	.tbl_reservation_record tr > th:nth-child(6){
-		width:180px;
+		width:190px;
 	}
 	.tbl_reservation_record tr > th:nth-child(7){
-		width:180px;
+		width:225px;
 	}
 	.tbl_reservation_record tr > th:nth-child(8){
-		width:180px;
+		width:190px;
 	}
 	.tbl_reservation_record tr > td{
 		text-align: center;
@@ -1664,9 +1664,16 @@ function draw_simple_reservation_view(type, rno){
 		+"<tr><th class='tbl_content_title'>- 등록정보</th></tr>"
 		+"<tr><td class='tbl_content'>"+json.regdate+" by "+json.writer+"</td></tr>";
 		
-	if(json.updatedate != ""){
-		str += "<tr><th class='tbl_content_title'>- 변경처리</th></tr>"
-			+"<tr><td class='tbl_content'>"+json.updatedate+" by "+json.updatewriter+"</td></tr>";
+	if(json.desk_state == "접수완료"){
+		str += "<tr><th class='tbl_content_title'>- 접수정보</th></tr>"
+			+"<tr><td class='tbl_content'>"+json.desk_state_regdate+" by "+json.desk_state_writer+"</td></tr>";
+	}
+	if(json.desk_state == "예약취소"){
+		str += "<tr><th class='tbl_content_title'>- 취소정보</th></tr>"
+			+"<tr><td class='tbl_content'>"+json.desk_state_regdate+" by "+json.desk_state_writer+"</td></tr>";
+		
+		str += "<tr><th class='tbl_content_title'>- 취소사유</th></tr>"
+			+"<tr><td class='tbl_content'>"+json.result_memo+"</td></tr>";
 	}
 	if(json.memo != ""){
 		str +=  "<tr><th class='tbl_content_title'>- 메모</th></tr>"
@@ -2321,7 +2328,7 @@ function draw_reservation_update_view(rno, rtype){
 	
 }
 
-function update_reservation_info(){
+function update_reservation_info(stbn){
 	var now = new Date();
 	
 	var pno = $(".popup_reservation_update > h2 > input[name='pno']").val();
@@ -2375,6 +2382,7 @@ function update_reservation_info(){
 				alert("일정변경이 완료되었습니다.");
 				$(".popup_reservation_update").css("display", "none");
 				$(".popup_wrap").css("display", "none");
+				draw_time_table_by_case(stbn);
 			}else{
 				alert("예약등록이 정상적으로 등록되지 않았습니다. 다시 한번 등록하세요.");
 			}
@@ -2386,7 +2394,7 @@ function update_reservation_info(){
 }
 
 function update_reservation_deskState(rtype, rno, state, writer, regdate, stbn){
-	var reason = $(".popup_reservation_info_cancel_wrap > table tr > td > textarea[name='cancel_reason']").val();
+	var reason = $(".cancel_reason > td > textarea[name='cancel_reason']").val();
 	if(reason == ""){
 		reason = "_";
 	}
@@ -2466,9 +2474,9 @@ function draw_reservation_record_table(info){
 	var minute;
 	var overMinute;
 	
-	str = "<table class='tbl_reservation_record'><tr><th>환자명</th><th>담당자</th><th>분류</th><th>종류</th><th>예정일시</th><th>접수일시</th><th>치료완료일시</th><th>최초등록일시</th></tr>";
+	str = "<table class='tbl_reservation_record'><tr><th>환자명</th><th>담당자</th><th>분류</th><th>종류</th><th>예정일시</th><th>최초등록일시</th><th>접수일시</th><th>치료완료일시</th><th>취소사유</th></tr>";
 	if(json.list.length == 0){
-		str += "<tr><td colspan='8'>등록된 정보가 없습니다.</td></tr>";
+		str += "<tr><td colspan='9'>등록된 정보가 없습니다.</td></tr>";
 	}else{
 		$(json.list).each(function(){
 			time = Number(this.rtime);
@@ -2492,7 +2500,8 @@ function draw_reservation_record_table(info){
 			}else if(this.rtype == "ft"){
 				str += "<td>고정진료</td>";
 			}
-			str += "<td>"+this.cname+"</td><td>"+this.rdate+" "+hour+":"+minute+"</td><td>"+this.reception_info+"</td><td>"+this.therapy_info+"</td><td>"+this.register_info+"</td></tr>";
+			str += "<td>"+this.cname+"</td><td>"+this.rdate+" "+hour+":"+minute+"</td><td>"+this.register_info+"</td><td>"
+				+this.reception_info+"</td><td>"+this.therapy_info+"</td><td>"+this.result_memo+"</td></tr>";
 		});
 		str += "</table>";
 		
@@ -4023,7 +4032,7 @@ $(function(){
 	$(".popup_res_update_btn_wrap > p").click(function(){
 		var btn_idx = $(this).index();
 		if(btn_idx == 0){
-			update_reservation_info();
+			update_reservation_info(storage_timetable_btn_num);
 		}else if(btn_idx == 1){
 			$(".popup_reservation_update").css("display", "none");
 			$(".popup_wrap").css("display", "none");

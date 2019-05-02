@@ -11,46 +11,6 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <style>
-	.popup_wrap{
-		width:100%;
-		position:fixed;
-		top:0;
-		left:0;
-		display:none;
-	}
-	.popup_bg{
-		position: fixed;
-		top:0;
-		left:0;
-		width:100%;
-		height:100%;
-		background: #111;
-		opacity: 0.5;
-	}
-	.popup_content{
-		display:none;
-		width:600px;
-		height:700px;
-		background:#fff;
-		margin:0 auto;
-		margin-top:100px;
-		position: relative;
-		z-index: 999;
-	}
-	.popup_content > table tr{
-		display:block;
-		margin-top:30px;
-	}
-	.popup_content > table tr > th{
-		font-size:15px;
-		width:100px;
-	}
-	.popup_content > table tr > td{
-		font-size:15px;
-	}
-	.popup_content > table tr > td > select{
-		font-size: 15px;
-	}
 	.header_inner2 > ul > li:nth-child(3){
 		background: #fff;
 	}
@@ -260,7 +220,7 @@ function get_clinic_by_cno(cno){
 
 
 
-//환자 정보 수정view에 정보 기입
+//클리닉 수정view에 정보 기입
 function draw_clinic_update_view(cno){
 	var json = get_clinic_by_cno(cno);
 
@@ -287,6 +247,10 @@ function post_clinic_register(vo){
 			$(".popup_clinic_register").css("display", "none");
 			$(".popup_wrap").css("display","none");
 			alert("코드등록이 완료되었습니다.");
+			$(".popup_clinic_register > table tr > td > input[name='code_name']").val("");
+			$(".popup_clinic_register > table tr > td > select[name='code_type'] > option[value='진료']").prop("selected", true);
+			$(".popup_clinic_register > table tr > td > select[name='time'] > option[value='0']").prop("selected", true);
+			$(".popup_clinic_register > table tr > td > input[name='color']").val("");
 			draw_clinic_table();
 		},
 		error:function(request,status,error){

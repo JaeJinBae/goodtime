@@ -11,46 +11,6 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <style>
-	.popup_wrap{
-		width:100%;
-		position:fixed;
-		top:0;
-		left:0;
-		display:none;
-	}
-	.popup_bg{
-		position: fixed;
-		top:0;
-		left:0;
-		width:100%;
-		height:100%;
-		background: #111;
-		opacity: 0.5;
-	}
-	.popup_content{
-		display:none;
-		width:600px;
-		height:700px;
-		background:#fff;
-		margin:0 auto;
-		margin-top:100px;
-		position: relative;
-		z-index: 999;
-	}
-	.popup_content > table tr{
-		display:block;
-		margin-top:30px;
-	}
-	.popup_content > table tr > th{
-		font-size:15px;
-		width:100px;
-	}
-	.popup_content > table tr > td{
-		font-size:15px;
-	}
-	.popup_content > table tr > td > select{
-		font-size: 15px;
-	}
 	.header_inner2 > ul > li:nth-child(2){
 		background: #fff;
 	}

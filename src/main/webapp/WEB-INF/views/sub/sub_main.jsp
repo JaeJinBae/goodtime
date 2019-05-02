@@ -68,7 +68,7 @@
 		height:100%;
 		float:left;
 		border-right: 1px solid lightgray;
-		padding-top:20px;
+		padding-top:12px;
 	}
 	.topView_btn{
 		margin: 0 auto;
@@ -112,7 +112,7 @@
 	}
 	.al_tbl_wrap2{
 		width:100%;
-		margin-top:50px;
+		margin-top:30px;
 		display:none;
 	}
 	.al_tbl_wrap2_title{

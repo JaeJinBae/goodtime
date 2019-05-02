@@ -115,7 +115,6 @@ $(function(){
 	
 	$(".header_inner2 > ul > li:last-child > a").click(function(e){
 		e.preventDefault();
-		alert('this');
 		window.open($(this).prop("href"),"","");
 	});
 	

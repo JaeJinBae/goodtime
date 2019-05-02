@@ -92,6 +92,18 @@
 	.aside_left > .al_tbl_wrap_1{
 		width: 100%;
 	}
+	.aside_left > .al_tbl_wrap_1 > .today_btn{
+		font-size: 14px;
+		width:70px;
+		margin: 0 auto;
+		text-align: center;
+		cursor: pointer;
+		background: #494949;
+		color: #fff;
+		padding: 3px 0;
+		border-radius: 3px;
+		letter-spacing: 1px;
+	}
 	.aside_left > .al_tbl_wrap_1 > #calendar{
 		margin: 0 auto;
 	}
@@ -809,6 +821,7 @@
 		border-bottom:2px solid #5e5e5e;
 		padding:8px 3px;
 		font-weight: bold;
+		font-size: 15px;
 	}
 	.tbl_patient_reservation_update_record tr > th:first-child{
 		width:90px;
@@ -3369,9 +3382,9 @@ function draw_patient_reservation_record(){
 	var minute;
 	var overMinute;
 	
-	str = "<div class='patient_res_record_wrap'><table class='tbl_patient_reservation_record'><tr><th>환자명</th><th>담당자</th><th>분류</th><th>종류</th><th>예정일시</th><th>접수일시</th><th>치료완료일시</th><th>최초등록일시</th></tr>";
+	str = "<div class='patient_res_record_wrap'><table class='tbl_patient_reservation_record'><tr><th>환자명</th><th>담당자</th><th>분류</th><th>종류</th><th>예정일시</th><th>최초등록일시</th><th>접수일시</th><th>치료완료일시</th><th>취소사유</th></tr>";
 	if(json.length == 0){
-		str += "<tr><td colspan='8'>등록된 정보가 없습니다.</td></tr>";
+		str += "<tr><td colspan='9'>등록된 정보가 없습니다.</td></tr>";
 	}else{
 		$(json).each(function(){
 			time = Number(this.rtime);
@@ -3395,7 +3408,7 @@ function draw_patient_reservation_record(){
 			}else if(this.rtype == "ft"){
 				str += "<td>고정진료</td>";
 			}
-			str += "<td>"+this.cname+"</td><td>"+this.rdate+" "+hour+":"+minute+"</td><td>"+this.reception_info+"</td><td>"+this.therapy_info+"</td><td>"+this.register_info+"</td></tr>";
+			str += "<td>"+this.cname+"</td><td>"+this.rdate+" "+hour+":"+minute+"</td><td>"+this.register_info+"</td><td>"+this.reception_info+"</td><td>"+this.therapy_info+"</td><td>"+json.result_memo+"</td></tr>";
 		});
 		str += "</table></div>";
 		
@@ -3493,13 +3506,21 @@ $(function(){
 	var storage_timetable2_btn_num = 0;
 	
 	//달력 생성
-	buildCalendar();
+	buildCalendar(new Date());
 	
 	$(".calendar_select_date").val(get_today());
 	/* $(".calendar_select_date").val("2019-04-29"); */
 	
 	//날짜마다 요일 표시
 	write_yoil();
+	
+	//TODAY 클릭
+	$(".today_btn").click(function(){
+		var today = new Date();
+		buildCalendar(today);
+		$(".calendar_select_date").val(get_today());
+		draw_time_table_by_case(storage_timetable_btn_num);
+	});
 	
 	//환자table 생성
 	draw_patient_table();
@@ -4258,7 +4279,8 @@ $(function(){
 					<p id="reservation_view_btn"><img src="${pageContext.request.contextPath}/resources/images/icon_person_white.png"></p>
 				</div>
 				<div class="al_tbl_wrap_1">
-				<input class='calendar_select_date' type="hidden" value=''>
+					<input class='calendar_select_date' type="hidden" value=''>
+					<h5 class="today_btn">Today</h5>
 					<table id="calendar" border="3" align="center" style="border-color:#3333FF ">
 					    <tr class="tr_not"><!-- label은 마우스로 클릭을 편하게 해줌 -->
 					        <td><label onclick="prevCalendar()"><</label></td>

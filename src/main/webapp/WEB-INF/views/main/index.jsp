@@ -37,7 +37,8 @@
 		width:100%;
 	}
 	.logo > a > img{
-		width:100%;
+		/* width:100%; */
+		width: 200px;
 	}
 	.login_wrap{
 		width:250px;

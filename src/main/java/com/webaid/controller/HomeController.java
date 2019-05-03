@@ -10,6 +10,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -1386,7 +1387,13 @@ public class HomeController {
 		ResponseEntity<List<ReservationRecordVO>> entity = null;
 		
 		try {
-			List<ReservationRecordVO> vo = rrService.selectCompleteByPno(pno);
+			List<ReservationRecordVO> vo = rrService.selectCompleteTherapyByPno(pno);
+			List<ReservationRecordVO> vo2 = rrService.selectCompleteClinicByPno(pno);
+			vo.addAll(vo2);
+			for(int i=0; i<vo.size(); i++){
+				System.out.println(vo.get(i));
+			}
+			Collections.sort(vo);
 			entity = new ResponseEntity<List<ReservationRecordVO>>(vo, HttpStatus.OK);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());

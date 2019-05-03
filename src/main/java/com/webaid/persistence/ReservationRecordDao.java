@@ -8,7 +8,8 @@ import com.webaid.domain.SearchCriteriaRR;
 public interface ReservationRecordDao {
 	public List<ReservationRecordVO> selectAll();
 	public List<ReservationRecordVO> selectByPno(int pno);
-	public List<ReservationRecordVO> selectCompleteByPno(int pno);
+	public List<ReservationRecordVO> selectCompleteTherapyByPno(int pno);
+	public List<ReservationRecordVO> selectCompleteClinicByPno(int pno);
 	public List<ReservationRecordVO> listSearch(SearchCriteriaRR cri);
 	public int listSearchCount(SearchCriteriaRR cri);
 	public void register(ReservationRecordVO vo);

@@ -1,6 +1,6 @@
 package com.webaid.domain;
 
-public class ReservationRecordVO {
+public class ReservationRecordVO implements Comparable<ReservationRecordVO>{
 	private int no;
 	private int pno;
 	private String pname;
@@ -138,6 +138,11 @@ public class ReservationRecordVO {
 				+ rno + ", rtype=" + rtype + ", cname=" + cname + ", rdate=" + rdate + ", rtime=" + rtime
 				+ ", reception_info=" + reception_info + ", therapy_info=" + therapy_info + ", register_info="
 				+ register_info + ", result=" + result + ", result_memo=" + result_memo + "]";
+	}
+
+	@Override
+	public int compareTo(ReservationRecordVO o) {
+		return this.rdate.compareTo(o.rdate);
 	}
 
 }

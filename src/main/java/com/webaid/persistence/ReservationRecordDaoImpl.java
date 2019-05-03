@@ -28,8 +28,13 @@ public class ReservationRecordDaoImpl implements ReservationRecordDao {
 	}
 
 	@Override
-	public List<ReservationRecordVO> selectCompleteByPno(int pno) {
-		return session.selectList(namespace + ".selectCompleteByPno", pno);
+	public List<ReservationRecordVO> selectCompleteTherapyByPno(int pno) {
+		return session.selectList(namespace + ".selectCompleteTherapyByPno", pno);
+	}
+
+	@Override
+	public List<ReservationRecordVO> selectCompleteClinicByPno(int pno) {
+		return session.selectList(namespace + ".selectCompleteClinicByPno", pno);
 	}
 
 	@Override

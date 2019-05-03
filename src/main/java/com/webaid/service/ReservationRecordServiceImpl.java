@@ -26,8 +26,8 @@ public class ReservationRecordServiceImpl implements ReservationRecordService {
 	}
 
 	@Override
-	public List<ReservationRecordVO> selectCompleteByPno(int pno) {
-		return dao.selectCompleteByPno(pno);
+	public List<ReservationRecordVO> selectCompleteTherapyByPno(int pno) {
+		return dao.selectCompleteTherapyByPno(pno);
 	}
 
 	@Override
@@ -58,6 +58,11 @@ public class ReservationRecordServiceImpl implements ReservationRecordService {
 	@Override
 	public void updateRdateRtime(ReservationRecordVO vo) {
 		dao.updateRdateRtime(vo);
+	}
+
+	@Override
+	public List<ReservationRecordVO> selectCompleteClinicByPno(int pno) {
+		return dao.selectCompleteClinicByPno(pno);
 	}
 
 }

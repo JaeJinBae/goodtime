@@ -674,7 +674,7 @@
 		font-weight: bold;
 		text-align:center;
 		font-size:20px;
-		background: #e63839;
+		background: #5f5f5f;
 		border-radius: 7px;
 		cursor:pointer;
 	}

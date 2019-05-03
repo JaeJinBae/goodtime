@@ -1695,7 +1695,7 @@ function draw_simple_reservation_view(type, rno){
 			+"<tr><td class='tbl_content'>"+json.memo+"</td></tr>";
 	}
 	if(res_record.length != 0){
-		str += "<tr><th class='tbl_content_title'>- 치료이력</th></tr><tr><td class='tbl_content'><div class='patient_simple_record'>";
+		str += "<tr><th class='tbl_content_title'>- 이력</th></tr><tr><td class='tbl_content'><div class='patient_simple_record'>";
 		$(res_record).each(function(){
 			str += "<p><span>"+this.rdate+"</span>&nbsp;&nbsp;<span>"+this.cname+"/"+this.ename+"</span></p>";
 		});
@@ -1719,15 +1719,9 @@ function post_ncReservation_register(vo, stbn){
 		success:function(json){
 			if(json == "OK"){
 				alert("예약등록이 완료되었습니다.");
-				$("#reservation_view_btn").html("");
-				$(".reservation_register_btn").css("display", "none");
-				$("#reservation_view_btn").css("display", "none");
 				$(".popup_clinic_reservation_register").css("display", "none");
 				$(".popup_therapy_reservation_register").css("display", "none");
 				$(".popup_wrap").css("display","none");
-				$(".patient_week_tbl_selectBox_wrap").css("display","none");
-				$(".patient_time_table_wrap").html("");
-				$(".timetable_btn_wrap2").css("display","none");
 				
 				draw_time_table_by_case(stbn);
 			}else{
@@ -1749,15 +1743,9 @@ function post_ntReservation_register(vo, stbn){
 		success:function(json){
 			if(json == "OK"){
 				alert("예약등록이 완료되었습니다.");
-				$("#reservation_view_btn").html("");
-				$(".reservation_register_btn").css("display", "none");
-				$("#reservation_view_btn").css("display", "none");
 				$(".popup_clinic_reservation_register").css("display", "none");
 				$(".popup_therapy_reservation_register").css("display", "none");
 				$(".popup_wrap").css("display","none");
-				$(".patient_week_tbl_selectBox_wrap").css("display","none");
-				$(".patient_time_table_wrap").html("");
-				$(".timetable_btn_wrap2").css("display","none");
 				
 				draw_time_table_by_case(stbn);
 			}else{
@@ -1780,15 +1768,9 @@ function post_fcReservation_register(vo, stbn){
 		success:function(json){
 			if(json == "OK"){
 				alert("예약등록이 완료되었습니다.");
-				$("#reservation_view_btn").html("");
-				$(".reservation_register_btn").css("display", "none");
-				$("#reservation_view_btn").css("display", "none");
 				$(".popup_clinic_reservation_register").css("display", "none");
 				$(".popup_therapy_reservation_register").css("display", "none");
 				$(".popup_wrap").css("display","none");
-				$(".patient_week_tbl_selectBox_wrap").css("display","none");
-				$(".patient_time_table_wrap").html("");
-				$(".timetable_btn_wrap2").css("display","none");
 				
 				draw_time_table_by_case(stbn);
 			}else{
@@ -1814,15 +1796,9 @@ function post_ftReservation_register(vo, stbn){
 		success:function(json){
 			if(json == "OK"){
 				alert("예약등록이 완료되었습니다.");
-				$("#reservation_view_btn").html("");
-				$(".reservation_register_btn").css("display", "none");
-				$("#reservation_view_btn").css("display", "none");
 				$(".popup_clinic_reservation_register").css("display", "none");
 				$(".popup_therapy_reservation_register").css("display", "none");
 				$(".popup_wrap").css("display","none");
-				$(".patient_week_tbl_selectBox_wrap").css("display","none");
-				$(".patient_time_table_wrap").html("");
-				$(".timetable_btn_wrap2").css("display","none");
 				
 				draw_time_table_by_case(stbn);
 			}else{

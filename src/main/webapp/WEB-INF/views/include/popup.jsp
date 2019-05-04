@@ -605,6 +605,10 @@
 				<th>▶ 메모</th>
 				<td><span></span></td>
 			</tr>
+			<tr>
+				<th>▶ 당일 예약 현황</th>
+				<td></td>
+			</tr>
 			<tr class="cancel_reason">
 				<th>▶ 취소사유</th>
 				<td><textarea name="cancel_reason"></textarea><button>저장</button></td>

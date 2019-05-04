@@ -1,17 +1,13 @@
 package com.webaid.controller;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URLEncoder;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
@@ -21,10 +17,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -653,6 +645,47 @@ public class HomeController {
 			map.put("ntReservationList", ntReservationList);
 			map.put("fcReservationList", fcReservationList);
 			map.put("ftReservationList", ftReservationList);
+			
+			entity=new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+			
+			return entity;
+		} catch (Exception e) {
+			
+		}
+		return entity;
+	}
+	
+	@RequestMapping(value="/reservationListGetByDatePno/{date}/{pno}", method=RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> reservationListGetByDatePno(@PathVariable("date") String date, @PathVariable("pno") int pno) throws ParseException{
+		ResponseEntity<Map<String,Object>> entity=null;
+		HashMap<String, Object> map=new HashMap<>();
+		
+		try {
+			NormalClinicReservationVO ncrvo = new NormalClinicReservationVO();
+			ncrvo.setPno(pno);
+			ncrvo.setRdate(date);
+			
+			NormalTherapyReservationVO ntrvo = new NormalTherapyReservationVO();
+			ntrvo.setPno(pno);
+			ntrvo.setRdate(date);
+			
+			FixClinicReservationVO fcrvo = new FixClinicReservationVO();
+			fcrvo.setPno(pno);
+			fcrvo.setRdate(date);
+			
+			FixTherapyReservationVO ftrvo = new FixTherapyReservationVO();
+			ftrvo.setPno(pno);
+			ftrvo.setRdate(date);
+			
+			List<NormalClinicReservationVO> ncrList = ncrService.selectByDatePno(ncrvo);
+			List<NormalTherapyReservationVO> ntrList = ntrService.selectByDatePno(ntrvo);
+			List<FixClinicReservationVO> fcrList = fcrService.selectByDatePno(fcrvo);
+			List<FixTherapyReservationVO> ftrList = ftrService.selectByDatePno(ftrvo);
+			
+			map.put("ncrList", ncrList);
+			map.put("ntrList", ntrList);
+			map.put("fcrList", fcrList);
+			map.put("ftrList", ftrList);
 			
 			entity=new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
 			

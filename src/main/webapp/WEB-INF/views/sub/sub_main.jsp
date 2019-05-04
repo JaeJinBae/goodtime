@@ -1696,9 +1696,10 @@ function draw_simple_reservation_view(type, rno){
 	}
 	if(res_record.length != 0){
 		str += "<tr><th class='tbl_content_title'>- 이력</th></tr><tr><td class='tbl_content'><div class='patient_simple_record'>";
-		$(res_record).each(function(){
-			str += "<p><span>"+this.rdate+"</span>&nbsp;&nbsp;<span>"+this.cname+"/"+this.ename+"</span></p>";
-		});
+		for(var k=res_record.length-1; k>=0; k--){
+			console.log(res_record[k]);
+			str += "<p><span>"+res_record[k].rdate+"</span>&nbsp;&nbsp;<span>"+res_record[k].cname+"/"+res_record[k].ename+"</span></p>";
+		}
 		str += "</div></td></tr>";
 	}
 	

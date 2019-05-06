@@ -2289,26 +2289,34 @@ function open_reservation_info_view(type, rno){
 	str = "";
 	$(other_res.ncrList).each(function(){
 		if(this.result != "예약취소"){
+			hour = parseInt(Number(this.rtime)/60);
+			minute = (Number(this.rtime)%60 >9?'':'0')+Number(this.rtime)%60;
 			eData = get_employee_byEno(this.eno);
-			str += "<p>일반진료 "+this.rdate+" "+parseInt(Number(this.rtime)/60)+":"+((Number(this.rtime)%60 >9?'':'0')+(Number(this.rtime)%60))+" "+this.clinic_name+"/"+eData.name+"</p>";
+			str += "<p>일반진료 "+this.rdate+" "+hour+":"+minute+" "+this.clinic_name+"/"+eData.name+"</p>";
 		}
 	});
 	$(other_res.fcrList).each(function(){
 		if(this.result != "예약취소"){
+			hour = parseInt(Number(this.rtime)/60);
+			minute = (Number(this.rtime)%60 >9?'':'0')+Number(this.rtime)%60;
 			eData = get_employee_byEno(this.eno);0
-			str += "<p>고정진료 "+this.rdate+" "+parseInt(Number(this.rtime)/60)+":"+((Number(this.rtime)%60 >9?'':'0')+(Number(this.rtime)%60))+" "+this.clinic_name+"/"+eData.name+"</p>";
+			str += "<p>고정진료 "+this.rdate+" "+hour+":"+minute+" "+this.clinic_name+"/"+eData.name+"</p>";
 		}
 	});
 	$(other_res.ntrList).each(function(){
 		if(this.result != "예약취소"){
+			hour = parseInt(Number(this.rtime)/60);
+			minute = (Number(this.rtime)%60 >9?'':'0')+Number(this.rtime)%60;
 			eData = get_employee_byEno(this.eno);
-			str += "<p>일반치료 "+this.rdate+" "+parseInt(Number(this.rtime)/60)+":"+((Number(this.rtime)%60 >9?'':'0')+(Number(this.rtime)%60))+" "+this.clinic_name+"/"+eData.name+"</p>";
+			str += "<p>일반치료 "+this.rdate+" "+hour+":"+minute+" "+this.clinic_name+"/"+eData.name+"</p>";
 		}
 	});
 	$(other_res.ftrList).each(function(){
 		if(this.result != "예약취소"){
+			hour = parseInt(Number(this.rtime)/60);
+			minute = (Number(this.rtime)%60 >9?'':'0')+Number(this.rtime)%60;
 			eData = get_employee_byEno(this.eno);
-			str += "<p>고정치료 "+this.rdate+" "+parseInt(Number(this.rtime)/60)+":"+((Number(this.rtime)%60 >9?'':'0')+(Number(this.rtime)%60))+" "+this.clinic_name+"/"+eData.name+"</p>";
+			str += "<p>고정치료 "+this.rdate+" "+hour+":"+minute+" "+this.clinic_name+"/"+eData.name+"</p>";
 		}
 	});
 	$(".popup_reservation_info_view > table tr:nth-child(5) > td").html(str);

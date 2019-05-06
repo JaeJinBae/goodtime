@@ -151,6 +151,14 @@
 }
 .popup_reservation_info_view{
 	display:none;
+	width: 510px;
+}
+.popup_reservation_info_view > table tr:nth-child(5) > td{
+	text-align: left;
+}
+.popup_reservation_info_view > table tr:nth-child(5) > td > p{
+	font-size: 15px;
+	margin-bottom: 5px;
 }
 .popup_reservation_info_view > .popup_reservation_info_btn_wrap{
 	width:100%;

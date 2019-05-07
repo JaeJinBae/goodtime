@@ -2320,9 +2320,11 @@ function open_reservation_info_view(type, rno){
 		minute = (Number(this.rtime)%60 >9?'':'0')+Number(this.rtime)%60;
 		eData = get_employee_byEno(this.eno);
 		if(this.rtype == "fc" || this.rtype == "ft"){
-			str += "<p class='res_info_view_today_list' style='background:#ffaf7a;padding:1px;border-radius: 4px;'>"+this.rdate+" "+hour+":"+minute+" "+this.clinic_name+"/"+eData.name+"</p>";
+			str += "<p class='res_info_view_today_list' style='background:#ffaf7a;padding:1px;border-radius: 4px;'>"+this.rdate+" "+hour+":"+minute+" "
+				+this.clinic_name+"/"+eData.name+"<input type='hidden' name='rtype' value='"+this.rtype+"'><input type='hidden' name='rno' value='"+this.rno+"'></p>";
 		}else{
-			str += "<p class='res_info_view_today_list'>"+this.rdate+" "+hour+":"+minute+" "+this.clinic_name+"/"+eData.name+"</p>";
+			str += "<p class='res_info_view_today_list'>"+this.rdate+" "+hour+":"+minute+" "
+				+this.clinic_name+"/"+eData.name+"<input type='hidden' name='rtype' value='"+this.rtype+"'><input type='hidden' name='rno' value='"+this.rno+"'></p>";
 		}
 		
 	});
@@ -4099,6 +4101,13 @@ $(function(){
 		var rno = $(".popup_reservation_info_view > h2 > input[name='rno']").val();
 		var rtype = $(".popup_reservation_info_view > h2 > input[name='rtype']").val();
 		draw_reservation_update_view(rno, rtype);
+	});
+	
+	$(document).on("click", ".popup_reservation_info_view > table tr:nth-child(5) > td > .res_info_view_today_list", function(){
+		var rno = $(this).find("input[name='rno']").val();
+		var rtype = $(this).find("input[name='rtype']").val();
+		
+		open_reservation_info_view(rtype, rno);
 	});
 	
 	//예약일정 변경 저장 클릭

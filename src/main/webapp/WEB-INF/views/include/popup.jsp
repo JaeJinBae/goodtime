@@ -159,6 +159,10 @@
 .popup_reservation_info_view > table tr:nth-child(5) > td > p{
 	font-size: 15px;
 	margin-bottom: 5px;
+	cursor: pointer;
+}
+.popup_reservation_info_view > table tr:nth-child(5) > td > p:hover{
+	font-weight: bold;
 }
 .popup_reservation_info_view > .popup_reservation_info_btn_wrap{
 	width:100%;

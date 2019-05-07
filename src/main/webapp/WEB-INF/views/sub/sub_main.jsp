@@ -2287,38 +2287,46 @@ function open_reservation_info_view(type, rno){
 	
 	var other_res = get_reservationList_byPnoDate(rData.pno, rData.rdate);
 	str = "";
+	var resArr = [];
+	
 	$(other_res.ncrList).each(function(){
 		if(this.result != "예약취소"){
-			hour = parseInt(Number(this.rtime)/60);
-			minute = (Number(this.rtime)%60 >9?'':'0')+Number(this.rtime)%60;
-			eData = get_employee_byEno(this.eno);
-			str += "<p>일반진료 "+this.rdate+" "+hour+":"+minute+" "+this.clinic_name+"/"+eData.name+"</p>";
+			resArr.push(this);
 		}
 	});
 	$(other_res.fcrList).each(function(){
 		if(this.result != "예약취소"){
-			hour = parseInt(Number(this.rtime)/60);
-			minute = (Number(this.rtime)%60 >9?'':'0')+Number(this.rtime)%60;
-			eData = get_employee_byEno(this.eno);0
-			str += "<p>고정진료 "+this.rdate+" "+hour+":"+minute+" "+this.clinic_name+"/"+eData.name+"</p>";
+			resArr.push(this);
 		}
 	});
 	$(other_res.ntrList).each(function(){
 		if(this.result != "예약취소"){
-			hour = parseInt(Number(this.rtime)/60);
-			minute = (Number(this.rtime)%60 >9?'':'0')+Number(this.rtime)%60;
-			eData = get_employee_byEno(this.eno);
-			str += "<p>일반치료 "+this.rdate+" "+hour+":"+minute+" "+this.clinic_name+"/"+eData.name+"</p>";
+			resArr.push(this);
 		}
 	});
 	$(other_res.ftrList).each(function(){
 		if(this.result != "예약취소"){
-			hour = parseInt(Number(this.rtime)/60);
-			minute = (Number(this.rtime)%60 >9?'':'0')+Number(this.rtime)%60;
-			eData = get_employee_byEno(this.eno);
-			str += "<p>고정치료 "+this.rdate+" "+hour+":"+minute+" "+this.clinic_name+"/"+eData.name+"</p>";
+			resArr.push(this);
 		}
 	});
+	
+	//예약 시간순서 정렬
+	resArr.sort(function(a,b){
+		return a.rtime < b.rtime ? -1: a.rtime>b.rtime?1:0;
+	});
+	
+	$(resArr).each(function(){
+		hour = parseInt(Number(this.rtime)/60);
+		minute = (Number(this.rtime)%60 >9?'':'0')+Number(this.rtime)%60;
+		eData = get_employee_byEno(this.eno);
+		if(this.rtype == "fc" || this.rtype == "ft"){
+			str += "<p class='res_info_view_today_list' style='background:#ffaf7a;padding:1px;border-radius: 4px;'>"+this.rdate+" "+hour+":"+minute+" "+this.clinic_name+"/"+eData.name+"</p>";
+		}else{
+			str += "<p class='res_info_view_today_list'>"+this.rdate+" "+hour+":"+minute+" "+this.clinic_name+"/"+eData.name+"</p>";
+		}
+		
+	});
+	
 	$(".popup_reservation_info_view > table tr:nth-child(5) > td").html(str);
 	
 	$(".popup_reservation_info_view").css("display", "block");
@@ -2831,6 +2839,8 @@ function draw_normalOff_table(info){
 	var json = get_normalOff_all(info);
 	var str = "";
 	var emp;
+	var sTime;
+	var eTime;
 	
 	str = "<table class='tbl_normal_off'><tr><th>이름</th><th>휴무종류</th><th>시작일시</th><th>종료일시</th><th>등록일시</th><th>관리</th></tr>";
 	if(json.list.length == 0){
@@ -2838,7 +2848,9 @@ function draw_normalOff_table(info){
 	}else{
 		$(json.list).each(function(){
 			emp = get_employee_byEno(this.eno);
-			str += "<tr><td>"+emp.name+"</td><td>"+this.offtype+"</td><td>"+this.startdate+" "+(Number(this.starttime)/60)+"시</td><td>"+this.enddate+" "+(Number(this.endtime)/60)+"시</td>"
+			sTime = Number(this.starttime)/60;
+			eTime = Number(this.endtime)/60;
+			str += "<tr><td>"+emp.name+"</td><td>"+this.offtype+"</td><td>"+this.startdate+" "+sTime+"시</td><td>"+this.enddate+" "+eTime+"시</td>"
 				+"<td>"+this.regdate+" "+this.writer+"</td><td><button>수정</button><input type='hidden' name='no' value='"+this.no+"'></td></tr>";
 		});
 		str += "</table>";
@@ -3026,9 +3038,12 @@ function get_fixOff_byWeek(week, eno){
 function draw_fixOff_in_timetable(date){
 	var offData = get_fixOff_byDate(date);
 	var timeTableClass = "";
-
+	var sTime;
+	var eTime;
 	$(offData).each(function(){
-		for(var i=(Number(this.starttime)/60) ; i<(Number(this.endtime)/60) ; i++){
+		sTime = Number(this.starttime)/60;
+		eTime = Number(this.starttime)/60;
+		for(var i= sTime; i<eTime ; i++){
 			timeTableClass = "."+this.etype+"_"+this.eno+"_"+i;
 			$(timeTableClass).html("");
 			$(timeTableClass).append("<p class='fix_off' style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>")

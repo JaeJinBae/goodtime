@@ -934,19 +934,19 @@ function draw_patient_table(info){
 	str += "</table>";
 	
 	str += "<div class='page'><ul>";
-	if(json.pageMaker.prev){
-		str += "<li><a href='page="+(json.pageMaker.startPage-1)+"&perPageNum=10&searchType="+json.pageMaker.cri.searchType+"&keyword="+json.pageMaker.cri.keyword+"'>&laquo;</a></li>";
+	if(json.pageMaker5.prev){
+		str += "<li><a href='page="+(json.pageMaker5.startPage-1)+"&perPageNum=5&searchType="+json.pageMaker5.cri.searchType+"&keyword="+json.pageMaker5.cri.keyword+"'>&laquo;</a></li>";
 	}
-	for(var i=json.pageMaker.startPage; i<=json.pageMaker.endPage; i++){
+	for(var i=json.pageMaker5.startPage; i<=json.pageMaker5.endPage; i++){
 		
-		if(json.pageMaker.cri.page == i){
-			str += "<li class='active1'><a class='active2' href='page="+i+"&perPageNum=10&searchType="+json.pageMaker.cri.searchType+"&keyword="+json.pageMaker.cri.keyword+"'>"+i+"</a></li>";
+		if(json.pageMaker5.cri.page == i){
+			str += "<li class='active1'><a class='active2' href='page="+i+"&perPageNum=5&searchType="+json.pageMaker5.cri.searchType+"&keyword="+json.pageMaker5.cri.keyword+"'>"+i+"</a></li>";
 		}else{
-			str += "<li><a href='page="+i+"&perPageNum=10&searchType="+json.pageMaker.cri.searchType+"&keyword="+json.pageMaker.cri.keyword+"'>"+i+"</a></li>"
+			str += "<li><a href='page="+i+"&perPageNum=5&searchType="+json.pageMaker5.cri.searchType+"&keyword="+json.pageMaker5.cri.keyword+"'>"+i+"</a></li>"
 		}
 	}
-	if(json.pageMaker.next){
-		str += "<li><a href='page="+(json.pageMaker.endPage+1)+"&perPageNum=10&searchType="+json.pageMaker.cri.searchType+"&keyword="+json.pageMaker.cri.keyword+"'>&raquo;</a></li>";
+	if(json.pageMaker5.next){
+		str += "<li><a href='page="+(json.pageMaker5.endPage+1)+"&perPageNum=5&searchType="+json.pageMaker5.cri.searchType+"&keyword="+json.pageMaker5.cri.keyword+"'>&raquo;</a></li>";
 	}
 	str += "</ul></div>";	
 	$("#inner_tbl_wrap").append(str);
@@ -3725,7 +3725,7 @@ $(function(){
 		var searchType = encodeURIComponent(s);
 		var k=$("input[name='keyword']").val();
 		var keyword = encodeURIComponent(k);
-		draw_patient_table("page=1&perPageNum=10&searchType="+searchType+"&keyword="+keyword);
+		draw_patient_table("page=1&perPageNum=5&searchType="+searchType+"&keyword="+keyword);
 		
 	});
 	

@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.webaid.domain.PatientVO;
-import com.webaid.domain.SearchCriteria;
+import com.webaid.domain.SearchCriteria5;
 import com.webaid.persistence.PatientDao;
 
 @Service
@@ -41,12 +41,12 @@ public class PatientServiceImpl implements PatientService {
 	}
 
 	@Override
-	public List<PatientVO> listSearch(SearchCriteria cri) throws Exception {
+	public List<PatientVO> listSearch(SearchCriteria5 cri) throws Exception {
 		return dao.listSearch(cri);
 	}
 
 	@Override
-	public int listSearchCount(SearchCriteria cri) {
+	public int listSearchCount(SearchCriteria5 cri) {
 		return dao.listSearchCount(cri);
 	}
 

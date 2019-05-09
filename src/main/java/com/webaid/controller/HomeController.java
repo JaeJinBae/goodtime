@@ -42,11 +42,13 @@ import com.webaid.domain.NormalOffVO;
 import com.webaid.domain.NormalTherapyReservationVO;
 import com.webaid.domain.OffData;
 import com.webaid.domain.PageMaker;
+import com.webaid.domain.PageMaker5;
 import com.webaid.domain.PageMakerRR;
 import com.webaid.domain.PatientVO;
 import com.webaid.domain.ReservationRecordVO;
 import com.webaid.domain.ReservationUpdateRecordVO;
 import com.webaid.domain.SearchCriteria;
+import com.webaid.domain.SearchCriteria5;
 import com.webaid.domain.SearchCriteriaRR;
 import com.webaid.domain.SelectByDateEmployeeVO;
 import com.webaid.service.ClinicService;
@@ -351,7 +353,7 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value="/patientAllGet", method=RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> patientAllGet(@ModelAttribute("cri") SearchCriteria cri) throws Exception{
+	public ResponseEntity<Map<String, Object>> patientAllGet(@ModelAttribute("cri") SearchCriteria5 cri) throws Exception{
 		logger.info("patient all Get");
 		
 		ResponseEntity<Map<String, Object>> entity = null;
@@ -360,13 +362,13 @@ public class HomeController {
 		List<PatientVO> patientListAll = pService.listSearch(cri);
 		System.out.println(patientListAll);
 		System.out.println("환자에서 cri값\n"+cri);
-		PageMaker pageMaker = new PageMaker();
-		pageMaker.setCri(cri);
-		pageMaker.makeSearch(cri.getPage());
-		pageMaker.setTotalCount(pService.listSearchCount(cri));
+		PageMaker5 pageMaker5 = new PageMaker5();
+		pageMaker5.setCri(cri);
+		pageMaker5.makeSearch(cri.getPage());
+		pageMaker5.setTotalCount(pService.listSearchCount(cri));
 		
 		map.put("patientListAll", patientListAll);
-		map.put("pageMaker", pageMaker);
+		map.put("pageMaker5", pageMaker5);
 		
 		entity = new ResponseEntity<Map<String,Object>>(map, HttpStatus.OK);
 		return entity;

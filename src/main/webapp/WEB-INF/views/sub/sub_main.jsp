@@ -114,6 +114,7 @@
 		font-weight: bold;
 		text-align: center;
 		cursor: pointer;
+		border-radius: 5px;
 	}
 	.aside_left > .al_tbl_wrap_1 > #calendar td > label{
 		display:block;
@@ -2925,6 +2926,7 @@ function post_normalOff_register(){
 			
 			$(".popup_normal_off_register").css("display","none");
 			$(".popup_wrap").css("display","none");
+			draw_normalOff_table();
 		},
 		error:function(request,status,error){
 			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -3044,7 +3046,7 @@ function draw_fixOff_in_timetable(date){
 	var eTime;
 	$(offData).each(function(){
 		sTime = Number(this.starttime)/60;
-		eTime = Number(this.starttime)/60;
+		eTime = Number(this.endtime)/60;
 		for(var i= sTime; i<eTime ; i++){
 			timeTableClass = "."+this.etype+"_"+this.eno+"_"+i;
 			$(timeTableClass).html("");
@@ -3072,10 +3074,13 @@ function draw_fixOff_in_weektable(){
 	var offData = get_fixOff_byWeek(arrWeek, eno);
 
 	var target_class;
-	console.log(offData);
+	var sTime;
+	var eTime;
 	for(var i=1; i<arrWeek.length; i++){
 		$(offData[arrWeek[i]]).each(function(){
-			for(var n=Number(this.starttime)/60; n<Number(this.endtime)/60; n++){
+			sTime = Number(this.starttime)/60;
+			eTime = Number(this.endtime)/60;
+			for(var n=sTime; n<eTime; n++){
 				target_class = "."+this.eno+"_"+arrWeek[i]+"_"+n;
 				$(target_class).html("");
 				$(target_class).append("<p class='fix_off' style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>");
@@ -3178,6 +3183,7 @@ function post_fixOff_register(){
 			
 			$(".popup_fix_off_register").css("display","none");
 			$(".popup_wrap").css("display","none");
+			draw_fixOff_table();
 		},
 		error:function(request,status,error){
 			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -3610,7 +3616,7 @@ $(function(){
 		
 		//클릭한 td 붉은색 네모
 		$("#calendar td").css("border","0");
-		$(this).not(".tr_not > td").css("border","1px solid red");
+		$(this).not(".tr_not > td").css({"border":"1px solid #8f8f8f"});
 		
 		//클릭한 날짜 정보 GET
 		var date = $(this).text();

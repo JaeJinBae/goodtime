@@ -1680,7 +1680,7 @@ function draw_simple_reservation_view(type, rno){
 		str += "<tr><td class='tbl_content'>"+json.fix_day+"요일 "+start_time+"~"+end_time+"</td></tr>"
 			+"<tr><th class='tbl_content_title'>- 치료종류</th></tr>";
 	}
-	str += "<tr><td class='tbl_content'>"+clinic.code_name+"</td></tr>"
+	str += "<tr><td class='tbl_content'><span class='simple_code_name' style='background:"+clinic.color+";padding:3px 5px;border-radius:3px;'>"+clinic.code_name+"</span></td></tr>"
 		+"<tr><th class='tbl_content_title'>- 등록정보</th></tr>"
 		+"<tr><td class='tbl_content'>"+json.regdate+" by "+json.writer+"</td></tr>";
 		

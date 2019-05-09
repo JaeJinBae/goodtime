@@ -1178,12 +1178,20 @@ function draw_time_table_by_case(idx){
 			$(".normal_off_selectBox_wrap").css("display","block");
 			$(".time_table_wrap").html("");
 			draw_normalOff_table();
+			var todayArr = select_date.split("-");
+			
+			$(".normal_off_selectBox_wrap > select[name='year'] > option[value='"+todayArr[0]+"']").prop("selected", true);
+			$(".normal_off_selectBox_wrap > select[name='month'] > option[value='"+todayArr[1]+"']").prop("selected", true);
 			break;
 		case 10:
 			$(".week_select_box_wrap").css("display","none");
 			$(".fix_off_selectBox_wrap").css("display","block");
 			$(".time_table_wrap").html("");
 			draw_fixOff_table();
+			var todayArr = select_date.split("-");
+			
+			$(".fix_off_selectBox_wrap > select[name='year'] > option[value='"+todayArr[0]+"']").prop("selected", true);
+			$(".fix_off_selectBox_wrap > select[name='month'] > option[value='"+todayArr[1]+"']").prop("selected", true);
 			break;
 		case 11:
 			$(".week_select_box_wrap").css("display","none");
@@ -2829,27 +2837,27 @@ function draw_normalOff_table(info){
 		
 		str += "<div class='normal_off_page'><ul>";
 		if(json.pageMaker.prev){
-			str += "<li><a href='page="+(json.pageMaker.startPage-1)+"&perPageNum=10&keyword1="+json.pageMaker.cri.keyword1+"&keyword2="+json.pageMaker.cri.keyword2+"'>&laquo;</a></li>";
+			str += "<li><a href='page="+(json.pageMaker.startPage-1)+"&perPageNum=10&keyword1="+json.pageMaker.cri.keyword1
+				+"&keyword2="+json.pageMaker.cri.keyword2+"&keyword3="+json.pageMaker.crk.keyword3+"'>&laquo;</a></li>";
 		}
 		for(var i=json.pageMaker.startPage; i<=json.pageMaker.endPage; i++){
 			
 			if(json.pageMaker.cri.page == i){
-				str += "<li class='active1'><a class='active2' href='page="+i+"&perPageNum=10&keyword1="+json.pageMaker.cri.keyword1+"&keyword2="+json.pageMaker.cri.keyword2+"'>"+i+"</a></li>";
+				str += "<li class='active1'><a class='active2' href='page="+i+"&perPageNum=10&keyword1="+json.pageMaker.cri.keyword1
+					+"&keyword2="+json.pageMaker.cri.keyword2+"&keyword3="+json.pageMaker.cri.keyword3+"'>"+i+"</a></li>";
 			}else{
-				str += "<li><a href='page="+i+"&perPageNum=10&keyword1="+json.pageMaker.cri.keyword1+"&keyword2="+json.pageMaker.cri.keyword2+"'>"+i+"</a></li>"
+				str += "<li><a href='page="+i+"&perPageNum=10&keyword1="+json.pageMaker.cri.keyword1
+					+"&keyword2="+json.pageMaker.cri.keyword2+"&keyword3="+json.pageMaker.crk.keyword3+"'>"+i+"</a></li>"
 			}
 		}
 		if(json.pageMaker.next){
-			str += "<li><a href='page="+(json.pageMaker.endPage+1)+"&perPageNum=10&keyword1="+json.pageMaker.cri.keyword1+"&keyword2="+json.pageMaker.cri.keyword2+"'>&raquo;</a></li>";
+			str += "<li><a href='page="+(json.pageMaker.endPage+1)+"&perPageNum=10&keyword1="+json.pageMaker.cri.keyword1
+				+"&keyword2="+json.pageMaker.cri.keyword2+"&keyword3="+json.pageMaker.crk.keyword3+"'>&raquo;</a></li>";
 		}
 		str += "</ul></div>";	
 	}
 	$(".time_table_wrap").html(str);
-	var today = get_today();
-	var todayArr = today.split("-");
 	
-	$(".normal_off_selectBox_wrap > select[name='year'] > option[value='"+todayArr[0]+"']").prop("selected", true);
-	$(".normal_off_selectBox_wrap > select[name='month'] > option[value='"+todayArr[1]+"']").prop("selected", true);
 }
 
 function post_normalOff_register(){
@@ -3083,28 +3091,26 @@ function draw_fixOff_table(info){
 		
 		str += "<div class='fix_off_page'><ul>";
 		if(json.pageMaker.prev){
-			str += "<li><a href='page="+(json.pageMaker.startPage-1)+"&perPageNum=10&keyword1="+json.pageMaker.cri.keyword1+"&keyword2="+json.pageMaker.cri.keyword2+"'>&laquo;</a></li>";
+			str += "<li><a href='page="+(json.pageMaker.startPage-1)+"&perPageNum=10&keyword1="+json.pageMaker.cri.keyword1
+				+"&keyword2="+json.pageMaker.cri.keyword2+"&keyword3="+json.pageMaker.cri.keyword3+"&keyword4="+json.pageMaker.cri.keyword4+"'>&laquo;</a></li>";
 		}
 		for(var i=json.pageMaker.startPage; i<=json.pageMaker.endPage; i++){
 			
 			if(json.pageMaker.cri.page == i){
-				str += "<li class='active1'><a class='active2' href='page="+i+"&perPageNum=10&keyword1="+json.pageMaker.cri.keyword1+"&keyword2="+json.pageMaker.cri.keyword2+"'>"+i+"</a></li>";
+				str += "<li class='active1'><a class='active2' href='page="+i+"&perPageNum=10&keyword1="+json.pageMaker.cri.keyword1
+					+"&keyword2="+json.pageMaker.cri.keyword2+"&keyword3="+json.pageMaker.cri.keyword3+"&keyword4="+json.pageMaker.cri.keyword4+"'>"+i+"</a></li>";
 			}else{
-				str += "<li><a href='page="+i+"&perPageNum=10&keyword1="+json.pageMaker.cri.keyword1+"&keyword2="+json.pageMaker.cri.keyword2+"'>"+i+"</a></li>"
+				str += "<li><a href='page="+i+"&perPageNum=10&keyword1="+json.pageMaker.cri.keyword1+"&keyword2="+json.pageMaker.cri.keyword2
+					+"&keyword3="+json.pageMaker.cri.keyword3+"&keyword4="+json.pageMaker.cri.keyword4+"'>"+i+"</a></li>"
 			}
 		}
 		if(json.pageMaker.next){
-			str += "<li><a href='page="+(json.pageMaker.endPage+1)+"&perPageNum=10&keyword1="+json.pageMaker.cri.keyword1+"&keyword2="+json.pageMaker.cri.keyword2+"'>&raquo;</a></li>";
+			str += "<li><a href='page="+(json.pageMaker.endPage+1)+"&perPageNum=10&keyword1="+json.pageMaker.cri.keyword1
+				+"&keyword2="+json.pageMaker.cri.keyword2+"&keyword3="+json.pageMaker.cri.keyword3+"&keyword4="+json.pageMaker.cri.keyword4+"'>&raquo;</a></li>";
 		}
 		str += "</ul></div>";	
 	}
 	$(".time_table_wrap").html(str);
-	
-	var today = get_today();
-	var todayArr = today.split("-");
-	
-	$(".fix_off_selectBox_wrap > select[name='year'] > option[value='"+todayArr[0]+"']").prop("selected", true);
-	$(".fix_off_selectBox_wrap > select[name='month'] > option[value='"+todayArr[1]+"']").prop("selected", true);
 }
 
 function post_fixOff_register(){
@@ -4163,9 +4169,12 @@ $(function(){
 	$(".normal_off_selectBox_wrap > .normal_off_search_btn").click(function(){
 		var year = $(".normal_off_selectBox_wrap > select[name='year']").val();
 		var month = $(".normal_off_selectBox_wrap > select[name='month']").val();
-		var keyword1 = encodeURIComponent(year+"-"+month);
-		var keyword2 = encodeURIComponent($(".normal_off_selectBox_wrap > select[name='emp']").val());
-		draw_normalOff_table("page=1&perPageNum=10&keyword1="+keyword1+"&keyword2="+keyword2);
+		
+		var keyword1 = encodeURIComponent(year+"-"+month+"-01");
+		var keyword2 = encodeURIComponent(year+"-"+month);
+		var keyword3 = encodeURIComponent($(".normal_off_selectBox_wrap > select[name='emp']").val());
+		
+		draw_normalOff_table("page=1&perPageNum=10&keyword1="+keyword1+"&keyword2="+keyword2+"&keyword3="+keyword3);
 	});
 	//일반휴무 페이징
 	$(document).on("click",".normal_off_page", function(e){
@@ -4228,10 +4237,14 @@ $(function(){
 	$(".fix_off_selectBox_wrap > .fix_off_search_btn").click(function(){
 		var year = $(".fix_off_selectBox_wrap > select[name='year']").val();
 		var month = $(".fix_off_selectBox_wrap > select[name='month']").val();
-		var keyword1 = encodeURIComponent(year+"-"+month);
-		var keyword2 = encodeURIComponent($(".fix_off_selectBox_wrap > select[name='emp']").val());
-		var keyword3 = encodeURIComponent($(".fix_off_selectBox_wrap > select[name='dow']").val());
-		draw_fixOff_table("page=1&perPageNum=10&keyword1="+keyword1+"&keyword2="+keyword2+"&keyword3"+keyword3);
+		
+		var keyword1 = encodeURIComponent(year+"-"+month+"-01");
+		var keyword2 = encodeURIComponent(year+"-"+month);
+		var keyword3 = encodeURIComponent($(".fix_off_selectBox_wrap > select[name='emp']").val());
+		var keyword4 = encodeURIComponent($(".fix_off_selectBox_wrap > select[name='dow']").val());
+		console.log($(".fix_off_selectBox_wrap > select[name='emp']").val()+"/"+$(".fix_off_selectBox_wrap > select[name='dow']").val());
+		console.log(keyword3+"/"+keyword4);
+		draw_fixOff_table("page=1&perPageNum=10&keyword1="+keyword1+"&keyword2="+keyword2+"&keyword3="+keyword3+"&keyword4="+keyword4);
 	});
 	//고정휴무 페이징
 	$(document).on("click",".fix_off_page", function(e){

@@ -5,9 +5,11 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URLEncoder;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
@@ -1484,28 +1486,41 @@ public class HomeController {
 	
 	
 	@RequestMapping(value="/normalOffGetAll", method=RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> normalOffGetAll(@ModelAttribute("cri") SearchCriteriaRR cri){
+	public ResponseEntity<Map<String, Object>> normalOffGetAll(@ModelAttribute("cri") SearchCriteriaRR cri) throws ParseException{
 		ResponseEntity<Map<String, Object>> entity = null;
 		HashMap<String, Object> map = new HashMap<>();
 		
 		Calendar now = new GregorianCalendar();
 		int year = now.get(now.YEAR);
 		String month = now.get(now.MONTH)+1+"";
+		
 		if(Integer.parseInt(month)<10){
 			month = "0"+month;
 		}
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date cDate = sdf.parse(year+"-"+month+"-01");
+		now.setTime(cDate);
+		int lastDate = now.getActualMaximum(now.DAY_OF_MONTH);
+		
 		try {
 			if(cri.getKeyword1() == null){
-				cri.setKeyword1(year+"-"+month);
+				cri.setKeyword1(year+"-"+month+"-01");
 			}
 			if(cri.getKeyword2() == null){
-				cri.setKeyword2("");
+				cri.setKeyword2(year+"-"+month+"-"+lastDate);
+			}else{
+				cDate = sdf.parse(cri.getKeyword1());
+				now.setTime(cDate);
+				lastDate = now.getActualMaximum(now.DAY_OF_MONTH);
+				cri.setKeyword2(cri.getKeyword2()+"-"+lastDate);
 			}
-			cri.setKeyword3("");
+			if(cri.getKeyword3() == null){
+				cri.setKeyword3("");
+			}
 			cri.setKeyword4("");
 			
 			List<NormalOffVO> list = noService.listSearch(cri);
-
+			System.out.println(cri);
 			PageMakerRR pageMaker = new PageMakerRR();
 			pageMaker.setCri(cri);
 			pageMaker.makeSearch(cri.getPage());
@@ -1600,7 +1615,7 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value="/fixOffGetAll", method=RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> fixOffGetAll(@ModelAttribute("cri") SearchCriteriaRR cri){
+	public ResponseEntity<Map<String, Object>> fixOffGetAll(@ModelAttribute("cri") SearchCriteriaRR cri) throws ParseException{
 		ResponseEntity<Map<String, Object>> entity = null;
 		HashMap<String, Object> map = new HashMap<>();
 		
@@ -1611,19 +1626,31 @@ public class HomeController {
 			month = "0"+month;
 		}
 		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date cDate = sdf.parse(year+"-"+month+"-01");
+		now.setTime(cDate);
+		int lastDate = now.getActualMaximum(now.DAY_OF_MONTH);
+		System.out.println(cri);
 		try {
 			if(cri.getKeyword1() == null){
-				cri.setKeyword1(year+"-"+month);
+				cri.setKeyword1(year+"-"+month+"-01");
 			}
 			if(cri.getKeyword2() == null){
-				cri.setKeyword2("");
+				cri.setKeyword2(year+"-"+month+"-"+lastDate);
+			}else{
+				cDate = sdf.parse(cri.getKeyword1());
+				now.setTime(cDate);
+				lastDate = now.getActualMaximum(now.DAY_OF_MONTH);
+				cri.setKeyword2(cri.getKeyword2()+"-"+lastDate);
 			}
 			if(cri.getKeyword3() == null){
 				cri.setKeyword3("");
 			}
+			if(cri.getKeyword4() == null){
+				cri.setKeyword4("");
+			}
 			
-			cri.setKeyword4("");
-			
+			System.out.println(cri);
 			List<FixOffVO> list = foService.listSearch(cri);
 			
 			PageMakerRR pageMaker = new PageMakerRR();

@@ -25,11 +25,11 @@
 	</select>
 	
 	<sql id="search">
-		<if test="keyword2==''.toString()">
-			where startdate like concat('%',#{keyword1},'%') and eno like concat('%',#{keyword2},'%')
+		<if test="keyword3==''.toString()">
+			where date(startdate) <![CDATA[<=]]> date(#{keyword2}) and date(enddate) <![CDATA[>=]]> date(#{keyword1}) and eno like concat('%',#{keyword3},'%')
 		</if>
-		<if test="keyword2!=''.toString()">
-			where startdate like concat('%',#{keyword1},'%') and eno = #{keyword2}
+		<if test="keyword3!=''.toString()">
+			where date(startdate) <![CDATA[<=]]> date(#{keyword2}) and date(enddate) <![CDATA[>=]]> date(#{keyword1}) and eno = #{keyword3}
 		</if>
 	</sql>
 	

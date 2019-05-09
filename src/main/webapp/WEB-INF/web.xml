@@ -43,4 +43,8 @@
 		<filter-name>encoding</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
+	
+	<session-config>
+		<session-timeout>180</session-timeout>
+	</session-config>
 </web-app>

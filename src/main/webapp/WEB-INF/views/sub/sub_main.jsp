@@ -575,70 +575,40 @@
 		line-height: 30px;
 	}
 	
+	
+	/* testtesttset */
 	.timetable_btn_wrap{
-		width:100%;
-		border-bottom:2px solid #a1a1a1;
-		overflow:hidden;
+		width:1031px;
+		background: #353c46;
 		margin-bottom:20px;
-		padding:0 10px;
 	}
 	.timetable_btn_wrap > ul{
-		float:left;
+		width: 100%;
 		margin-right:30px;
+		overflow:hidden;
 	}
 	.timetable_btn_wrap > ul > li{
-		display: inline-block;
-		vertical-align: bottom;
-		border-bottom:0;
-		border-radius: 7px 7px 0 0;
+		float:left;
 		font-size:15px;
 		color: #fff;
-		padding:6px; 
+		padding:8px 12px; 
 		cursor: pointer;
+		border-right: 1px solid lightgray;
 	}
 	.timetable_btn_wrap > ul > li:first-child{
-		background: #33bd91;
-		margin-right:30px;
-		font-size:16px;
-		padding: 8px 10px;
+		font-size:15px;
+		font-weight: bold;
+		/* padding: 8px 14px; */
+		background: #0068b8;
 	}
-	.timetable_btn_wrap > ul > li:nth-child(2){
-		background: #74be28;
-	}
-	.timetable_btn_wrap > ul > li:nth-child(3){
-		background: #74be28;
-	}
-	.timetable_btn_wrap > ul > li:nth-child(4){
-		margin-right:30px;
-		background: #74be28;
-	}
-	.timetable_btn_wrap > ul > li:nth-child(5){
-		background: #27a7fb;
-	}
-	.timetable_btn_wrap > ul > li:nth-child(6){
-		background: #27a7fb;
-	}
-	.timetable_btn_wrap > ul > li:nth-child(7){
-		margin-right:30px;
-		background: #27a7fb;
-	}
-	.timetable_btn_wrap > ul > li:nth-child(8){
-		background: #2277ae;
-	}
-	.timetable_btn_wrap > ul > li:nth-child(9){
-		margin-right:30px;
-		background: #2277ae;
-	}
-	.timetable_btn_wrap > ul > li:nth-child(10){
-		background: #973bbb;
-	}
-	.timetable_btn_wrap > ul > li:nth-child(11){
-		margin-right:30px;
-		background: #973bbb;
-	}
+	
 	.timetable_btn_wrap > ul > li:last-child{
-		background: #5c3bbb;
+		border-right: 0;
 	}
+	/* testtesttset end*/
+	
+	
+	
 	.time_table_wrap > table{
 		width:100%;
 	}
@@ -3094,16 +3064,20 @@ function draw_fixOff_table(info){
 	var json = get_fixOff_all(info);
 	var str = "";
 	var emp;
+	var sTime;
+	var eTime;
 	
 	str = "<table class='tbl_fix_off'><tr><th>이름</th><th>휴무종류</th><th>요일</th><th>시작일시</th><th>종료일시</th><th>등록일시</th><th>관리</th></tr>";
 	if(json.list.length == 0){
 		str += "<tr><td colspan='7'>등록된 정보가 없습니다.</td></tr>";
 	}else{
 		$(json.list).each(function(){
+			sTime = (Number(this.starttime)/60);
+			eTime = (Number(this.endtime)/60);
 			emp = get_employee_byEno(this.eno);
 			
 			str += "<tr><td>"+emp.name+"</td><td>"+this.offtype+"</td><td>"+this.dow+"</td>"
-				+ "<td>"+this.startdate+" "+(Number(this.starttime)/60)+"시</td><td>"+this.enddate+" "+(Number(this.endtime)/60)+"시</td>"
+				+ "<td>"+this.startdate+" "+sTime+"시</td><td>"+this.enddate+" "+eTime+"시</td>"
 				+"<td>"+this.regdate+" "+this.writer+"</td><td><button>수정</button><input type='hidden' name='no' value='"+this.no+"'></td></tr>";
 		});
 		str += "</table>";
@@ -4063,8 +4037,8 @@ $(function(){
 	//table 선택 버튼(진료&치료종합, 진료종합, 주간, 고정 등등)
 	$(".timetable_btn_wrap > ul > li").click(function(){
 		var idx = $(this).index();
-		$(".timetable_btn_wrap > ul > li").css({"font-size":"15px", "padding":"6px"});
-		$(this).css({"font-size":"16px", "padding":"8px 10px"});
+		$(".timetable_btn_wrap > ul > li").css({"background":"none", "font-weight":"500"});
+		$(this).css({"font-weight":"bold", "background":"#0068b8"});
 		
 		draw_time_table_by_case(idx);
 		storage_timetable_btn_num = idx;
@@ -4394,18 +4368,18 @@ $(function(){
 				<div class="ar_tbl_wrap_2">
 					<div class="timetable_btn_wrap">
 						<ul>
-							<li>진료&치료 종합</li>
-							<li>진료종합</li>
-							<li>주간</li>
-							<li>고정</li>
-							<li>치료종합</li>
-							<li>주간</li>
-							<li>고정</li>
+							<li>예약종합</li>
+							<li>진료예약</li>
+							<li>진료주간예약</li>
+							<li>진료고정예약</li>
+							<li>치료예약</li>
+							<li>치료주간예약</li>
+							<li>치료고정예약</li>
 							<li>예약이력</li>
 							<li>변경이력</li>
-							<li>휴무</li>
-							<li>고정</li>
-							<li>문자종합</li>
+							<li>일반휴무</li>
+							<li>고정휴무</li>
+							<li>문자이력</li>
 						</ul>
 					</div><!-- timetable_btn_wrap -->
 					<div class="week_select_box_wrap selectBox_wrap">

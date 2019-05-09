@@ -576,7 +576,7 @@
 	}
 	
 	
-	/* testtesttset */
+	
 	.timetable_btn_wrap{
 		width:1031px;
 		background: #353c46;
@@ -605,7 +605,6 @@
 	.timetable_btn_wrap > ul > li:last-child{
 		border-right: 0;
 	}
-	/* testtesttset end*/
 	
 	
 	

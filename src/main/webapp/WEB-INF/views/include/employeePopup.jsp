@@ -189,6 +189,7 @@
 				<select name="type">
 					<option value="doctor">의사</option>
 					<option value="therapist">치료사</option>
+					<option value="nurse">간호사</option>
 					<option value="manager">관리자</option>
 				</select>
 			</td>
@@ -271,6 +272,7 @@
 				<select name="type">
 					<option value="doctor">의사</option>
 					<option value="therapist">치료사</option>
+					<option value="nurse">간호사</option>
 					<option value="manager">관리자</option>
 				</select>
 			</td>

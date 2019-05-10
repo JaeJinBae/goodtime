@@ -109,8 +109,12 @@
 					console.log(json);
 					if(json == 'therapist'){
 						location.href="${pageContext.request.contextPath}/therapist";
-					}else if(json == "manager" || json == "doctor"){
+					}else if(json == "manager"){
 						location.href="${pageContext.request.contextPath}/sub_main";
+					}else if(json == "doctor"){
+						location.href="${pageContext.request.contextPath}/doctor";
+					}else if(json == "nurse"){
+						location.href="${pageContext.request.contextPath}/nurse";
 					}else{
 						alert("아이디와 비밀번호가 맞지 않습니다.");
 						return false;

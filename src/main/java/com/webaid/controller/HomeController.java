@@ -160,13 +160,11 @@ public class HomeController {
 	public String sub_main(Model model, HttpSession session) {
 		logger.info("sub_main GET");
 		
-		//HospitalInfoVO hospitalInfo = hService.selectOne(day); 
 		List<EmployeeVO> doctorList = empService.selectByType("doctor");
 		List<EmployeeVO> therapistList = empService.selectByType("therapist");
 		List<ClinicVO> clinicList = cService.selectByCodeType("진료");
 		List<ClinicVO> therapyList = cService.selectByCodeType("치료");
 		
-		//model.addAttribute("hospitalInfo", hospitalInfo);
 		model.addAttribute("doctorList", doctorList);
 		model.addAttribute("therapistList", therapistList);
 		model.addAttribute("clinicList", clinicList);
@@ -174,22 +172,52 @@ public class HomeController {
 		return "sub/sub_main";
 	}
 	
-	@RequestMapping(value = "/therapist", method = RequestMethod.GET)
-	public String therapistView(Model model, HttpSession session) {
-		logger.info("therapistView GET");
-		
-		//HospitalInfoVO hospitalInfo = hService.selectOne(day); 
+	@RequestMapping(value = "/doctor", method = RequestMethod.GET)
+	public String doctorView(Model model, HttpSession session) {
+		logger.info("doctor GET");
+		 
 		List<EmployeeVO> doctorList = empService.selectByType("doctor");
 		List<EmployeeVO> therapistList = empService.selectByType("therapist");
 		List<ClinicVO> clinicList = cService.selectByCodeType("진료");
 		List<ClinicVO> therapyList = cService.selectByCodeType("치료");
 		
-		//model.addAttribute("hospitalInfo", hospitalInfo);
+		model.addAttribute("doctorList", doctorList);
+		model.addAttribute("therapistList", therapistList);
+		model.addAttribute("clinicList", clinicList);
+		model.addAttribute("therapyList", therapyList);
+		return "sub/doctorView";
+	}
+	
+	@RequestMapping(value = "/therapist", method = RequestMethod.GET)
+	public String therapistView(Model model, HttpSession session) {
+		logger.info("therapistView GET");
+		 
+		List<EmployeeVO> doctorList = empService.selectByType("doctor");
+		List<EmployeeVO> therapistList = empService.selectByType("therapist");
+		List<ClinicVO> clinicList = cService.selectByCodeType("진료");
+		List<ClinicVO> therapyList = cService.selectByCodeType("치료");
+		
 		model.addAttribute("doctorList", doctorList);
 		model.addAttribute("therapistList", therapistList);
 		model.addAttribute("clinicList", clinicList);
 		model.addAttribute("therapyList", therapyList);
 		return "sub/therapistView";
+	}
+	
+	@RequestMapping(value = "/nurse", method = RequestMethod.GET)
+	public String nurseView(Model model, HttpSession session) {
+		logger.info("nurseView GET");
+		 
+		List<EmployeeVO> doctorList = empService.selectByType("doctor");
+		List<EmployeeVO> therapistList = empService.selectByType("therapist");
+		List<ClinicVO> clinicList = cService.selectByCodeType("진료");
+		List<ClinicVO> therapyList = cService.selectByCodeType("치료");
+		
+		model.addAttribute("doctorList", doctorList);
+		model.addAttribute("therapistList", therapistList);
+		model.addAttribute("clinicList", clinicList);
+		model.addAttribute("therapyList", therapyList);
+		return "sub/nurseView";
 	}
 	
 	@RequestMapping(value="/getDay/{date}", method=RequestMethod.GET)
@@ -220,18 +248,6 @@ public class HomeController {
 		return "sub/statisticView";
 	}
 	
-	/*@RequestMapping(value="/statisticDown/{eno}/{date}", method=RequestMethod.POST)
-	public void statisticExcelDown(HttpServletResponse response, @PathVariable("eno") int eno, @PathVariable("date") String date){
-		logger.info("엑셀 다운 get");
-		Map<String, Object> data = new HashMap<>();
-		ExcelDown ed = new ExcelDown();
-		
-		try {
-			ed.excelDown(data, response);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}*/
 	@RequestMapping(value="/statisticDown/{eno}/{ename}/{date}", method=RequestMethod.POST)
 	public void excelDown(@PathVariable("eno") int eno,@PathVariable("ename") String ename, @PathVariable("date") String date, HttpServletResponse response) throws IOException {
 		logger.info("엑셀 다운 진입");

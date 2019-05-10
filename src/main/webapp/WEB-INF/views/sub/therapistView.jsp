@@ -4313,7 +4313,7 @@ $(function(){
 </head> 
 <body>
 	<div class="popup_wrap">
-		<jsp:include page="../include/popup.jsp"></jsp:include>
+		<jsp:include page="../include/therapistViewPopup.jsp"></jsp:include>
 	</div><!-- popup_wrap end -->
 	
 	<div class="all_wrap">

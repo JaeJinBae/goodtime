@@ -2196,87 +2196,18 @@ function open_reservation_info_view(type, rno){
 	$(".popup_wrap").css("display", "block");
 }
 
-function update_reservation_info(stbn){
-	var now = new Date();
-	
-	var pno = $(".popup_reservation_update > h2 > input[name='pno']").val();
-	var rno = $(".popup_reservation_update > h2 > input[name='rno']").val();
-	var rtype = $(".popup_reservation_update > h2 > input[name='rtype']").val();
-	var rdate = $(".popup_reservation_update > table tr:nth-child(2) > td > input[name='rdate']").val();
-	var rtime1 = $(".popup_reservation_update > table tr:nth-child(3) > td > select[name='rtime1']").val();
-	var rtime2 = $(".popup_reservation_update > table tr:nth-child(3) > td > select[name='rtime2']").val();
-	var rtime = Number(rtime1)+Number(rtime2);
-	var emp = $(".popup_reservation_update > table tr:nth-child(4) > td > select[name='emp']").val();
-	var clinic = $(".popup_reservation_update > table tr:nth-child(5) > td > select[name='clinic']").val();
-	var clinic_name = $(".popup_reservation_update > table tr:nth-child(5) > td > select[name='clinic'] > option:selected").text();
-	var memo = $(".popup_reservation_update > table tr:nth-child(6) > td > input[name='memo']").val();
-	var updateMemo = $(".popup_reservation_update > table tr:nth-child(7) > td > input[name='updateMemo']").val();
-	if(rdate == ""){
-		alert("변경 날짜를 선택해주세요.");
-		return false;
-	}
-	if(updateMemo == ""){
-		alert("변경사유를 작성해주세요.");
-		return false;
-	}
-	var before_reservation;
-	if(rtype == "nc"){
-		before_reservation = get_ncReservation_byRno(rno);
-	}else if(rtype == "fc"){
-		before_reservation = get_fcReservation_byRno(rno);
-	}else if(rtype == "nt"){
-		before_reservation = get_ntReservation_byRno(rno);
-	}else if(rtype == "ft"){
-		before_reservation = get_ftReservation_byRno(rno);
-	}
-	var before_info = $(".popup_reservation_update > table tr:first-child > td").text()+" "+get_employee_byEno(before_reservation.eno).name;
-	var after_info = rdate+" "+Number(rtime1/60)+":"+((Number(rtime2)>9?'':'0')+rtime2)+" "+$(".popup_reservation_update > table tr:nth-child(4) > td > select[name='emp'] option:selected").text();
-	var update_info = now.getFullYear()+"-"+(((now.getMonth()+1)>9?'':'0')+(now.getMonth()+1))+"-"+((now.getDate()>9?'':'0')+now.getDate())+" "
-					+ now.getHours()+":"+((now.getMinutes()>9?'':'0')+now.getMinutes())+" "+$("#session_login_name").val();
-	if(memo == ""){
-		memo = "";
-	}
-	var data = {pno:pno, rno:rno, rtype:rtype, rdate:rdate, rtime:rtime, emp:emp, clinic:clinic, clinic_name:clinic_name, memo:memo, updateMemo:updateMemo, before_info:before_info, after_info:after_info, update_type:"일정변경", update_info:update_info};
-	
-	$.ajax({
-		url:"${pageContext.request.contextPath}/updateReservationInfo",
-		type:"post",
-		dataType:"text",
-		data:JSON.stringify(data),
-		async:false,
-		contentType : "application/json; charset=UTF-8",
-		success:function(json){
-			if(json == "ok"){
-				alert("일정변경이 완료되었습니다.");
-				$(".popup_reservation_update").css("display", "none");
-				$(".popup_wrap").css("display", "none");
-				draw_time_table_by_case(stbn);
-			}else{
-				alert("예약등록이 정상적으로 등록되지 않았습니다. 다시 한번 등록하세요.");
-			}
-		},
-		error:function(request,status,error){
-			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-		}
-	});
-}
 
-function update_reservation_deskState(rtype, rno, state, writer, regdate, stbn){
+function update_reservation_therapistState(rtype, rno, state, writer, regdate, stbn){
 	var reason = $(".cancel_reason > td > textarea[name='cancel_reason']").val();
-	if(reason == ""){
-		reason = "_";
-	}
-
+	
 	$.ajax({
-		url:"${pageContext.request.contextPath}/updateReservationDeskState/"+rtype+"/"+rno+"/"+state+"/"+writer+"/"+regdate+"/"+reason,
+		url:"${pageContext.request.contextPath}/updateReservationTherapistState/"+rtype+"/"+rno+"/"+state+"/"+writer+"/"+regdate,
 		type:"post",
 		dataType:"text",
 		async:false,
 		success:function(json){
-			if(json == "ok"){
-								
+			if(json == "ok"){	
 				alert(state+" 되었습니다.");
-				$(".popup_reservation_info_cancel_wrap").css("display","none");
 				$(".popup_reservation_info_view").css("display", "none");
 				$(".popup_wrap").css("display","none");
 				
@@ -2292,11 +2223,8 @@ function update_reservation_deskState(rtype, rno, state, writer, regdate, stbn){
 }
 
 function update_reservation_state(idxx, rtype, rno, state, writer, regdate, stbn){
-	if(idxx == 0 || idxx == 1){
-		update_reservation_deskState(rtype, rno, state, writer, regdate, stbn);
-	}else if(idxx == 2){
-		$(".popup_reservation_info_view > table .cancel_reason").css("display","block");
-	}
+	update_reservation_therapistState(rtype, rno, state, writer, regdate, stbn);
+	
 }
 
 function get_reservation_record_all(info){
@@ -3197,15 +3125,18 @@ $(function(){
 			$(".popup_reservation_info_view").css("display","none");
 			$(".popup_wrap").css("display", "none");
 			return false;
+		}else{
+			var rtype = $(".popup_reservation_info_view > h2 > input[name='rtype']").val();
+			var rno = $(".popup_reservation_info_view > h2 > input[name='rno']").val();
+			var state = $(this).text();
+			var writer = $("#session_login_name").val();
+			var nowDate = new Date();
+			var regdate = nowDate.getFullYear()+"-"+(((nowDate.getMonth()+1)>9?'':'0')+(nowDate.getMonth()+1))+"-"+((nowDate.getDate()>9?'':'0')+nowDate.getDate())
+						+" "+nowDate.getHours()+":"+((nowDate.getMinutes()>9?'':'0')+nowDate.getMinutes());
+			
+			update_reservation_state(btn_idx, rtype, rno, state, writer, regdate, storage_timetable_btn_num);
 		}
-		var rtype = $(".popup_reservation_info_view > h2 > input[name='rtype']").val();
-		var rno = $(".popup_reservation_info_view > h2 > input[name='rno']").val();
-		var state = $(this).text();
-		var writer = $("#session_login_name").val();
-		var nowDate = new Date();
-		var regdate = nowDate.getFullYear()+"-"+(((nowDate.getMonth()+1)>9?'':'0')+(nowDate.getMonth()+1))+"-"+((nowDate.getDate()>9?'':'0')+nowDate.getDate())+" "+nowDate.getHours()+":"+((nowDate.getMinutes()>9?'':'0')+nowDate.getMinutes());
 		
-		update_reservation_state(btn_idx, rtype, rno, state, writer, regdate, storage_timetable_btn_num);
 	});	
 	
 	$(document).on("click", ".popup_reservation_info_view > table tr:nth-child(5) > td > .res_info_view_today_list", function(){

@@ -180,11 +180,13 @@ $(function(){
 			<div class="header_inner header_inner2">
 				<ul>
 					<li><a href="${pageContext.request.contextPath}/sub_main">예약관리</a></li>
-					<c:if test="${sessionScope.type == 'manager'}">
+					<c:if test="${sessionScope.type == 'manager' || sessionScope.type =='nurse'}">
 						<li><a href="${pageContext.request.contextPath}/employeeView">직원관리</a></li>
 						<li><a href="${pageContext.request.contextPath}/clinicView">코드관리</a></li>
 						<li><a href="${pageContext.request.contextPath}/hospitalInfo">병원시간관리</a></li>
-						<li><a href="${pageContext.request.contextPath}/statistic">통계관리</a></li>
+						<c:if test="${sessionScope.type != 'nurse'}">
+							<li><a href="${pageContext.request.contextPath}/statistic">통계관리</a></li>
+						</c:if>
 					</c:if>
 					<li><a href="http://www.naver.com">홈페이지</a></li>
 				</ul>

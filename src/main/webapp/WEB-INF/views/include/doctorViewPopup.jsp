@@ -278,23 +278,7 @@
 </style>
 <script>
 	$(function(){
-		$(".popup_clinic_reservation_register > table tr:nth-child(3) > td > select[name='rtype']").change(function(){
-			var rtype=$(this).val();
-			if(rtype == "fc"){
-				$(".fix_clinic_res_tr").css("display","block");
-			}else{
-				$(".fix_clinic_res_tr").css("display","none");
-			}
-		});
 		
-		$(".popup_therapy_reservation_register > table tr:nth-child(3) > td > select[name='rtype']").change(function(){
-			var rtype=$(this).val();
-			if(rtype == "ft"){
-				$(".fix_therapy_res_tr").css("display","block");
-			}else{
-				$(".fix_therapy_res_tr").css("display","none");
-			}
-		});
 	});
 </script>
 	<div class="popup_bg">
@@ -362,7 +346,6 @@
 			</tr>
 		</table>
 		<div class="popup_reservation_info_btn_wrap">
-			<p>접수완료</p>
 			<p>닫기</p>
 		</div>
 	</div><!-- popup_reservation_info_view -->

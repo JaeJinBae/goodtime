@@ -676,44 +676,35 @@
 		margin-top:50px;
 		margin-bottom:50px;
 	}
+	
 	.ar_tbl_wrap_3 > .timetable_btn_wrap2{
 		display:none;
-		width:100%;
-		border-bottom:2px solid black;
-		overflow:hidden;
+		width:309px;
 		margin-bottom:20px;
-		padding:0 10px;
 	}
 	.timetable_btn_wrap2 > ul{
-		float:left;
+		width: 100%;
 		margin-right:30px;
+		overflow:hidden;
+		background: #353c46;
 	}
 	.timetable_btn_wrap2 > ul > li{
-		display: inline-block;
-		vertical-align: bottom;
-		border-bottom:0;
-		border-radius: 7px 7px 0 0;
+		float:left;
 		font-size:15px;
-		padding:6px;
-		margin-right:3px;
-		cursor: pointer;
 		color: #fff;
+		padding:8px 12px; 
+		cursor: pointer;
+		border-right: 1px solid lightgray;
 	}
 	.timetable_btn_wrap2 > ul > li:first-child{
-		background: #74be28;
-		font-size:16px;
-		padding: 8px 10px;
+		font-size:15px;
+		font-weight: bold;
+		background: #0068b8;
 	}
-	.timetable_btn_wrap2 > ul > li:nth-child(2){
-		margin-right:30px;
-		background: #27a7fb;
+	.timetable_btn_wrap2 > ul > li:last-child{
+		border-right: 0;
 	}
-	.timetable_btn_wrap2 > ul > li:nth-child(3){
-		background: #2277ae;
-	}
-	.timetable_btn_wrap2 > ul > li:nth-child(4){
-		background: #2277ae;
-	}
+	
 	.ar_tbl_wrap_3 > .patient_week_tbl_selectBox_wrap{
 		display: none;
 		margin-bottom: 20px;
@@ -808,7 +799,7 @@
 		border: 0 !important;
 		border-bottom: 1px solid lightgray !important;
 	}
-</style> 
+</style>
 <script>
 
 //달력에 각 일마다 요일 표시
@@ -3818,17 +3809,18 @@ $(function(){
 		$("#reservation_view_btn").css("display", "inline-block");
 		$(".reservation_register_btn").css("display", "block");
 		//ar_tbl_wrap_3 그리기
-		$(".timetable_btn_wrap2 > ul > li").css({"font-size":"15px","padding":"6px"});
-		$(".timetable_btn_wrap2 > ul > li:first-child").css({"font-size":"16px", "padding":"8px 10px"});
+		$(".timetable_btn_wrap2 > ul > li").css({"background":"none", "font-weight":"500"});
+		$(".timetable_btn_wrap2 > ul > li:first-child").css({"font-weight":"bold", "background":"#0068b8"});
 		draw_patient_reservation_byCase(0);
 		
 	});
-	
+	 
 	$(".timetable_btn_wrap2 > ul > li").click(function(){
 		var idx = $(this).index();
 		storage_timetable2_btn_num = idx;
-		$(".timetable_btn_wrap2 > ul > li").css({"font-size":"15px","padding":"6px"});
-		$(this).css({"font-size":"16px", "padding":"8px 10px"});
+		$(".timetable_btn_wrap2 > ul > li").css({"background":"none", "font-weight":"500"});
+		$(this).css({"font-weight":"bold", "background":"#0068b8"});
+		
 		draw_patient_reservation_byCase(idx);
 	});
 	

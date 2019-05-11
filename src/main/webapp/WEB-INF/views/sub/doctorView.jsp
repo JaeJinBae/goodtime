@@ -231,6 +231,18 @@
 		border-radius: 3px;
 		color: #fff;
 	}
+	.patient_register_btn_wrap{
+		float:right;
+	}
+	.patient_register_btn_wrap > button{
+		font-size:15px;
+		border: 1px solid lightgray;
+		padding: 5px 10px;
+		letter-spacing: 1px;
+		background: #1e866a;
+		border-radius: 4px;
+		color: #fff;
+	}
 	.ar_tbl_wrap_1 > #inner_tbl_wrap{
 		clear: both;
 		overflow:hidden;
@@ -664,44 +676,35 @@
 		margin-top:50px;
 		margin-bottom:50px;
 	}
+	
 	.ar_tbl_wrap_3 > .timetable_btn_wrap2{
 		display:none;
-		width:100%;
-		border-bottom:2px solid black;
-		overflow:hidden;
+		width:309px;
 		margin-bottom:20px;
-		padding:0 10px;
 	}
 	.timetable_btn_wrap2 > ul{
-		float:left;
+		width: 100%;
 		margin-right:30px;
+		overflow:hidden;
+		background: #353c46;
 	}
 	.timetable_btn_wrap2 > ul > li{
-		display: inline-block;
-		vertical-align: bottom;
-		border-bottom:0;
-		border-radius: 7px 7px 0 0;
+		float:left;
 		font-size:15px;
-		padding:6px;
-		margin-right:3px;
-		cursor: pointer;
 		color: #fff;
+		padding:8px 12px; 
+		cursor: pointer;
+		border-right: 1px solid lightgray;
 	}
 	.timetable_btn_wrap2 > ul > li:first-child{
-		background: #74be28;
-		font-size:16px;
-		padding: 8px 10px;
+		font-size:15px;
+		font-weight: bold;
+		background: #0068b8;
 	}
-	.timetable_btn_wrap2 > ul > li:nth-child(2){
-		margin-right:30px;
-		background: #27a7fb;
+	.timetable_btn_wrap2 > ul > li:last-child{
+		border-right: 0;
 	}
-	.timetable_btn_wrap2 > ul > li:nth-child(3){
-		background: #2277ae;
-	}
-	.timetable_btn_wrap2 > ul > li:nth-child(4){
-		background: #2277ae;
-	}
+	
 	.ar_tbl_wrap_3 > .patient_week_tbl_selectBox_wrap{
 		display: none;
 		margin-bottom: 20px;
@@ -796,7 +799,7 @@
 		border: 0 !important;
 		border-bottom: 1px solid lightgray !important;
 	}
-</style> 
+</style>
 <script>
 
 //달력에 각 일마다 요일 표시
@@ -2223,17 +2226,6 @@ function open_reservation_info_view(type, rno){
 		rtype="고정치료예약";
 	}
 	
-	$(".popup_reservation_info_btn_wrap > p").css({"background":"#353c46", "color":"#fff"});
-	if(rData.result =="예약완료"){
-		$(".popup_reservation_info_btn_wrap > p").eq(0).css({"background":"#1e866a", "color":"#fff"});
-	}else if(rData.result == "접수완료" || rData.result == "치료완료"){
-		$(".popup_reservation_info_btn_wrap > p").eq(1).css({"background":"#1e866a", "color":"#fff"});
-	}else if(rData.result == "예약취소"){
-		$(".popup_reservation_info_btn_wrap > p").eq(2).css({"background":"#1e866a", "color":"#fff"});
-	}else{
-		$(".popup_reservation_info_btn_wrap > p").eq(0).css({"background":"#1e866a", "color":"#fff"});
-	}
-	
 	pData = get_patient_by_pno(rData.pno);
 	eData = get_employee_byEno(rData.eno);
 	cData = get_clinic_by_cno(rData.clinic);
@@ -3658,18 +3650,20 @@ $(function(){
 		var reservation_click_cno = $(this).parent().parent().find("td").eq(8).html();
 		$("#reservation_view_btn").html($(this).parent().parent().find("td").eq(1).html()+"<input type='hidden' name='pno' value='"+reservation_click_pno+"'><input type='hidden' name='cno' value='"+reservation_click_cno+"'>");
 		$("#reservation_view_btn").css("display", "inline-block");
+		$(".reservation_register_btn").css("display", "block");
 		//ar_tbl_wrap_3 그리기
-		$(".timetable_btn_wrap2 > ul > li").css({"font-size":"15px","padding":"6px"});
-		$(".timetable_btn_wrap2 > ul > li:first-child").css({"font-size":"16px", "padding":"8px 10px"});
+		$(".timetable_btn_wrap2 > ul > li").css({"background":"none", "font-weight":"500"});
+		$(".timetable_btn_wrap2 > ul > li:first-child").css({"font-weight":"bold", "background":"#0068b8"});
 		draw_patient_reservation_byCase(0);
 		
 	});
-	
+	 
 	$(".timetable_btn_wrap2 > ul > li").click(function(){
 		var idx = $(this).index();
 		storage_timetable2_btn_num = idx;
-		$(".timetable_btn_wrap2 > ul > li").css({"font-size":"15px","padding":"6px"});
-		$(this).css({"font-size":"16px", "padding":"8px 10px"});
+		$(".timetable_btn_wrap2 > ul > li").css({"background":"none", "font-weight":"500"});
+		$(this).css({"font-weight":"bold", "background":"#0068b8"});
+		
 		draw_patient_reservation_byCase(idx);
 	});
 	
@@ -3746,11 +3740,9 @@ $(function(){
 	//예약완료, 접수완료, 예약취소 눌렀을 때
 	$(".popup_reservation_info_btn_wrap > p").click(function(){
 		var btn_idx = $(this).index();
-		if(btn_idx == 1){
-			$(".popup_reservation_info_view").css("display","none");
-			$(".popup_wrap").css("display", "none");
-			return false;
-		}
+		
+		$(".popup_reservation_info_view").css("display","none"); 
+		$(".popup_wrap").css("display", "none");
 	});
 	
 	//예약이력에서 검색 눌렀을 때

@@ -578,7 +578,7 @@
 	
 	
 	.timetable_btn_wrap{
-		width:1031px;
+		width:645px;
 		margin-bottom:20px;
 	}
 	.timetable_btn_wrap > ul{
@@ -3531,11 +3531,18 @@ $(function(){
 	var storage_timetable_btn_num = 0;
 	var storage_timetable2_btn_num = 0;
 	
-	//달력 생성
-	buildCalendar(new Date());
 	
-	$(".calendar_select_date").val(get_today());
-	/* $(".calendar_select_date").val("2019-04-29"); */
+	var nDate = new Date();
+
+	if(nDate.getDay() == 0){
+		nDate.setDate(nDate.getDate()+1);
+		buildCalendar(nDate);
+		$(".calendar_select_date").val(nDate.getFullYear()+"-"+(((nDate.getMonth()+1)>9?'':'0')+(nDate.getMonth()+1))+"-"+((nDate.getDate()>9?'':'0')+nDate.getDate()));
+	}
+	//달력 생성
+	/* buildCalendar(new Date());
+	
+	$(".calendar_select_date").val(get_today()); */
 	
 	//날짜마다 요일 표시
 	write_yoil();

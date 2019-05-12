@@ -3531,11 +3531,14 @@ $(function(){
 	var storage_timetable_btn_num = 0;
 	var storage_timetable2_btn_num = 0;
 	
+	var nDate = new Date();
+	console.log(nDate.getDay());
+	
 	//달력 생성
 	buildCalendar(new Date());
 	
 	$(".calendar_select_date").val(get_today());
-	/* $(".calendar_select_date").val("2019-04-29"); */
+	
 	
 	//날짜마다 요일 표시
 	write_yoil();

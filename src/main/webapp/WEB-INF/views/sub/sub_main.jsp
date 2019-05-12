@@ -3532,12 +3532,17 @@ $(function(){
 	var storage_timetable2_btn_num = 0;
 	
 	var nDate = new Date();
-	console.log(nDate.getDay());
+
+	if(nDate.getDay() == 0){
+		nDate.setDate(nDate.getDate()+1);
+		buildCalendar(nDate);
+		$(".calendar_select_date").val(nDate.getFullYear()+"-"+(((nDate.getMonth()+1)>9?'':'0')+(nDate.getMonth()+1))+"-"+((nDate.getDate()>9?'':'0')+nDate.getDate()));
+	}
 	
 	//달력 생성
-	buildCalendar(new Date());
+	//buildCalendar(new Date());
 	
-	$(".calendar_select_date").val(get_today());
+	//$(".calendar_select_date").val(get_today());
 	
 	
 	//날짜마다 요일 표시

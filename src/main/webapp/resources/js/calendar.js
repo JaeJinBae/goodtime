@@ -16,6 +16,7 @@ var today = new Date();//오늘 날짜//내 컴퓨터 로컬을 기준으로 tod
              buildCalendar(today);//달력 cell 만들어 출력
         }
         function buildCalendar(today){//현재 달 달력 만들기
+        	console.log(today);
             var doMonth = new Date(today.getFullYear(),today.getMonth(),1);
             //이번 달의 첫째 날,
             //new를 쓰는 이유 : new를 쓰면 이번달의 로컬 월을 정확하게 받아온다.     
@@ -82,7 +83,7 @@ var today = new Date();//오늘 날짜//내 컴퓨터 로컬을 기준으로 tod
               /*오늘의 날짜에 노란색 칠하기*/
               if (today.getFullYear() == date.getFullYear()
                  && today.getMonth() == date.getMonth()
-                 && i == date.getDate()) {
+                 && i == today.getDate()) {
                   //달력에 있는 년,달과 내 컴퓨터의 로컬 년,달이 같고, 일이 오늘의 일과 같으면
                 cell.bgColor = "#e85505";//셀의 배경색을 Green으로 
                }

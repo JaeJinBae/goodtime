@@ -578,7 +578,7 @@
 	
 	
 	.timetable_btn_wrap{
-		width:645px;
+		width:1031px;
 		margin-bottom:20px;
 	}
 	.timetable_btn_wrap > ul{
@@ -3668,7 +3668,7 @@ $(function(){
 		var reservation_click_cno = $(this).parent().parent().find("td").eq(8).html();
 		$("#reservation_view_btn").html($(this).parent().parent().find("td").eq(1).html()+"<input type='hidden' name='pno' value='"+reservation_click_pno+"'><input type='hidden' name='cno' value='"+reservation_click_cno+"'>");
 		$("#reservation_view_btn").css("display", "inline-block");
-		$(".reservation_register_btn").css("display", "block");
+		//$(".reservation_register_btn").css("display", "block");
 		//ar_tbl_wrap_3 그리기
 		$(".timetable_btn_wrap2 > ul > li").css({"background":"none", "font-weight":"500"});
 		$(".timetable_btn_wrap2 > ul > li:first-child").css({"font-weight":"bold", "background":"#0068b8"});

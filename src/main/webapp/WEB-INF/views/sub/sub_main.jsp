@@ -4254,6 +4254,7 @@ $(function(){
 		var patientVO =  get_patient_by_pno(wrVO.pno);
 		if(wrVO.rtype == 'nc'){
 			$(".popup_clinic_reservation_register > h2 > span").html(wrVO.pname+"("+wrVO.chart_no+")님");
+			$(".popup_clinic_reservation_register > h2").append("<input type='hidden' name='pno' value='"+wrVO.pno+"'><input type='hidden' name='pname' value='"+wrVO.pname+"'><input type='hidden' name='chart_no' value='"+wrVO.chart_no+"'>");
 			$(".popup_clinic_reservation_register > table td > select[name='clinic'] > option[value='"+wrVO.clinic+"']").prop("selected", true);
 			$(".popup_clinic_reservation_register > table td > select[name='eno'] > option[value='"+wrVO.eno+"']").prop("selected", true);
 			$(".popup_clinic_reservation_register > table tr > td > .popup_reservation_register_date").text(wrVO.rdate+" "+parseInt(wrVO.rtime/60));
@@ -4266,6 +4267,7 @@ $(function(){
 			$(".popup_clinic_reservation_register").css("display", "block");
 		}else if(wrVO.rtype == 'nt'){
 			$(".popup_therapy_reservation_register > h2 > span").html(wrVO.pname+"("+wrVO.chart_no+")님");
+			$(".popup_therapy_reservation_register > h2").append("<input type='hidden' name='pno' value='"+wrVO.pno+"'><input type='hidden' name='pname' value='"+wrVO.pname+"'><input type='hidden' name='chart_no' value='"+wrVO.chart_no+"'>");
 			$(".popup_therapy_reservation_register > table td > select[name='clinic'] > option[value='"+wrVO.clinic+"']").prop("selected", true);
 			$(".popup_therapy_reservation_register > table td > select[name='eno'] > option[value='"+wrVO.eno+"']").prop("selected", true);
 			$(".popup_therapy_reservation_register > table tr > td > .popup_reservation_register_date").text(wrVO.rdate+" "+parseInt(wrVO.rtime/60));

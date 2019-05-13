@@ -1178,12 +1178,16 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value="/waitingReservationDelete/{no}", method=RequestMethod.POST)
-	public void waitingReservationDelete(@PathVariable("no") int no){
+	public ResponseEntity<String> waitingReservationDelete(@PathVariable("no") int no){
+		ResponseEntity<String> entity = null;
 		try {
 			wrService.delete(no);
+			entity = new ResponseEntity<String>("ok", HttpStatus.OK);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
+			entity = new ResponseEntity<String>("no", HttpStatus.OK);
 		}
+		return entity;
 	}
 	
 	@RequestMapping(value="/updateReservationInfo",method=RequestMethod.POST)

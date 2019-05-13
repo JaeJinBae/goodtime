@@ -1893,8 +1893,8 @@ function post_waitingReservation_delete(no, stbn){
 		dataType:"text",
 		async:false,
 		success:function(json){
-			if(json == "OK"){
-				alert("대기예약 등록이 완료되었습니다.");
+			if(json == "ok"){
+				alert("대기예약 취소가 완료되었습니다.");
 				$(".popup_clinic_reservation_register").css("display", "none");
 				$(".popup_therapy_reservation_register").css("display", "none");
 				$(".popup_wrap").css("display","none");
@@ -4013,10 +4013,7 @@ $(function(){
 		$(".popup_reservation_register_date").text($(".calendar_select_date").val()+" "+time);
 		$(".popup_clinic_reservation_register > table tr > td > select[name='fix_day'] > option[value='"+select_day+"']").prop("selected", true);
 		$(".popup_clinic_reservation_register > table tr > td > input[name='fix_day_start']").val($(".calendar_select_date").val());
-		
-		//대기예약취소 버튼 있는지 확인해서 있으면 없애기 만드는 중
-		//if()
-		
+
 		$(".popup_wrap").css("display", "block");
 		$(".popup_clinic_reservation_register").css("display", "block");
 	});
@@ -4052,10 +4049,9 @@ $(function(){
 		$(".popup_therapy_reservation_register").css("display", "block");
 	});
 	
-	//진료예약view에서 예약등록, 예약접수, 취소 버튼 기능
-	$(".popup_content2 .popup_reservation_register_btn_wrap > p").click(function(){
+	//진료/치료예약view에서 예약등록, 예약접수, 취소 버튼 기능
+	$(document).on("click", ".popup_content2 .popup_reservation_register_btn_wrap > p", function(){
 		var idx = $(this).index();
-		
 		//예약등록
 		if(idx == 0 || idx == 1){
 			var vo;
@@ -4098,6 +4094,11 @@ $(function(){
 					}
 					vo = {pno:pno, pname:pname, chart_no:chart_no, eno:eno, rtype:rtype, rdate:rdate, rtime:rtime, clinic:clinic, clinic_name:clinic_name, memo:memo, writer:writer, regdate:regdate, desk_state:desk_state, desk_state_writer:desk_state_writer, desk_state_regdate:desk_state_regdate, result:result, result_memo:""};
 					post_ncReservation_register(vo, storage_timetable_btn_num);
+					
+					if($(".popup_clinic_reservation_register > .popup_reservation_register_btn_wrap > p:last-child").text() != "닫기"){
+						var no = $(".popup_clinic_reservation_register > .popup_reservation_register_btn_wrap > p:last-child > input[name='no']").val();
+						post_waitingReservation_delete(no, storage_timetable_btn_num);
+					} 
 				}else if(rtype == "fc"){
 					if(clinic ==""){
 						alert("진료를 선택해주세요.");
@@ -4110,6 +4111,10 @@ $(function(){
 					vo = {rno:"0", pno:pno, pname:pname, chart_no:chart_no, eno:eno, fix_day:fix_day, rdate:rdate, rtime:rtime, fix_day_start:fix_day_start, fix_day_end:fix_day_end, rtype:rtype, clinic:clinic, clinic_name:clinic_name, memo:memo, writer:writer, regdate:regdate, desk_state:desk_state, desk_state_writer:desk_state_writer, desk_state_regdate:desk_state_regdate, result:result, result_memo:""};
 					post_fcReservation_register(vo, storage_timetable_btn_num);
 				}else if(rtype == "wr"){
+					if(clinic ==""){
+						alert("진료를 선택해주세요.");
+						return false;
+					}
 					vo = {no:"0", pno:pno, pname:pname, chart_no:chart_no, eno:eno, memo:memo, clinic:clinic, clinic_name:clinic_name, rtype:"nc", rdate:rdate, rtime:rtime, writer:writer}
 					post_waitingReservation_register(vo, storage_timetable_btn_num);
 				}
@@ -4153,6 +4158,11 @@ $(function(){
 					}
 					vo = {pno:pno, pname:pname, chart_no:chart_no, eno:eno, rtype:rtype, rdate:rdate, rtime:rtime, clinic:clinic, clinic_name:clinic_name, memo:memo, writer:writer, regdate:regdate, desk_state:desk_state, desk_state_writer:desk_state_writer, desk_state_regdate:desk_state_regdate, therapist_state:"", result:result, result_memo:""};
 					post_ntReservation_register(vo, storage_timetable_btn_num);
+					
+					if($(".popup_therapy_reservation_register > .popup_reservation_register_btn_wrap > p:last-child").text() != "닫기"){
+						var no = $(".popup_therapy_reservation_register > .popup_reservation_register_btn_wrap > p:last-child > input[name='no']").val();
+						post_waitingReservation_delete(no, storage_timetable_btn_num);
+					} 
 				}else if(rtype == "ft"){
 					if(clinic ==""){
 						alert("치료를 선택해주세요.");
@@ -4165,6 +4175,10 @@ $(function(){
 					vo = {pno:pno, pname:pname, chart_no:chart_no, eno:eno, fix_day:fix_day, rdate:rdate, rtime:rtime, fix_day_start:fix_day_start, fix_day_end:fix_day_end, rtype:rtype, clinic:clinic, clinic_name:clinic_name, memo:memo, writer:writer, regdate:regdate, desk_state:desk_state, desk_state_writer:desk_state_writer, desk_state_regdate:desk_state_regdate, therapist_state:"", therapist_state_writer:"", therapist_state_regdate:"", result:result, result_memo:""};
 					post_ftReservation_register(vo, storage_timetable_btn_num);
 				}else if(rtype == "wr"){
+					if(clinic ==""){
+						alert("치료를 선택해주세요.");
+						return false;
+					}
 					vo = {no:"0", pno:pno, pname:pname, chart_no:chart_no, eno:eno, memo:memo, clinic:clinic, clinic_name:clinic_name, rtype:"nt", rdate:rdate, rtime:rtime, writer:writer}
 					post_waitingReservation_register(vo, storage_timetable_btn_num);
 				}
@@ -4172,12 +4186,21 @@ $(function(){
 			
 			
 		}else if(idx == 2){//취소
+			//대기예약취소 버튼 있는지 확인해서 있으면 없애기 만드는 중
+			if($(".popup_clinic_reservation_register > .popup_reservation_register_btn_wrap > p:last-child").text() != "닫기"){
+				$(".popup_clinic_reservation_register > .popup_reservation_register_btn_wrap > p:last-child").remove();
+			}
+			//대기예약취소 버튼 있는지 확인해서 있으면 없애기 만드는 중
+			if($(".popup_therapy_reservation_register > .popup_reservation_register_btn_wrap > p:last-child").text() != "닫기"){
+				$(".popup_therapy_reservation_register > .popup_reservation_register_btn_wrap > p:last-child").remove();
+			} 
 			$(".popup_clinic_reservation_register").css("display", "none");
 			$(".popup_therapy_reservation_register").css("display", "none");
 			$(".popup_content").css("display", "none");
 			$(".popup_wrap").css("display","none");
 		}else if(idx == 3){//대기예약취소
-			
+			var no = $(this).find("input[name='no']").val();
+			post_waitingReservation_delete(no, storage_timetable_btn_num);
 		}
 	});
 	
@@ -4237,7 +4260,7 @@ $(function(){
 			$(".popup_clinic_reservation_register > table td > select[name='rtime_minute'] > option[value='"+wrVO.rtime%60+"']").prop("selected", true);
 			$(".popup_clinic_reservation_register > table tr > td > input[name='memo']").val(wrVO.memo);
 			
-			$(".popup_clinic_reservation_register > .popup_reservation_register_btn_wrap").append("<p>대기예약취소</p>");
+			$(".popup_clinic_reservation_register > .popup_reservation_register_btn_wrap").append("<p>대기예약취소<input type='hidden' name='no' value='"+no+"'></p>");
 			
 			$(".popup_wrap").css("display", "block");
 			$(".popup_clinic_reservation_register").css("display", "block");
@@ -4249,7 +4272,7 @@ $(function(){
 			$(".popup_therapy_reservation_register > table td > select[name='rtime_minute'] > option[value='"+wrVO.rtime%60+"']").prop("selected", true);
 			$(".popup_therapy_reservation_register > table tr > td > input[name='memo']").val(wrVO.memo);
 			
-			$(".popup_therapy_reservation_register > .popup_reservation_register_btn_wrap").append("<p>대기예약취소</p>");
+			$(".popup_therapy_reservation_register > .popup_reservation_register_btn_wrap").append("<p>대기예약취소<input type='hidden' name='no' value='"+no+"'></p>");
 			
 			$(".popup_wrap").css("display", "block");
 			$(".popup_therapy_reservation_register").css("display", "block");

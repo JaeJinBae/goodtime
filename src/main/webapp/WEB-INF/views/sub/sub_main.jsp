@@ -4060,9 +4060,9 @@ $(function(){
 				var selectDate = $(".popup_clinic_reservation_register .popup_reservation_register_date").text();
 				var split_date = selectDate.split(" ");
 				
-				var pno = $("#reservation_view_btn > input[name='pno']").val();
-				var pname = $("#reservation_view_btn").text();
-				var chart_no = $("#reservation_view_btn > input[name='cno']").val();
+				var pno = $(".popup_clinic_reservation_register > h2 > input[name='pno']").val();
+				var pname = $(".popup_clinic_reservation_register > h2 > input[name='pname']").val();
+				var chart_no = $(".popup_clinic_reservation_register > h2 > input[name='chart_no']").val();
 				var eno = $(".popup_clinic_reservation_register > table tr td > select[name='eno']").val();
 				var rtype = $(".popup_clinic_reservation_register > table tr td > select[name='rtype']").val();
 				
@@ -4123,9 +4123,9 @@ $(function(){
 				var selectDate = $(".popup_therapy_reservation_register .popup_reservation_register_date").text();
 				var split_date = selectDate.split(" ");
 				
-				var pno = $("#reservation_view_btn > input[name='pno']").val();
-				var pname = $("#reservation_view_btn").text();
-				var chart_no = $("#reservation_view_btn > input[name='cno']").val();
+				var pno = $(".popup_therapy_reservation_register > h2 > input[name='pno']").val();
+				var pname = $(".popup_therapy_reservation_register > h2 > input[name='pname']").val();
+				var chart_no = $(".popup_therapy_reservation_register > h2 > input[name='chart_no']").val();
 				var eno = $(".popup_therapy_reservation_register > table tr td > select[name='eno']").val();
 				var rtype = $(".popup_therapy_reservation_register > table tr td > select[name='rtype']").val();
 				

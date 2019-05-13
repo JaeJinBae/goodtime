@@ -4008,9 +4008,11 @@ $(function(){
 		}
 		
 		$(".popup_clinic_reservation_register > h2 > span").html($("#reservation_view_btn").text()+"("+$("#reservation_view_btn > input[name='cno']").val()+")님");
+		$(".popup_clinic_reservation_register > h2").append("<input type='hidden' name='pno' value='"+$("#reservation_view_btn > input[name='pno']").val()+"'><input type='hidden' name='pname' value='"+$("#reservation_view_btn").text()+"'><input type='hidden' name='chart_no' value='"+$("#reservation_view_btn > input[name='cno']").val()+"'>");
 		$(".popup_clinic_reservation_register > table td > select[name='clinic'] > option[value='']").prop("selected", true);
 		$(".popup_clinic_reservation_register > table td > select[name='eno'] > option[value='"+eno+"']").prop("selected", true);
 		$(".popup_reservation_register_date").text($(".calendar_select_date").val()+" "+time);
+		$(".popup_clinic_reservation_register > table tr > td > input[name='memo']").val("");
 		$(".popup_clinic_reservation_register > table tr > td > select[name='fix_day'] > option[value='"+select_day+"']").prop("selected", true);
 		$(".popup_clinic_reservation_register > table tr > td > input[name='fix_day_start']").val($(".calendar_select_date").val());
 
@@ -4042,6 +4044,7 @@ $(function(){
 		$(".popup_therapy_reservation_register > table td > select[name='clinic'] > option[value='']").prop("selected", true);
 		$(".popup_therapy_reservation_register > table td > select[name='eno'] > option[value='"+eno+"']").prop("selected", true);
 		$(".popup_reservation_register_date").text($(".calendar_select_date").val()+" "+time);
+		$(".popup_therapy_reservation_register > table tr > td > input[name='memo']").val("");
 		$(".popup_therapy_reservation_register > table tr > td > select[name='fix_day'] > option[value='"+select_day+"']").prop("selected", true);
 		$(".popup_therapy_reservation_register > table tr > td > input[name='fix_day_start']").val($(".calendar_select_date").val());
 		
@@ -4098,6 +4101,12 @@ $(function(){
 					if($(".popup_clinic_reservation_register > .popup_reservation_register_btn_wrap > p:last-child").text() != "닫기"){
 						var no = $(".popup_clinic_reservation_register > .popup_reservation_register_btn_wrap > p:last-child > input[name='no']").val();
 						post_waitingReservation_delete(no, storage_timetable_btn_num);
+						
+						//대기예약취소 버튼 있는지 확인해서 있으면 없애기 만드는 중
+						if($(".popup_clinic_reservation_register > .popup_reservation_register_btn_wrap > p:last-child").text() != "닫기"){
+							$(".popup_clinic_reservation_register > .popup_reservation_register_btn_wrap > p:last-child").remove();
+						}
+						
 					} 
 				}else if(rtype == "fc"){
 					if(clinic ==""){
@@ -4162,6 +4171,11 @@ $(function(){
 					if($(".popup_therapy_reservation_register > .popup_reservation_register_btn_wrap > p:last-child").text() != "닫기"){
 						var no = $(".popup_therapy_reservation_register > .popup_reservation_register_btn_wrap > p:last-child > input[name='no']").val();
 						post_waitingReservation_delete(no, storage_timetable_btn_num);
+						
+						//대기예약취소 버튼 있는지 확인해서 있으면 없애기 만드는 중
+						if($(".popup_therapy_reservation_register > .popup_reservation_register_btn_wrap > p:last-child").text() != "닫기"){
+							$(".popup_therapy_reservation_register > .popup_reservation_register_btn_wrap > p:last-child").remove();
+						} 
 					} 
 				}else if(rtype == "ft"){
 					if(clinic ==""){

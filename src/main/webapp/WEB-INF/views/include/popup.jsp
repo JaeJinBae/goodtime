@@ -464,7 +464,7 @@
 					<select name="rtype">
 						<option value="nc">일반예약</option>
 						<option value="fc">고정예약</option>
-						<option value="ch">희망예약</option>
+						<option value="wr">대기예약</option>
 					</select>
 				</td>
 			</tr>
@@ -546,7 +546,7 @@
 					<select name="rtype">
 						<option value="nt">일반예약</option>
 						<option value="ft">고정예약</option>
-						<option value="th">희망예약</option>
+						<option value="wr">대기예약</option>
 					</select>
 				</td>
 			</tr>

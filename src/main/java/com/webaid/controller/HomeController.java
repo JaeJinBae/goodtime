@@ -53,6 +53,7 @@ import com.webaid.domain.SearchCriteria;
 import com.webaid.domain.SearchCriteria5;
 import com.webaid.domain.SearchCriteriaRR;
 import com.webaid.domain.SelectByDateEmployeeVO;
+import com.webaid.domain.WaitingReservationVO;
 import com.webaid.service.ClinicService;
 import com.webaid.service.EmployeeService;
 import com.webaid.service.FixClinicReservationService;
@@ -65,6 +66,7 @@ import com.webaid.service.NormalTherapyReservationService;
 import com.webaid.service.PatientService;
 import com.webaid.service.ReservationRecordService;
 import com.webaid.service.ReservationUpdateRecordService;
+import com.webaid.service.WaitingReservationService;
 import com.webaid.util.DayGetUtil;
 import com.webaid.util.ExcelDown;
 
@@ -91,6 +93,9 @@ public class HomeController {
 	
 	@Autowired
 	private FixTherapyReservationService ftrService;
+	
+	@Autowired
+	private WaitingReservationService wrService;
 	
 	@Autowired
 	private PatientService pService;
@@ -675,6 +680,23 @@ public class HomeController {
 		return entity;
 	}
 	
+	@RequestMapping(value="/waitingReservationListGetByDate/{date}", method=RequestMethod.GET)
+	public ResponseEntity<List<WaitingReservationVO>> waitingReservationListGetByDate(@PathVariable("date") String date) throws ParseException{
+		ResponseEntity<List<WaitingReservationVO>> entity=null;
+		HashMap<String, Object> map=new HashMap<>();
+		
+		try {
+			List<WaitingReservationVO> list = wrService.selectByDate(date);
+			
+			entity=new ResponseEntity<List<WaitingReservationVO>>(list,HttpStatus.OK);
+			
+			return entity;
+		} catch (Exception e) {
+			
+		}
+		return entity;
+	}
+	
 	@RequestMapping(value="/reservationListGetByDatePno/{date}/{pno}", method=RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> reservationListGetByDatePno(@PathVariable("date") String date, @PathVariable("pno") int pno) throws ParseException{
 		ResponseEntity<Map<String,Object>> entity=null;
@@ -954,6 +976,20 @@ public class HomeController {
 		return entity;
 	}
 	
+	@RequestMapping(value="/waitingReservationInfoByNo/{no}", method=RequestMethod.GET)
+	public ResponseEntity<WaitingReservationVO> waitingReservationInfoByNo(@PathVariable("no") int no){
+		logger.info("waitingReservationInfo get by no");
+		ResponseEntity<WaitingReservationVO> entity = null;
+		try {
+			WaitingReservationVO vo = wrService.selectByNo(no);
+			entity = new ResponseEntity<WaitingReservationVO>(vo, HttpStatus.OK);
+		} catch (Exception e) {
+			e.getMessage();
+			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		return entity;
+	}
+	
 	@RequestMapping(value="/ncReservationRegister", method=RequestMethod.POST)
 	public ResponseEntity<String> ncReservationRegisterPost(NormalClinicReservationVO vo){
 		logger.info("ncReservationRegister Post");
@@ -1121,6 +1157,33 @@ public class HomeController {
 		}
 		
 		return entity;
+	}
+	
+	@RequestMapping(value="/waitingReservationRegister", method=RequestMethod.POST)
+	public ResponseEntity<String> waitingReservationRegisterPost(WaitingReservationVO vo){
+		logger.info("waitingReservationRegister Post");
+		ResponseEntity<String> entity= null;
+		EmployeeVO evo = empService.selectByEno(vo.getEno());
+		
+		try {
+			wrService.register(vo);
+			
+			entity = new ResponseEntity<String>("OK",HttpStatus.OK);
+		} catch (Exception e) {
+			e.getMessage();
+			entity = new ResponseEntity<String>("NO",HttpStatus.OK);
+		}
+		
+		return entity;
+	}
+	
+	@RequestMapping(value="/waitingReservationDelete/{no}", method=RequestMethod.POST)
+	public void waitingReservationDelete(@PathVariable("no") int no){
+		try {
+			wrService.delete(no);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 	}
 	
 	@RequestMapping(value="/updateReservationInfo",method=RequestMethod.POST)

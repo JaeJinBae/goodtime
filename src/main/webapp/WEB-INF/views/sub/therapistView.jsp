@@ -2908,18 +2908,18 @@ $(function(){
 	var storage_timetable_btn_num = 0;
 	var storage_timetable2_btn_num = 0;
 	
+	
+	//달력 생성
 	var nDate = new Date();
 
 	if(nDate.getDay() == 0){
 		nDate.setDate(nDate.getDate()+1);
 		buildCalendar(nDate);
 		$(".calendar_select_date").val(nDate.getFullYear()+"-"+(((nDate.getMonth()+1)>9?'':'0')+(nDate.getMonth()+1))+"-"+((nDate.getDate()>9?'':'0')+nDate.getDate()));
+	}else{
+		buildCalendar(new Date());
+		$(".calendar_select_date").val(get_today());
 	}
-	
-	//달력 생성
-	/* buildCalendar(new Date());
-	
-	$(".calendar_select_date").val(get_today()); */
 	
 	//날짜마다 요일 표시
 	write_yoil();
@@ -2927,9 +2927,19 @@ $(function(){
 	//TODAY 클릭
 	$(".today_btn").click(function(){
 		var today = new Date();
-		buildCalendar(today);
+		if(today.getDay() == 0){
+			today.setDate(today.getDate()+1);
+			buildCalendar(today);
+			$(".calendar_select_date").val(today.getFullYear()+"-"+(((today.getMonth()+1)>9?'':'0')+(today.getMonth()+1))+"-"+((today.getDate()>9?'':'0')+today.getDate()));
+			draw_time_table_by_case(storage_timetable_btn_num);
+		}else{
+			buildCalendar(new Date());
+			$(".calendar_select_date").val(get_today());
+			draw_time_table_by_case(storage_timetable_btn_num);
+		}
+		/* buildCalendar(today);
 		$(".calendar_select_date").val(get_today());
-		draw_time_table_by_case(storage_timetable_btn_num);
+		draw_time_table_by_case(storage_timetable_btn_num); */
 	});
 	
 	//환자table 생성

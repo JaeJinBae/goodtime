@@ -639,6 +639,20 @@
 		border-radius: 3px;
 		line-height: 22px;
 	}
+	.patient_waitingRes_tag{
+		font-size:14px;
+		cursor: pointer;
+		line-height: 22px;
+		padding: 4px 3px;
+		color: #fff;
+		border-radius: 3px;
+	}
+	.patient_waitingRes_tag > img{
+		margin-left:1px;
+		width: 20px;
+		vertical-align: middle;
+	}
+	
 	.reservation_register_btn{
 		display:none;
 		width:20px;

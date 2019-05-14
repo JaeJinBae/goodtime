@@ -639,6 +639,20 @@
 		border-radius: 3px;
 		line-height: 22px;
 	}
+	
+	.patient_waitingRes_tag{
+		font-size:14px;
+		cursor: pointer;
+		line-height: 22px;
+		padding: 4px 3px;
+		color: #fff;
+		border-radius: 3px;
+	}
+	.patient_waitingRes_tag > img{
+		margin-left:1px;
+		width: 20px;
+		vertical-align: middle;
+	}
 	.reservation_register_btn{
 		display:none;
 		width:20px;
@@ -1252,6 +1266,25 @@ function get_fixReservationList_byDate_byEmployee(type, eno, week){
 	return dt;
 }
 
+//대기예약날짜별 list Get
+function get_waitingReservationList_byDate(date){
+	var dt;
+	$.ajax({
+		url:"${pageContext.request.contextPath}/waitingReservationListGetByDate/"+date,
+		type: "get",
+		dataType:"json",
+		async:false,
+		success:function(json){
+			dt = json;
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	});
+	
+	return dt;
+}
+
 function draw_reservation(date){
 	var json = get_reservationList_byDate(date);
 	var clinic;
@@ -1265,6 +1298,39 @@ function draw_reservation(date){
 	var clinic_time;
 	var overMinute;
 	var end_time;
+	
+	var waitingRes = get_waitingReservationList_byDate(date);
+	$(waitingRes).each(function(){
+		clinic = get_clinic_by_cno(this.clinic);
+		clinic_time = Number(clinic.time);
+		time = Number(this.rtime);
+		hour = parseInt(time/60);
+		minute = time%60;
+		overMinute = (minute+clinic_time)-60;
+		
+		if(overMinute >= 0){
+			if(overMinute < 10){
+				overMinute = "0"+overMinute;
+			}
+			end_time = (hour+1)+":"+overMinute;
+		}else{
+			end_time = minute+clinic_time;
+		}
+		if(minute == 0){
+			minute = "0"+minute;
+		}
+		if(this.rtype == 'nc'){
+			target_tag = ".doctor_"+this.eno+"_"+hour;
+		}else{
+			target_tag = ".therapist_"+this.eno+"_"+hour;
+		}
+		
+		txt = "<p class='patient_waitingRes_tag' style='background: #8e08f6; color:#fff;'>"+minute+"~"+end_time+" "+this.pname;
+		txt += "<img class='checkImg' src='${pageContext.request.contextPath}/resources/images/icon_check_white.png'>";
+		txt += "<input type='hidden' name='no' value='"+this.no+"'><input type='hidden' name='type' value='"+this.rtype+"'></p>";
+		
+		$(target_tag).append(txt);
+	});
 	
 	//일반진료
 	$(json.ncReservationList).each(function(){
@@ -1455,6 +1521,24 @@ function draw_reservation(date){
 		
 		
 	});
+}
+
+//대기예약 no별 get
+function get_waitingReservation_byNo(no){
+	var dt;
+	$.ajax({
+		url:"${pageContext.request.contextPath}/waitingReservationInfoByNo/"+no,
+		type: "get",
+		dataType:"json", 
+		async: false,
+		success:function(json){
+			dt = json;
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	});
+	return dt;
 }
 
 //일반진료
@@ -3746,6 +3830,47 @@ $(function(){
 		var rno = $(this).find("input[name='rno']").val();
 		open_reservation_info_view(type, rno);
 	})
+	
+	//시간표에 있는 대기예약 클릭
+	$(document).on("click", ".patient_waitingRes_tag", function(){
+		var no = $(this).find("input[name='no']").val();
+		var wrVO = get_waitingReservation_byNo(no);
+		var patientVO =  get_patient_by_pno(wrVO.pno);
+		if(wrVO.rtype == 'nc'){
+			$(".popup_clinic_reservation_register > h2 > span").html(wrVO.pname+"("+wrVO.chart_no+")님");
+			$(".popup_clinic_reservation_register > h2").append("<input type='hidden' name='pno' value='"+wrVO.pno+"'><input type='hidden' name='pname' value='"+wrVO.pname+"'><input type='hidden' name='chart_no' value='"+wrVO.chart_no+"'>");
+			$(".popup_clinic_reservation_register > table td > select[name='clinic'] > option[value='"+wrVO.clinic+"']").prop("selected", true);
+			$(".popup_clinic_reservation_register > table td > select[name='eno'] > option[value='"+wrVO.eno+"']").prop("selected", true);
+			$(".popup_clinic_reservation_register > table td > select[name='rtype'] > option[value='nc']").prop("selected", true);
+			$(".popup_clinic_reservation_register > table tr > td > .popup_reservation_register_date").text(wrVO.rdate+" "+parseInt(wrVO.rtime/60));
+			$(".popup_clinic_reservation_register > table td > select[name='rtime_minute'] > option[value='"+wrVO.rtime%60+"']").prop("selected", true);
+			$(".popup_clinic_reservation_register > table tr > td > input[name='memo']").val(wrVO.memo);
+			
+			$(".popup_wrap").css("display", "block");
+			$(".popup_clinic_reservation_register").css("display", "block");
+		}else if(wrVO.rtype == 'nt'){
+			$(".popup_therapy_reservation_register > h2 > span").html(wrVO.pname+"("+wrVO.chart_no+")님");
+			$(".popup_therapy_reservation_register > h2").append("<input type='hidden' name='pno' value='"+wrVO.pno+"'><input type='hidden' name='pname' value='"+wrVO.pname+"'><input type='hidden' name='chart_no' value='"+wrVO.chart_no+"'>");
+			$(".popup_therapy_reservation_register > table td > select[name='clinic'] > option[value='"+wrVO.clinic+"']").prop("selected", true);
+			$(".popup_therapy_reservation_register > table td > select[name='eno'] > option[value='"+wrVO.eno+"']").prop("selected", true);
+			$(".popup_therapy_reservation_register > table td > select[name='rtype'] > option[value='nt']").prop("selected", true);
+			$(".popup_therapy_reservation_register > table tr > td > .popup_reservation_register_date").text(wrVO.rdate+" "+parseInt(wrVO.rtime/60));
+			$(".popup_therapy_reservation_register > table td > select[name='rtime_minute'] > option[value='"+wrVO.rtime%60+"']").prop("selected", true);
+			$(".popup_therapy_reservation_register > table tr > td > input[name='memo']").val(wrVO.memo);
+			
+			$(".popup_wrap").css("display", "block");
+			$(".popup_therapy_reservation_register").css("display", "block");
+		}
+		
+		
+	});
+	
+	$(document).on("click", ".popup_content2 .popup_reservation_register_btn_wrap > p", function(){
+		$(".popup_clinic_reservation_register").css("display", "none");
+		$(".popup_therapy_reservation_register").css("display", "none");
+		$(".popup_content").css("display", "none");
+		$(".popup_wrap").css("display","none");
+	});
 	
 	//당일예약현황 리스트에서 항목 눌렀을 때
 	$(document).on("click", ".popup_reservation_info_view > table tr:nth-child(5) > td > .res_info_view_today_list", function(){

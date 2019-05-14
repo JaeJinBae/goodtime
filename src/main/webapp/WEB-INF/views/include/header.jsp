@@ -174,8 +174,18 @@ $(function(){
 	<div class="header_div">
 		<c:if test="${sessionScope.id != null}">
 			<div class="header_inner header_inner1">
-				<%-- <a href="#none">${sessionScope.name}(${sessionScope.type})</a>님 반갑습니다. --%>
-				<a href="${pageContext.request.contextPath}/sub_main">LOGO</a>
+				<c:if test="${sessionScope.type =='manager'}">
+					<a href="${pageContext.request.contextPath}/sub_main">LOGO</a>
+				</c:if>
+				<c:if test="${sessionScope.type =='doctor'}">
+					<a href="${pageContext.request.contextPath}/doctor">LOGO</a>
+				</c:if>
+				<c:if test="${sessionScope.type =='therapist'}">
+					<a href="${pageContext.request.contextPath}/therapist">LOGO</a>
+				</c:if>
+				<c:if test="${sessionScope.type =='nurse'}">
+					<a href="${pageContext.request.contextPath}/nurse">LOGO</a>
+				</c:if>
 			</div>
 			<div class="header_inner header_inner2">
 				<ul>

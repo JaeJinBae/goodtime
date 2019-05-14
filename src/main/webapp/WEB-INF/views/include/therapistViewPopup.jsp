@@ -331,7 +331,168 @@
 			<p>저장</p>
 			<p>닫기</p>
 		</div>
-	</div>
+	</div><!-- popup_mypage end -->
+	
+	<!-- 진료일정등록 -->
+	<div class="popup_clinic_reservation_register popup_content popup_content2">
+		<h2><span></span> 진료대기예약</h2>
+		<table>
+			<tr>
+				<th>▶ 담당의사</th>
+				<td>
+					<select name="eno" disabled>
+						<c:forEach var="item" items="${doctorList}">
+							<option value="${item.eno}">${item.name}</option>
+						</c:forEach>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th>▶ 진료종류</th>
+				<td>
+					<select name="clinic" disabled>
+						<option value="">선택없음</option>
+						<c:forEach var="item" items="${clinicList}">
+							<option value="${item.cno}">${item.code_name}</option>
+						</c:forEach>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th>▶ 예약구분</th>
+				<td>
+					<select name="rtype" disabled>
+						<option value="nc">일반예약</option>
+						<option value="fc">고정예약</option>
+						<option value="wr">대기예약</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th>▶ 예약시간</th>
+				<td>
+					<span class="popup_reservation_register_date"></span>시
+					<select name="rtime_minute" disabled>
+						<option value="0">00분</option>
+						<option value="10">10분</option>
+						<option value="20">20분</option>
+						<option value="30">30분</option>
+						<option value="40">40분</option>
+						<option value="50">50분</option>
+					</select>
+				</td>
+			</tr>
+			<tr class="fix_clinic_res_tr">
+				<th>▶ 고정예약요일</th>
+				<td>
+					<select name="fix_day">
+						<option value="월">월</option>
+						<option value="화">화</option>
+						<option value="수">수</option>
+						<option value="목">목</option>
+						<option value="금">금</option>
+						<option value="토">토</option>
+					</select>
+				</td>
+			</tr>
+			<tr class="fix_clinic_res_tr">
+				<th>▶ 고정예약시작일</th>
+				<td><input type="date" name="fix_day_start" readonly="readonly"></td>
+			</tr>
+			<tr class="fix_clinic_res_tr">
+				<th>▶ 고정예약종료일</th>
+				<td><input type="date" name="fix_day_end"></td>
+			</tr>
+			<tr>
+				<th>▶ 메모</th>
+				<td><input type="text" name="memo" value="" readonly></td>
+			</tr>
+		</table>
+		<div class="popup_reservation_register_btn_wrap">
+			<p>닫기</p>
+		</div>
+	</div><!-- popup_reservation_register -->
+	
+	<!-- 치료일정등록 -->
+	<div class="popup_therapy_reservation_register popup_content popup_content2">
+		<h2><span></span> 치료대기예약</h2>
+		<table>
+			<tr>
+				<th>▶ 치료사</th>
+				<td>
+					<select name="eno" disabled>
+						<c:forEach var="item" items="${therapistList}">
+							<option value="${item.eno}">${item.name}</option>
+						</c:forEach>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th>▶ 치료종류</th>
+				<td>
+					<select name="clinic" disabled>
+						<option value="">선택없음</option>
+						<c:forEach var="item" items="${therapyList}"> 
+							<option value="${item.cno}">${item.code_name}</option>
+						</c:forEach>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th>▶ 예약구분</th>
+				<td>
+					<select name="rtype" disabled>
+						<option value="nt">일반예약</option>
+						<option value="ft">고정예약</option>
+						<option value="wr">대기예약</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th>▶ 예약시간</th>
+				<td>
+					<span class="popup_reservation_register_date"></span>시
+					<select name="rtime_minute" disabled>
+						<option value="0">00분</option>
+						<option value="10">10분</option>
+						<option value="20">20분</option>
+						<option value="30">30분</option>
+						<option value="40">40분</option>
+						<option value="50">50분</option>
+					</select>
+				</td>
+			</tr>
+			
+			<tr class="fix_therapy_res_tr">
+				<th>▶ 고정예약요일</th>
+				<td>
+					<select name="fix_day">
+						<option value="월">월</option>
+						<option value="화">화</option>
+						<option value="수">수</option>
+						<option value="목">목</option>
+						<option value="금">금</option>
+						<option value="토">토</option>
+					</select>
+				</td>
+			</tr>
+			<tr class="fix_therapy_res_tr">
+				<th>▶ 고정예약시작일</th>
+				<td><input type="date" name="fix_day_start" placeholder="ex) 2019-01-01" readonly="readonly"></td>
+			</tr>
+			<tr class="fix_therapy_res_tr">
+				<th>▶ 고정예약종료일</th>
+				<td><input type="date" name="fix_day_end"></td>
+			</tr>
+			<tr>
+				<th>▶ 메모</th>
+				<td><input type="text" name="memo" value="" readonly></td>
+			</tr>
+		</table>
+		<div class="popup_reservation_register_btn_wrap">
+			<p>닫기</p>
+		</div>
+	</div><!-- popup_therapy_reservation_register end -->
 	
 	<div class="popup_reservation_info_view popup_content">
 		<h2></h2>

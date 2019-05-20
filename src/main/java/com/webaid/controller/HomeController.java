@@ -1,9 +1,17 @@
 package com.webaid.controller;
 
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -12,6 +20,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +28,15 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.impl.client.HttpClients;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +71,7 @@ import com.webaid.domain.SearchCriteria;
 import com.webaid.domain.SearchCriteria5;
 import com.webaid.domain.SearchCriteriaRR;
 import com.webaid.domain.SelectByDateEmployeeVO;
+import com.webaid.domain.SmsTemplateVO;
 import com.webaid.domain.WaitingReservationVO;
 import com.webaid.service.ClinicService;
 import com.webaid.service.EmployeeService;
@@ -66,6 +85,7 @@ import com.webaid.service.NormalTherapyReservationService;
 import com.webaid.service.PatientService;
 import com.webaid.service.ReservationRecordService;
 import com.webaid.service.ReservationUpdateRecordService;
+import com.webaid.service.SmsTemplateService;
 import com.webaid.service.WaitingReservationService;
 import com.webaid.util.DayGetUtil;
 import com.webaid.util.ExcelDown;
@@ -114,6 +134,9 @@ public class HomeController {
 	
 	@Autowired
 	private FixOffService foService;
+	
+	@Autowired
+	private SmsTemplateService smsService;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model) {
@@ -1843,5 +1866,162 @@ public class HomeController {
 			entity = new ResponseEntity<String>("no", HttpStatus.BAD_REQUEST);
 		}
 		return entity;
+	}
+	
+	@RequestMapping(value="/smsView", method=RequestMethod.GET)
+	public String smsview(Model model){
+		
+		List<SmsTemplateVO> list = smsService.selectAll();
+		
+		model.addAttribute("smsClinic", list.get(1));
+		model.addAttribute("smsTherapy", list.get(0));
+		
+		return "sub/smsView";
+	}
+	
+	@RequestMapping(value="/smsUpdate", method=RequestMethod.POST)
+	public String smsUpdate(Model model, SmsTemplateVO vo){
+		
+		try {
+			smsService.update(vo);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		List<SmsTemplateVO> list = smsService.selectAll();
+		
+		model.addAttribute("smsClinic", list.get(1));
+		model.addAttribute("smsTherapy", list.get(0));
+		return "sub/smsView";
+	}
+	
+	@RequestMapping(value="/send_sms", method=RequestMethod.GET)
+	public String sendSMS(){
+		try{
+			
+			final String encodingType = "utf-8";
+			final String boundary = "____boundary____";
+		
+			/**************** 문자전송하기 예제 ******************/
+			/* "result_code":결과코드,"message":결과문구, */
+			/* "msg_id":메세지ID,"error_cnt":에러갯수,"success_cnt":성공갯수 */
+			/* 동일내용 > 전송용 입니다.  
+			/******************** 인증정보 ********************/
+			String sms_url = "https://apis.aligo.in/send/"; // 전송요청 URL
+			
+			Map<String, String> sms = new HashMap<String, String>();
+			
+			sms.put("user_id", "bjj7425"); // SMS 아이디
+			sms.put("key", "uybnfxh6xc0wbogbgu7nqgfnbqvx8xy8"); //인증키
+			
+			/******************** 인증정보 ********************/
+			
+			/******************** 전송정보 ********************/
+			sms.put("msg", "알리고 문자 전송 테스트 중입니다."); // 메세지 내용
+			sms.put("receiver", "01111111111,01111111112"); // 수신번호
+			sms.put("destination", "01111111111|담당자,01111111112|홍길동"); // 수신인 %고객명% 치환
+			sms.put("sender", ""); // 발신번호
+			sms.put("rdate", ""); // 예약일자 - 20161004 : 2016-10-04일기준
+			sms.put("rtime", ""); // 예약시간 - 1930 : 오후 7시30분
+			sms.put("testmode_yn", "Y"); // Y 인경우 실제문자 전송X , 자동취소(환불) 처리
+			sms.put("title", "제목입력"); //  LMS, MMS 제목 (미입력시 본문중 44Byte 또는 엔터 구분자 첫라인)
+			
+			String image = "";
+			//image = "/tmp/pic_57f358af08cf7_sms_.jpg"; // MMS 이미지 파일 위치
+			
+			/******************** 전송정보 ********************/
+			
+			MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+			
+			builder.setBoundary(boundary);
+			builder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+			builder.setCharset(Charset.forName(encodingType));
+			
+			for(Iterator<String> i = sms.keySet().iterator(); i.hasNext();){
+				String key = i.next();
+				builder.addTextBody(key, sms.get(key)
+						, ContentType.create("Multipart/related", encodingType));
+			}
+			
+			File imageFile = new File(image);
+			if(image!=null && image.length()>0 && imageFile.exists()){
+		
+				builder.addPart("image",
+						new FileBody(imageFile, ContentType.create("application/octet-stream"),
+								URLEncoder.encode(imageFile.getName(), encodingType)));
+			}
+			
+			HttpEntity entity = builder.build();
+			
+			HttpClient client = HttpClients.createDefault();
+			HttpPost post = new HttpPost(sms_url);
+			post.setEntity(entity);
+			
+			HttpResponse res = client.execute(post);
+			
+			String result = "";
+			if(res != null){
+				BufferedReader in = new BufferedReader(new InputStreamReader(res.getEntity().getContent(), encodingType));
+				String buffer = null;
+				while((buffer = in.readLine())!=null){
+					result += buffer;
+				}
+				in.close();
+			}
+			
+			System.out.println(result);
+			
+		}catch(Exception e){
+			System.out.println(e.getMessage());
+		}
+		return "";
+	}
+	
+	@RequestMapping(value="/sms_remain")
+	public String smsRemain(){
+		try{
+
+			/**************** 최근 전송 목록 ******************/
+			/* "result_code":결과코드,"message":결과문구, */
+			/** list : 전송된 목록 배열 ***/
+			/******************** 인증정보 ********************/
+			String sms_url = "https://apis.aligo.in/remain/"; // 전송요청 URL
+			
+			String sms = "";
+			sms += "user_id=" + "bjj7425"; // SMS 아이디 
+			sms += "&key=" + "uybnfxh6xc0wbogbgu7nqgfnbqvx8xy8"; //인증키
+			/******************** 인증정보 ********************/
+			
+			URL url = new URL(sms_url);
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setDoInput(true);
+			conn.setDoOutput(true);
+			conn.setUseCaches(false);
+			conn.setRequestMethod("POST");
+			conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+			
+			OutputStream os = conn.getOutputStream();
+			os.write(sms.getBytes());
+			os.flush();
+			os.close();
+			
+			String result = "";
+			String buffer = null;
+			BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			
+			while((buffer = in.readLine())!=null){
+				result += buffer;
+			}
+			
+			in.close();
+			
+			System.out.println(result);
+			
+		}catch(MalformedURLException e1){
+			System.out.println(e1.getMessage());
+		}catch(IOException e2){
+			System.out.println(e2.getMessage());
+		}
+		return "sub/sub_main";
 	}
 }

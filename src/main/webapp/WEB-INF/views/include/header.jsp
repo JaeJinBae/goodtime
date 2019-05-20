@@ -194,6 +194,7 @@ $(function(){
 						<li><a href="${pageContext.request.contextPath}/employeeView">직원관리</a></li>
 						<li><a href="${pageContext.request.contextPath}/clinicView">코드관리</a></li>
 						<li><a href="${pageContext.request.contextPath}/hospitalInfo">병원시간관리</a></li>
+						<li><a href="${pageContext.request.contextPath}/smsView">문자관리</a></li>
 						<li><a href="${pageContext.request.contextPath}/statistic">통계관리</a></li>
 					</c:if>
 					<c:if test="${sessionScope.type =='doctor'}">
@@ -207,8 +208,9 @@ $(function(){
 						<li><a href="${pageContext.request.contextPath}/employeeView">직원관리</a></li>
 						<li><a href="${pageContext.request.contextPath}/clinicView">코드관리</a></li>
 						<li><a href="${pageContext.request.contextPath}/hospitalInfo">병원시간관리</a></li>
+						<li><a href="${pageContext.request.contextPath}/smsView">문자관리</a></li>
 					</c:if>
-					<li><a href="http://www.naver.com">홈페이지</a></li>
+					<li><a href="http://www.oneclinic.com">홈페이지</a></li>
 				</ul>
 			</div>
 			<div class="header_inner header_inner3">

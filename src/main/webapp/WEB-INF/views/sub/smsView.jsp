@@ -214,6 +214,19 @@ $(function(){
 					<span>문자관리</span>
 					<div class="line"></div> 
 				</div>
+				<div class="smsInfo">
+					<p>문자발송가능건수</p>
+					<table>
+						<tr>
+							<th>단문(90 byte)</th>
+							<td></td>
+						</tr>
+						<tr>
+							<th>장문(2000 byte)</th>
+							<td></td>
+						</tr>
+					</table>
+				</div>
 				<div class="formWrap">
 					<div class="templateWrap">
 						<h4>진료예약<input type="hidden" name="no" value="1"> <button>저 장</button></h4>

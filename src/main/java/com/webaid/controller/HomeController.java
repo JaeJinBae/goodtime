@@ -1978,7 +1978,9 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value="/sms_remain")
-	public String smsRemain(){
+	public ResponseEntity<Map<String, String>> smsRemain(){
+		ResponseEntity<Map<String, String>> entity = null;
+		Map<String, String> map = new  HashMap<String, String>();
 		try{
 
 			/**************** 최근 전송 목록 ******************/
@@ -2009,6 +2011,8 @@ public class HomeController {
 			String buffer = null;
 			BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 			
+			System.out.println("in값= "+in.readLine());
+			
 			while((buffer = in.readLine())!=null){
 				result += buffer;
 			}
@@ -2022,6 +2026,6 @@ public class HomeController {
 		}catch(IOException e2){
 			System.out.println(e2.getMessage());
 		}
-		return "sub/sub_main";
+		return entity;
 	}
 }

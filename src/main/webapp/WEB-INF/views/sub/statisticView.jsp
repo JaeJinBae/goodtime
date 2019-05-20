@@ -98,10 +98,10 @@
 		border-radius: 4px;
 		letter-spacing: 1px;
 	}
-	.header_inner2 > ul > li:nth-child(5){
+	.header_inner2 > ul > li:nth-child(6){
 		background: #fff;
 	}
-	.header_inner2 > ul > li:nth-child(5) > a{
+	.header_inner2 > ul > li:nth-child(6) > a{
 		color: #5c5c5c; 
 		font-weight: bold;
 	}

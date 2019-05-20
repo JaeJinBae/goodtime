@@ -52,6 +52,7 @@
 	vertical-align: middle;
 }
 .popup_content > table tr > td > input{
+	width: 181px;
 	font-size:15px;
 	padding: 3px;
 }
@@ -265,6 +266,35 @@
 	margin: 15px auto;
 }
 .popup_fix_off_update > .popup_fixOff_update_btn_wrap > p{
+	display: inline-block;
+	padding:8px 10px;
+	font-size:15px;
+	margin-left:20px;
+	cursor: pointer;
+	background: #353c46;
+	color: #fff;
+	border-radius: 4px;
+	letter-spacing: 1px;
+}
+
+.popup_smsSend{
+	display: none;
+	position: absolute;
+	top: -4%;
+	left: 40%;
+	border: 1px solid gray;
+}
+.popup_smsSend > table tr > td > textarea{
+	width: 182px;
+	height: 250px;
+	font-size: 15px;
+	resize: none;
+}
+.popup_smsSend > .popup_smsSend_btn_wrap{
+	width:100%;
+	margin: 15px auto;
+}
+.popup_smsSend > .popup_smsSend_btn_wrap > p{
 	display: inline-block;
 	padding:8px 10px;
 	font-size:15px;
@@ -938,3 +968,29 @@
 			<p>닫기</p>
 		</div>
 	</div><!-- popup_fix_off_update end -->
+	
+	<div class="popup_smsSend popup_content">
+		<h2>문자전송</h2>
+		<span><input type="hidden" name="no" value=""></span>
+		<table>
+			<tr>
+				<th>▶ 받는사람</th>
+				<td><input type="text" name="name"></td>
+			</tr>
+			<tr>
+				<th>▶ 연락처</th>
+				<td><input type="text" name="phone"></td>
+			</tr>
+			<tr>
+				<th>▶ 내용</th>
+				<td>
+					<textarea placeholder="45자(90byte) 초과시 장문으로 넘어가며 장문 문자는 1000자(2000byte)입니다."></textarea>
+				</td>
+			</tr>
+		</table>
+		<div class="popup_smsSend_btn_wrap">
+			<p>전송</p>
+			<p>닫기</p>
+		</div>
+	</div><!-- popup_smsSend popup_content -->
+	

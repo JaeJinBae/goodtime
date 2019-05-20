@@ -3649,6 +3649,23 @@ function draw_patient_reservation_byCase(idx){
 		break;
 	}
 }
+
+function get_smsTemplateByNo(no){
+	var dt;
+	$.ajax({
+		url:"${pageContext.request.contextPath}/smsGetByNo/"+no,
+		type:"get",
+		dataType:"json",
+		async:false,
+		success:function(json){
+			dt = json;
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	});
+	return dt;
+}
 $(function(){
 	//진료view에서 무슨 탭 눌러졌는지 기억하기 위한 변수
 	var storage_timetable_btn_num = 0;
@@ -3913,6 +3930,33 @@ $(function(){
 			$(".popup_patientUpdate").css("display", "none");
 			$(".popup_wrap").css("display","none");
 		}
+	});
+	
+	$(document).on("click", ".sms_open_btn", function(){
+		var name = $(this).parent().parent().find("td").eq(1).text();
+		var phone = $(this).parent().parent().find("td").eq(7).text(); 
+		
+		$(".popup_smsSend > table tr > td > input[name='name']").val(name);
+		$(".popup_smsSend > table tr > td > input[name='phone']").val(phone);
+		
+		$(".popup_wrap").css("display","block");
+		$(".popup_smsSend").css("display","block");
+	});
+	
+	$(".popup_smsSend_btn_wrap > p").click(function(){
+		var idx = $(this).index();
+		if(idx == 0){
+			
+		}else{
+			if($(".popup_reservation_info_view").css("display") == "block"){
+				$(".popup_smsSend").css("display","none");
+			}else{
+				$(".popup_smsSend").css("display","none");
+				$(".popup_wrap").css("display","none");
+			}
+			
+		}
+		
 	});
 	
 	//헤더에 있는 환자이름 버튼
@@ -4251,6 +4295,7 @@ $(function(){
 		}
 		
 	})
+	
 	//주간 select에서 의사 및 치료사 변경되었을때 timetable 변경해서 삽입
 	$(document).on("change",".week_select_box_wrap > select[name='employee']",function(){
 		if(storage_timetable_btn_num == 2 || storage_timetable_btn_num == 3){
@@ -4309,7 +4354,43 @@ $(function(){
 		
 	});
 	
-	//변경 클릭
+	//예약접수 화면에서 문자 클릭
+	$(".popup_reservation_info_view > table tr:nth-child(1) > td > button").click(function(){
+		var beforeName = $(".popup_reservation_info_view > h2 > span").text();
+		var splitArr = beforeName.split("(");
+		var name = splitArr[0];
+		var phone = $(this).parent().find("span").text();
+		var clinic = $(".popup_reservation_info_view > table tr:nth-child(3) td > span").text().split("/");
+		var clinic_name = clinic[0];
+		var rdate_rtime = $(".popup_reservation_info_view > table tr:nth-child(2) td > span").text().split(" ");
+		var rdate = rdate_rtime[0];
+		var rtime = rdate_rtime[1];
+		
+		$(".popup_smsSend > table tr > td > input[name='name']").val(name);
+		$(".popup_smsSend > table tr > td > input[name='phone']").val(phone);
+		
+		var type = $(".popup_reservation_info_view > h2").text();
+		var findStr = "진료";
+		var smsTemplate;
+		if(type.indexOf(findStr) != -1){
+			smsTemplate = get_smsTemplateByNo(1).content;
+		}else{
+			smsTemplate = get_smsTemplateByNo(2).content;
+		}
+		console.log(smsTemplate);
+		alert(smsTemplate);
+		smsTemplate = smsTemplate.replace("[병원명]", "원마취통증의학과");
+		smsTemplate = smsTemplate.replace("[환자명]", name);
+		smsTemplate = smsTemplate.replace("[진료명]", clinic_name);
+		smsTemplate = smsTemplate.replace("[예약날짜]", rdate);
+		smsTemplate = smsTemplate.replace("[시작시간]", rtime);
+		
+		$(".popup_smsSend > table tr > td > textarea").val(smsTemplate);
+		
+		$(".popup_smsSend").css("display","block");
+	});
+	
+	//예약접수 화면에서 변경 클릭
 	$(".popup_reservation_info_view > table tr:nth-child(2) > td > button").click(function(){
 		var rno = $(".popup_reservation_info_view > h2 > input[name='rno']").val();
 		var rtype = $(".popup_reservation_info_view > h2 > input[name='rtype']").val();

@@ -45,9 +45,45 @@
 		display: inline-block;
 		vertical-align: middle;
 	}
+	.smsInfo{
+		width: 300px;
+		padding-left: 10px;
+		margin-bottom: 40px;
+	}
+	.smsInfo > p{
+		font-size: 18px;
+		font-weight: bold;
+		border-bottom: 2px solid lightgray;
+		margin-bottom: 10px;
+		padding-bottom: 5px;
+	}
+	.smsInfo > p > a{
+		font-size: 15px;
+		font-weight: normal;
+		margin-left: 78px;
+	}
+	.smsInfo > table{
+		width: 100%;
+	}
+	.smsInfo > table tr{
+		
+	}
+	.smsInfo > table tr > th{
+		font-size: 15px;
+		font-weight: bold;
+		padding: 10px 0;
+		border: 1px solid gray;
+	}
+	.smsInfo > table tr > td{
+		width: 100px;
+		text-align: center;
+		font-sizt: 15px;
+		border: 1px solid gray;
+	}
+	
 	.formWrap{
 		width: 100%;
-		padding-left: 80px;
+		padding-left: 10px;
 	}
 	.templateWrap{
 		width: 100%;
@@ -113,9 +149,7 @@
 	
 </style>
 <script>
-function post_smsTamplate_update(vo){
-	console.log(vo);
-	
+function post_smsTamplate_update(vo){	
 	$.ajax({
 		url:"${pageContext.request.contextPath}/smsUpdate",
 		type:"post",
@@ -129,6 +163,24 @@ function post_smsTamplate_update(vo){
 			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 		}
 	});
+}
+
+function get_smsRemain(){
+	
+	var dt;
+	$.ajax({
+		url:"${pageContext.request.contextPath}/sms_remain",
+		type: "get",
+		dataType:"json",
+		async:false,
+		success:function(json){
+			dt = json;
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	});
+	return dt;
 }
 
 function getTextLength(str) {
@@ -165,6 +217,11 @@ $(function(){
 		$(obj).parent().parent().find(".preview").html(objText);
 		bytesHandler(obj);
 	}
+	
+	//잔여 문자량 입력
+	$("#sms_cnt").text(get_smsRemain().sms);
+	$("#lms_cnt").text(get_smsRemain().lms);
+	
 	
 	//키 누를때마다 byte값, 미리보기 내용과 byte 값 변경 
 	$('.templateWrap > ul > li > textarea').keyup(function(){
@@ -215,15 +272,15 @@ $(function(){
 					<div class="line"></div> 
 				</div>
 				<div class="smsInfo">
-					<p>문자발송가능건수</p>
+					<p>문자발송가능건수 <a href="https://smartsms.aligo.in/shop/?ch=1">충전바로가기</a></p>
 					<table>
 						<tr>
-							<th>단문(90 byte)</th>
-							<td></td>
+							<th>단문(45자/90 byte)</th>
+							<td id="sms_cnt"></td>
 						</tr>
 						<tr>
-							<th>장문(2000 byte)</th>
-							<td></td>
+							<th>장문(1000자/2000 byte)</th>
+							<td id="lms_cnt"></td>
 						</tr>
 					</table>
 				</div>

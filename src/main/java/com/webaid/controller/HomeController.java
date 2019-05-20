@@ -1879,6 +1879,19 @@ public class HomeController {
 		return "sub/smsView";
 	}
 	
+	@RequestMapping(value="/smsGetByNo/{no}", method=RequestMethod.GET)
+	public ResponseEntity<SmsTemplateVO> smsview(@PathVariable("no") int no){
+		ResponseEntity<SmsTemplateVO> entity = null;
+		try {
+			SmsTemplateVO vo = smsService.selectOne(no);
+			entity = new ResponseEntity<SmsTemplateVO>(vo, HttpStatus.OK);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		return entity;
+	}
+	
 	@RequestMapping(value="/smsUpdate", method=RequestMethod.POST)
 	public String smsUpdate(Model model, SmsTemplateVO vo){
 		
@@ -2011,7 +2024,6 @@ public class HomeController {
 			String buffer = null;
 			BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 			
-			System.out.println("in값= "+in.readLine());
 			
 			while((buffer = in.readLine())!=null){
 				result += buffer;
@@ -2020,7 +2032,16 @@ public class HomeController {
 			in.close();
 			
 			System.out.println(result);
+			String[] splitRes = result.split(",");
+			for(int i=0; i< splitRes.length; i++){
+				System.out.println(splitRes[i]);
+			}
+			map.put("sms", splitRes[2].split(":")[1]);
+			map.put("lms", splitRes[3].split(":")[1]);
 			
+			System.out.println(map);
+			entity = new ResponseEntity<Map<String, String>>(map, HttpStatus.OK);
+
 		}catch(MalformedURLException e1){
 			System.out.println(e1.getMessage());
 		}catch(IOException e2){

@@ -498,13 +498,12 @@ public class HomeController {
 		HashMap<String, Object> map=new HashMap<>();
 		
 		List<EmployeeVO> employeeListAll = empService.listSearch(cri);
-		System.out.println("넘겨받은 페이지는 "+cri.getPage());
 		
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(cri);
 		pageMaker.makeSearch(cri.getPage());
 		pageMaker.setTotalCount(empService.listSearchCount(cri));
-		System.out.println(pageMaker.makeSearch(cri.getPage()));
+		
 		map.put("employeeListAll", employeeListAll);
 		map.put("pageMaker", pageMaker);
 		
@@ -1620,10 +1619,12 @@ public class HomeController {
 			if(cri.getKeyword2() == null){
 				cri.setKeyword2(year+"-"+month+"-"+lastDate);
 			}else{
-				cDate = sdf.parse(cri.getKeyword1());
-				now.setTime(cDate);
-				lastDate = now.getActualMaximum(now.DAY_OF_MONTH);
-				cri.setKeyword2(cri.getKeyword2()+"-"+lastDate);
+				if(cri.getKeyword2().length() <= 7){
+					cDate = sdf.parse(cri.getKeyword1());
+					now.setTime(cDate);
+					lastDate = now.getActualMaximum(now.DAY_OF_MONTH);
+					cri.setKeyword2(cri.getKeyword2()+"-"+lastDate);
+				}
 			}
 			if(cri.getKeyword3() == null){
 				cri.setKeyword3("");
@@ -1749,10 +1750,14 @@ public class HomeController {
 			if(cri.getKeyword2() == null){
 				cri.setKeyword2(year+"-"+month+"-"+lastDate);
 			}else{
+				if(cri.getKeyword2().length() <= 7){
 				cDate = sdf.parse(cri.getKeyword1());
 				now.setTime(cDate);
 				lastDate = now.getActualMaximum(now.DAY_OF_MONTH);
 				cri.setKeyword2(cri.getKeyword2()+"-"+lastDate);
+				}
+				
+				System.out.println("set cri value= "+cri.getKeyword2()+"\n"+ cri.getKeyword2().length());
 			}
 			if(cri.getKeyword3() == null){
 				cri.setKeyword3("");
@@ -2073,6 +2078,7 @@ public class HomeController {
 		logger.info("sms record get All");
 		ResponseEntity<Map<String, Object>> entity = null;
 		Map<String, Object> map = new HashMap<>();
+		System.out.println(cri.getPage());
 		if(cri.getKeyword() == null){
 			cri.setKeyword("");
 		}

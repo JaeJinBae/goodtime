@@ -2980,7 +2980,7 @@ function draw_normalOff_table(info){
 	var emp;
 	var sTime;
 	var eTime;
-	
+	console.log(info);
 	str = "<table class='tbl_normal_off'><tr><th>이름</th><th>휴무종류</th><th>시작일시</th><th>종료일시</th><th>등록일시</th><th>관리</th></tr>";
 	if(json.list.length == 0){
 		str += "<tr><td colspan='6'>등록된 정보가 없습니다.</td></tr>";
@@ -3006,7 +3006,7 @@ function draw_normalOff_table(info){
 					+"&keyword2="+json.pageMaker.cri.keyword2+"&keyword3="+json.pageMaker.cri.keyword3+"'>"+i+"</a></li>";
 			}else{
 				str += "<li><a href='page="+i+"&perPageNum=10&keyword1="+json.pageMaker.cri.keyword1
-					+"&keyword2="+json.pageMaker.cri.keyword2+"&keyword3="+json.pageMaker.crk.keyword3+"'>"+i+"</a></li>"
+					+"&keyword2="+json.pageMaker.cri.keyword2+"&keyword3="+json.pageMaker.cri.keyword3+"'>"+i+"</a></li>"
 			}
 		}
 		if(json.pageMaker.next){
@@ -3757,6 +3757,7 @@ function get_smsRecordAll(info){
 }
 
 function draw_smsRecord_table(info){
+	console.log(info);
 	var json = get_smsRecordAll(info);
 	var str = "";
 
@@ -4620,17 +4621,20 @@ $(function(){
 		
 		draw_normalOff_table("page=1&perPageNum=10&keyword1="+keyword1+"&keyword2="+keyword2+"&keyword3="+keyword3);
 	});
+	
 	//일반휴무 페이징
-	$(document).on("click",".normal_off_page", function(e){
+	$(document).on("click",".normal_off_page > ul > li > a", function(e){
 		e.preventDefault();
 		draw_normalOff_table($(this).attr("href"));
 	});
+	
 	//일반휴무 추가 클릭
 	$(".normal_off_selectBox_wrap > .normal_off_register_btn").click(function(){
 		$(".popup_wrap").css("display","block");
 		$(".popup_normal_off_register").css("display","block");
 		
 	});
+	
 	//일반휴무 휴무등록 클릭
 	$(".popup_normal_off_register > .popup_normalOff_register_btn_wrap > p").click(function(){
 		var btn_idx = $(this).index();
@@ -4690,11 +4694,13 @@ $(function(){
 		console.log(keyword3+"/"+keyword4);
 		draw_fixOff_table("page=1&perPageNum=10&keyword1="+keyword1+"&keyword2="+keyword2+"&keyword3="+keyword3+"&keyword4="+keyword4);
 	});
+	
 	//고정휴무 페이징
-	$(document).on("click",".fix_off_page", function(e){
+	$(document).on("click",".fix_off_page > ul > li > a", function(e){
 		e.preventDefault();
 		draw_fixOff_table($(this).attr("href"));
 	})
+	
 	//고정휴무 추가 클릭
 	$(".fix_off_selectBox_wrap > .fix_off_register_btn").click(function(){
 		$(".popup_wrap").css("display","block");
@@ -4748,18 +4754,20 @@ $(function(){
 		}
 	});
 	
+	//문자이력 검색
 	$(".smsRecord_selectBox_wrap > .smsRecord_search_btn").click(function(){
-		var rdate = $(".smsRecord_selectBox_wrap > input[name='rdate']").val();
-		
+		var rdate = $(".smsRecord_selectBox_wrap > input[name='rdate']").val();		
 		var keyword = encodeURIComponent(rdate);
-		
-		
+
 		draw_smsRecord_table("page=1&perPageNum=10&searchType=n&keyword="+keyword);
 	});
-	//고정휴무 페이징
-	$(document).on("click",".smsRecord_page", function(e){
+	
+	//문자이력 페이징
+	$(document).on("click",".smsRecord_page > ul > li > a", function(e){
 		e.preventDefault();
+		console.log($(this).attr("href"));
 		draw_smsRecord_table($(this).attr("href"));
+		
 	})
 	
 	

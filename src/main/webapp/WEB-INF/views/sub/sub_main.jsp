@@ -576,6 +576,52 @@
 	}
 	
 	
+	.tbl_smsRecord tr > th{
+		border-top:2px solid #5e5e5e;
+		border-bottom:2px solid #5e5e5e;
+		padding:8px 3px;
+		font-weight: bold;
+	}
+	.tbl_smsRecord tr > th:nth-child(6){
+		width:545px;
+	}
+	.tbl_smsRecord tr > td{
+		text-align: center;
+		padding: 5px 3px !important;
+		border: 0 !important;
+		border-bottom: 1px solid lightgray !important;
+	}
+	
+	.tbl_smsRecord tr > td:nth-child(6) > div{
+		height:40px;
+		overflow: scroll;
+		overflow-x: hidden;
+	}
+	.smsRecord_page{
+		margin: 15px auto;
+	}
+	.smsRecord_page > ul{
+		text-align: center;
+	}
+	.smsRecord_page ul li{
+		margin:0 auto;
+		list-style: none;
+		display: inline-block;
+		text-align:center;
+		border:1px solid #e9e9e9;
+		border-radius: 8px;
+		margin: 0 1px;
+		background: #fafafa;
+	}
+	.smsRecord_page ul li a{
+		display:inline-block;
+		width:35px;
+		height:30px;
+		font-size:1.1em;
+		line-height: 30px;
+	}
+	
+	
 	
 	.timetable_btn_wrap{
 		width:1031px;
@@ -1198,6 +1244,7 @@ function draw_time_table_by_case(idx){
 		case 11:
 			$(".week_select_box_wrap").css("display","none");
 			$(".time_table_wrap").html("");
+			draw_smsRecord_table();
 			
 			break;
 		default:
@@ -3666,6 +3713,7 @@ function get_smsTemplateByNo(no){
 	});
 	return dt;
 }
+
 function post_smsSend(vo){
 	$.ajax({
 		url:"${pageContext.request.contextPath}/smsSend/",
@@ -3690,8 +3738,58 @@ function post_smsSend(vo){
 		}
 	});
 }
+function get_smsRecordAll(info){
+	var dt;
+	$.ajax({
+		url:"${pageContext.request.contextPath}/smsRecordGetAll",
+		type: "get",
+		data:info,
+		async:false,
+		dataType:"json",
+		success:function(json){			
+			dt = json;
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	});
+	return dt;
+}
 
+function draw_smsRecord_table(info){
+	var json = get_smsRecordAll(info);
+	var str = "";
 
+	str = "<table class='tbl_smsRecord'><tr><th>수신자</th><th>연락처</th><th>전송일시</th><th>발신자</th><th>전송여부</th><th>문자내용</th></tr>";
+	if(json.list.length == 0){
+		str += "<tr><td colspan='6'>등록된 정보가 없습니다.</td></tr>";
+	}else{
+		$(json.list).each(function(){
+			str += "<tr><td>"+this.receiver+"</td><td>"+this.phone+"</td><td>"+this.rdate+"</td>"
+				+ "<td>"+this.sender+"</td><td>"+this.state+"</td><td><div>"+this.content+"</div></td></tr>";
+		});
+		str += "</table>";
+		
+		str += "<div class='smsRecord_page'><ul>";
+		if(json.pageMaker.prev){
+			str += "<li><a href='page="+(json.pageMaker.startPage-1)+"&perPageNum=10&searchType="+json.pageMaker.cri.searchType+"&keyword="+json.pageMaker.cri.keyword+"'>&laquo;</a></li>";
+		}
+		for(var i=json.pageMaker.startPage; i<=json.pageMaker.endPage; i++){
+			
+			if(json.pageMaker.cri.page == i){
+				str += "<li class='active1'><a class='active2' href='page="+i+"&perPageNum=10&searchType="+json.pageMaker.cri.searchType+"&keyword="+json.pageMaker.cri.keyword+"'>"+i+"</a></li>";
+			}else{
+				str += "<li><a href='page="+i+"&perPageNum=10&searchType="+json.pageMaker.cri.searchType+"&keyword="+json.pageMaker.cri.keyword+"'>"+i+"</a></li>"
+			}
+		}
+		if(json.pageMaker.next){
+			str += "<li><a href='page="+(json.pageMaker.endPage+1)+"&perPageNum=10&searchType="+json.pageMaker.cri.searchType+"&keyword="+json.pageMaker.cri.keyword+"'>&raquo;</a></li>";
+		}
+		str += "</ul></div>";	
+	}
+	$(".time_table_wrap").html(str);
+	
+}
 
 $(function(){
 	//진료view에서 무슨 탭 눌러졌는지 기억하기 위한 변수
@@ -4650,6 +4748,20 @@ $(function(){
 		}
 	});
 	
+	$(".smsRecord_selectBox_wrap > .smsRecord_search_btn").click(function(){
+		var rdate = $(".smsRecord_selectBox_wrap > input[name='rdate']").val();
+		
+		var keyword = encodeURIComponent(rdate);
+		
+		
+		draw_smsRecord_table("page=1&perPageNum=10&searchType=n&keyword="+keyword);
+	});
+	//고정휴무 페이징
+	$(document).on("click",".smsRecord_page", function(e){
+		e.preventDefault();
+		draw_smsRecord_table($(this).attr("href"));
+	})
+	
 	
 	//모든 페이징에서 선택된 페이지 클릭 막음
 	$(document).on("click", ".active2", function(e){
@@ -4890,6 +5002,10 @@ $(function(){
 						<button class="fix_off_search_btn">검색</button>
 						<button class="fix_off_register_btn">추가</button>
 					</div><!-- fix_off_selectBox_wrap end -->
+					<div class="smsRecord_selectBox_wrap selectBox_wrap">
+						<input type="text" name="rdate" placeholder="ex) 2019-01-01">
+						<button class="smsRecord_search_btn">검색</button>
+					</div><!-- smsRecord_selectBox_wrap end -->
 					<div class="time_table_wrap">
 					
 					</div><!-- time_table_wrap -->

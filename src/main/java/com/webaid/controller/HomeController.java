@@ -2067,4 +2067,30 @@ public class HomeController {
 		}
 		return entity;
 	}
+	
+	@RequestMapping(value="/smsRecordGetAll", method=RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> smsRecordGetAll(@ModelAttribute("cri") SearchCriteria cri){
+		logger.info("sms record get All");
+		ResponseEntity<Map<String, Object>> entity = null;
+		Map<String, Object> map = new HashMap<>();
+		if(cri.getKeyword() == null){
+			cri.setKeyword("");
+		}
+		try {
+			List<SmsRecordVO> list = smsrService.listSearch(cri);
+			
+			PageMaker pageMaker = new PageMaker();
+			pageMaker.setCri(cri);
+			pageMaker.makeSearch(cri.getPage());
+			pageMaker.setTotalCount(smsrService.listSearchCount(cri));
+			
+			map.put("list", list);
+			map.put("pageMaker", pageMaker);
+			entity = new ResponseEntity<Map<String,Object>>(map, HttpStatus.OK);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		return entity;
+	}
 }

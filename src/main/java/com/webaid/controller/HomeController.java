@@ -71,6 +71,7 @@ import com.webaid.domain.SearchCriteria;
 import com.webaid.domain.SearchCriteria5;
 import com.webaid.domain.SearchCriteriaRR;
 import com.webaid.domain.SelectByDateEmployeeVO;
+import com.webaid.domain.SmsRecordVO;
 import com.webaid.domain.SmsTemplateVO;
 import com.webaid.domain.WaitingReservationVO;
 import com.webaid.service.ClinicService;
@@ -85,10 +86,12 @@ import com.webaid.service.NormalTherapyReservationService;
 import com.webaid.service.PatientService;
 import com.webaid.service.ReservationRecordService;
 import com.webaid.service.ReservationUpdateRecordService;
+import com.webaid.service.SmsRecordService;
 import com.webaid.service.SmsTemplateService;
 import com.webaid.service.WaitingReservationService;
 import com.webaid.util.DayGetUtil;
 import com.webaid.util.ExcelDown;
+import com.webaid.util.SmsRemainGet;
 
 
 @Controller
@@ -138,6 +141,8 @@ public class HomeController {
 	@Autowired
 	private SmsTemplateService smsService;
 	
+	@Autowired
+	private SmsRecordService smsrService;	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model) {
 		logger.info("main GET");
@@ -1908,8 +1913,12 @@ public class HomeController {
 		return "sub/smsView";
 	}
 	
-	@RequestMapping(value="/send_sms", method=RequestMethod.GET)
-	public String sendSMS(){
+	@RequestMapping(value="/smsSend", method=RequestMethod.POST)
+	public ResponseEntity<String> sendSMS(SmsRecordVO vo){
+		logger.info("sms send Post");
+		System.out.println(vo);
+		ResponseEntity<String> resentity = null;
+
 		try{
 			
 			final String encodingType = "utf-8";
@@ -1930,8 +1939,8 @@ public class HomeController {
 			/******************** 인증정보 ********************/
 			
 			/******************** 전송정보 ********************/
-			sms.put("msg", "알리고 문자 전송 테스트 중입니다."); // 메세지 내용
-			sms.put("receiver", "01111111111,01111111112"); // 수신번호
+			sms.put("msg", vo.getContent()); // 메세지 내용
+			sms.put("receiver", vo.getPhone()); // 수신번호
 			sms.put("destination", "01111111111|담당자,01111111112|홍길동"); // 수신인 %고객명% 치환
 			sms.put("sender", ""); // 발신번호
 			sms.put("rdate", ""); // 예약일자 - 20161004 : 2016-10-04일기준
@@ -1983,11 +1992,20 @@ public class HomeController {
 			}
 			
 			System.out.println(result);
+			if(result.contains("\"success_cnt\":1")){
+				smsrService.register(vo);
+				SmsRemainGet srg = new SmsRemainGet();
+				
+				resentity = new ResponseEntity<String>(srg.smsRemain(), HttpStatus.OK);
+			}else{
+				resentity = new ResponseEntity<String>("no", HttpStatus.OK);
+			}
+			
 			
 		}catch(Exception e){
 			System.out.println(e.getMessage());
 		}
-		return "";
+		return resentity;
 	}
 	
 	@RequestMapping(value="/sms_remain")

@@ -3666,6 +3666,33 @@ function get_smsTemplateByNo(no){
 	});
 	return dt;
 }
+function post_smsSend(vo){
+	$.ajax({
+		url:"${pageContext.request.contextPath}/smsSend/",
+		type:"post",
+		dataType:"text",
+		data:vo,
+		async:false,
+		success:function(json){
+			if(json == "no"){
+				alert("새로고침(F5) 후 다시 이용하거나 문자관리에서 잔여 문자전송량을 확인하세요.");
+			}else{
+				console.log(json);
+				var smsArr = json.split("/");
+				alert("문자를 전송하였습니다.\n"+"[잔여문자안내]\n단문 이용시 "+smsArr[0]+"건 사용가능.\n장문 이용시 "+smsArr[1]+"건 사용가능");
+				$(".popup_smsSend").css("display","none");
+				$(".popup_wrap").css("display","none");
+			}
+			
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	});
+}
+
+
+
 $(function(){
 	//진료view에서 무슨 탭 눌러졌는지 기억하기 위한 변수
 	var storage_timetable_btn_num = 0;
@@ -3932,6 +3959,7 @@ $(function(){
 		}
 	});
 	
+	//환자테이블에서 문자 클릭
 	$(document).on("click", ".sms_open_btn", function(){
 		var name = $(this).parent().parent().find("td").eq(1).text();
 		var phone = $(this).parent().parent().find("td").eq(7).text(); 
@@ -3943,10 +3971,20 @@ $(function(){
 		$(".popup_smsSend").css("display","block");
 	});
 	
+	//문자팝업에서 버튼 클릭
 	$(".popup_smsSend_btn_wrap > p").click(function(){
 		var idx = $(this).index();
 		if(idx == 0){
+			var now = new Date();
+			var beforePhone = $(".popup_smsSend > table tr > td > input[name='phone']").val().split("-");
+			var phone = beforePhone[0]+beforePhone[1]+beforePhone[2];
+			var content = $(".popup_smsSend > table tr > td > textarea").val();
+			var name = $(".popup_smsSend > table tr > td > input[name='name']").val();
+			var sender = $("#session_login_name").val();
+			var rdate = get_today()+" "+now.getHours()+":"+(now.getMinutes()>9?'':'0')+now.getMinutes();
+			var vo = {no:0, receiver:name, sender:sender, phone:$(".popup_smsSend > table tr > td > input[name='phone']").val(), rdate:rdate, state:"전송성공", content:content};
 			
+			post_smsSend(vo);
 		}else{
 			if($(".popup_reservation_info_view").css("display") == "block"){
 				$(".popup_smsSend").css("display","none");
@@ -4377,8 +4415,7 @@ $(function(){
 		}else{
 			smsTemplate = get_smsTemplateByNo(2).content;
 		}
-		console.log(smsTemplate);
-		alert(smsTemplate);
+		
 		smsTemplate = smsTemplate.replace("[병원명]", "원마취통증의학과");
 		smsTemplate = smsTemplate.replace("[환자명]", name);
 		smsTemplate = smsTemplate.replace("[진료명]", clinic_name);

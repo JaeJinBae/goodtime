@@ -210,7 +210,7 @@ $(function(){
 						<li><a href="${pageContext.request.contextPath}/hospitalInfo">병원시간관리</a></li>
 						<li><a href="${pageContext.request.contextPath}/smsView">문자관리</a></li>
 					</c:if>
-					<li><a href="http://www.oneclinic.com">홈페이지</a></li>
+					<li><a href="http://www.1clinic.co.kr">홈페이지</a></li>
 				</ul>
 			</div>
 			<div class="header_inner header_inner3">

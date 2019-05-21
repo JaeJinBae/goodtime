@@ -22,7 +22,7 @@
 	</bean> -->
 	
 	<!-- 호스팅 테스트 -->	
-	 <!-- <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	<!--  <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
 		<property name="url" value="jdbc:mysql://localhost:3306/test7425"/>
 		<property name="username" value="test7425"/>

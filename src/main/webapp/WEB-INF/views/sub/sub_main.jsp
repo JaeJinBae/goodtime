@@ -722,6 +722,9 @@
 	.fix_off_selectBox_wrap{
 		display:none;
 	}
+	.smsRecord_selectBox_wrap{
+		display: none; 
+	}
 	.normal_off, .fix_off{
 		width:100%;
 		font-size:15px;
@@ -1158,6 +1161,7 @@ function draw_time_table_by_case(idx){
 	$(".reservation_update_record_selectBox_wrap").css("display","none");
 	$(".normal_off_selectBox_wrap").css("display","none");
 	$(".fix_off_selectBox_wrap").css("display","none");
+	$(".smsRecord_selectBox_wrap").css("display","none");
 	
 	switch (idx){
 		case 0:
@@ -1243,6 +1247,7 @@ function draw_time_table_by_case(idx){
 			break;
 		case 11:
 			$(".week_select_box_wrap").css("display","none");
+			$(".smsRecord_selectBox_wrap").css("display","block");
 			$(".time_table_wrap").html("");
 			draw_smsRecord_table();
 			

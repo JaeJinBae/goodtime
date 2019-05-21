@@ -1239,6 +1239,7 @@ function draw_time_table_by_case(idx){
 			$(".week_select_box_wrap").css("display","none");
 			$(".fix_off_selectBox_wrap").css("display","block");
 			$(".time_table_wrap").html("");
+			
 			draw_fixOff_table();
 			var todayArr = select_date.split("-");
 			
@@ -1249,7 +1250,7 @@ function draw_time_table_by_case(idx){
 			$(".week_select_box_wrap").css("display","none");
 			$(".smsRecord_selectBox_wrap").css("display","block");
 			$(".time_table_wrap").html("");
-			draw_smsRecord_table();
+			draw_smsRecord_table("page=1&perPageNum=10&searchType=n&keyword=");
 			
 			break;
 		default:
@@ -3798,6 +3799,7 @@ function draw_smsRecord_table(info){
 }
 
 $(function(){
+	
 	//진료view에서 무슨 탭 눌러졌는지 기억하기 위한 변수
 	var storage_timetable_btn_num = 0;
 	var storage_timetable2_btn_num = 0;
@@ -4696,8 +4698,7 @@ $(function(){
 		var keyword2 = encodeURIComponent(year+"-"+month);
 		var keyword3 = encodeURIComponent($(".fix_off_selectBox_wrap > select[name='emp']").val());
 		var keyword4 = encodeURIComponent($(".fix_off_selectBox_wrap > select[name='dow']").val());
-		console.log($(".fix_off_selectBox_wrap > select[name='emp']").val()+"/"+$(".fix_off_selectBox_wrap > select[name='dow']").val());
-		console.log(keyword3+"/"+keyword4);
+		
 		draw_fixOff_table("page=1&perPageNum=10&keyword1="+keyword1+"&keyword2="+keyword2+"&keyword3="+keyword3+"&keyword4="+keyword4);
 	});
 	

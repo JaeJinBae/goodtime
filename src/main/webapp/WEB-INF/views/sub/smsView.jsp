@@ -208,7 +208,7 @@ $(function(){
 	for(var i=1; i<3; i++){
 		var obj = $(".templateWrap:nth-child("+i+") > ul > li > textarea");
 		var objText = obj.text();
-		objText = objText.replace("[병원명]","ABCD병원");
+		objText = objText.replace("[병원명]","원마취통증의학과");
 		objText = objText.replace("[환자명]","홍길동");
 		objText = objText.replace("[진료명]","초진");
 		objText = objText.replace("[예약날짜]","2019-01-01");
@@ -226,7 +226,7 @@ $(function(){
 	//키 누를때마다 byte값, 미리보기 내용과 byte 값 변경 
 	$('.templateWrap > ul > li > textarea').keyup(function(){
 		var text = $(this).val();
-		text = text.replace("[병원명]","ABCD병원");
+		text = text.replace("[병원명]","원마취통증의학과");
 		text = text.replace("[환자명]","홍길동");
 		text = text.replace("[진료명]","초진");
 		text = text.replace("[예약날짜]","2019-01-01");

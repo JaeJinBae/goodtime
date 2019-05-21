@@ -575,6 +575,50 @@
 		line-height: 30px;
 	}
 	
+	.tbl_smsRecord tr > th{
+		border-top:2px solid #5e5e5e;
+		border-bottom:2px solid #5e5e5e;
+		padding:8px 3px;
+		font-weight: bold;
+	}
+	.tbl_smsRecord tr > th:nth-child(6){
+		width:545px;
+	}
+	.tbl_smsRecord tr > td{
+		text-align: center;
+		padding: 5px 3px !important;
+		border: 0 !important;
+		border-bottom: 1px solid lightgray !important;
+	}
+	
+	.tbl_smsRecord tr > td:nth-child(6) > div{
+		height:40px;
+		overflow: scroll;
+		overflow-x: hidden;
+	}
+	.smsRecord_page{
+		margin: 15px auto;
+	}
+	.smsRecord_page > ul{
+		text-align: center;
+	}
+	.smsRecord_page ul li{
+		margin:0 auto;
+		list-style: none;
+		display: inline-block;
+		text-align:center;
+		border:1px solid #e9e9e9;
+		border-radius: 8px;
+		margin: 0 1px;
+		background: #fafafa;
+	}
+	.smsRecord_page ul li a{
+		display:inline-block;
+		width:35px;
+		height:30px;
+		font-size:1.1em;
+		line-height: 30px;
+	}
 	
 	
 	.timetable_btn_wrap{
@@ -1113,6 +1157,7 @@ function draw_time_table_by_case(idx){
 	$(".reservation_update_record_selectBox_wrap").css("display","none");
 	$(".normal_off_selectBox_wrap").css("display","none");
 	$(".fix_off_selectBox_wrap").css("display","none");
+	$(".smsRecord_selectBox_wrap").css("display","none");
 	
 	switch (idx){
 		case 0:
@@ -1198,7 +1243,9 @@ function draw_time_table_by_case(idx){
 			break;
 		case 11:
 			$(".week_select_box_wrap").css("display","none");
+			$(".smsRecord_selectBox_wrap").css("display","block");
 			$(".time_table_wrap").html("");
+			draw_smsRecord_table();
 			
 			break;
 		default:
@@ -2900,7 +2947,7 @@ function draw_normalOff_table(info){
 		str += "<div class='normal_off_page'><ul>";
 		if(json.pageMaker.prev){
 			str += "<li><a href='page="+(json.pageMaker.startPage-1)+"&perPageNum=10&keyword1="+json.pageMaker.cri.keyword1
-				+"&keyword2="+json.pageMaker.cri.keyword2+"&keyword3="+json.pageMaker.crk.keyword3+"'>&laquo;</a></li>";
+				+"&keyword2="+json.pageMaker.cri.keyword2+"&keyword3="+json.pageMaker.cri.keyword3+"'>&laquo;</a></li>";
 		}
 		for(var i=json.pageMaker.startPage; i<=json.pageMaker.endPage; i++){
 			
@@ -2909,12 +2956,12 @@ function draw_normalOff_table(info){
 					+"&keyword2="+json.pageMaker.cri.keyword2+"&keyword3="+json.pageMaker.cri.keyword3+"'>"+i+"</a></li>";
 			}else{
 				str += "<li><a href='page="+i+"&perPageNum=10&keyword1="+json.pageMaker.cri.keyword1
-					+"&keyword2="+json.pageMaker.cri.keyword2+"&keyword3="+json.pageMaker.crk.keyword3+"'>"+i+"</a></li>"
+					+"&keyword2="+json.pageMaker.cri.keyword2+"&keyword3="+json.pageMaker.cri.keyword3+"'>"+i+"</a></li>"
 			}
 		}
 		if(json.pageMaker.next){
 			str += "<li><a href='page="+(json.pageMaker.endPage+1)+"&perPageNum=10&keyword1="+json.pageMaker.cri.keyword1
-				+"&keyword2="+json.pageMaker.cri.keyword2+"&keyword3="+json.pageMaker.crk.keyword3+"'>&raquo;</a></li>";
+				+"&keyword2="+json.pageMaker.cri.keyword2+"&keyword3="+json.pageMaker.cri.keyword3+"'>&raquo;</a></li>";
 		}
 		str += "</ul></div>";	
 	}
@@ -3599,6 +3646,102 @@ function draw_patient_reservation_byCase(idx){
 		break;
 	}
 }
+
+function get_smsTemplateByNo(no){
+	var dt;
+	$.ajax({
+		url:"${pageContext.request.contextPath}/smsGetByNo/"+no,
+		type:"get",
+		dataType:"json",
+		async:false,
+		success:function(json){
+			dt = json;
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	});
+	return dt;
+}
+
+function post_smsSend(vo){
+	$.ajax({
+		url:"${pageContext.request.contextPath}/smsSend/",
+		type:"post",
+		dataType:"text",
+		data:vo,
+		async:false,
+		success:function(json){
+			if(json == "no"){
+				alert("새로고침(F5) 후 다시 이용하거나 문자관리에서 잔여 문자전송량을 확인하세요.");
+			}else{
+				console.log(json);
+				var smsArr = json.split("/");
+				alert("문자를 전송하였습니다.\n"+"[잔여문자안내]\n단문 이용시 "+smsArr[0]+"건 사용가능.\n장문 이용시 "+smsArr[1]+"건 사용가능");
+				$(".popup_smsSend").css("display","none");
+				$(".popup_wrap").css("display","none");
+			}
+			
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	});
+}
+function get_smsRecordAll(info){
+	var dt;
+	$.ajax({
+		url:"${pageContext.request.contextPath}/smsRecordGetAll",
+		type: "get",
+		data:info,
+		async:false,
+		dataType:"json",
+		success:function(json){			
+			dt = json;
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	});
+	return dt;
+}
+
+function draw_smsRecord_table(info){
+	console.log(info);
+	var json = get_smsRecordAll(info);
+	var str = "";
+
+	str = "<table class='tbl_smsRecord'><tr><th>수신자</th><th>연락처</th><th>전송일시</th><th>발신자</th><th>전송여부</th><th>문자내용</th></tr>";
+	if(json.list.length == 0){
+		str += "<tr><td colspan='6'>등록된 정보가 없습니다.</td></tr>";
+	}else{
+		$(json.list).each(function(){
+			str += "<tr><td>"+this.receiver+"</td><td>"+this.phone+"</td><td>"+this.rdate+"</td>"
+				+ "<td>"+this.sender+"</td><td>"+this.state+"</td><td><div>"+this.content+"</div></td></tr>";
+		});
+		str += "</table>";
+		
+		str += "<div class='smsRecord_page'><ul>";
+		if(json.pageMaker.prev){
+			str += "<li><a href='page="+(json.pageMaker.startPage-1)+"&perPageNum=10&searchType="+json.pageMaker.cri.searchType+"&keyword="+json.pageMaker.cri.keyword+"'>&laquo;</a></li>";
+		}
+		for(var i=json.pageMaker.startPage; i<=json.pageMaker.endPage; i++){
+			
+			if(json.pageMaker.cri.page == i){
+				str += "<li class='active1'><a class='active2' href='page="+i+"&perPageNum=10&searchType="+json.pageMaker.cri.searchType+"&keyword="+json.pageMaker.cri.keyword+"'>"+i+"</a></li>";
+			}else{
+				str += "<li><a href='page="+i+"&perPageNum=10&searchType="+json.pageMaker.cri.searchType+"&keyword="+json.pageMaker.cri.keyword+"'>"+i+"</a></li>"
+			}
+		}
+		if(json.pageMaker.next){
+			str += "<li><a href='page="+(json.pageMaker.endPage+1)+"&perPageNum=10&searchType="+json.pageMaker.cri.searchType+"&keyword="+json.pageMaker.cri.keyword+"'>&raquo;</a></li>";
+		}
+		str += "</ul></div>";	
+	}
+	$(".time_table_wrap").html(str);
+	
+}
+
 $(function(){
 	//진료view에서 무슨 탭 눌러졌는지 기억하기 위한 변수
 	var storage_timetable_btn_num = 0;
@@ -3716,6 +3859,44 @@ $(function(){
 		var k=$("input[name='keyword']").val();
 		var keyword = encodeURIComponent(k);
 		draw_patient_table("page=1&perPageNum=5&searchType="+searchType+"&keyword="+keyword);
+		
+	});
+	
+	//환자테이블에서 문자 클릭
+	$(document).on("click", ".sms_open_btn", function(){
+		var name = $(this).parent().parent().find("td").eq(1).text();
+		var phone = $(this).parent().parent().find("td").eq(7).text(); 
+		
+		$(".popup_smsSend > table tr > td > input[name='name']").val(name);
+		$(".popup_smsSend > table tr > td > input[name='phone']").val(phone);
+		
+		$(".popup_wrap").css("display","block");
+		$(".popup_smsSend").css("display","block");
+	});
+	
+	//문자팝업에서 버튼 클릭
+	$(".popup_smsSend_btn_wrap > p").click(function(){
+		var idx = $(this).index();
+		if(idx == 0){
+			var now = new Date();
+			var beforePhone = $(".popup_smsSend > table tr > td > input[name='phone']").val().split("-");
+			var phone = beforePhone[0]+beforePhone[1]+beforePhone[2];
+			var content = $(".popup_smsSend > table tr > td > textarea").val();
+			var name = $(".popup_smsSend > table tr > td > input[name='name']").val();
+			var sender = $("#session_login_name").val();
+			var rdate = get_today()+" "+now.getHours()+":"+(now.getMinutes()>9?'':'0')+now.getMinutes();
+			var vo = {no:0, receiver:name, sender:sender, phone:$(".popup_smsSend > table tr > td > input[name='phone']").val(), rdate:rdate, state:"전송성공", content:content};
+			
+			post_smsSend(vo);
+		}else{
+			if($(".popup_reservation_info_view").css("display") == "block"){
+				$(".popup_smsSend").css("display","none");
+			}else{
+				$(".popup_smsSend").css("display","none");
+				$(".popup_wrap").css("display","none");
+			}
+			
+		}
 		
 	});
 	
@@ -3872,6 +4053,41 @@ $(function(){
 		$(".popup_wrap").css("display","none");
 	});
 	
+	//예약접수 화면에서 문자 클릭
+	$(".popup_reservation_info_view > table tr:nth-child(1) > td > button").click(function(){
+		var beforeName = $(".popup_reservation_info_view > h2 > span").text();
+		var splitArr = beforeName.split("(");
+		var name = splitArr[0];
+		var phone = $(this).parent().find("span").text();
+		var clinic = $(".popup_reservation_info_view > table tr:nth-child(3) td > span").text().split("/");
+		var clinic_name = clinic[0];
+		var rdate_rtime = $(".popup_reservation_info_view > table tr:nth-child(2) td > span").text().split(" ");
+		var rdate = rdate_rtime[0];
+		var rtime = rdate_rtime[1];
+		
+		$(".popup_smsSend > table tr > td > input[name='name']").val(name);
+		$(".popup_smsSend > table tr > td > input[name='phone']").val(phone);
+		
+		var type = $(".popup_reservation_info_view > h2").text();
+		var findStr = "진료";
+		var smsTemplate;
+		if(type.indexOf(findStr) != -1){
+			smsTemplate = get_smsTemplateByNo(1).content;
+		}else{
+			smsTemplate = get_smsTemplateByNo(2).content;
+		}
+		
+		smsTemplate = smsTemplate.replace("[병원명]", "원마취통증의학과");
+		smsTemplate = smsTemplate.replace("[환자명]", name);
+		smsTemplate = smsTemplate.replace("[진료명]", clinic_name);
+		smsTemplate = smsTemplate.replace("[예약날짜]", rdate);
+		smsTemplate = smsTemplate.replace("[시작시간]", rtime);
+		
+		$(".popup_smsSend > table tr > td > textarea").val(smsTemplate);
+		
+		$(".popup_smsSend").css("display","block");
+	});
+	
 	//당일예약현황 리스트에서 항목 눌렀을 때
 	$(document).on("click", ".popup_reservation_info_view > table tr:nth-child(5) > td > .res_info_view_today_list", function(){
 		var rno = $(this).find("input[name='rno']").val();
@@ -3929,7 +4145,7 @@ $(function(){
 		draw_normalOff_table("page=1&perPageNum=10&keyword1="+keyword1+"&keyword2="+keyword2+"&keyword3="+keyword3);
 	});
 	//일반휴무 페이징
-	$(document).on("click",".normal_off_page", function(e){
+	$(document).on("click",".normal_off_page > ul > li > a", function(e){
 		e.preventDefault();
 		draw_normalOff_table($(this).attr("href"));
 	});
@@ -3999,7 +4215,7 @@ $(function(){
 		draw_fixOff_table("page=1&perPageNum=10&keyword1="+keyword1+"&keyword2="+keyword2+"&keyword3="+keyword3+"&keyword4="+keyword4);
 	});
 	//고정휴무 페이징
-	$(document).on("click",".fix_off_page", function(e){
+	$(document).on("click",".fix_off_page > ul > li > a", function(e){
 		e.preventDefault();
 		draw_fixOff_table($(this).attr("href"));
 	})
@@ -4054,6 +4270,21 @@ $(function(){
 			$(".popup_wrap").css("display", "none");
 			$(".popup_fix_off_update").css("display","none");
 		}
+	});
+	
+	//문자이력 검색
+	$(".smsRecord_selectBox_wrap > .smsRecord_search_btn").click(function(){
+		var rdate = $(".smsRecord_selectBox_wrap > input[name='rdate']").val();		
+		var keyword = encodeURIComponent(rdate);
+
+		draw_smsRecord_table("page=1&perPageNum=10&searchType=n&keyword="+keyword);
+	});
+	
+	//문자이력 페이징
+	$(document).on("click",".smsRecord_page > ul > li > a", function(e){
+		e.preventDefault();
+		console.log($(this).attr("href"));
+		draw_smsRecord_table($(this).attr("href"));
 	});
 	
 	

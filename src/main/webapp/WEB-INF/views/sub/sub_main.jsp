@@ -3002,7 +3002,7 @@ function draw_normalOff_table(info){
 		str += "<div class='normal_off_page'><ul>";
 		if(json.pageMaker.prev){
 			str += "<li><a href='page="+(json.pageMaker.startPage-1)+"&perPageNum=10&keyword1="+json.pageMaker.cri.keyword1
-				+"&keyword2="+json.pageMaker.cri.keyword2+"&keyword3="+json.pageMaker.crk.keyword3+"'>&laquo;</a></li>";
+				+"&keyword2="+json.pageMaker.cri.keyword2+"&keyword3="+json.pageMaker.cri.keyword3+"'>&laquo;</a></li>";
 		}
 		for(var i=json.pageMaker.startPage; i<=json.pageMaker.endPage; i++){
 			
@@ -3016,7 +3016,7 @@ function draw_normalOff_table(info){
 		}
 		if(json.pageMaker.next){
 			str += "<li><a href='page="+(json.pageMaker.endPage+1)+"&perPageNum=10&keyword1="+json.pageMaker.cri.keyword1
-				+"&keyword2="+json.pageMaker.cri.keyword2+"&keyword3="+json.pageMaker.crk.keyword3+"'>&raquo;</a></li>";
+				+"&keyword2="+json.pageMaker.cri.keyword2+"&keyword3="+json.pageMaker.cri.keyword3+"'>&raquo;</a></li>";
 		}
 		str += "</ul></div>";	
 	}
@@ -4538,6 +4538,7 @@ $(function(){
 		draw_reservation_update_view(rno, rtype);
 	});
 	
+	//당일예약현황 리스트에서 항목 클릭했을 때
 	$(document).on("click", ".popup_reservation_info_view > table tr:nth-child(5) > td > .res_info_view_today_list", function(){
 		var rno = $(this).find("input[name='rno']").val();
 		var rtype = $(this).find("input[name='rtype']").val();
@@ -4772,8 +4773,7 @@ $(function(){
 		e.preventDefault();
 		console.log($(this).attr("href"));
 		draw_smsRecord_table($(this).attr("href"));
-		
-	})
+	});
 	
 	
 	//모든 페이징에서 선택된 페이지 클릭 막음

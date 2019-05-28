@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<% request.setCharacterEncoding("UTF-8");%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -48,10 +49,10 @@
 		background: #fff;
 	}
 	.header_inner2 > ul > li:first-child{
-		background: #fff;
+		background: #0068b8;
 	}
 	.header_inner2 > ul > li:first-child > a{
-		color: #5c5c5c; 
+		color: #fff; 
 		font-weight: bold;
 	}
 	.section{

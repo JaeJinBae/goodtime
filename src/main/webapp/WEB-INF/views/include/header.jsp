@@ -11,30 +11,39 @@
 		/* border-bottom:2px solid lightgray; */
 	}
 	.header_div{
-		width:95%;
+		width:100%;
 		/* padding:20px 0; */
 		margin: 0 auto;
 		overflow:hidden;
+		padding-right: 30px;
 	}
 	.header_inner1{
 		float:left;
+		width: 265px;
+		text-align: center;
+		background: #fff;
 	}
 	.header_inner2{
 		float:left;
-		margin-left:80px;
 	}
 	.header_inner3{
 		float: right;
+		
 	}
 	.header_inner, .header_inner > a{
 		font-size: 15px;
 	}
+	
 	.header_inner1 > a{
 		font-weight:bold;
 		color: #fff;
 		font-size:20px;
 		line-height: 62px;
 		letter-spacing: 24px;
+	}
+	.header_inner1 > a > img{
+		width: 200px;
+		margin-top: 5px;
 	}
 	.header_inner2 > ul{
 		overflow: hidden;
@@ -176,16 +185,16 @@ $(function(){
 		<c:if test="${sessionScope.id != null}">
 			<div class="header_inner header_inner1">
 				<c:if test="${sessionScope.type =='manager'}">
-					<a href="${pageContext.request.contextPath}/sub_main">LOGO</a>
+					<a href="${pageContext.request.contextPath}/sub_main"><img src="${pageContext.request.contextPath}/resources/images/logo.png"></a>
 				</c:if>
 				<c:if test="${sessionScope.type =='doctor'}">
-					<a href="${pageContext.request.contextPath}/doctor">LOGO</a>
+					<a href="${pageContext.request.contextPath}/doctor"><img src="${pageContext.request.contextPath}/resources/images/logo.png"></a>
 				</c:if>
 				<c:if test="${sessionScope.type =='therapist'}">
-					<a href="${pageContext.request.contextPath}/therapist">LOGO</a>
+					<a href="${pageContext.request.contextPath}/therapist"><img src="${pageContext.request.contextPath}/resources/images/logo.png"></a>
 				</c:if>
 				<c:if test="${sessionScope.type =='nurse'}">
-					<a href="${pageContext.request.contextPath}/nurse">LOGO</a>
+					<a href="${pageContext.request.contextPath}/nurse"><img src="${pageContext.request.contextPath}/resources/images/logo.png"></a>
 				</c:if>
 			</div>
 			<div class="header_inner header_inner2">

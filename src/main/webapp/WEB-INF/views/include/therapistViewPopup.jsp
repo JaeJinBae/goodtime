@@ -308,11 +308,11 @@
 			</tr>
 			<tr>
 				<th>▶ 생년월일</th>
-				<td><input type="text" name="birth"></td>
+				<td><input type="text" name="birth" placeholder="ex) 1999-09-09"></td>
 			</tr>
 			<tr>
 				<th>▶ 연락처</th>
-				<td><input type="text" name="phone"></td>
+				<td><input type="text" name="phone" placeholder="ex) 010-1234-1234"></td>
 			</tr>
 			<tr>
 				<th>▶ 아이디</th>

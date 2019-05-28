@@ -3,10 +3,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<% request.setCharacterEncoding("UTF-8");%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
+<meta charset="UTF-8"> 
 <title>원마취통증의학과 예약관리</title>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -48,10 +49,10 @@
 		background: #fff;
 	}
 	.header_inner2 > ul > li:first-child{
-		background: #fff;
+		background: #0068b8;
 	}
 	.header_inner2 > ul > li:first-child > a{
-		color: #5c5c5c; 
+		color: #fff; 
 		font-weight: bold;
 	}
 	.section{

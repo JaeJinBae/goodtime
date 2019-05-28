@@ -6,6 +6,7 @@
 <style>
 	.header_wrap{
 		width:100%;
+		min-width: 1200px;
 		background: #353c46;
 		/* border-bottom:2px solid lightgray; */
 	}

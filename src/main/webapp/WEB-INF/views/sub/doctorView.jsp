@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>insert title here</title>
+<title>원마취통증의학과 예약관리</title>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/common.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/calendar.js"></script>
@@ -1943,7 +1943,7 @@ function draw_week_calendar(date, emp, type, idxx){
 }
 
 function draw_week_timetable(etype, idxx){
-	var week_time=get_hospitalInfo_byDay("주간");
+	var week_time=get_hospitalInfo_byDay("7");
 	var week_sTime=Number(week_time.start_time)/60;
 	var week_eTime=Number(week_time.end_time)/60;
 	var employee = $(".week_select_box_wrap > select[name='employee']").val();
@@ -3344,7 +3344,7 @@ function draw_patient_week_calendar(type, idxx){
 
 function draw_patient_week_timetable(type, idxx){
 	
-	var week_time=get_hospitalInfo_byDay("주간");
+	var week_time=get_hospitalInfo_byDay("7");
 	var week_sTime=Number(week_time.start_time)/60;
 	var week_eTime=Number(week_time.end_time)/60;
 	var select_week = $("#pwt_week").val();

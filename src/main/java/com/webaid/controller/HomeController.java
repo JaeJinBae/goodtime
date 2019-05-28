@@ -390,8 +390,8 @@ public class HomeController {
 	public ResponseEntity<HospitalInfoVO> hospitalInfoGet(@PathVariable("date") String date) throws ParseException{
 		ResponseEntity<HospitalInfoVO> entity = null;
 		
-		if(date.equals("주간")){
-			HospitalInfoVO vo = hService.selectOne(date);
+		if(date.equals("7")){
+			HospitalInfoVO vo = hService.selectOne("주간");
 			entity = new ResponseEntity<HospitalInfoVO>(vo, HttpStatus.OK);
 		}else{
 			DayGetUtil getDay = new DayGetUtil();

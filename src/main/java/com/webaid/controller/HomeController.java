@@ -500,9 +500,20 @@ public class HomeController {
 		return "sub/employeeView";
 	}
 	
-	@RequestMapping(value="/employeeAllGet", method=RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> employeeAllGet(@ModelAttribute("cri") SearchCriteria cri) throws Exception{
+	@RequestMapping(value="/employeeAllGet", method=RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> employeeAllGet(@RequestBody Map<String, String> info) throws Exception{
 		logger.info("employee All Get");
+		
+		SearchCriteria cri = new SearchCriteria();
+		
+		if(info.size() == 0){
+
+		}else{
+			cri.setPage(Integer.parseInt(info.get("page")));
+			cri.setPerPageNum(Integer.parseInt(info.get("perPageNum")));
+			cri.setSearchType(info.get("searchType"));
+			cri.setKeyword(info.get("keyword"));
+		}
 		
 		ResponseEntity<Map<String, Object>> entity = null;
 		HashMap<String, Object> map=new HashMap<>();
@@ -623,9 +634,19 @@ public class HomeController {
 		return "sub/clinicView";
 	}
 	
-	@RequestMapping(value="/clinicAllGet", method=RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> clinicAllGet(@ModelAttribute("cri") SearchCriteria cri) throws Exception{
+	@RequestMapping(value="/clinicAllGet", method=RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> clinicAllGet(@RequestBody Map<String, String> info) throws Exception{
 		logger.info("clinic all Get");
+		SearchCriteria cri = new SearchCriteria();
+		
+		if(info.size() == 0){
+			
+		}else{
+			cri.setPage(Integer.parseInt(info.get("page")));
+			cri.setPerPageNum(Integer.parseInt(info.get("perPageNum")));
+			cri.setSearchType(info.get("searchType"));
+			cri.setKeyword(info.get("keyword"));
+		}
 		
 		ResponseEntity<Map<String, Object>> entity = null;
 		HashMap<String, Object> map=new HashMap<>();
@@ -1492,9 +1513,22 @@ public class HomeController {
 		return entity;
 	}
 	
-	@RequestMapping(value="/reservationRecordGetAll", method=RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> reservationRecordGetAll(@ModelAttribute("cri") SearchCriteriaRR cri){
+	@RequestMapping(value="/reservationRecordGetAll", method=RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> reservationRecordGetAll(@RequestBody Map<String, String> info){
 		logger.info("reservation record get all");
+		SearchCriteriaRR cri = new SearchCriteriaRR();
+		
+		if(info.size() == 0){
+			System.out.println("empty");
+			System.out.println(info);
+		}else{
+			cri.setPage(Integer.parseInt(info.get("page")));
+			cri.setPerPageNum(Integer.parseInt(info.get("perPageNum")));
+			cri.setKeyword1(info.get("keyword1"));
+			cri.setKeyword2(info.get("keyword2"));
+			cri.setKeyword3(info.get("keyword3"));
+			cri.setKeyword4(info.get("keyword4"));
+		}
 		
 		ResponseEntity<Map<String, Object>> entity = null;
 		HashMap<String, Object> map=new HashMap<>();
@@ -1564,9 +1598,20 @@ public class HomeController {
 		return entity;
 	}
 	
-	@RequestMapping(value="/reservationUpdateRecordGetAll", method=RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> reservationUpdateRecordGetAll(@ModelAttribute("cri") SearchCriteria cri){
+	@RequestMapping(value="/reservationUpdateRecordGetAll", method=RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> reservationUpdateRecordGetAll(@RequestBody Map<String, String> info){
 		logger.info("reservation update record get all");
+		SearchCriteria cri = new SearchCriteria();
+		
+		if(info.size() == 0){
+			System.out.println("empty");
+			System.out.println(info);
+		}else{
+			cri.setPage(Integer.parseInt(info.get("page")));
+			cri.setPerPageNum(Integer.parseInt(info.get("perPageNum")));
+			cri.setSearchType(info.get("searchType"));
+			cri.setKeyword(info.get("keyword"));
+		}
 		
 		ResponseEntity<Map<String, Object>> entity = null;
 		HashMap<String, Object> map=new HashMap<>();
@@ -1610,8 +1655,23 @@ public class HomeController {
 	}
 	
 	
-	@RequestMapping(value="/normalOffGetAll", method=RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> normalOffGetAll(@ModelAttribute("cri") SearchCriteriaRR cri) throws ParseException{
+	@RequestMapping(value="/normalOffGetAll", method=RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> normalOffGetAll(@RequestBody Map<String, String> info) throws ParseException{
+		SearchCriteriaRR cri = new SearchCriteriaRR();
+		
+		if(info.size() == 0){
+			System.out.println("empty");
+			System.out.println(info);
+		}else{
+			cri.setPage(Integer.parseInt(info.get("page")));
+			cri.setPerPageNum(Integer.parseInt(info.get("perPageNum")));
+			cri.setKeyword1(info.get("keyword1"));
+			cri.setKeyword2(info.get("keyword2"));
+			cri.setKeyword3(info.get("keyword3"));
+			cri.setKeyword4(info.get("keyword4"));
+		}
+		
+		
 		ResponseEntity<Map<String, Object>> entity = null;
 		HashMap<String, Object> map = new HashMap<>();
 		
@@ -1741,8 +1801,23 @@ public class HomeController {
 		return entity;
 	}
 	
-	@RequestMapping(value="/fixOffGetAll", method=RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> fixOffGetAll(@ModelAttribute("cri") SearchCriteriaRR cri) throws ParseException{
+	@RequestMapping(value="/fixOffGetAll", method=RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> fixOffGetAll(@RequestBody Map<String, String> info) throws ParseException{
+		 SearchCriteriaRR cri = new SearchCriteriaRR();
+		 
+		 if(info.size() == 0){
+				System.out.println("empty");
+				System.out.println(info);
+			}else{
+				cri.setPage(Integer.parseInt(info.get("page")));
+				cri.setPerPageNum(Integer.parseInt(info.get("perPageNum")));
+				cri.setKeyword1(info.get("keyword1"));
+				cri.setKeyword2(info.get("keyword2"));
+				cri.setKeyword3(info.get("keyword3"));
+				cri.setKeyword4(info.get("keyword4"));
+			}
+		
+		
 		ResponseEntity<Map<String, Object>> entity = null;
 		HashMap<String, Object> map = new HashMap<>();
 		
@@ -2088,9 +2163,21 @@ public class HomeController {
 		return entity;
 	}
 	
-	@RequestMapping(value="/smsRecordGetAll", method=RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> smsRecordGetAll(@ModelAttribute("cri") SearchCriteria cri){
+	@RequestMapping(value="/smsRecordGetAll", method=RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> smsRecordGetAll(@RequestBody Map<String, String> info){
 		logger.info("sms record get All");
+		SearchCriteria cri = new SearchCriteria();
+		
+		if(info.size() == 0){
+			System.out.println("empty");
+			System.out.println(info);
+		}else{
+			cri.setPage(Integer.parseInt(info.get("page")));
+			cri.setPerPageNum(Integer.parseInt(info.get("perPageNum")));
+			cri.setSearchType(info.get("searchType"));
+			cri.setKeyword(info.get("keyword"));
+		}
+		
 		ResponseEntity<Map<String, Object>> entity = null;
 		Map<String, Object> map = new HashMap<>();
 		System.out.println(cri.getPage());

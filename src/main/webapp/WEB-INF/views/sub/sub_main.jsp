@@ -2653,10 +2653,11 @@ function get_reservation_record_all(info){
 	var dt;
 	$.ajax({
 		url:"${pageContext.request.contextPath}/reservationRecordGetAll",
-		type:"get",
-		data:info,
-		dataType:"json",
+		type:"post",
+		data:JSON.stringify(info),
 		async:false,
+		contentType : "application/json; charset=UTF-8",
+		dataType:"json",
 		success:function(json){
 			dt = json;
 		},
@@ -2749,10 +2750,11 @@ function get_reservation_update_record_all(info){
 	var dt;
 	$.ajax({
 		url:"${pageContext.request.contextPath}/reservationUpdateRecordGetAll",
-		type:"get",
-		data:info,
-		dataType:"json",
+		type: "post",
+		data:JSON.stringify(info),
 		async:false,
+		contentType : "application/json; charset=UTF-8",
+		dataType:"json",
 		success:function(json){
 			dt = json;
 		},
@@ -2826,10 +2828,11 @@ function get_normalOff_all(info){
 	var dt;
 	$.ajax({
 		url:"${pageContext.request.contextPath}/normalOffGetAll",
-		type:"get",
-		data:info,
-		dataType:"json",
+		type: "post",
+		data:JSON.stringify(info),
 		async:false,
+		contentType : "application/json; charset=UTF-8",
+		dataType:"json",
 		success:function(json){
 			dt = json;
 		},
@@ -3134,8 +3137,9 @@ function get_fixOff_all(info){
 	var dt;
 	$.ajax({
 		url:"${pageContext.request.contextPath}/fixOffGetAll",
-		type:"get",
-		data:info,
+		type:"post",
+		data:JSON.stringify(info),
+		contentType : "application/json; charset=UTF-8",
 		dataType:"json",
 		async:false,
 		success:function(json){
@@ -3768,10 +3772,11 @@ function get_smsRecordAll(info){
 	var dt;
 	$.ajax({
 		url:"${pageContext.request.contextPath}/smsRecordGetAll",
-		type: "get",
-		data:info,
-		async:false,
+		type:"post",
+		data:JSON.stringify(info),
+		contentType : "application/json; charset=UTF-8",
 		dataType:"json",
+		async:false,
 		success:function(json){			
 			dt = json;
 		},
@@ -4031,9 +4036,7 @@ $(function(){
 	//환자table 환자 검색
 	$("#searchBtn").click(function(){
     	var s=$("select[name='searchType']").val();
-		//var searchType = encodeURIComponent(s);
 		var k=$("input[name='keyword']").val();
-		//var keyword = encodeURIComponent(k);
 		
 		var page=1;
 		var perPageNum=5;

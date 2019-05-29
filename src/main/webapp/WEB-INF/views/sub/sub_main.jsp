@@ -918,14 +918,13 @@ function get_day(date){
 }
 
 function get_patient_all(info){
-	console.log(info);
 	var dt;
 	$.ajax({
 		url:"${pageContext.request.contextPath}/patientAllGet",
-		type: "get",
-		data:info,
-		contentType : "application/json; charset=euc-kr",
+		type: "post",
+		data:JSON.stringify(info),
 		async:false,
+		contentType : "application/json; charset=UTF-8",
 		dataType:"json",
 		success:function(json){			
 			dt = json;
@@ -3859,9 +3858,9 @@ $(function(){
 		$(".calendar_select_date").val(get_today());
 		draw_time_table_by_case(storage_timetable_btn_num); */
 	});
-	
+	var o={}
 	//환자table 생성
-	draw_patient_table();
+	draw_patient_table(o);
 	
 	draw_time_table_by_case(0); 
 	
@@ -3922,7 +3921,31 @@ $(function(){
 	//환자table에서 페이지 클릭
 	$(document).on("click", ".page > ul > li > a", function(e){
 		e.preventDefault();
-		draw_patient_table($(this).attr("href"));
+		var page="";
+		var perPageNum="";
+		var searchType="";
+		var keyword="";
+		
+		var href_txt = $(this).attr("href");
+		var splitList = href_txt.split("&");
+		
+		for(var i=0; i<splitList.length; i++){
+			console.log(splitList[i].split("=")[1]);
+			if(i==0){
+				page=splitList[i].split("=")[1];
+			}else if(i==1){
+				perPageNum=splitList[i].split("=")[1];
+			}else if(i==2){
+				searchType = splitList[i].split("=")[1];
+			}else if(i==3){
+				keyword = splitList[i].split("=")[1];
+			}
+		}
+		
+		var info = {page:page, perPageNum:perPageNum, searchType:searchType, keyword:keyword};
+		
+		
+		draw_patient_table(info);
 	});
 	
 	$(document).on("click", ".reservation_record_page > ul > li > a", function(e){
@@ -4011,8 +4034,14 @@ $(function(){
 		//var searchType = encodeURIComponent(s);
 		var k=$("input[name='keyword']").val();
 		//var keyword = encodeURIComponent(k);
-		console.log(s+"/"+k);
-		draw_patient_table("page=1&perPageNum=5&searchType="+s+"&keyword="+k);
+		
+		var page=1;
+		var perPageNum=5;
+		var searchType=s;
+		var keyword=k;
+		
+		var info = {page:page, perPageNum:perPageNum, searchType:searchType, keyword:keyword};
+		draw_patient_table(info);
 	});
 	
 	//환자테이블에서 정보 수정 클릭했을 때

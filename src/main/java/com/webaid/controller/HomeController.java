@@ -404,22 +404,25 @@ public class HomeController {
 		return entity;
 	}
 	
-	@RequestMapping(value="/patientAllGet", method=RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> patientAllGet(@ModelAttribute("cri") SearchCriteria5 cri) throws Exception{
+	@RequestMapping(value="/patientAllGet", method=RequestMethod.POST)
+	public ResponseEntity<Map<String, Object>> patientAllGet(@RequestBody Map<String, String> info) throws Exception{
 		logger.info("patient all Get");
-		
+		SearchCriteria5 cri = new SearchCriteria5();
+		if(info.size() == 0){
+			System.out.println("empty");
+			System.out.println(info);
+		}else{
+			cri.setPage(Integer.parseInt(info.get("page")));
+			cri.setPerPageNum(Integer.parseInt(info.get("perPageNum")));
+			cri.setSearchType(info.get("searchType"));
+			cri.setKeyword(info.get("keyword"));
+		}
 		ResponseEntity<Map<String, Object>> entity = null;
 		HashMap<String, Object> map=new HashMap<>();
 		
 		List<PatientVO> patientListAll = pService.listSearch(cri);
 
-		System.out.println("환자에서 cri값\n"+cri);
-		if(cri.getKeyword() != null){
-			if(cri.getKeyword().equals("null") || cri.getKeyword().equals("")){
-				cri.setKeyword(URLDecoder.decode(cri.getKeyword(), "utf-8"));
-			} 
-			cri.setKeyword(URLDecoder.decode(cri.getKeyword(), "utf-8"));
-		}
+		
 		PageMaker5 pageMaker5 = new PageMaker5();
 		pageMaker5.setCri(cri);
 		pageMaker5.makeSearch(cri.getPage());

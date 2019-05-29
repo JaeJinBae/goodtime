@@ -1712,8 +1712,8 @@ public class HomeController {
 		return entity;
 	}
 	
-	@RequestMapping(value="/normalOffUpdate", method=RequestMethod.GET)
-	public ResponseEntity<String> normalOffUpdate(NormalOffVO vo){
+	@RequestMapping(value="/normalOffUpdate", method=RequestMethod.POST)
+	public ResponseEntity<String> normalOffUpdate(@RequestBody NormalOffVO vo){
 		ResponseEntity<String> entity = null;
 		
 		try {
@@ -1852,7 +1852,7 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value="/fixOffRegister", method=RequestMethod.GET)
-	public ResponseEntity<String> fixOffRegister(FixOffVO vo){
+	public ResponseEntity<String> fixOffRegister(@RequestBody FixOffVO vo){
 		ResponseEntity<String> entity = null;
 		try {
 			foService.register(vo);
@@ -1865,7 +1865,7 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value="/fixOffUpdate", method=RequestMethod.GET)
-	public ResponseEntity<String> fixOffUpdate(FixOffVO vo){
+	public ResponseEntity<String> fixOffUpdate(@RequestBody FixOffVO vo){
 		ResponseEntity<String> entity = null;
 		System.out.println("받은 vo= \n"+vo);
 		try {

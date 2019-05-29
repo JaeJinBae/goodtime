@@ -2998,9 +2998,10 @@ function post_normalOff_register(){
 	}
 	$.ajax({
 		url:"${pageContext.request.contextPath}/normalOffRegister",
-		type:"get",
-		data:vo,
+		type:"post",
+		data:JSON.stringify(vo),
 		dataType:"text",
+		contentType : "application/json; charset=UTF-8",
 		async:false,
 		success:function(json){
 			alert("휴무 등록이 완료되었습니다.");
@@ -3034,9 +3035,10 @@ function post_normalOff_update(no){
 	
 	$.ajax({
 		url:"${pageContext.request.contextPath}/normalOffUpdate",
-		type:"get",
-		data:vo,
+		type:"post",
+		data:JSON.stringify(vo),
 		dataType:"text",
+		contentType : "application/json; charset=UTF-8",
 		async:false,
 		success:function(json){
 			alert("휴무 수정이 완료되었습니다.");
@@ -3256,9 +3258,10 @@ function post_fixOff_register(){
 	}
 	$.ajax({
 		url:"${pageContext.request.contextPath}/fixOffRegister", 
-		type:"get",
-		data:vo,
+		type:"post",
+		data:JSON.stringify(vo),
 		dataType:"text",
+		contentType : "application/json; charset=UTF-8",
 		async:false,
 		success:function(json){
 			alert("고정휴무 등록이 완료되었습니다.");
@@ -3295,9 +3298,10 @@ function post_fixOff_update(no){
 	
 	$.ajax({
 		url:"${pageContext.request.contextPath}/fixOffUpdate",
-		type:"get",
-		data:vo,
+		type:"post",
+		data:JSON.stringify(vo),
 		dataType:"text",
+		contentType : "application/json; charset=UTF-8",
 		async:false,
 		success:function(json){
 			alert("고정휴무 수정이 완료되었습니다.");

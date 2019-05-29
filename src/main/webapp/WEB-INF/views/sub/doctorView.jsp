@@ -3029,7 +3029,8 @@ function post_normalOff_register(){
 			
 			$(".popup_normal_off_register").css("display","none");
 			$(".popup_wrap").css("display","none");
-			draw_normalOff_table();
+			var o={};
+			draw_normalOff_table(o);
 		},
 		error:function(request,status,error){
 			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -3066,7 +3067,8 @@ function post_normalOff_update(no){
 			
 			$(".popup_normal_off_update").css("display","none");
 			$(".popup_wrap").css("display","none");
-			draw_normalOff_table();
+			var o={};
+			draw_normalOff_table(o);
 		},
 		error:function(request,status,error){
 			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -3291,7 +3293,8 @@ function post_fixOff_register(){
 			
 			$(".popup_fix_off_register").css("display","none");
 			$(".popup_wrap").css("display","none");
-			draw_fixOff_table();
+			var o={};
+			draw_fixOff_table(o);
 		},
 		error:function(request,status,error){
 			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -3332,7 +3335,8 @@ function post_fixOff_update(no){
 			
 			$(".popup_fix_off_update").css("display","none");
 			$(".popup_wrap").css("display","none");
-			draw_fixOff_table();
+			var o={};
+			draw_fixOff_table(o);
 		},
 		error:function(request,status,error){
 			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);

@@ -3060,7 +3060,7 @@ function post_normalOff_register(){
 		type:"get",
 		data:vo,
 		dataType:"text",
-		contentType: 'application/x-www-form-urlencoded; charset=utf-8',
+		contentType : "application/json; charset=UTF-8",
 		async:false,
 		success:function(json){
 			alert("휴무 등록이 완료되었습니다.");

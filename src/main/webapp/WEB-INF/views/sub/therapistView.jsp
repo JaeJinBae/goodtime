@@ -982,8 +982,8 @@ function post_patient_register(patient){
 			$(".popup_patient_register > table tr td > input[name='birth']").val("");
 			$(".popup_patient_register > table tr td > select[name='main_doctor'] option[value='']").prop("selected",true);
 			$(".popup_patient_register > table tr td > input[name='memo']").val("");
-			
-			draw_patient_table();
+			var o={};
+			draw_patient_table(o);
 		},
 		error:function(request,status,error){
 			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -1018,7 +1018,8 @@ function post_patient_update_info(patient){
 		success:function(json){
 			$(".popup_patientUpdate").css("display", "none");
 			$(".popup_wrap").css("display","none");
-			draw_patient_table();
+			var o={};
+			draw_patient_table(o);
 		},
 		error:function(request,status,error){
 			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -1124,6 +1125,7 @@ function draw_time_table_by_case(idx){
 	$(".reservation_update_record_selectBox_wrap").css("display","none");
 	$(".normal_off_selectBox_wrap").css("display","none");
 	$(".fix_off_selectBox_wrap").css("display","none");
+	var o={};
 	
 	switch (idx){
 		case 0:
@@ -1179,19 +1181,19 @@ function draw_time_table_by_case(idx){
 			$(".week_select_box_wrap").css("display","none");
 			$(".reservation_record_selectBox_wrap").css("display","block");
 			$(".time_table_wrap").html("");
-			draw_reservation_record_table();
+			draw_reservation_record_table(o);
 			break;
 		case 8:
 			$(".week_select_box_wrap").css("display","none");
 			$(".reservation_update_record_selectBox_wrap").css("display", "block");
 			$(".time_table_wrap").html("");
-			draw_reservation_update_record_table();
+			draw_reservation_update_record_table(o);
 			break;
 		case 9:
 			$(".week_select_box_wrap").css("display","none");
 			$(".normal_off_selectBox_wrap").css("display","block");
 			$(".time_table_wrap").html("");
-			draw_normalOff_table();
+			draw_normalOff_table(o);
 			var todayArr = select_date.split("-");
 			
 			$(".normal_off_selectBox_wrap > select[name='year'] > option[value='"+todayArr[0]+"']").prop("selected", true);
@@ -1201,7 +1203,7 @@ function draw_time_table_by_case(idx){
 			$(".week_select_box_wrap").css("display","none");
 			$(".fix_off_selectBox_wrap").css("display","block");
 			$(".time_table_wrap").html("");
-			draw_fixOff_table();
+			draw_fixOff_table(o);
 			var todayArr = select_date.split("-");
 			
 			$(".fix_off_selectBox_wrap > select[name='year'] > option[value='"+todayArr[0]+"']").prop("selected", true);
@@ -3045,7 +3047,8 @@ $(function(){
 	});
 	
 	//환자table 생성
-	draw_patient_table();
+	var o={};
+	draw_patient_table(o);
 	
 	draw_time_table_by_case(0); 
 	
@@ -3106,22 +3109,79 @@ $(function(){
 	//환자table에서 페이지 클릭
 	$(document).on("click", ".page > ul > li > a", function(e){
 		e.preventDefault();
-		draw_patient_table($(this).attr("href"));
+		var page="";
+		var perPageNum="";
+		var searchType="";
+		var keyword="";
+		
+		var href_txt = $(this).attr("href");
+		var splitList = href_txt.split("&");
+		
+		for(var i=0; i<splitList.length; i++){
+			console.log(splitList[i].split("=")[1]);
+			if(i==0){
+				page=splitList[i].split("=")[1];
+			}else if(i==1){
+				perPageNum=splitList[i].split("=")[1];
+			}else if(i==2){
+				searchType = splitList[i].split("=")[1];
+			}else if(i==3){
+				keyword = splitList[i].split("=")[1];
+			}
+		}
+		
+		var info = {page:page, perPageNum:perPageNum, searchType:searchType, keyword:keyword};
+		
+		draw_patient_table(info);
 	});
 	
 	$(document).on("click", ".reservation_record_page > ul > li > a", function(e){
 		e.preventDefault();
-		draw_reservation_record_table($(this).attr("href"));
+
+		var page="";
+		var perPageNum="";
+		var searchType="";
+		var keyword1="";
+		var keyword2="";
+		var keyword3="";
+		var keyword4="";
+		
+		var href_txt = $(this).attr("href");
+		var splitList = href_txt.split("&");
+		
+		for(var i=0; i<splitList.length; i++){
+			console.log(splitList[i].split("=")[1]);
+			if(i==0){
+				page=splitList[i].split("=")[1];
+			}else if(i==1){
+				perPageNum=splitList[i].split("=")[1];
+			}else if(i==2){
+				keyword1 = splitList[i].split("=")[1];
+			}else if(i==3){
+				keyword2 = splitList[i].split("=")[1];
+			}else if(i==4){
+				keyword3 = splitList[i].split("=")[1];
+			}else if(i==5){
+				keyword4 = splitList[i].split("=")[1];
+			}
+		}
+		
+		var info = {page:page, perPageNum:perPageNum, keyword1:keyword1, keyword2:keyword2, keyword3:keyword3, keyword4:keyword4};
+		draw_reservation_record_table(info);
 	});
 	
 	//환자table 환자 검색
 	$("#searchBtn").click(function(){
-    	var s=$("select[name='searchType']").val();
-		var searchType = encodeURIComponent(s);
+		var s=$("select[name='searchType']").val();
 		var k=$("input[name='keyword']").val();
-		var keyword = encodeURIComponent(k);
-		draw_patient_table("page=1&perPageNum=5&searchType="+searchType+"&keyword="+keyword);
 		
+		var page=1;
+		var perPageNum=5;
+		var searchType=s;
+		var keyword=k;
+		
+		var info = {page:page, perPageNum:perPageNum, searchType:searchType, keyword:keyword};
+		draw_patient_table(info);
 	});
 	
 	//헤더에 있는 환자이름 버튼

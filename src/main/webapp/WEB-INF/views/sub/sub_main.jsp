@@ -2603,9 +2603,12 @@ function update_reservation_deskState(rtype, rno, state, writer, regdate, stbn){
 		reason = "_";
 	}
 
+	var info = {rtype:rtype, rno:rno, state:state, writer:writer, regdate:regdate, reason:reason};
 	$.ajax({
-		url:"${pageContext.request.contextPath}/updateReservationDeskState/"+rtype+"/"+rno+"/"+state+"/"+writer+"/"+regdate+"/"+reason,
+		url:"${pageContext.request.contextPath}/updateReservationDeskState",
 		type:"post",
+		data:JSON.stringify(info),
+		contentType : "application/json; charset=UTF-8",
 		dataType:"text",
 		async:false,
 		success:function(json){
@@ -3057,6 +3060,7 @@ function post_normalOff_register(){
 		type:"get",
 		data:vo,
 		dataType:"text",
+		contentType: 'application/x-www-form-urlencoded; charset=utf-8',
 		async:false,
 		success:function(json){
 			alert("휴무 등록이 완료되었습니다.");

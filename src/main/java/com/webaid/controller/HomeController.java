@@ -1310,122 +1310,122 @@ public class HomeController {
 		return entity;
 	}
 	
-	@RequestMapping(value="/updateReservationDeskState/{rtype}/{rno}/{state}/{writer}/{regdate}/{reason}", method=RequestMethod.POST)
-	public ResponseEntity<String> updateReservationDeskState(@PathVariable("rtype") String rtype, @PathVariable("rno") String rno, @PathVariable("state") String state, @PathVariable("writer") String writer, @PathVariable("regdate") String regdate, @PathVariable("reason") String reason){
+	@RequestMapping(value="/updateReservationDeskState", method=RequestMethod.POST)
+	public ResponseEntity<String> updateReservationDeskState(@RequestBody Map<String, String> info){
 		ResponseEntity<String> entity = null;
-		System.out.println(rtype+"\n"+rno);
+		System.out.println(info.get("rtype")+"\n"+info.get("rno"));
 		try {
-			if(rtype.equals("nc")){
+			if(info.get("rtype").equals("nc")){
 				NormalClinicReservationVO vo = new NormalClinicReservationVO();
-				vo.setRno(Integer.parseInt(rno));
-				vo.setDesk_state(state);
-				vo.setDesk_state_writer(writer);
-				vo.setDesk_state_regdate(regdate);
-				vo.setResult(state);
-				if(state.equals("예약취소")){
-					vo.setResult_memo(reason);
+				vo.setRno(Integer.parseInt(info.get("rno")));
+				vo.setDesk_state(info.get("state"));
+				vo.setDesk_state_writer(info.get("writer"));
+				vo.setDesk_state_regdate(info.get("regdate"));
+				vo.setResult(info.get("state"));
+				if(info.get("state").equals("예약취소")){
+					vo.setResult_memo(info.get("reason"));
 				}else{
 					vo.setResult_memo("");
 				}
 				ncrService.updateDeskState(vo);
 				
 				ReservationRecordVO rrvo = new ReservationRecordVO();
-				rrvo.setRno(Integer.parseInt(rno));
-				rrvo.setRtype(rtype);
+				rrvo.setRno(Integer.parseInt(info.get("rno")));
+				rrvo.setRtype(info.get("rtype"));
 				rrvo.setResult_memo(" ");
-				if(state.equals("예약완료")){
+				if(info.get("state").equals("예약완료")){
 					rrvo.setReception_info(" ");
-				}else if(state.equals("접수완료")){
-					rrvo.setReception_info(regdate+" "+writer);
-				}else if(state.equals("예약취소")){
-					rrvo.setReception_info("예약취소 "+regdate+" "+writer);
-					rrvo.setResult_memo(reason);
+				}else if(info.get("state").equals("접수완료")){
+					rrvo.setReception_info(info.get("regdate")+" "+info.get("writer"));
+				}else if(info.get("state").equals("예약취소")){
+					rrvo.setReception_info("예약취소 "+info.get("regdate")+" "+info.get("writer"));
+					rrvo.setResult_memo(info.get("reason"));
 				}
-				rrvo.setResult(state);
+				rrvo.setResult(info.get("state"));
 				rrService.updateReceptionInfo(rrvo);
-			}else if(rtype.equals("nt")){
+			}else if(info.get("rtype").equals("nt")){
 				NormalTherapyReservationVO vo = new NormalTherapyReservationVO();
-				vo.setRno(Integer.parseInt(rno));
-				vo.setDesk_state(state);
-				vo.setDesk_state_writer(writer);
-				vo.setDesk_state_regdate(regdate);
-				vo.setResult(state);
-				if(state.equals("예약취소")){
-					vo.setResult_memo(reason);
+				vo.setRno(Integer.parseInt(info.get("rno")));
+				vo.setDesk_state(info.get("state"));
+				vo.setDesk_state_writer(info.get("writer"));
+				vo.setDesk_state_regdate(info.get("regdate"));
+				vo.setResult(info.get("state"));
+				if(info.get("state").equals("예약취소")){
+					vo.setResult_memo(info.get("reason"));
 				}else{
 					vo.setResult_memo("");
 				}
 				ntrService.updateDeskState(vo);
 				
 				ReservationRecordVO rrvo = new ReservationRecordVO();
-				rrvo.setRno(Integer.parseInt(rno));
-				rrvo.setRtype(rtype);
+				rrvo.setRno(Integer.parseInt(info.get("rno")));
+				rrvo.setRtype(info.get("rtype"));
 				rrvo.setResult_memo(" ");
-				if(state.equals("예약완료")){
+				if(info.get("state").equals("예약완료")){
 					rrvo.setReception_info(" ");
-				}else if(state.equals("접수완료")){
-					rrvo.setReception_info(regdate+" "+writer);
-				}else if(state.equals("예약취소")){
-					rrvo.setReception_info("예약취소 "+regdate+" "+writer);
-					rrvo.setResult_memo(reason);
+				}else if(info.get("state").equals("접수완료")){
+					rrvo.setReception_info(info.get("regdate")+" "+info.get("writer"));
+				}else if(info.get("state").equals("예약취소")){
+					rrvo.setReception_info("예약취소 "+info.get("regdate")+" "+info.get("writer"));
+					rrvo.setResult_memo(info.get("reason"));
 				}
-				rrvo.setResult(state);
+				rrvo.setResult(info.get("state"));
 				rrService.updateReceptionInfo(rrvo);
-			}else if(rtype.equals("fc")){
+			}else if(info.get("rtype").equals("fc")){
 				FixClinicReservationVO vo = new FixClinicReservationVO();
-				vo.setRno(Integer.parseInt(rno));
-				vo.setDesk_state(state);
-				vo.setDesk_state_writer(writer);
-				vo.setDesk_state_regdate(regdate);
-				vo.setResult(state);
-				if(state.equals("예약취소")){
-					vo.setResult_memo(reason);
+				vo.setRno(Integer.parseInt(info.get("rno")));
+				vo.setDesk_state(info.get("state"));
+				vo.setDesk_state_writer(info.get("writer"));
+				vo.setDesk_state_regdate(info.get("regdate"));
+				vo.setResult(info.get("state"));
+				if(info.get("state").equals("예약취소")){
+					vo.setResult_memo(info.get("reason"));
 				}else{
 					vo.setResult_memo("");
 				}
 				fcrService.updateDeskState(vo);
 				
 				ReservationRecordVO rrvo = new ReservationRecordVO();
-				rrvo.setRno(Integer.parseInt(rno));
-				rrvo.setRtype(rtype);
+				rrvo.setRno(Integer.parseInt(info.get("rno")));
+				rrvo.setRtype(info.get("rtype"));
 				rrvo.setResult_memo(" ");
-				if(state.equals("예약완료")){
+				if(info.get("state").equals("예약완료")){
 					rrvo.setReception_info(" ");
-				}else if(state.equals("접수완료")){
-					rrvo.setReception_info(regdate+" "+writer);
-				}else if(state.equals("예약취소")){
-					rrvo.setReception_info("예약취소 "+regdate+" "+writer);
-					rrvo.setResult_memo(reason);
+				}else if(info.get("state").equals("접수완료")){
+					rrvo.setReception_info(info.get("regdate")+" "+info.get("writer"));
+				}else if(info.get("state").equals("예약취소")){
+					rrvo.setReception_info("예약취소 "+info.get("regdate")+" "+info.get("writer"));
+					rrvo.setResult_memo(info.get("reason"));
 				}
-				rrvo.setResult(state);
+				rrvo.setResult(info.get("state"));
 				rrService.updateReceptionInfo(rrvo);
-			}else if(rtype.equals("ft")){
+			}else if(info.get("rtype").equals("ft")){
 				FixTherapyReservationVO vo = new FixTherapyReservationVO();
-				vo.setRno(Integer.parseInt(rno));
-				vo.setDesk_state(state);
-				vo.setDesk_state_writer(writer);
-				vo.setDesk_state_regdate(regdate);
-				vo.setResult(state);
-				if(state.equals("예약취소")){
-					vo.setResult_memo(reason);
+				vo.setRno(Integer.parseInt(info.get("rno")));
+				vo.setDesk_state(info.get("state"));
+				vo.setDesk_state_writer(info.get("writer"));
+				vo.setDesk_state_regdate(info.get("regdate"));
+				vo.setResult(info.get("state"));
+				if(info.get("state").equals("예약취소")){
+					vo.setResult_memo(info.get("reason"));
 				}else{
 					vo.setResult_memo("");
 				}
 				ftrService.updateDeskState(vo);
 				
 				ReservationRecordVO rrvo = new ReservationRecordVO();
-				rrvo.setRno(Integer.parseInt(rno));
-				rrvo.setRtype(rtype);
+				rrvo.setRno(Integer.parseInt(info.get("rno")));
+				rrvo.setRtype(info.get("rtype"));
 				rrvo.setResult_memo(" ");
-				if(state.equals("예약완료")){
+				if(info.get("state").equals("예약완료")){
 					rrvo.setReception_info(" ");
-				}else if(state.equals("접수완료")){
-					rrvo.setReception_info(regdate+" "+writer);
-				}else if(state.equals("예약취소")){
-					rrvo.setReception_info("예약취소 "+regdate+" "+writer);
-					rrvo.setResult_memo(reason);
+				}else if(info.get("state").equals("접수완료")){
+					rrvo.setReception_info(info.get("regdate")+" "+info.get("writer"));
+				}else if(info.get("state").equals("예약취소")){
+					rrvo.setReception_info("예약취소 "+info.get("regdate")+" "+info.get("writer"));
+					rrvo.setResult_memo(info.get("reason"));
 				}
-				rrvo.setResult(state);
+				rrvo.setResult(info.get("state"));
 				rrService.updateReceptionInfo(rrvo);
 			}
 			entity = new ResponseEntity<String>("ok", HttpStatus.OK);

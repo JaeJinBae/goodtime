@@ -10,6 +10,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.text.ParseException;
@@ -413,7 +414,12 @@ public class HomeController {
 		List<PatientVO> patientListAll = pService.listSearch(cri);
 
 		System.out.println("환자에서 cri값\n"+cri);
-		System.out.println();
+		if(cri.getKeyword() != null){
+			if(cri.getKeyword().equals("null") || cri.getKeyword().equals("")){
+				URLDecoder.decode(cri.getKeyword(), "utf-8");
+			}
+			URLDecoder.decode(cri.getKeyword(), "utf-8");
+		}
 		PageMaker5 pageMaker5 = new PageMaker5();
 		pageMaker5.setCri(cri);
 		pageMaker5.makeSearch(cri.getPage());

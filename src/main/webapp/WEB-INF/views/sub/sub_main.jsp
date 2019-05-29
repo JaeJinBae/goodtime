@@ -4013,8 +4013,6 @@ $(function(){
 		var keyword = encodeURIComponent(k);
 		console.log(searchType+"/"+keyword);
 		draw_patient_table("page=1&perPageNum=5&searchType="+searchType+"&keyword="+keyword);
-		
-		
 	});
 	
 	//환자테이블에서 정보 수정 클릭했을 때

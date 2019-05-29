@@ -918,12 +918,13 @@ function get_day(date){
 }
 
 function get_patient_all(info){
+	console.log(info);
 	var dt;
 	$.ajax({
 		url:"${pageContext.request.contextPath}/patientAllGet",
 		type: "get",
 		data:info,
-		contentType : "application/json; charset=UTF-8",
+		contentType : "application/json; charset=euc-kr",
 		async:false,
 		dataType:"json",
 		success:function(json){			
@@ -4010,7 +4011,9 @@ $(function(){
 		var searchType = encodeURIComponent(s);
 		var k=$("input[name='keyword']").val();
 		var keyword = encodeURIComponent(k);
+		console.log(searchType+"/"+keyword);
 		draw_patient_table("page=1&perPageNum=5&searchType="+searchType+"&keyword="+keyword);
+		
 		
 	});
 	

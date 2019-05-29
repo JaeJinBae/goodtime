@@ -4008,11 +4008,11 @@ $(function(){
 	//환자table 환자 검색
 	$("#searchBtn").click(function(){
     	var s=$("select[name='searchType']").val();
-		var searchType = encodeURIComponent(s);
+		//var searchType = encodeURIComponent(s);
 		var k=$("input[name='keyword']").val();
-		var keyword = encodeURIComponent(k);
-		console.log(searchType+"/"+keyword);
-		draw_patient_table("page=1&perPageNum=5&searchType="+searchType+"&keyword="+keyword);
+		//var keyword = encodeURIComponent(k);
+		console.log(s+"/"+k);
+		draw_patient_table("page=1&perPageNum=5&searchType="+s+"&keyword="+k);
 	});
 	
 	//환자테이블에서 정보 수정 클릭했을 때

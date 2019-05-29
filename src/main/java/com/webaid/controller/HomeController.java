@@ -646,8 +646,13 @@ public class HomeController {
 	@RequestMapping(value="/clinicGetByType/{type}", method=RequestMethod.GET)
 	public ResponseEntity<List<ClinicVO>> clinicGetByType(@PathVariable("type") String type){
 		ResponseEntity<List<ClinicVO>> entity = null;
+		List<ClinicVO> list;
+		if(type.equals("clinic")){
+			list = cService.selectByCodeType("진료");
+		}else{
+			list = cService.selectByCodeType("치료");
+		}
 		
-		List<ClinicVO> list = cService.selectByCodeType(type);
 		entity = new ResponseEntity<List<ClinicVO>>(list, HttpStatus.OK);
 		
 		return entity;
@@ -1436,36 +1441,36 @@ public class HomeController {
 		return entity;
 	}
 	
-	@RequestMapping(value="/updateReservationTherapistState/{rtype}/{rno}/{state}/{writer}/{regdate}", method=RequestMethod.POST)
-	public ResponseEntity<String> updateReservationTherapistState(@PathVariable("rtype") String rtype, @PathVariable("rno") String rno, @PathVariable("state") String state, @PathVariable("writer") String writer, @PathVariable("regdate") String regdate){
+	@RequestMapping(value="/updateReservationTherapistState", method=RequestMethod.POST)
+	public ResponseEntity<String> updateReservationTherapistState(@RequestBody Map<String, String> info){
 		ResponseEntity<String> entity = null;
-		System.out.println(rtype+"\n"+rno);
+		
 		try {
-			if(rtype.equals("nt")){
+			if(info.get("rtype").equals("nt")){
 				NormalTherapyReservationVO vo = new NormalTherapyReservationVO();
-				vo.setRno(Integer.parseInt(rno));
-				vo.setTherapist_state(state);
-				vo.setTherapist_state_writer(writer);
-				vo.setTherapist_state_regdate(regdate);
-				vo.setResult(state);
+				vo.setRno(Integer.parseInt(info.get("rno")));
+				vo.setTherapist_state(info.get("state"));
+				vo.setTherapist_state_writer(info.get("writer"));
+				vo.setTherapist_state_regdate(info.get("regdate"));
+				vo.setResult(info.get("state"));
 				
 				ntrService.updateTherapistState(vo);
-			}else if(rtype.equals("ft")){
+			}else if(info.get("rtype").equals("ft")){
 				FixTherapyReservationVO vo = new FixTherapyReservationVO();
-				vo.setRno(Integer.parseInt(rno));
-				vo.setTherapist_state(state);
-				vo.setTherapist_state_writer(writer);
-				vo.setTherapist_state_regdate(regdate);
-				vo.setResult(state);
+				vo.setRno(Integer.parseInt(info.get("rno")));
+				vo.setTherapist_state(info.get("state"));
+				vo.setTherapist_state_writer(info.get("writer"));
+				vo.setTherapist_state_regdate(info.get("regdate"));
+				vo.setResult(info.get("state"));
 				
 				ftrService.updateTherapistState(vo);
 			}
 			ReservationRecordVO rrvo = new ReservationRecordVO();
 			
-			rrvo.setRno(Integer.parseInt(rno));
-			rrvo.setRtype(rtype);
-			rrvo.setTherapy_info(regdate+" "+writer);
-			rrvo.setResult(state);
+			rrvo.setRno(Integer.parseInt(info.get("rno")));
+			rrvo.setRtype(info.get("rtype"));
+			rrvo.setTherapy_info(info.get("regdate")+" "+info.get("writer"));
+			rrvo.setResult(info.get("state"));
 			
 			rrService.updateTherapyInfo(rrvo);
 			
@@ -1851,7 +1856,7 @@ public class HomeController {
 		return entity;
 	}
 	
-	@RequestMapping(value="/fixOffRegister", method=RequestMethod.GET)
+	@RequestMapping(value="/fixOffRegister", method=RequestMethod.POST)
 	public ResponseEntity<String> fixOffRegister(@RequestBody FixOffVO vo){
 		ResponseEntity<String> entity = null;
 		try {
@@ -1864,7 +1869,7 @@ public class HomeController {
 		return entity;
 	}
 	
-	@RequestMapping(value="/fixOffUpdate", method=RequestMethod.GET)
+	@RequestMapping(value="/fixOffUpdate", method=RequestMethod.POST)
 	public ResponseEntity<String> fixOffUpdate(@RequestBody FixOffVO vo){
 		ResponseEntity<String> entity = null;
 		System.out.println("받은 vo= \n"+vo);

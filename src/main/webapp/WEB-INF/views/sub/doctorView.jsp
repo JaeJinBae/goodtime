@@ -2433,22 +2433,22 @@ function draw_reservation_update_view(rno, rtype){
 		json = get_ncReservation_byRno(rno);
 		type = "일반진료";
 		emp = get_employeeList_byType("doctor");
-		clinic = get_clinic_by_type("진료");
+		clinic = get_clinic_by_type("clinic");
 	}else if(rtype == "nt"){
 		json = get_ntReservation_byRno(rno);
 		type = "일반치료";
 		emp = get_employeeList_byType("therapist");
-		clinic = get_clinic_by_type("치료");
+		clinic = get_clinic_by_type("therapy");
 	}else if(rtype == "fc"){
 		json = get_fcReservation_byRno(rno);
 		type = "고정진료";
 		emp = get_employeeList_byType("doctor");
-		clinic = get_clinic_by_type("진료");
+		clinic = get_clinic_by_type("clinic");
 	}else if(rtype == "ft"){
 		json = get_ftReservation_byRno(rno);
 		type = "고정치료";
 		emp = get_employeeList_byType("therapist");
-		clinic = get_clinic_by_type("치료");
+		clinic = get_clinic_by_type("therapy");
 	}
 	patient = get_patient_by_pno(json.pno);
 	var rdate_rtime = json.rdate+" "+parseInt(Number(json.rtime)/60)+":"+((Number(json.rtime)%60>9?'':'0')+Number(json.rtime)%60);

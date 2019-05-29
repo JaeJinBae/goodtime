@@ -2285,10 +2285,13 @@ function open_reservation_info_view(type, rno){
 function update_reservation_therapistState(rtype, rno, state, writer, regdate, stbn){
 	var reason = $(".cancel_reason > td > textarea[name='cancel_reason']").val();
 	
+	var info = {rtype:rtype, rno:rno, state:state, writer:writer, regdate:regdate};
 	$.ajax({
-		url:"${pageContext.request.contextPath}/updateReservationTherapistState/"+rtype+"/"+rno+"/"+state+"/"+writer+"/"+regdate,
+		url:"${pageContext.request.contextPath}/updateReservationTherapistState",
 		type:"post",
+		data:JSON.stringify(info),
 		dataType:"text",
+		contentType : "application/json; charset=UTF-8",
 		async:false,
 		success:function(json){
 			if(json == "ok"){	

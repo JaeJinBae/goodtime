@@ -3955,7 +3955,37 @@ $(function(){
 	
 	$(document).on("click", ".reservation_record_page > ul > li > a", function(e){
 		e.preventDefault();
-		draw_reservation_record_table($(this).attr("href"));
+		
+		var page="";
+		var perPageNum="";
+		var searchType="";
+		var keyword1="";
+		var keyword2="";
+		var keyword3="";
+		var keyword4="";
+		
+		var href_txt = $(this).attr("href");
+		var splitList = href_txt.split("&");
+		
+		for(var i=0; i<splitList.length; i++){
+			console.log(splitList[i].split("=")[1]);
+			if(i==0){
+				page=splitList[i].split("=")[1];
+			}else if(i==1){
+				perPageNum=splitList[i].split("=")[1];
+			}else if(i==2){
+				keyword1 = splitList[i].split("=")[1];
+			}else if(i==3){
+				keyword2 = splitList[i].split("=")[1];
+			}else if(i==4){
+				keyword3 = splitList[i].split("=")[1];
+			}else if(i==5){
+				keyword4 = splitList[i].split("=")[1];
+			}
+		}
+		
+		var info = {page:page, perPageNum:perPageNum, keyword1:keyword1, keyword2:keyword2, keyword3:keyword3, keyword4:keyword4};
+		draw_reservation_record_table(info);
 	});
 	
 	//환자 등록
@@ -4644,6 +4674,7 @@ $(function(){
 	
 	//예약이력에서 검색 눌렀을 때
 	$(".reservation_record_selectBox_wrap > button").click(function(){
+		
 		var keyword1 = encodeURIComponent($(".reservation_record_selectBox_wrap > input[name='rdate']").val());
 		var keyword2 = encodeURIComponent($(".reservation_record_selectBox_wrap > select[name='employee']").val());
 		var keyword3 = encodeURIComponent($(".reservation_record_selectBox_wrap > select[name='rtype']").val());

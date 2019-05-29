@@ -873,10 +873,11 @@ function get_patient_all(info){
 	var dt;
 	$.ajax({
 		url:"${pageContext.request.contextPath}/patientAllGet",
-		type: "get",
-		data:info,
-		async:false,
+		type:"post",
+		data:JSON.stringify(info),
+		contentType : "application/json; charset=UTF-8",
 		dataType:"json",
+		async:false,
 		success:function(json){			
 			dt = json;
 		},
@@ -2328,8 +2329,9 @@ function get_reservation_record_all(info){
 	var dt;
 	$.ajax({
 		url:"${pageContext.request.contextPath}/reservationRecordGetAll",
-		type:"get",
-		data:info,
+		type:"post",
+		data:JSON.stringify(info),
+		contentType : "application/json; charset=UTF-8",
 		dataType:"json",
 		async:false,
 		success:function(json){
@@ -2364,8 +2366,9 @@ function get_reservation_update_record_all(info){
 	var dt;
 	$.ajax({
 		url:"${pageContext.request.contextPath}/reservationUpdateRecordGetAll",
-		type:"get",
-		data:info,
+		type:"post",
+		data:JSON.stringify(info),
+		contentType : "application/json; charset=UTF-8",
 		dataType:"json",
 		async:false,
 		success:function(json){
@@ -2383,8 +2386,9 @@ function get_normalOff_all(info){
 	var dt;
 	$.ajax({
 		url:"${pageContext.request.contextPath}/normalOffGetAll",
-		type:"get",
-		data:info,
+		type:"post",
+		data:JSON.stringify(info),
+		contentType : "application/json; charset=UTF-8",
 		dataType:"json",
 		async:false,
 		success:function(json){
@@ -2557,8 +2561,9 @@ function get_fixOff_all(info){
 	var dt;
 	$.ajax({
 		url:"${pageContext.request.contextPath}/fixOffGetAll",
-		type:"get",
-		data:info,
+		type:"post",
+		data:JSON.stringify(info),
+		contentType : "application/json; charset=UTF-8",
 		dataType:"json",
 		async:false,
 		success:function(json){

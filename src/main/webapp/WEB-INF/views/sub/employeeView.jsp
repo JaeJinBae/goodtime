@@ -155,9 +155,10 @@ function get_employee_all(info){
 	var dt;
 	$.ajax({
 		url:"${pageContext.request.contextPath}/employeeAllGet",
-		type: "get",
-		data:info,
+		type: "post",
+		data:JSON.stringify(info),
 		async:false,
+		contentType : "application/json; charset=UTF-8",
 		dataType:"json",
 		success:function(json){			
 			dt = json;
@@ -266,7 +267,8 @@ function post_employee_register(vo){
 			$(".popup_employee_register").css("display", "none");
 			$(".popup_wrap").css("display","none");
 			alert("직원등록이 완료되었습니다.");
-			draw_employee_table();
+			var o={};
+			draw_employee_table(o);
 		},
 		error:function(request,status,error){
 			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -285,6 +287,7 @@ function post_employee_update(employee){
 			$(".popup_employee_update").css("display", "none");
 			$(".popup_wrap").css("display","none");
 			alert("직원정보수정이 완료되었습니다.");
+			var o={};
 			draw_employee_table();
 		}
 	});
@@ -313,17 +316,45 @@ $(function(){
 	
 	//직원 검색
 	$("#searchBtn").click(function(){
-    	var s=$("select[name='searchType']").val();
-		var searchType = encodeURIComponent(s);
+		var s=$("select[name='searchType']").val();
 		var k=$("input[name='keyword']").val();
-		var keyword = encodeURIComponent(k);
-		draw_employee_table("page=1&perPageNum=10&searchType="+searchType+"&keyword="+keyword);
+		
+		var page=1;
+		var perPageNum=10;
+		var searchType=s;
+		var keyword=k;
+		
+		var info = {page:page, perPageNum:perPageNum, searchType:searchType, keyword:keyword};
+		draw_employee_table(info);
 	});
 	
 	//직원table에서 페이지 클릭
 	$(document).on("click", ".page > ul > li > a", function(e){
 		e.preventDefault();
-		draw_employee_table($(this).attr("href"));
+		
+		var page="";
+		var perPageNum="";
+		var searchType="";
+		var keyword="";
+		
+		var href_txt = $(this).attr("href");
+		var splitList = href_txt.split("&");
+		
+		for(var i=0; i<splitList.length; i++){
+			console.log(splitList[i].split("=")[1]);
+			if(i==0){
+				page=splitList[i].split("=")[1];
+			}else if(i==1){
+				perPageNum=splitList[i].split("=")[1];
+			}else if(i==2){
+				searchType = splitList[i].split("=")[1];
+			}else if(i==3){
+				keyword = splitList[i].split("=")[1];
+			}
+		}
+		
+		var info = {page:page, perPageNum:perPageNum, searchType:searchType, keyword:keyword};
+		draw_employee_table(info);
 	});
 	
 	//직원추가 버튼 클릭

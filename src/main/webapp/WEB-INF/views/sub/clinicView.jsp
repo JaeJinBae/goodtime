@@ -154,9 +154,10 @@ function get_clinic_all(info){
 	var dt;
 	$.ajax({
 		url:"${pageContext.request.contextPath}/clinicAllGet",
-		type: "get",
-		data:info,
+		type: "post",
+		data:JSON.stringify(info),
 		async:false,
+		contentType : "application/json; charset=UTF-8",
 		dataType:"json",
 		success:function(json){			
 			dt = json;
@@ -252,7 +253,8 @@ function post_clinic_register(vo){
 			$(".popup_clinic_register > table tr > td > select[name='code_type'] > option[value='진료']").prop("selected", true);
 			$(".popup_clinic_register > table tr > td > select[name='time'] > option[value='0']").prop("selected", true);
 			$(".popup_clinic_register > table tr > td > input[name='color']").val("");
-			draw_clinic_table();
+			var o={};
+			draw_clinic_table(o);
 		},
 		error:function(request,status,error){
 			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -276,21 +278,51 @@ function post_clinic_update(vo){
 }
 
 $(function(){
-	draw_clinic_table();
+	var o={};
+	draw_clinic_table(o);
 	
 	//코드 검색
 	$("#searchBtn").click(function(){
-    	var s=$("select[name='searchType']").val();
-		var searchType = encodeURIComponent(s);
+		var s=$("select[name='searchType']").val();
 		var k=$("input[name='keyword']").val();
-		var keyword = encodeURIComponent(k);
-		draw_clinic_table("page=1&perPageNum=10&searchType="+searchType+"&keyword="+keyword);
+		
+		var page=1;
+		var perPageNum=10;
+		var searchType=s;
+		var keyword=k;
+		
+		var info = {page:page, perPageNum:perPageNum, searchType:searchType, keyword:keyword};
+		draw_clinic_table(info);
 	});
 	
 	//코드table에서 페이지 클릭
 	$(document).on("click", ".page > ul > li > a", function(e){
 		e.preventDefault();
-		draw_clinic_table($(this).attr("href"));
+		
+		var page="";
+		var perPageNum="";
+		var searchType="";
+		var keyword="";
+		
+		var href_txt = $(this).attr("href");
+		var splitList = href_txt.split("&");
+		
+		for(var i=0; i<splitList.length; i++){
+			console.log(splitList[i].split("=")[1]);
+			if(i==0){
+				page=splitList[i].split("=")[1];
+			}else if(i==1){
+				perPageNum=splitList[i].split("=")[1];
+			}else if(i==2){
+				searchType = splitList[i].split("=")[1];
+			}else if(i==3){
+				keyword = splitList[i].split("=")[1];
+			}
+		}
+		
+		var info = {page:page, perPageNum:perPageNum, searchType:searchType, keyword:keyword};
+		
+		draw_clinic_table(info);
 	});
 	
 	//코드추가 버튼 클릭

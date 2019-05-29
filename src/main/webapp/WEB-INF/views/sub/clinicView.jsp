@@ -272,7 +272,8 @@ function post_clinic_update(vo){
 		success:function(json){
 			$(".popup_clinic_update").css("display", "none");
 			$(".popup_wrap").css("display","none");
-			draw_clinic_table();
+			var o={};
+			draw_clinic_table(o);
 		}
 	});
 }

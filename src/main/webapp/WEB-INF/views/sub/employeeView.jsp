@@ -288,7 +288,7 @@ function post_employee_update(employee){
 			$(".popup_wrap").css("display","none");
 			alert("직원정보수정이 완료되었습니다.");
 			var o={};
-			draw_employee_table();
+			draw_employee_table(o);
 		}
 	});
 }
@@ -312,7 +312,8 @@ var dt;
 }
 
 $(function(){
-	draw_employee_table();
+	var o={};
+	draw_employee_table(o);
 	
 	//직원 검색
 	$("#searchBtn").click(function(){

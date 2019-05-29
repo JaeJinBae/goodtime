@@ -1032,7 +1032,8 @@ function post_patient_register(patient){
 			$(".popup_patient_register > table tr td > input[name='birth']").val("");
 			$(".popup_patient_register > table tr td > select[name='main_doctor'] option[value='']").prop("selected",true);
 			$(".popup_patient_register > table tr td > input[name='memo']").val("");
-			draw_patient_table();
+			var o={};
+			draw_patient_table(o);
 		},
 		error:function(request,status,error){
 			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -1067,7 +1068,8 @@ function post_patient_update_info(patient){
 		success:function(json){
 			$(".popup_patientUpdate").css("display", "none");
 			$(".popup_wrap").css("display","none");
-			draw_patient_table();
+			var o={};
+			draw_patient_table(o);
 		},
 		error:function(request,status,error){
 			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -1229,19 +1231,22 @@ function draw_time_table_by_case(idx){
 			$(".week_select_box_wrap").css("display","none");
 			$(".reservation_record_selectBox_wrap").css("display","block");
 			$(".time_table_wrap").html("");
-			draw_reservation_record_table();
+			var o={};
+			draw_reservation_record_table(o);
 			break;
 		case 8:
 			$(".week_select_box_wrap").css("display","none");
 			$(".reservation_update_record_selectBox_wrap").css("display", "block");
 			$(".time_table_wrap").html("");
-			draw_reservation_update_record_table();
+			var o={};
+			draw_reservation_update_record_table(o);
 			break;
 		case 9:
 			$(".week_select_box_wrap").css("display","none");
 			$(".normal_off_selectBox_wrap").css("display","block");
 			$(".time_table_wrap").html("");
-			draw_normalOff_table();
+			var o={};
+			draw_normalOff_table(o);
 			var todayArr = select_date.split("-");
 			
 			$(".normal_off_selectBox_wrap > select[name='year'] > option[value='"+todayArr[0]+"']").prop("selected", true);
@@ -1251,8 +1256,8 @@ function draw_time_table_by_case(idx){
 			$(".week_select_box_wrap").css("display","none");
 			$(".fix_off_selectBox_wrap").css("display","block");
 			$(".time_table_wrap").html("");
-			
-			draw_fixOff_table();
+			var o={};
+			draw_fixOff_table(o);
 			var todayArr = select_date.split("-");
 			
 			$(".fix_off_selectBox_wrap > select[name='year'] > option[value='"+todayArr[0]+"']").prop("selected", true);
@@ -1262,7 +1267,8 @@ function draw_time_table_by_case(idx){
 			$(".week_select_box_wrap").css("display","none");
 			$(".smsRecord_selectBox_wrap").css("display","block");
 			$(".time_table_wrap").html("");
-			draw_smsRecord_table("page=1&perPageNum=10&searchType=n&keyword=");
+			var o={page:"1", perPageNum="10", searchTyppe:"n", keyword:"" };
+			draw_smsRecord_table(o);
 			
 			break;
 		default:
@@ -3088,7 +3094,8 @@ function post_normalOff_register(){
 			
 			$(".popup_normal_off_register").css("display","none");
 			$(".popup_wrap").css("display","none");
-			draw_normalOff_table();
+			var o={};
+			draw_normalOff_table(o);
 		},
 		error:function(request,status,error){
 			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -3125,7 +3132,9 @@ function post_normalOff_update(no){
 			
 			$(".popup_normal_off_update").css("display","none");
 			$(".popup_wrap").css("display","none");
-			draw_normalOff_table();
+			
+			var o={};
+			draw_normalOff_table(o);
 		},
 		error:function(request,status,error){
 			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -3350,7 +3359,8 @@ function post_fixOff_register(){
 			
 			$(".popup_fix_off_register").css("display","none");
 			$(".popup_wrap").css("display","none");
-			draw_fixOff_table();
+			var o={};
+			draw_fixOff_table(o);
 		},
 		error:function(request,status,error){
 			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -3391,7 +3401,8 @@ function post_fixOff_update(no){
 			
 			$(".popup_fix_off_update").css("display","none");
 			$(".popup_wrap").css("display","none");
-			draw_fixOff_table();
+			var o={};
+			draw_fixOff_table(o);
 		},
 		error:function(request,status,error){
 			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -3863,7 +3874,7 @@ $(function(){
 		$(".calendar_select_date").val(get_today());
 		draw_time_table_by_case(storage_timetable_btn_num); */
 	});
-	var o={}
+	var o={};
 	//환자table 생성
 	draw_patient_table(o);
 	
@@ -3948,7 +3959,6 @@ $(function(){
 		}
 		
 		var info = {page:page, perPageNum:perPageNum, searchType:searchType, keyword:keyword};
-		
 		
 		draw_patient_table(info);
 	});
@@ -4674,50 +4684,141 @@ $(function(){
 	
 	//예약이력에서 검색 눌렀을 때
 	$(".reservation_record_selectBox_wrap > button").click(function(){
-		
+		var page=1;
+		var perPageNum=10;
 		var keyword1 = encodeURIComponent($(".reservation_record_selectBox_wrap > input[name='rdate']").val());
 		var keyword2 = encodeURIComponent($(".reservation_record_selectBox_wrap > select[name='employee']").val());
 		var keyword3 = encodeURIComponent($(".reservation_record_selectBox_wrap > select[name='rtype']").val());
 		var keyword4 = encodeURIComponent($(".reservation_record_selectBox_wrap > select[name='result']").val());
-
-		draw_reservation_record_table("page=1&perPageNum=10&keyword1="+keyword1+"&keyword2="+keyword2+"&keyword3="+keyword3+"&keyword4="+keyword4);
+		
+		var info = {page:page, perPageNum:perPageNum, keyword1:keyword1, keyword2:keyword2, keyword3:keyword3, keyword4:keyword4};
+		draw_reservation_record_table(info);
 	});
 	
 	//예약이력 테이블 페이지 클릭
 	$(document).on("click", ".reservation_record_page > ul > li > a", function(e){
 		e.preventDefault();
-		draw_reservation_record_table($(this).attr("href"));
+		var page="";
+		var perPageNum="";
+		var searchType="";
+		var keyword1="";
+		var keyword2="";
+		var keyword3="";
+		var keyword4="";
+		
+		var href_txt = $(this).attr("href");
+		var splitList = href_txt.split("&");
+		
+		for(var i=0; i<splitList.length; i++){
+			console.log(splitList[i].split("=")[1]);
+			if(i==0){
+				page=splitList[i].split("=")[1];
+			}else if(i==1){
+				perPageNum=splitList[i].split("=")[1];
+			}else if(i==2){
+				keyword1 = splitList[i].split("=")[1];
+			}else if(i==3){
+				keyword2 = splitList[i].split("=")[1];
+			}else if(i==4){
+				keyword3 = splitList[i].split("=")[1];
+			}else if(i==5){
+				keyword4 = splitList[i].split("=")[1];
+			}
+		}
+		
+		var info = {page:page, perPageNum:perPageNum, keyword1:keyword1, keyword2:keyword2, keyword3:keyword3, keyword4:keyword4};
+		
+		draw_reservation_record_table(info);
 	});
 	
 	//변경이력에서 검색 눌렀을 때
-	$(".reservation_update_record_selectBox_wrap > button").click(function(){
+	$(".reservation_update_record_selectBox_wrap > button").click(function(){		
+		var page=1;
+		var perPageNum=10;
+		var searchType="n";
 		var keyword = encodeURIComponent($(".reservation_update_record_selectBox_wrap > select[name='rtype']").val());
-
-		draw_reservation_update_record_table("page=1&perPageNum=10&searchType=n&keyword="+keyword);
+		
+		var info = {page:page, perPageNum:perPageNum, searchType:searchType, keyword:keyword};
+		draw_reservation_update_record_table(info);
 	});
 	
 	//변경이력 테이블 페이지 클릭
 	$(document).on("click", ".reservation_update_record_page > ul > li > a", function(e){
 		e.preventDefault();
-		draw_reservation_update_record_table($(this).attr("href"));
+		var page="";
+		var perPageNum="";
+		var searchType="";
+		var keyword="";
+		
+		var href_txt = $(this).attr("href");
+		var splitList = href_txt.split("&");
+		
+		for(var i=0; i<splitList.length; i++){
+			console.log(splitList[i].split("=")[1]);
+			if(i==0){
+				page=splitList[i].split("=")[1];
+			}else if(i==1){
+				perPageNum=splitList[i].split("=")[1];
+			}else if(i==2){
+				searchType = splitList[i].split("=")[1];
+			}else if(i==3){
+				keyword = splitList[i].split("=")[1];
+			}
+		}
+		
+		var info = {page:page, perPageNum:perPageNum, searchType:searchType, keyword:keyword};
+		draw_reservation_update_record_table(info);
 	});
 	
 	//일반휴무 조건 검색
 	$(".normal_off_selectBox_wrap > .normal_off_search_btn").click(function(){
 		var year = $(".normal_off_selectBox_wrap > select[name='year']").val();
 		var month = $(".normal_off_selectBox_wrap > select[name='month']").val();
+
+		var page=1;
+		var perPageNum=10;
+		var keyword1 = year+"-"+month+"-01";
+		var keyword2 = year+"-"+month;
+		var keyword3 = $(".normal_off_selectBox_wrap > select[name='emp']").val();
+		var keyword4 = "";
 		
-		var keyword1 = encodeURIComponent(year+"-"+month+"-01");
-		var keyword2 = encodeURIComponent(year+"-"+month);
-		var keyword3 = encodeURIComponent($(".normal_off_selectBox_wrap > select[name='emp']").val());
-		
-		draw_normalOff_table("page=1&perPageNum=10&keyword1="+keyword1+"&keyword2="+keyword2+"&keyword3="+keyword3);
+		var info = {page:page, perPageNum:perPageNum, keyword1:keyword1, keyword2:keyword2, keyword3:keyword3, keyword4:keyword4};
+		draw_normalOff_table(info);
 	});
 	
 	//일반휴무 페이징
 	$(document).on("click",".normal_off_page > ul > li > a", function(e){
 		e.preventDefault();
-		draw_normalOff_table($(this).attr("href"));
+		
+		var page="";
+		var perPageNum="";
+		var searchType="";
+		var keyword1="";
+		var keyword2="";
+		var keyword3="";
+		var keyword4="";
+		
+		var href_txt = $(this).attr("href");
+		var splitList = href_txt.split("&");
+		
+		for(var i=0; i<splitList.length; i++){
+			console.log(splitList[i].split("=")[1]);
+			if(i==0){
+				page=splitList[i].split("=")[1];
+			}else if(i==1){
+				perPageNum=splitList[i].split("=")[1];
+			}else if(i==2){
+				keyword1 = splitList[i].split("=")[1];
+			}else if(i==3){
+				keyword2 = splitList[i].split("=")[1];
+			}else if(i==4){
+				keyword3 = splitList[i].split("=")[1];
+			}
+		}
+		
+		var info = {page:page, perPageNum:perPageNum, keyword1:keyword1, keyword2:keyword2, keyword3:keyword3, keyword4:keyword4};
+
+		draw_normalOff_table(info);
 	});
 	
 	//일반휴무 추가 클릭
@@ -4778,18 +4879,50 @@ $(function(){
 		var year = $(".fix_off_selectBox_wrap > select[name='year']").val();
 		var month = $(".fix_off_selectBox_wrap > select[name='month']").val();
 		
-		var keyword1 = encodeURIComponent(year+"-"+month+"-01");
-		var keyword2 = encodeURIComponent(year+"-"+month);
-		var keyword3 = encodeURIComponent($(".fix_off_selectBox_wrap > select[name='emp']").val());
-		var keyword4 = encodeURIComponent($(".fix_off_selectBox_wrap > select[name='dow']").val());
+		var page=1;
+		var perPageNum=10;
+		var keyword1 = year+"-"+month+"-01";
+		var keyword2 = year+"-"+month;
+		var keyword3 = $(".fix_off_selectBox_wrap > select[name='emp']").val();
+		var keyword4 = $(".fix_off_selectBox_wrap > select[name='dow']").val();
 		
-		draw_fixOff_table("page=1&perPageNum=10&keyword1="+keyword1+"&keyword2="+keyword2+"&keyword3="+keyword3+"&keyword4="+keyword4);
+		var info = {page:page, perPageNum:perPageNum, keyword1:keyword1, keyword2:keyword2, keyword3:keyword3, keyword4:keyword4};
+		draw_fixOff_table(info);
 	});
 	
 	//고정휴무 페이징
 	$(document).on("click",".fix_off_page > ul > li > a", function(e){
 		e.preventDefault();
-		draw_fixOff_table($(this).attr("href"));
+		
+		var page="";
+		var perPageNum="";
+		var searchType="";
+		var keyword1="";
+		var keyword2="";
+		var keyword3="";
+		var keyword4="";
+		
+		var href_txt = $(this).attr("href");
+		var splitList = href_txt.split("&");
+		
+		for(var i=0; i<splitList.length; i++){
+			console.log(splitList[i].split("=")[1]);
+			if(i==0){
+				page=splitList[i].split("=")[1];
+			}else if(i==1){
+				perPageNum=splitList[i].split("=")[1];
+			}else if(i==2){
+				keyword1 = splitList[i].split("=")[1];
+			}else if(i==3){
+				keyword2 = splitList[i].split("=")[1];
+			}else if(i==4){
+				keyword3 = splitList[i].split("=")[1];
+			}
+		}
+		
+		var info = {page:page, perPageNum:perPageNum, keyword1:keyword1, keyword2:keyword2, keyword3:keyword3, keyword4:keyword4};
+		
+		draw_fixOff_table(info);
 	})
 	
 	//고정휴무 추가 클릭
@@ -4848,16 +4981,43 @@ $(function(){
 	//문자이력 검색
 	$(".smsRecord_selectBox_wrap > .smsRecord_search_btn").click(function(){
 		var rdate = $(".smsRecord_selectBox_wrap > input[name='rdate']").val();		
-		var keyword = encodeURIComponent(rdate);
-
-		draw_smsRecord_table("page=1&perPageNum=10&searchType=n&keyword="+keyword);
+		
+		var page=1;
+		var perPageNum=10;
+		var searchType="n";
+		var keyword = rdate;
+		
+		var info = {page:page, perPageNum:perPageNum, searchType:searchType, keyword:keyword};
+		
+		draw_smsRecord_table(info);
 	});
 	
 	//문자이력 페이징
 	$(document).on("click",".smsRecord_page > ul > li > a", function(e){
 		e.preventDefault();
-		console.log($(this).attr("href"));
-		draw_smsRecord_table($(this).attr("href"));
+		var page="";
+		var perPageNum="";
+		var searchType="";
+		var keyword="";
+		
+		var href_txt = $(this).attr("href");
+		var splitList = href_txt.split("&");
+		
+		for(var i=0; i<splitList.length; i++){
+			console.log(splitList[i].split("=")[1]);
+			if(i==0){
+				page=splitList[i].split("=")[1];
+			}else if(i==1){
+				perPageNum=splitList[i].split("=")[1];
+			}else if(i==2){
+				searchType = splitList[i].split("=")[1];
+			}else if(i==3){
+				keyword = splitList[i].split("=")[1];
+			}
+		}
+		
+		var info = {page:page, perPageNum:perPageNum, searchType:searchType, keyword:keyword};
+		draw_smsRecord_table(info);
 	});
 	
 	

@@ -1699,8 +1699,8 @@ public class HomeController {
 		return entity;
 	}
 	
-	@RequestMapping(value="/normalOffRegister", method=RequestMethod.GET)
-	public ResponseEntity<String> normalOffRegister(NormalOffVO vo){
+	@RequestMapping(value="/normalOffRegister", method=RequestMethod.POST)
+	public ResponseEntity<String> normalOffRegister(@RequestBody NormalOffVO vo){
 		ResponseEntity<String> entity = null;
 		try {
 			noService.register(vo);

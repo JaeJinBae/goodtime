@@ -3055,10 +3055,11 @@ function post_normalOff_register(){
 		alert("휴무 종료일을 선택해주세요.");
 		return false;
 	}
+	
 	$.ajax({
 		url:"${pageContext.request.contextPath}/normalOffRegister",
-		type:"get",
-		data:vo,
+		type:"post",
+		data:JSON.stringify(vo),
 		dataType:"text",
 		contentType : "application/json; charset=UTF-8",
 		async:false,

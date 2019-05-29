@@ -923,6 +923,7 @@ function get_patient_all(info){
 		url:"${pageContext.request.contextPath}/patientAllGet",
 		type: "get",
 		data:info,
+		contentType : "application/json; charset=UTF-8",
 		async:false,
 		dataType:"json",
 		success:function(json){			

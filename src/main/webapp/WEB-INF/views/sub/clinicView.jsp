@@ -175,7 +175,7 @@ function draw_clinic_table(info){
 	str ="<table><tr><th></th><th>코드명</th><th>설정</th><th>코드분류</th><th>진행시간(분)</th><th>색깔</th></tr>";
 	
 	if(json.clinicListAll.length == 0){
-		str += "<tr><td colspan='8'>등록된 회원이 없습니다.</td></tr>";
+		str += "<tr><td colspan='6'>등록된 정보가 없습니다.</td></tr>"; 
 	}else{
 		$(json.clinicListAll).each(function(){
 			str += "<tr><td><input type='hidden' name='cno' value='"+this.cno+"'></td><td>"+this.code_name+"</td><td><p class='clinic_update_btn'><img src='${pageContext.request.contextPath}/resources/images/icon_update.png'>수정</p></td>"

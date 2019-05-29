@@ -973,6 +973,15 @@ function post_patient_register(patient){
 			$(".popup_patient_register").css("display", "none");
 			$(".popup_wrap").css("display","none");
 			alert("환자등록이 완료되었습니다.");
+			
+			$(".popup_patient_register > table tr td > input[name='cno']").val("");
+			$(".popup_patient_register > table tr td > input[name='dupliChkNum']").val(0);
+			$(".popup_patient_register > table tr td > input[name='name']").val("");
+			$(".popup_patient_register > table tr td > input[name='phone']").val("");
+			$(".popup_patient_register > table tr td > input[name='birth']").val("");
+			$(".popup_patient_register > table tr td > select[name='main_doctor'] option[value='']").prop("selected",true);
+			$(".popup_patient_register > table tr td > input[name='memo']").val("");
+			
 			draw_patient_table();
 		},
 		error:function(request,status,error){

@@ -416,9 +416,9 @@ public class HomeController {
 		System.out.println("환자에서 cri값\n"+cri);
 		if(cri.getKeyword() != null){
 			if(cri.getKeyword().equals("null") || cri.getKeyword().equals("")){
-				URLDecoder.decode(cri.getKeyword(), "utf-8");
-			}
-			URLDecoder.decode(cri.getKeyword(), "utf-8");
+				cri.setKeyword(URLDecoder.decode(cri.getKeyword(), "utf-8"));
+			} 
+			cri.setKeyword(URLDecoder.decode(cri.getKeyword(), "utf-8"));
 		}
 		PageMaker5 pageMaker5 = new PageMaker5();
 		pageMaker5.setCri(cri);

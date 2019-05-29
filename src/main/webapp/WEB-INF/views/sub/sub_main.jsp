@@ -1267,7 +1267,7 @@ function draw_time_table_by_case(idx){
 			$(".week_select_box_wrap").css("display","none");
 			$(".smsRecord_selectBox_wrap").css("display","block");
 			$(".time_table_wrap").html("");
-			var o={page:"1", perPageNum="10", searchTyppe:"n", keyword:"" };
+			var o={page:"1", perPageNum:"10", searchTyppe:"n", keyword:"" };
 			draw_smsRecord_table(o);
 			
 			break;

@@ -927,6 +927,7 @@ function get_patient_all(info){
 		dataType:"json",
 		success:function(json){			
 			dt = json;
+			console.log(json);
 		},
 		error:function(request,status,error){
 			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);

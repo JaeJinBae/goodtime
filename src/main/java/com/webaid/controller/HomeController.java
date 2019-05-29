@@ -411,8 +411,9 @@ public class HomeController {
 		HashMap<String, Object> map=new HashMap<>();
 		
 		List<PatientVO> patientListAll = pService.listSearch(cri);
-		System.out.println(patientListAll);
+
 		System.out.println("환자에서 cri값\n"+cri);
+		System.out.println();
 		PageMaker5 pageMaker5 = new PageMaker5();
 		pageMaker5.setCri(cri);
 		pageMaker5.makeSearch(cri.getPage());

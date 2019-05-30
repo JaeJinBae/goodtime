@@ -3438,6 +3438,35 @@ function post_fixOff_update(no){
 	});
 }
 
+function post_fixOff_delete(no){
+	$.ajax({
+		url:"${pageContext.request.contextPath}/fixOffDelete/"+no,
+		type:"post",
+		dataType:"text",
+		contentType : "application/json; charset=UTF-8",
+		async:false,
+		success:function(json){
+			alert("휴무 삭제 완료되었습니다.");
+			$(".popup_fix_off_update > table tr > td > select[name='emp'] > option[value='']").prop("selected", true);
+			$(".popup_fix_off_update > table tr > td > input[name='offType']").val("고정휴무");
+			$(".popup_fix_off_update > table tr > td > select[name='dow'] > option[value='']").prop("selected", true);
+			$(".popup_fix_off_update > table tr > td > input[name='startdate']").val("");
+			$(".popup_fix_off_update > table tr > td > select[name='starttime'] > option[value='8']").prop("selected", true);
+			$(".popup_fix_off_update > table tr > td > input[name='enddate']").val("");
+			$(".popup_fix_off_update > table tr > td > select[name='endtime'] > option[value='23']").prop("selected", true);
+			
+			$(".popup_fix_off_update").css("display","none");
+			$(".popup_wrap").css("display","none");
+			
+			var o={};
+			draw_fixOff_table(o);
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	});	
+}
+
 function draw_patient_week_calendar(type, idxx){
 	
 	var today = $(".calendar_select_date").val();

@@ -24,8 +24,8 @@ public class SmsRemainGet {
 			String sms_url = "https://apis.aligo.in/remain/"; // 전송요청 URL
 			
 			String sms = "";
-			sms += "user_id=" + "bjj7425"; // SMS 아이디 
-			sms += "&key=" + "uybnfxh6xc0wbogbgu7nqgfnbqvx8xy8"; //인증키
+			sms += "user_id=" + "1clinic"; // SMS 아이디 
+			sms += "&key=" + "dxlaks0vqpw6579w9nuy20a3j1jnpj5s"; //인증키
 			/******************** 인증정보 ********************/
 			
 			URL url = new URL(sms_url);

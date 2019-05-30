@@ -58,4 +58,9 @@ public class NormalOffDaoImpl implements NormalOffDao {
 		session.update(namespace + ".update", vo);
 	}
 
+	@Override
+	public void delete(int no) {
+		session.delete(namespace+".delete", no);
+	}
+
 }

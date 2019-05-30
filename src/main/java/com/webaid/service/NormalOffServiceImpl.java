@@ -56,4 +56,9 @@ public class NormalOffServiceImpl implements NormalOffService {
 		dao.update(vo);
 	}
 
+	@Override
+	public void delete(int no) {
+		dao.delete(no);
+	}
+
 }

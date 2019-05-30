@@ -15,4 +15,5 @@ public interface NormalOffDao {
 	public int listSearchCount(SearchCriteriaRR cri);
 	public void register(NormalOffVO vo);
 	public void update(NormalOffVO vo);
+	public void delete(int no);
 }

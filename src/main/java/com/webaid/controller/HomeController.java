@@ -1801,6 +1801,20 @@ public class HomeController {
 		return entity;
 	}
 	
+	@RequestMapping(value="/normalOffDelete/{no}", method=RequestMethod.POST)
+	public ResponseEntity<String> normalOffDelete(@PathVariable("no") int no){
+		ResponseEntity<String> entity = null;
+		
+		try {
+			noService.delete(no);
+			entity = new ResponseEntity<String>("ok", HttpStatus.OK);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			entity = new ResponseEntity<String>("no", HttpStatus.BAD_REQUEST);
+		}
+		return entity;
+	}
+	
 	@RequestMapping(value="/fixOffGetAll", method=RequestMethod.POST)
 	public ResponseEntity<Map<String, Object>> fixOffGetAll(@RequestBody Map<String, String> info) throws ParseException{
 		 SearchCriteriaRR cri = new SearchCriteriaRR();
@@ -1960,6 +1974,20 @@ public class HomeController {
 		System.out.println("받은 vo= \n"+vo);
 		try {
 			foService.update(vo);
+			entity = new ResponseEntity<String>("ok", HttpStatus.OK);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			entity = new ResponseEntity<String>("no", HttpStatus.BAD_REQUEST);
+		}
+		return entity;
+	}
+	
+	@RequestMapping(value="/fixOffDelete/{no}", method=RequestMethod.POST)
+	public ResponseEntity<String> fixOffDelete(@PathVariable("no") int no){
+		ResponseEntity<String> entity = null;
+		
+		try {
+			foService.delete(no);
 			entity = new ResponseEntity<String>("ok", HttpStatus.OK);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());

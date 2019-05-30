@@ -56,4 +56,9 @@ public class FixOffServiceImpl implements FixOffService {
 		dao.update(vo);
 	}
 
+	@Override
+	public void delete(int no) {
+		dao.delete(no);
+	}
+
 }

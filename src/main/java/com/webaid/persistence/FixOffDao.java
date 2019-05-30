@@ -15,4 +15,5 @@ public interface FixOffDao {
 	public int listSearchCount(SearchCriteriaRR cri);
 	public void register(FixOffVO vo);
 	public void update(FixOffVO vo);
+	public void delete(int no);
 }

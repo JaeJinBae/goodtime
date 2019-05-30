@@ -58,4 +58,9 @@ public class FixOffDaoImpl implements FixOffDao {
 		session.update(namespace + ".update", vo);
 	}
 
+	@Override
+	public void delete(int no) {
+		session.delete(namespace+".delete", no);
+	}
+
 }

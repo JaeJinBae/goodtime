@@ -44,4 +44,8 @@
 	<update id="update">
 		update normal_off set offtype=#{offtype}, startdate=#{startdate}, enddate=#{enddate}, starttime=#{starttime}, endtime=#{endtime} where no=#{no}
 	</update>
+	
+	<delete id="delete">
+		delete from normal_off where no=#{no}
+	</delete>
 </mapper>

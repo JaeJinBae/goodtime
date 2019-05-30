@@ -3945,6 +3945,21 @@ $(function(){
 		
 	});
 	
+	$("#keywordInput").keyup(function(e){
+		if(e.keyCode == 13){
+			var s=$(".ar_tbl_wrap_1 > .search_wrap > select[name='searchType']").val();
+			var k=$(".ar_tbl_wrap_1 > .search_wrap > input[name='keyword']").val(); 
+			
+			var page=1;
+			var perPageNum=5;
+			var searchType=s;
+			var keyword=k;
+			
+			var info = {page:page, perPageNum:perPageNum, searchType:searchType, keyword:keyword};
+			draw_patient_table(info);
+		}
+	});
+	
 	//환자테이블에서 문자 클릭
 	$(document).on("click", ".sms_open_btn", function(){
 		var name = $(this).parent().parent().find("td").eq(1).text();
@@ -4577,8 +4592,6 @@ $(function(){
 						<select name="searchType">
 							<option value="name" ${cri.searchType=='t'?'selected':''}>이름</option>
 							<option value="cno" ${cri.searchType=='c'?'selected':''}>차트번호</option>
-							<option value="maindoctor" ${cri.searchType=='r'?'selected':''}>담당의사</option>
-							<option value="maintherapist" ${cri.searchType=='t'?'selected':''}>담당치료사</option>
 							<option value="phone" ${cri.searchType=='c'?'selected':''}>연락처</option>
 						</select> 
 						<input type="text" name="keyword" id="keywordInput" value="">
@@ -4803,4 +4816,4 @@ $(function(){
 		</div><!-- footer_wrap end -->
 	</div><!-- body_wrap end -->
 </body>
-</html> 
+</html>

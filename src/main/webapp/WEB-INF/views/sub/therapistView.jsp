@@ -3184,6 +3184,22 @@ $(function(){
 		draw_patient_table(info);
 	});
 	
+	//환자검색에서 엔터키 눌렀을 때
+	$("#keywordInput").keyup(function(e){
+		if(e.keyCode == 13){
+			var s=$(".ar_tbl_wrap_1 > .search_wrap > select[name='searchType']").val();
+			var k=$(".ar_tbl_wrap_1 > .search_wrap > input[name='keyword']").val(); 
+			
+			var page=1;
+			var perPageNum=5;
+			var searchType=s;
+			var keyword=k;
+			
+			var info = {page:page, perPageNum:perPageNum, searchType:searchType, keyword:keyword};
+			draw_patient_table(info);
+		}
+	});	
+	
 	//헤더에 있는 환자이름 버튼
 	$("#reservation_view_btn").click(function(){
 		$(this).css("display", "none");
@@ -3421,8 +3437,6 @@ $(function(){
 						<select name="searchType">
 							<option value="name" ${cri.searchType=='t'?'selected':''}>이름</option>
 							<option value="cno" ${cri.searchType=='c'?'selected':''}>차트번호</option>
-							<option value="maindoctor" ${cri.searchType=='r'?'selected':''}>담당의사</option>
-							<option value="maintherapist" ${cri.searchType=='t'?'selected':''}>담당치료사</option>
 							<option value="phone" ${cri.searchType=='c'?'selected':''}>연락처</option>
 						</select> 
 						<input type="text" name="keyword" id="keywordInput" value="">

@@ -58,8 +58,9 @@
 	.section{
 		margin-top:70px;
 		width:100%;
+		min-width: 1400px;
 		height: 100%;
-		/* overflow: scroll; */
+		/* overflow: scroll; */ 
 		position: relative;
 	}
 	.aside_left{

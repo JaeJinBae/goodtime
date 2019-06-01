@@ -14,6 +14,7 @@
 <script src="${pageContext.request.contextPath}/resources/js/calendar.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/week_calendar.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/patient_week_calendar.js"></script>
+<meta name="viewport" content="width=1400px, initial-scale=1.0">
 <style>
 	html{
 		overflow: hidden;
@@ -3912,6 +3913,20 @@ $(function(){
 		$(".calendar_select_date").val(get_today());
 		draw_time_table_by_case(storage_timetable_btn_num); */
 	});
+	
+	//이전달 클릭
+	$("#prevCalendar").click(function(){
+		var today = new Date($("#select_year_month").val());
+		prevCalendar(today);
+	});
+	
+	//다음달 클릭
+	$("#nextCalendar").click(function(){
+		var today = new Date($("#select_year_month").val());
+		nextCalendar(today);
+	});
+	
+	
 	var o={};
 	//환자table 생성
 	draw_patient_table(o);
@@ -5104,12 +5119,10 @@ $(function(){
 					<h5 class="today_btn">Today</h5>
 					<table id="calendar" border="3" align="center" style="border-color:#3333FF ">
 					    <tr class="tr_not"><!-- label은 마우스로 클릭을 편하게 해줌 -->
-					        <td><label onclick="prevCalendar()"><</label></td>
+					        <td><label id="prevCalendar"><</label></td>
 					        <td align="center" id="tbCalendarYM" colspan="5"> 
 					        yyyy년 m월</td>
-					        <td><label onclick="nextCalendar()">>
-					            
-					        </label></td>
+					        <td><label id="nextCalendar">></label></td>
 					    </tr>
 					    <tr class="tr_not">
 					        <td align="center" style="color:red;">일</td>

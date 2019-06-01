@@ -14,6 +14,7 @@
 <script src="${pageContext.request.contextPath}/resources/js/calendar.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/week_calendar.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/patient_week_calendar.js"></script>
+<meta name="viewport" content="width=1400px, initial-scale=1.0">
 <style>
 	html{
 		overflow: hidden;
@@ -38,12 +39,14 @@
 	
 	.all_wrap{
 		width: 100%;
+		min-width: 1400px;
 		height: 100%;
 		padding-bottom:50px;
 		position: relative;
 	}
 	.header{
 		width:100%;
+		min-width: 1400px;
 		position: fixed;
 		top:0;
 		background: #fff;
@@ -58,7 +61,6 @@
 	.section{
 		margin-top:70px;
 		width:100%;
-		min-width: 1400px;
 		height: 100%;
 		/* overflow: scroll; */ 
 		position: relative;
@@ -68,7 +70,7 @@
 		left:0;
 		width: 265px;
 		height:100%;
-		float:left;
+		/* float:left; */
 		border-right: 1px solid lightgray;
 		padding-top:12px;
 	}
@@ -199,14 +201,15 @@
 	}
 	.aside_right {
 		position:fixed;
-		left: 275px;
-		float:left;
-		min-width:1000px;
+		left: 265px;
+		/* float:left; */ 
+		min-width:1100px;
 		height:100%;
 		overflow: auto;
-		padding-bottom:100px;
+		/* padding-bottom:100px;
 		padding-right:15px;
-		padding-top:20px; 
+		padding-top:20px; */
+		padding: 20px 15px 100px 15px; 
 	}
 	
 	.ar_tbl_wrap_1{
@@ -216,7 +219,7 @@
 		float:left;
 		margin-bottom:20px;
 	}
-	.search_wrap > select{
+	.search_wrap > select{ 
 		font-size: 15px;
 		padding: 3px 5px;
 	}
@@ -3941,6 +3944,20 @@ $(function(){
 		$(".calendar_select_date").val(get_today());
 		draw_time_table_by_case(storage_timetable_btn_num); */
 	});
+	
+	//이전달 클릭
+	$("#prevCalendar").click(function(){
+		var today = new Date($("#select_year_month").val());
+		prevCalendar(today);
+	});
+	
+	//다음달 클릭
+	$("#nextCalendar").click(function(){
+		var today = new Date($("#select_year_month").val());
+		nextCalendar(today);
+	});
+	
+	
 	var o={};
 	//환자table 생성
 	draw_patient_table(o);
@@ -5133,12 +5150,10 @@ $(function(){
 					<h5 class="today_btn">Today</h5>
 					<table id="calendar" border="3" align="center" style="border-color:#3333FF ">
 					    <tr class="tr_not"><!-- label은 마우스로 클릭을 편하게 해줌 -->
-					        <td><label onclick="prevCalendar()"><</label></td>
+					        <td><label id="prevCalendar"><</label></td>
 					        <td align="center" id="tbCalendarYM" colspan="5"> 
 					        yyyy년 m월</td>
-					        <td><label onclick="nextCalendar()">>
-					            
-					        </label></td>
+					        <td><label id="nextCalendar">></label></td>
 					    </tr>
 					    <tr class="tr_not">
 					        <td align="center" style="color:red;">일</td>

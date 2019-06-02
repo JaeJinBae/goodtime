@@ -37,9 +37,10 @@
 	.header_inner1 > a{
 		font-weight:bold;
 		color: #fff;
-		font-size:20px;
+		color: #3f3f3f;
+		font-size:30px;
 		line-height: 62px;
-		letter-spacing: 24px;
+		letter-spacing: 5px;
 	}
 	.header_inner1 > a > img{
 		width: 200px;

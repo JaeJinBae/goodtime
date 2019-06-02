@@ -26,6 +26,9 @@ public class SmsRemainGet {
 			String sms = "";
 			sms += "user_id=" + "1clinic"; // SMS 아이디 
 			sms += "&key=" + "dxlaks0vqpw6579w9nuy20a3j1jnpj5s"; //인증키
+			
+			//dxlaks0vqpw6579w9nuy20a3j1jnpj5s 원마취통증인증키
+			//uybnfxh6xc0wbogbgu7nqgfnbqvx8xy8 웹에이드 인증키
 			/******************** 인증정보 ********************/
 			
 			URL url = new URL(sms_url);

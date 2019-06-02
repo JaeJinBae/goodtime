@@ -1076,6 +1076,7 @@ public class HomeController {
 			}else{
 				rrvo.setReception_info(vo.getDesk_state_regdate()+" "+vo.getDesk_state_writer());
 			}
+			rrvo.setReception_memo(vo.getMemo());
 			rrvo.setTherapy_info("");
 			rrvo.setRegister_info(vo.getRegdate()+" "+vo.getWriter());
 			rrvo.setResult(vo.getResult());
@@ -1112,6 +1113,7 @@ public class HomeController {
 			}else{
 				rrvo.setReception_info(vo.getDesk_state_regdate()+" "+vo.getDesk_state_writer());
 			}
+			rrvo.setReception_memo(vo.getMemo());
 			rrvo.setTherapy_info("");
 			rrvo.setRegister_info(vo.getRegdate()+" "+vo.getWriter());
 			rrvo.setResult(vo.getResult());
@@ -1159,6 +1161,7 @@ public class HomeController {
 				}else{
 					rrvo.setReception_info(vo.getDesk_state_regdate()+" "+vo.getDesk_state_writer());
 				}
+				rrvo.setReception_memo(vo.getMemo());
 				rrvo.setTherapy_info("");
 				rrvo.setRegister_info(vo.getRegdate()+" "+vo.getWriter());
 				rrvo.setResult(vo.getResult());
@@ -1208,6 +1211,7 @@ public class HomeController {
 				}else{
 					rrvo.setReception_info(vo.getDesk_state_regdate()+" "+vo.getDesk_state_writer());
 				}
+				rrvo.setReception_memo(vo.getMemo());
 				rrvo.setTherapy_info("");
 				rrvo.setRegister_info(vo.getRegdate()+" "+vo.getWriter());
 				rrvo.setResult(vo.getResult());

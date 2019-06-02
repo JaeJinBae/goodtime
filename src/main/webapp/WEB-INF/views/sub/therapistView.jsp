@@ -2891,7 +2891,7 @@ function draw_patient_reservation_record(){
 	var minute;
 	var overMinute;
 	
-	str = "<div class='patient_res_record_wrap'><table class='tbl_patient_reservation_record'><tr><th>환자명</th><th>담당자</th><th>분류</th><th>종류</th><th>예정일시</th><th>최초등록일시</th><th>접수일시</th><th>치료완료일시</th><th>취소사유</th></tr>";
+	str = "<div class='patient_res_record_wrap'><table class='tbl_patient_reservation_record'><tr><th>환자명</th><th>담당자</th><th>분류</th><th>종류</th><th>예정일시</th><th>최초등록일시</th><th>접수일시</th><th>치료완료일시</th><th>예약메모</th><th>취소사유</th></tr>";
 	if(json.length == 0){
 		str += "<tr><td colspan='9'>등록된 정보가 없습니다.</td></tr>";
 	}else{
@@ -2917,7 +2917,7 @@ function draw_patient_reservation_record(){
 			}else if(this.rtype == "ft"){
 				str += "<td>고정진료</td>";
 			}
-			str += "<td>"+this.cname+"</td><td>"+this.rdate+" "+hour+":"+minute+"</td><td>"+this.register_info+"</td><td>"+this.reception_info+"</td><td>"+this.therapy_info+"</td><td>"+this.result_memo+"</td></tr>";
+			str += "<td>"+this.cname+"</td><td>"+this.rdate+" "+hour+":"+minute+"</td><td>"+this.register_info+"</td><td>"+this.reception_info+"</td><td>"+this.therapy_info+"</td><td>"+this.reception_memo+"</td><td>"+this.result_memo+"</td></tr>";
 		});
 		str += "</table></div>";
 		

@@ -2645,7 +2645,8 @@ function update_reservation_deskState(rtype, rno, state, writer, regdate, stbn){
 			if(json == "ok"){
 								
 				alert(state+" 되었습니다.");
-				$(".popup_reservation_info_cancel_wrap").css("display","none");
+				$(".popup_reservation_info_view .cancel_reason > td > textarea[name='cancel_reason']").val("");
+				$(".popup_reservation_info_view .cancel_reason").css("display","none");
 				$(".popup_reservation_info_view").css("display", "none");
 				$(".popup_wrap").css("display","none");
 				

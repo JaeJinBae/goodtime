@@ -182,6 +182,12 @@
 .popup_reservation_info_view > table .cancel_reason{
 	display:none;
 }
+.popup_reservation_info_view > table .cancel_reason > td > textarea{
+	width: 226px;
+	font-size: 14px;
+	vertical-align: middle;
+	resize: none;
+}
 .popup_reservation_info_cancel_wrap > table{
 	width: 100%;
 }

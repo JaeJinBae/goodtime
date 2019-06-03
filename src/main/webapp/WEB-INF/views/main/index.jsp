@@ -135,8 +135,8 @@
 			</div>
 			<div class="login_wrap">
 				<ul>
-					<li><input type="text" name="id" placeholder="아이디"></li>
-					<li><input id="pw_input" type="password" name="pw" placeholder="비밀번호"></li>
+					<li><input type="text" name="id" placeholder="아이디" autocomplete="off"></li>
+					<li><input id="pw_input" type="password" name="pw" placeholder="비밀번호" autocomplete="off"></li>
 					<li id="btn_login">Login</li>
 				</ul>
 			</div>

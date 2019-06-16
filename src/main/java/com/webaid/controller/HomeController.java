@@ -814,7 +814,7 @@ public class HomeController {
 		List<NormalTherapyReservationVO> ntrList = new ArrayList<NormalTherapyReservationVO>();
 		List<FixTherapyReservationVO> ftrList = new ArrayList<FixTherapyReservationVO>();
 		String[] splitWeek = week.split(",");
-
+		
 		if(type.equals("doctor")){
 			for(int i = 1; i <= splitWeek.length-1; i++){
 				sbdeVO.setRdate(splitWeek[i]);
@@ -838,10 +838,11 @@ public class HomeController {
 			map.put("ncr", ncrList);
 			map.put("fcr", fcrList);
 		}else{
-			for(int i = 1; i < splitWeek.length-1; i++){
+			for(int i = 1; i <= splitWeek.length-1; i++){
+				
 				sbdeVO.setRdate(splitWeek[i]);
 				sbdeVO.setEno(Integer.parseInt(eno));
-				
+				System.out.println(sbdeVO);
 				List<NormalTherapyReservationVO> ntrVO = ntrService.selectByDateEno(sbdeVO);
 				List<FixTherapyReservationVO> ftrVO = ftrService.selectByDateEno(sbdeVO);
 				
@@ -856,6 +857,7 @@ public class HomeController {
 					}
 				}
 			}
+			System.out.println(ntrList);
 			map.put("ntr", ntrList);
 			map.put("ftr", ftrList);
 		}
@@ -966,7 +968,7 @@ public class HomeController {
 			}
 			map.put("vo", fcrList);
 		}else{
-			for(int i = 1; i < splitWeek.length-1; i++){
+			for(int i = 1; i <= splitWeek.length-1; i++){
 				sbdeVO.setRdate(splitWeek[i]);
 				sbdeVO.setEno(Integer.parseInt(eno));
 				

@@ -2641,8 +2641,8 @@ function draw_fixOff_in_timetable(date){
 		eTime = Number(this.endtime)/60;
 		for(var i= sTime; i<eTime ; i++){
 			timeTableClass = "."+this.etype+"_"+this.eno+"_"+i;
-			$(timeTableClass).html("");
-			$(timeTableClass).append("<p class='fix_off' style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>")
+			//$(timeTableClass).html("");
+			$(timeTableClass).prepend("<p class='fix_off' style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>")
 		}
 	});
 }
@@ -2674,8 +2674,8 @@ function draw_fixOff_in_weektable(){
 			eTime = Number(this.endtime)/60;
 			for(var n=sTime; n<eTime; n++){
 				target_class = "."+this.eno+"_"+arrWeek[i]+"_"+n;
-				$(target_class).html("");
-				$(target_class).append("<p class='fix_off' style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>");
+				//$(target_class).html("");
+				$(target_class).prepend("<p class='fix_off' style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>");
 			}
 		});
 	}

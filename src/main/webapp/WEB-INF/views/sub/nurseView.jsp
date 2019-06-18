@@ -2645,8 +2645,8 @@ function update_reservation_deskState(rtype, rno, state, writer, regdate, stbn){
 				alert(state+" 되었습니다.");
 				$(".popup_reservation_info_view .cancel_reason > td > textarea[name='cancel_reason']").val("");
 				$(".popup_reservation_info_view .cancel_reason").css("display","none");
-				$(".popup_reservation_info_view").css("display", "none");
-				$(".popup_wrap").css("display","none");
+				/* $(".popup_reservation_info_view").css("display", "none");
+				$(".popup_wrap").css("display","none"); */
 				
 				draw_time_table_by_case(stbn);
 			}else{
@@ -3262,8 +3262,8 @@ function draw_fixOff_in_timetable(date){
 		eTime = Number(this.endtime)/60;
 		for(var i= sTime; i<eTime ; i++){
 			timeTableClass = "."+this.etype+"_"+this.eno+"_"+i;
-			$(timeTableClass).html("");
-			$(timeTableClass).append("<p class='fix_off' style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>")
+			//$(timeTableClass).html("");
+			$(timeTableClass).prepend("<p class='fix_off' style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>")
 		}
 	});
 }
@@ -3295,8 +3295,8 @@ function draw_fixOff_in_weektable(){
 			eTime = Number(this.endtime)/60;
 			for(var n=sTime; n<eTime; n++){
 				target_class = "."+this.eno+"_"+arrWeek[i]+"_"+n;
-				$(target_class).html("");
-				$(target_class).append("<p class='fix_off' style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>");
+				//$(target_class).html("");
+				$(target_class).prepend("<p class='fix_off' style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>");
 			}
 		});
 	}
@@ -4725,6 +4725,8 @@ $(function(){
 	
 	//예약완료, 접수완료, 예약취소 눌렀을 때
 	$(".popup_reservation_info_btn_wrap > p").click(function(){
+		$(".popup_reservation_info_btn_wrap > p").css({"background":"#353c46", "color":"#fff"});
+		$(this).css("background","#1e866a");
 		var btn_idx = $(this).index();
 		if(btn_idx == 3){
 			$(".popup_reservation_info_view").css("display","none");

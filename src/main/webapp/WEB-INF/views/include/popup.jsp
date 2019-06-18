@@ -313,6 +313,53 @@
 }
 </style>
 <script>
+function inputBirthChk(obj) {
+	var number = obj.value.replace(/[^0-9]/g, "");
+	var birth = "";
+	
+	if(number.length < 5) {
+		return number;
+	} else if(number.length < 7) {
+		birth += number.substr(0, 4);
+		birth += "-";
+		birth += number.substr(4);
+	}else {
+		birth += number.substr(0, 4);
+		birth += "-";
+		birth += number.substr(4, 2);
+		birth += "-";
+		birth += number.substr(6);
+	}
+	
+	obj.value = birth;
+}
+
+function inputPhoneNumber(obj) {
+	var number = obj.value.replace(/[^0-9]/g, "");
+	var phone = "";
+	
+	if(number.length < 4) {
+		return number;
+	} else if(number.length < 7) {
+		phone += number.substr(0, 3);
+		phone += "-";
+		phone += number.substr(3);
+	} else if(number.length < 11) {
+		phone += number.substr(0, 3);
+		phone += "-";
+		phone += number.substr(3, 3);
+		phone += "-";
+		phone += number.substr(6);
+	} else {
+		phone += number.substr(0, 3);
+		phone += "-";
+		phone += number.substr(3, 4);
+		phone += "-";
+		phone += number.substr(7);
+	}
+	obj.value = phone;
+}
+
 	$(function(){
 		$(".popup_clinic_reservation_register > table tr:nth-child(3) > td > select[name='rtype']").change(function(){
 			var rtype=$(this).val();
@@ -331,6 +378,7 @@
 				$(".fix_therapy_res_tr").css("display","none");
 			}
 		});
+		
 	});
 </script>
 	<div class="popup_bg">
@@ -348,7 +396,7 @@
 			</tr>
 			<tr>
 				<th>▶ 연락처</th>
-				<td><input type="text" name="phone" placeholder="ex) 1999-09-09"></td>
+				<td><input type="text" name="phone" placeholder="ex) 1999-09-09" onKeyup="inputPhoneNumber(this);" maxlength="13"></td>
 			</tr>
 			<tr>
 				<th>▶ 아이디</th>
@@ -381,11 +429,11 @@
 			</tr>
 			<tr>
 				<th>▶ 연락처</th>
-				<td><input type="text" name="phone" value="" placeholder="ex) 010-1234-1234"></td>
+				<td><input type="text" name="phone" value="" placeholder="ex) 010-1234-1234" onKeyup="inputPhoneNumber(this);" maxlength="13"></td>
 			</tr>
 			<tr>
 				<th>▶ 생년월일</th>
-				<td><input type="text" name="birth" value="" placeholder="ex) 1999-09-09"></td>
+				<td><input type="text" name="birth" value="" placeholder="ex) 1999-09-09" onKeyup="inputBirthChk(this);" maxlength="10"></td>
 			</tr>
 			<tr>
 				<th>▶ 성별</th>

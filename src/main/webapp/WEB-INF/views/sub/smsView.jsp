@@ -20,7 +20,7 @@
 		font-weight: bold;
 	}
 	.aside1{
-		width:1000px;
+		width:1100px;
 		margin-left:50px;
 		margin-top:50px;
 		overflow:hidden;
@@ -85,10 +85,13 @@
 	.formWrap{
 		width: 100%;
 		padding-left: 10px;
+		overflow: hidden;
 	}
 	.templateWrap{
-		width: 100%;
+		/* width: 100%; */
 		margin-bottom: 60px;
+		margin-right: 45px;
+		float: left;
 	}
 	.templateWrap > h4{
 		
@@ -206,14 +209,14 @@ function bytesHandler(obj){
 $(function(){
 	
 	//진료, 치료 저장내용 byte 표기
-	for(var i=1; i<3; i++){
+	for(var i=1; i<4; i++){
 		var obj = $(".templateWrap:nth-child("+i+") > ul > li > textarea");
 		var objText = obj.text();
-		objText = objText.replace("[병원명]","원마취통증의학과");
-		objText = objText.replace("[환자명]","홍길동");
-		objText = objText.replace("[진료명]","초진");
-		objText = objText.replace("[예약날짜]","2019-01-01");
-		objText = objText.replace("[시작시간]","14:50");
+		objText = objText.replace(/\[병원명\]/gi,"원마취통증의학과");
+		objText = objText.replace(/\[환자명\]/gi,"홍길동");
+		objText = objText.replace(/\[진료명\]/gi,"초진");
+		objText = objText.replace(/\[예약날짜\]/gi,"2019-01-01");
+		objText = objText.replace(/\[시작시간\]/gi,"14:50");
 		
 		$(obj).parent().parent().find(".preview").html(objText);
 		bytesHandler(obj);
@@ -227,12 +230,11 @@ $(function(){
 	//키 누를때마다 byte값, 미리보기 내용과 byte 값 변경 
 	$('.templateWrap > ul > li > textarea').keyup(function(){
 		var text = $(this).val();
-		text = text.replace("[병원명]","원마취통증의학과");
-		text = text.replace("[환자명]","홍길동");
-		text = text.replace("[진료명]","초진");
-		text = text.replace("[예약날짜]","2019-01-01");
-		text = text.replace("[시작시간]","14:50");
-		
+		text = text.replace(/\[병원명\]/gi,"원마취통증의학과");
+		text = text.replace(/\[환자명\]/gi,"홍길동");
+		text = text.replace(/\[진료명\]/gi,"초진");
+		text = text.replace(/\[예약날짜\]/gi,"2019-01-01");
+		text = text.replace(/\[시작시간\]/gi,"14:50");
 		$(this).parent().parent().find(".preview").html(text);
 		bytesHandler(this);
 	});
@@ -245,8 +247,10 @@ $(function(){
 		var content = "";
 		if(num == 1){
 			content = $(".templateWrap:nth-child(1) > ul > li > textarea").val();
-		}else{
+		}else if(num ==2){
 			content = $(".templateWrap:nth-child(2) > ul > li > textarea").val();
+		}else{
+			content = $(".templateWrap:nth-child(3) > ul > li > textarea").val();
 		}
 		var vo = {no:num, content:content};
 		post_smsTamplate_update(vo);
@@ -312,6 +316,23 @@ $(function(){
 						<ul>
 							<li>
 								<textarea>${smsTherapy.content}</textarea>
+								<p><span>195</span>/2000 Byte</p>
+							</li>
+							<li>
+								<textarea class="preview" readonly></textarea>
+								<p><span>195</span>/2000 Byte</p>
+							</li>
+						</ul>
+					</div><!-- templateWrap end -->
+					<div class="templateWrap">
+						<h4>단체전송<input type="hidden" name="no" value="3"> <button>저 장</button></h4>
+						<div class="tempTitle">
+							<p>-탬플릿-</p>
+							<p>-미리보기-</p>
+						</div>
+						<ul>
+							<li>
+								<textarea>${smsGroup.content}</textarea>
 								<p><span>195</span>/2000 Byte</p>
 							</li>
 							<li>

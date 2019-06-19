@@ -626,8 +626,6 @@
 		line-height: 30px;
 	}
 	
-	
-	
 	.timetable_btn_wrap{
 		width:1031px;
 		margin-bottom:20px;
@@ -1189,9 +1187,11 @@ function draw_time_table_by_case(idx){
 			table_txt += "<br><br><br>";
 			table_txt += draw_total_time_table(select_date, "therapist");
 			$(".time_table_wrap").append(table_txt);
+			
 			draw_reservation(select_date);
 			draw_normalOff_in_timetable(select_date);
 			draw_fixOff_in_timetable(select_date);
+			$(".time_table_wrap > .doctor_time_table tr:first-child > td:first-child").html("<img class='sendGroupSms' style='width:24px;cursor:pointer' title='예약단체문자전송' src='${pageContext.request.contextPath}/resources/images/icon_sms.png'>");
 			break;
 		case 1:
 			$(".week_select_box_wrap").css("display","none");
@@ -3853,6 +3853,33 @@ function post_smsSend(vo){
 		}
 	});
 }
+
+function post_sendGroupSms(info){
+	$.ajax({
+		url:"${pageContext.request.contextPath}/smsSendGroupByDate",
+		type:"post",
+		dataType:"text",
+		data:JSON.stringify(info),
+		contentType : "application/json; charset=UTF-8",
+		async:false,
+		success:function(json){
+			if(json == "no"){
+				alert("새로고침(F5) 후 다시 이용하거나 문자관리에서 잔여 문자전송량을 확인하세요.");
+			}else{
+				console.log(json);
+				var smsArr = json.split("/");
+				alert("문자를 전송하였습니다.\n"+"[잔여문자안내]\n단문 이용시 "+smsArr[0]+"건 사용가능.\n장문 이용시 "+smsArr[1]+"건 사용가능");
+				$(".popup_smsSend").css("display","none");
+				$(".popup_wrap").css("display","none");
+			}
+			
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	});
+}
+
 function get_smsRecordAll(info){
 	var dt;
 	$.ajax({
@@ -4370,7 +4397,25 @@ $(function(){
 		draw_patient_week_timetable(type, storage_timetable2_btn_num);
 	});
 	
-	
+	//예약 종합 테이블에 단체문자전송 클릭
+	$(document).on("click", ".sendGroupSms", function(){
+		var date_pattern = /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1])$/;
+		var inputDate = prompt("날짜를 적어주세요.\n ex) 2019-01-01");
+		var sendConfirm;
+		
+		if(!date_pattern.test(inputDate)){
+			alert("날짜 형식이 잘못되었습니다. 다시 시도해주세요.");
+			return false;
+		}else{
+			sendConfirm = confirm(inputDate+" 날짜에 해당하는 진료, 치료 예약환자에게 예약안내 메세지를 전송하시겠습니까?");
+			if(sendConfirm == true){
+				var info = {date:inputDate};
+				post_sendGroupSms(info);
+			}else{
+				return false;
+			}
+		}
+	});
 	
 	//진료테이블에서 + 클릭
 	$(document).on("click", ".doctor_time_table .reservation_register_btn", function(){

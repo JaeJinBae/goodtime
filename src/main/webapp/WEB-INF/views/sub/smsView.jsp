@@ -214,9 +214,15 @@ $(function(){
 		var objText = obj.text();
 		objText = objText.replace(/\[병원명\]/gi,"원마취통증의학과");
 		objText = objText.replace(/\[환자명\]/gi,"홍길동");
-		objText = objText.replace(/\[진료명\]/gi,"초진");
 		objText = objText.replace(/\[예약날짜\]/gi,"2019-01-01");
-		objText = objText.replace(/\[시작시간\]/gi,"14:50");
+		objText = objText.replace(/\[진료명\]/gi,"초진");
+		objText = objText.replace(/\[시작시간\]/gi,"13:50");
+		objText = objText.replace(/\[진료명1\]/gi,"초진1");
+		objText = objText.replace(/\[시작시간1\]/gi,"14:50");
+		objText = objText.replace(/\[진료명2\]/gi,"초진2");
+		objText = objText.replace(/\[시작시간2\]/gi,"15:50");
+		objText = objText.replace(/\[진료명3\]/gi,"초진3");
+		objText = objText.replace(/\[시작시간3\]/gi,"16:50");
 		
 		$(obj).parent().parent().find(".preview").html(objText);
 		bytesHandler(obj);
@@ -232,9 +238,16 @@ $(function(){
 		var text = $(this).val();
 		text = text.replace(/\[병원명\]/gi,"원마취통증의학과");
 		text = text.replace(/\[환자명\]/gi,"홍길동");
-		text = text.replace(/\[진료명\]/gi,"초진");
 		text = text.replace(/\[예약날짜\]/gi,"2019-01-01");
-		text = text.replace(/\[시작시간\]/gi,"14:50");
+		text = text.replace(/\[진료명\]/gi,"초진");
+		text = text.replace(/\[시작시간\]/gi,"13:50");
+		text = text.replace(/\[진료명1\]/gi,"초진1");
+		text = text.replace(/\[시작시간1\]/gi,"14:50");
+		text = text.replace(/\[진료명2\]/gi,"초진2");
+		text = text.replace(/\[시작시간2\]/gi,"15:50");
+		text = text.replace(/\[진료명3\]/gi,"초진3");
+		text = text.replace(/\[시작시간3\]/gi,"16:50");
+		
 		$(this).parent().parent().find(".preview").html(text);
 		bytesHandler(this);
 	});

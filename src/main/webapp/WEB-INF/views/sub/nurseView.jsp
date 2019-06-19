@@ -1190,6 +1190,7 @@ function draw_time_table_by_case(idx){
 			draw_reservation(select_date);
 			draw_normalOff_in_timetable(select_date);
 			draw_fixOff_in_timetable(select_date);
+			$(".time_table_wrap > .doctor_time_table tr:first-child > td:first-child").html("<img class='sendGroupSms' style='width:24px;cursor:pointer' title='예약단체문자전송' src='${pageContext.request.contextPath}/resources/images/icon_sms.png'>");
 			break;
 		case 1:
 			$(".week_select_box_wrap").css("display","none");
@@ -4339,7 +4340,24 @@ $(function(){
 		draw_patient_week_timetable(type, storage_timetable2_btn_num);
 	});
 	
-	
+	//예약 종합 테이블에 단체문자전송 클릭
+	$(document).on("click", ".sendGroupSms", function(){
+		var date_pattern = /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1])$/;
+		var inputDate = prompt("날짜를 적어주세요.\n ex) 2019-01-01");
+		var sendConfirm;
+		
+		if(!date_pattern.test(inputDate)){
+			alert("날짜 형식이 잘못되었습니다. 다시 시도해주세요.");
+			return false;
+		}else{
+			sendConfirm = confirm(inputDate+"에 해당하는 진료, 치료 환자에게 예약안내 메세지를 전송하시겠습니까?");
+			if(sendConfirm == true){
+				post_sendGroupSms(inputDate);
+			}else{
+				return false;
+			}
+		}
+	});
 	
 	//진료테이블에서 + 클릭
 	$(document).on("click", ".doctor_time_table .reservation_register_btn", function(){

@@ -10,7 +10,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.text.ParseException;
@@ -18,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -45,7 +45,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -66,6 +65,7 @@ import com.webaid.domain.PageMaker;
 import com.webaid.domain.PageMaker5;
 import com.webaid.domain.PageMakerRR;
 import com.webaid.domain.PatientVO;
+import com.webaid.domain.ReservationGroupVO;
 import com.webaid.domain.ReservationRecordVO;
 import com.webaid.domain.ReservationUpdateRecordVO;
 import com.webaid.domain.SearchCriteria;
@@ -2247,8 +2247,139 @@ public class HomeController {
 	@RequestMapping(value="/smsSendGroupByDate", method=RequestMethod.POST)
 	public ResponseEntity<String> smsSendGroupByDate(@RequestBody Map<String, String> info){
 		ResponseEntity<String> entity = null;
+		
 		String receiveDate = info.get("date");
-		System.out.println(receiveDate);
+		List<Integer> rgvoPnoList = new ArrayList<>();
+		List<ReservationGroupVO> rgvoList = new ArrayList<ReservationGroupVO>();
+		List<ReservationGroupVO> rgvoList2 = new ArrayList<ReservationGroupVO>();
+		List<ReservationGroupVO> rgvoNonDuplicateList = new ArrayList<>();
+		List<List<ReservationGroupVO>> result = new ArrayList<>();
+		List<NormalClinicReservationVO> ncrList = ncrService.selectByDate(receiveDate);
+		List<NormalTherapyReservationVO> ntrList = ntrService.selectByDate(receiveDate);
+		List<FixClinicReservationVO> fcrList = fcrService.selectByDate(receiveDate);
+		List<FixTherapyReservationVO> ftrList = ftrService.selectByDate(receiveDate);
+		
+		for(int i=0; i<ncrList.size(); i++){
+			if(!ncrList.get(i).getResult().equals("예약취소")){
+				ReservationGroupVO rgvo = new ReservationGroupVO();
+				
+				rgvo.setPno(ncrList.get(i).getPno());
+				rgvo.setPname(ncrList.get(i).getPname());
+				rgvo.setChartNo(ncrList.get(i).getChart_no());
+				rgvo.setClinicName(ncrList.get(i).getClinic_name());
+				rgvo.setRtype(ncrList.get(i).getRtype());
+				rgvo.setRdate(ncrList.get(i).getRdate());
+				rgvo.setRtime(ncrList.get(i).getRtime());
+				
+				rgvoList.add(rgvo);
+				
+				/*if(!rgvoPnoList.contains(ncrList.get(i).getPno())){
+					rgvoPnoList.add(ncrList.get(i).getPno());
+					rgvoList.add(rgvo);
+				}else{
+					rgvoNonDuplicateList.add(rgvo);
+				}*/
+			}
+		}
+		for(int i=0; i<ntrList.size(); i++){
+			if(!ntrList.get(i).getResult().equals("예약취소")){
+				ReservationGroupVO rgvo = new ReservationGroupVO();
+				
+				rgvo.setPno(ntrList.get(i).getPno());
+				rgvo.setPname(ntrList.get(i).getPname());
+				rgvo.setChartNo(ntrList.get(i).getChart_no());
+				rgvo.setClinicName(ntrList.get(i).getClinic_name());
+				rgvo.setRtype(ntrList.get(i).getRtype());
+				rgvo.setRdate(ntrList.get(i).getRdate());
+				rgvo.setRtime(ntrList.get(i).getRtime());
+				
+				rgvoList.add(rgvo);
+			}
+		}
+		for(int i=0; i<fcrList.size(); i++){
+			if(!fcrList.get(i).getResult().equals("예약취소")){
+				ReservationGroupVO rgvo = new ReservationGroupVO();
+				
+				rgvo.setPno(fcrList.get(i).getPno());
+				rgvo.setPname(fcrList.get(i).getPname());
+				rgvo.setChartNo(fcrList.get(i).getChart_no());
+				rgvo.setClinicName(fcrList.get(i).getClinic_name());
+				rgvo.setRtype(fcrList.get(i).getRtype());
+				rgvo.setRdate(fcrList.get(i).getRdate());
+				rgvo.setRtime(fcrList.get(i).getRtime());
+				
+				rgvoList.add(rgvo);
+				
+			}
+		}
+		for(int i=0; i<ftrList.size(); i++){
+			if(!ftrList.get(i).getResult().equals("예약취소")){
+				ReservationGroupVO rgvo = new ReservationGroupVO();
+				
+				rgvo.setPno(ftrList.get(i).getPno());
+				rgvo.setPname(ftrList.get(i).getPname());
+				rgvo.setChartNo(ftrList.get(i).getChart_no());
+				rgvo.setClinicName(ftrList.get(i).getClinic_name());
+				rgvo.setRtype(ftrList.get(i).getRtype());
+				rgvo.setRdate(ftrList.get(i).getRdate());
+				rgvo.setRtime(ftrList.get(i).getRtime());
+				
+				rgvoList.add(rgvo);
+				
+				
+			}
+		}
+		
+		Collections.sort(rgvoList);
+		for(int i=0; i<rgvoList.size(); i++){
+			System.out.println(rgvoList.get(i));
+		}
+		
+		System.out.println("********************************************");
+		for(int i=0; i<rgvoList.size(); i++){
+			System.out.println("현재vo값 = "+rgvoList.get(i));
+			if(rgvoList2.size() == 0){
+				rgvoList2.add(rgvoList.get(i));
+			}else{
+				if(rgvoList2.get(rgvoList2.size()-1).getPno()==rgvoList.get(i).getPno()){
+					rgvoList2.add(rgvoList.get(i));
+				}else{
+					//시간순 정렬
+					Collections.sort(rgvoList2, new Comparator<ReservationGroupVO>() {
+
+						@Override
+						public int compare(ReservationGroupVO o1, ReservationGroupVO o2) {
+							return o1.getRtime().compareTo(o2.getRtime());
+						}
+						
+					});
+					result.add(rgvoList2);
+					rgvoList2 = new ArrayList<>();
+					rgvoList2.add(rgvoList.get(i));
+				}
+			}
+			
+			if(i==rgvoList.size()-1){
+				//시간순 정렬
+				Collections.sort(rgvoList2, new Comparator<ReservationGroupVO>() {
+
+					@Override
+					public int compare(ReservationGroupVO o1, ReservationGroupVO o2) {
+						return o1.getRtime().compareTo(o2.getRtime());
+					}
+					
+				});
+				result.add(rgvoList2);
+			}
+		}
+		
+		for(int i=0; i<result.size(); i++){
+			for(int j=0; j<result.get(i).size(); j++){
+				System.out.println(result.get(i).get(j));
+			}
+			System.out.println("==============================");
+		}
+				
 		return entity;
 	}
 	

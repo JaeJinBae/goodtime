@@ -2543,7 +2543,7 @@ function draw_reservation_update_view(rno, rtype){
 	$(".popup_reservation_update > table tr:nth-child(5) > td select[name='clinic']").html(str);
 	
 	//$(".popup_reservation_update > h2 > span").text(type+" "+patient.name+"("+patient.cno+")님 ");
-	$(".popup_reservation_update > h2").html(type+" "+patient.name+"("+patient.cno+")님 <input type='hidden' name='rno' value='"+rno+"'><input type='hidden' name='rtype' value='"+rtype+"'><input type='hidden' name='pno' value='"+json.pno+"'>");
+	$(".popup_reservation_update > h2").html(type+" "+patient.name+"("+patient.cno+")님 일정변경<input type='hidden' name='rno' value='"+rno+"'><input type='hidden' name='rtype' value='"+rtype+"'><input type='hidden' name='pno' value='"+json.pno+"'>");
 	$(".popup_reservation_update > table tr:first-child > td").text(rdate_rtime);
 	$(".popup_reservation_update > table tr:nth-child(2) > td > input[name='rdate']").val(json.rdate);
 	$(".popup_reservation_update > table tr:nth-child(3) > td select[name='rtime1'] > option[value='"+parseInt(Number(json.rtime))+"']").prop("selected",true);
@@ -4407,8 +4407,8 @@ $(function(){
 		var pno = $("#reservation_view_btn > input[name='pno']").val();
 		var pname = $("#reservation_view_btn").text();
 		var chart_no = $("#reservation_view_btn > input[name='cno']").val();
-		$(".popup_clinic_reservation_register > h2 > span").html(pname+"("+chart_no+")님");
-		str = "<input type='hidden' name='pno' value='"+pno+"'><input type='hidden' name='pname' value='"+pname+"'><input type='hidden' name='chart_no' value='"+chart_no+"'>";
+		
+		str = "<span>"+pname+"("+chart_no+")님</span><input type='hidden' name='pno' value='"+pno+"'><input type='hidden' name='pname' value='"+pname+"'><input type='hidden' name='chart_no' value='"+chart_no+"'>";
 		$(".popup_clinic_reservation_register > h2").html(str);
 		$(".popup_clinic_reservation_register > table td > select[name='clinic'] > option[value='']").prop("selected", true);
 		$(".popup_clinic_reservation_register > table td > select[name='eno'] > option[value='"+eno+"']").prop("selected", true);
@@ -4446,8 +4446,8 @@ $(function(){
 		var pname = $("#reservation_view_btn").text();
 		var chart_no = $("#reservation_view_btn > input[name='cno']").val();
 		
-		$(".popup_therapy_reservation_register > h2 > span").html(pname+"("+chart_no+")님");
-		str = "<input type='hidden' name='pno' value='"+pno+"'><input type='hidden' name='pname' value='"+pname+"'><input type='hidden' name='chart_no' value='"+chart_no+"'>";
+		$(".popup_therapy_reservation_register > h2 > span").html();
+		str = "<span>"+pname+"("+chart_no+")님</span><input type='hidden' name='pno' value='"+pno+"'><input type='hidden' name='pname' value='"+pname+"'><input type='hidden' name='chart_no' value='"+chart_no+"'>";
 		$(".popup_therapy_reservation_register > h2").html(str);
 		$(".popup_therapy_reservation_register > table td > select[name='clinic'] > option[value='']").prop("selected", true);
 		$(".popup_therapy_reservation_register > table td > select[name='eno'] > option[value='"+eno+"']").prop("selected", true);

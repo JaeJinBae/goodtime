@@ -80,7 +80,7 @@
 	display: inline-block;
 	padding:8px 10px;
 	font-size:15px;
-	margin-left:20px;
+	margin: 0 10px;
 	cursor: pointer;
 	background: #595959;
 	color: #fff;
@@ -98,7 +98,7 @@
 	display: inline-block;
 	padding:8px 10px;
 	font-size:15px;
-	margin-left:20px;
+	margin: 0 10px;
 	cursor: pointer;
 	background: #595959;
 	color: #fff;
@@ -116,7 +116,7 @@
 	display: inline-block;
 	padding:8px 10px;
 	font-size:15px;
-	margin-left:20px;
+	margin: 0 10px;
 	cursor: pointer;
 	background: #595959;
 	color: #fff;
@@ -143,7 +143,7 @@
 	display: inline-block;
 	padding:8px 10px;
 	font-size:15px;
-	margin-left:20px;
+	margin: 0 10px;
 	cursor: pointer;
 	background: #595959;
 	color: #fff;
@@ -173,7 +173,7 @@
 	display: inline-block;
 	padding:8px 10px;
 	font-size:15px;
-	margin-left:20px;
+	margin: 0 10px;
 	cursor: pointer;
 	background: #353c46;
 	color: #fff;
@@ -203,7 +203,7 @@
 	display: inline-block;
 	padding:8px 10px;
 	font-size:15px;
-	margin-left:20px;
+	margin: 0 10px;
 	cursor: pointer;
 	background: #353c46;
 	color: #fff;
@@ -221,7 +221,7 @@
 	display: inline-block;
 	padding:8px 10px;
 	font-size:15px;
-	margin-left:20px;
+	margin: 0 10px;
 	cursor: pointer;
 	background: #353c46;
 	color: #fff;
@@ -239,7 +239,7 @@
 	display: inline-block;
 	padding:8px 10px;
 	font-size:15px;
-	margin-left:20px;
+	margin: 0 10px;
 	cursor: pointer;
 	background: #353c46;
 	color: #fff;
@@ -257,7 +257,7 @@
 	display: inline-block;
 	padding:8px 10px;
 	font-size:15px;
-	margin-left:20px;
+	margin: 0 10px;
 	cursor: pointer;
 	background: #353c46;
 	color: #fff;
@@ -275,7 +275,7 @@
 	display: inline-block;
 	padding:8px 10px;
 	font-size:15px;
-	margin-left:20px;
+	margin: 0 10px;
 	cursor: pointer;
 	background: #353c46;
 	color: #fff;
@@ -304,7 +304,7 @@
 	display: inline-block;
 	padding:8px 10px;
 	font-size:15px;
-	margin-left:20px;
+	margin: 0 10px;
 	cursor: pointer;
 	background: #353c46;
 	color: #fff;

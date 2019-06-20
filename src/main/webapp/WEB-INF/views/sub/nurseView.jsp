@@ -2447,6 +2447,7 @@ function open_reservation_info_view(type, rno){
 	$(".popup_reservation_info_view > table tr:first-child > td > span").html(pData.phone);
 	$(".popup_reservation_info_view > table tr:nth-child(2) > td > span").html(rData.rdate+" "+hour+":"+minute);
 	$(".popup_reservation_info_view > table tr:nth-child(3) > td > span").html(cData.code_name+" / "+eData.name);
+	$(".popup_reservation_info_view > table tr:nth-child(3) > td > span").css({"background":cData.color, "padding":"2px 4px", "color":"#fefefe"});
 	$(".popup_reservation_info_view > table tr:nth-child(4) > td > span").html(rData.memo);
 	
 	var other_res = get_reservationList_byPnoDate(rData.pno, rData.rdate);
@@ -2480,14 +2481,15 @@ function open_reservation_info_view(type, rno){
 	});
 	
 	$(resArr).each(function(){
+		cData = get_clinic_by_cno(this.clinic);
 		hour = parseInt(Number(this.rtime)/60);
 		minute = (Number(this.rtime)%60 >9?'':'0')+Number(this.rtime)%60;
 		eData = get_employee_byEno(this.eno);
 		if(this.rtype == "fc" || this.rtype == "ft"){
-			str += "<p class='res_info_view_today_list' style='background:#ffaf7a;padding:1px;border-radius: 4px;'>"+this.rdate+" "+hour+":"+minute+" "
+			str += "<p class='res_info_view_today_list' style='background:#ffaf7a;padding:3px 4px; color:#fefefe;'>"+this.rdate+" "+hour+":"+minute+" "
 				+this.clinic_name+"/"+eData.name+"<input type='hidden' name='rtype' value='"+this.rtype+"'><input type='hidden' name='rno' value='"+this.rno+"'></p>";
 		}else{
-			str += "<p class='res_info_view_today_list'>"+this.rdate+" "+hour+":"+minute+" "
+			str += "<p class='res_info_view_today_list' style='background:"+cData.color+"; color:#fefefe;padding:3px 4px;'>"+this.rdate+" "+hour+":"+minute+" "
 				+this.clinic_name+"/"+eData.name+"<input type='hidden' name='rtype' value='"+this.rtype+"'><input type='hidden' name='rno' value='"+this.rno+"'></p>";
 		}
 		

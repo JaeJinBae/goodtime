@@ -4100,6 +4100,7 @@ $(function(){
 		$(this).css("display", "none");
 		$("#reservation_view_btn").html("");
 		$(".reservation_register_btn").css("display", "none");
+		$(".ar_tbl_wrap_1 > #inner_tbl_wrap > table .patientTblTr").css("background", "#fff"); 
 		//ar_tbl_wrap_3 지우기
 		$(".patient_week_tbl_selectBox_wrap").css("display","none");
 		$(".patient_time_table_wrap").html("");

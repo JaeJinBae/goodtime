@@ -74,4 +74,9 @@ public class NormalTherapyReservationServiceImpl implements NormalTherapyReserva
 		dao.cancel(vo);
 	}
 
+	@Override
+	public void deleteByRno(int rno) {
+		dao.deleteByRno(rno);
+	}
+
 }

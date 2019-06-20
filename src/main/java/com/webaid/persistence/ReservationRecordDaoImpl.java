@@ -67,4 +67,9 @@ public class ReservationRecordDaoImpl implements ReservationRecordDao {
 		session.update(namespace + ".updateRdateRtime", vo);
 	}
 
+	@Override
+	public void deleteByRnoRtype(ReservationRecordVO vo) {
+		session.delete(namespace+".deleteByRnoRtype", vo);
+	}
+
 }

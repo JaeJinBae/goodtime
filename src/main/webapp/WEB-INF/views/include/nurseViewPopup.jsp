@@ -79,7 +79,7 @@
 	display: inline-block;
 	padding:8px 10px;
 	font-size:15px;
-	margin-left:20px;
+	margin: 0 10px;
 	cursor: pointer;
 	background: #595959;
 	color: #fff;
@@ -97,7 +97,7 @@
 	display: inline-block;
 	padding:8px 10px;
 	font-size:15px;
-	margin-left:20px;
+	margin: 0 10px;
 	cursor: pointer;
 	background: #595959;
 	color: #fff;
@@ -115,7 +115,7 @@
 	display: inline-block;
 	padding:8px 10px;
 	font-size:15px;
-	margin-left:20px;
+	margin: 0 10px;
 	cursor: pointer;
 	background: #595959;
 	color: #fff;
@@ -142,7 +142,7 @@
 	display: inline-block;
 	padding:8px 10px;
 	font-size:15px;
-	margin-left:20px;
+	margin: 0 10px;
 	cursor: pointer;
 	background: #595959;
 	color: #fff;
@@ -172,7 +172,7 @@
 	display: inline-block;
 	padding:8px 10px;
 	font-size:15px;
-	margin-left:20px;
+	margin: 0 10px;
 	cursor: pointer;
 	background: #353c46;
 	color: #fff;
@@ -202,7 +202,7 @@
 	display: inline-block;
 	padding:8px 10px;
 	font-size:15px;
-	margin-left:20px;
+	margin: 0 10px;
 	cursor: pointer;
 	background: #353c46;
 	color: #fff;
@@ -220,7 +220,7 @@
 	display: inline-block;
 	padding:8px 10px;
 	font-size:15px;
-	margin-left:20px;
+	margin: 0 10px;
 	cursor: pointer;
 	background: #353c46;
 	color: #fff;
@@ -238,7 +238,7 @@
 	display: inline-block;
 	padding:8px 10px;
 	font-size:15px;
-	margin-left:20px;
+	margin: 0 10px;
 	cursor: pointer;
 	background: #353c46;
 	color: #fff;
@@ -256,7 +256,7 @@
 	display: inline-block;
 	padding:8px 10px;
 	font-size:15px;
-	margin-left:20px;
+	margin: 0 10px;
 	cursor: pointer;
 	background: #353c46;
 	color: #fff;
@@ -274,7 +274,7 @@
 	display: inline-block;
 	padding:8px 10px;
 	font-size:15px;
-	margin-left:20px;
+	margin: 0 10px;
 	cursor: pointer;
 	background: #353c46;
 	color: #fff;
@@ -302,7 +302,7 @@
 	display: inline-block;
 	padding:8px 10px;
 	font-size:15px;
-	margin-left:20px;
+	margin: 0 10px;
 	cursor: pointer;
 	background: #353c46;
 	color: #fff;
@@ -783,6 +783,7 @@ $(function(){
 		</table>
 		<div class="popup_res_update_btn_wrap">
 			<p>변경일정저장</p>
+			<p>예약삭제</p>
 			<p>닫기</p>
 		</div>
 	</div><!-- popup_normal_reservation_update -->

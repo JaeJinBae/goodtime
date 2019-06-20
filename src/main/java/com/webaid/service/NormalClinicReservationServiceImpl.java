@@ -60,4 +60,9 @@ public class NormalClinicReservationServiceImpl implements NormalClinicReservati
 		dao.cancel(vo);
 	}
 
+	@Override
+	public void deleteByRno(int rno) {
+		dao.deleteByRno(rno);
+	}
+
 }

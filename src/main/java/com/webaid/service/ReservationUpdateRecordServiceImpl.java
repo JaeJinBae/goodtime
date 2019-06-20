@@ -40,4 +40,9 @@ public class ReservationUpdateRecordServiceImpl implements ReservationUpdateReco
 		dao.register(vo);
 	}
 
+	@Override
+	public void deleteByRnoRtype(ReservationUpdateRecordVO vo) {
+		dao.deleteByRnoRtype(vo);
+	}
+
 }

@@ -62,4 +62,9 @@ public class NormalClinicReservationDaoImpl implements NormalClinicReservationDa
 		return session.selectList(namespace+".selectByDatePno", vo);
 	}
 
+	@Override
+	public void deleteByRno(int rno) {
+		session.delete(namespace+".deleteByRno", rno);
+	}
+
 }

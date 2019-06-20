@@ -15,4 +15,5 @@ public interface NormalClinicReservationService {
 	public void updateDeskState(NormalClinicReservationVO vo);
 	public void updateInfo(NormalClinicReservationVO vo);
 	public void cancel(NormalClinicReservationVO vo);
+	public void deleteByRno(int rno);
 }

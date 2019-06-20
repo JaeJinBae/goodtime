@@ -18,4 +18,5 @@ public interface NormalTherapyReservationService {
 	public void updateTherapistState(NormalTherapyReservationVO vo);
 	public void updateInfo(NormalTherapyReservationVO vo);
 	public void cancel(NormalTherapyReservationVO vo);
+	public void deleteByRno(int rno);
 }

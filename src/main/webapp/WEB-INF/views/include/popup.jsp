@@ -786,6 +786,7 @@ function inputPhoneNumber(obj) {
 		</table>
 		<div class="popup_res_update_btn_wrap">
 			<p>변경일정저장</p>
+			<p>예약삭제</p>
 			<p>닫기</p>
 		</div>
 	</div><!-- popup_normal_reservation_update -->

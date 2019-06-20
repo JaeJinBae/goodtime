@@ -15,4 +15,5 @@ public interface FixClinicReservationDao {
 	public void updateDeskState(FixClinicReservationVO vo);
 	public void updateInfo(FixClinicReservationVO vo);
 	public void cancel(FixClinicReservationVO vo);
+	public void deleteByRno(int rno);
 }

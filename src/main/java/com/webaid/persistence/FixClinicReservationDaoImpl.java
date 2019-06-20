@@ -61,4 +61,9 @@ public class FixClinicReservationDaoImpl implements FixClinicReservationDao {
 		session.update(namespace + ".cancel", vo);
 	}
 
+	@Override
+	public void deleteByRno(int rno) {
+		session.delete(namespace+".deleteByRno", rno);
+	}
+
 }

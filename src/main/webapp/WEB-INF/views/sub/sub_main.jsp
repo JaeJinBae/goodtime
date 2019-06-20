@@ -2671,6 +2671,37 @@ function update_reservation_state(idxx, rtype, rno, state, writer, regdate, stbn
 	}
 }
 
+function post_deleteReservation(info, stbn){
+	$.ajax({
+		url:"${pageContext.request.contextPath}/deleteReservation",
+		type:"post",
+		data:JSON.stringify(info),
+		async:false,
+		contentType : "application/json; charset=UTF-8",
+		dataType:"text",
+		success:function(json){
+			if(json == "ok"){
+				alert("예약일정이 삭제되었습니다.");
+
+				$(".popup_reservation_update > h2 > input[name='pno']").val("");
+				$(".popup_reservation_update > h2 > input[name='rno']").val("");
+				$(".popup_reservation_update > h2 > input[name='rtype']").val("");
+				$(".popup_reservation_update > table tr:nth-child(2) > td > input[name='rdate']").val("");
+				$(".popup_reservation_update > table tr:nth-child(6) > td > input[name='memo']").val("");
+				$(".popup_reservation_update > table tr:nth-child(7) > td > input[name='updateMemo']").val("");
+				
+				$(".popup_reservation_update").css("display", "none");
+				$(".popup_wrap").css("display", "none");
+				draw_time_table_by_case(stbn);
+				
+			}
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	});
+}
+
 function get_reservation_record_all(info){
 	var dt;
 	$.ajax({
@@ -4789,12 +4820,17 @@ $(function(){
 		open_reservation_info_view(rtype, rno);
 	});
 	
-	//예약일정 변경 저장 클릭
+	//예약일정 변경, 예약삭제, 저장 클릭
 	$(".popup_res_update_btn_wrap > p").click(function(){
 		var btn_idx = $(this).index();
 		if(btn_idx == 0){
 			update_reservation_info(storage_timetable_btn_num);
-		}else if(btn_idx == 1){
+		}else if(btn_idx ==1){
+			var rno = $(".popup_reservation_update > h2 > input[name='rno]").val();
+			var rtype = $(".popup_reservation_update > h2 > input[name='rtype']").val();
+			var info = {rno:rno, rtype:rtype};
+			post_deleteReservation(info, storage_timetable_btn_num);
+		}else if(btn_idx == 2){
 			$(".popup_reservation_update").css("display", "none");
 			$(".popup_wrap").css("display", "none");
 		}

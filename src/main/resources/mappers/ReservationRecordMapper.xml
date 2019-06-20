@@ -48,5 +48,7 @@
 		update reservation_record set ename=#{ename}, rdate=#{rdate}, rtime=#{rtime} where rno=#{rno} and rtype=#{rtype}
 	</update>
 	
-	
+	<delete id="deleteByRnoRtype">
+		delete from reservation_record where rno=#{rno} and rtype=#{rtype}
+	</delete>
 </mapper>

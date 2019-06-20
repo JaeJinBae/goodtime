@@ -1519,6 +1519,43 @@ public class HomeController {
 		return entity;
 	}
 	
+	@RequestMapping(value="/deleteReservation", method=RequestMethod.POST)
+	public ResponseEntity<String> deleteReservation(@RequestBody Map<String, String> info){
+		ResponseEntity<String> entity = null;
+		int rno = Integer.parseInt(info.get("rno"));
+		String rtype = info.get("rtype");
+		
+		try {
+			if(rtype.equals("nc")){
+				ncrService.deleteByRno(rno);
+			}else if(rtype.equals("nt")){
+				ntrService.deleteByRno(rno);
+			}else if(rtype.equals("fc")){
+				fcrService.deleteByRno(rno);
+			}else if(rtype.equals("ft")){
+				ftrService.deleteByRno(rno);
+			}
+			ReservationRecordVO rrvo = new ReservationRecordVO();
+			rrvo.setRno(rno);
+			rrvo.setRtype(rtype);
+			rrService.deleteByRnoRtype(rrvo);
+			
+			ReservationUpdateRecordVO rurvo = new ReservationUpdateRecordVO();
+			rurvo.setRno(rno);
+			rurvo.setRtype(rtype);
+			rurService.deleteByRnoRtype(rurvo);
+			
+			entity = new ResponseEntity<String>("ok", HttpStatus.OK);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			entity = new ResponseEntity<String>(e.getMessage(), HttpStatus.OK);
+		}
+		
+		
+		
+		return entity;
+	}
+	
 	@RequestMapping(value="/reservationRecordGetAll", method=RequestMethod.POST)
 	public ResponseEntity<Map<String, Object>> reservationRecordGetAll(@RequestBody Map<String, String> info){
 		logger.info("reservation record get all");

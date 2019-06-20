@@ -18,4 +18,5 @@ public interface FixTherapyReservationService {
 	public void updateTherapistState(FixTherapyReservationVO vo);
 	public void updateInfo(FixTherapyReservationVO vo);
 	public void cancel(FixTherapyReservationVO vo);
+	public void deleteByRno(int rno);
 }

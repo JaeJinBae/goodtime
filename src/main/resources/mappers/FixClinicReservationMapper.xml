@@ -39,4 +39,8 @@
 	<update id="cancel">
 		update fix_clinic_reservation set desk_state='예약취소', result='예약취소', desk_state_writer=#{desk_state_writer}, desk_state_regdate=#{desk_state_regdate}, result_memo=#{result_memo} where rno=#{rno}
 	</update>
+	
+	<delete id="deleteByRno">
+		delete from fix_clinic_reservation where rno=#{rno}
+	</delete>
 </mapper>

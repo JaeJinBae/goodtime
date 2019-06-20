@@ -65,4 +65,9 @@ public class ReservationRecordServiceImpl implements ReservationRecordService {
 		return dao.selectCompleteClinicByPno(pno);
 	}
 
+	@Override
+	public void deleteByRnoRtype(ReservationRecordVO vo) {
+		dao.deleteByRnoRtype(vo);
+	}
+
 }

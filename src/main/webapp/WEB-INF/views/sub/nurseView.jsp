@@ -2670,6 +2670,37 @@ function update_reservation_state(idxx, rtype, rno, state, writer, regdate, stbn
 	}
 }
 
+function post_deleteReservation(info, stbn){
+	$.ajax({
+		url:"${pageContext.request.contextPath}/deleteReservation",
+		type:"post",
+		data:JSON.stringify(info),
+		async:false,
+		contentType : "application/json; charset=UTF-8",
+		dataType:"text",
+		success:function(json){
+			if(json == "ok"){
+				alert("예약일정이 삭제되었습니다.");
+
+				$(".popup_reservation_update > h2 > input[name='pno']").val("");
+				$(".popup_reservation_update > h2 > input[name='rno']").val("");
+				$(".popup_reservation_update > h2 > input[name='rtype']").val("");
+				$(".popup_reservation_update > table tr:nth-child(2) > td > input[name='rdate']").val("");
+				$(".popup_reservation_update > table tr:nth-child(6) > td > input[name='memo']").val("");
+				$(".popup_reservation_update > table tr:nth-child(7) > td > input[name='updateMemo']").val("");
+				
+				$(".popup_reservation_update").css("display", "none");
+				$(".popup_wrap").css("display", "none");
+				draw_time_table_by_case(stbn);
+				
+			}
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	});
+}
+
 function get_reservation_record_all(info){
 	var dt;
 	$.ajax({
@@ -4446,7 +4477,6 @@ $(function(){
 		var pname = $("#reservation_view_btn").text();
 		var chart_no = $("#reservation_view_btn > input[name='cno']").val();
 		
-		$(".popup_therapy_reservation_register > h2 > span").html();
 		str = "<span>"+pname+"("+chart_no+")님</span><input type='hidden' name='pno' value='"+pno+"'><input type='hidden' name='pname' value='"+pname+"'><input type='hidden' name='chart_no' value='"+chart_no+"'>";
 		$(".popup_therapy_reservation_register > h2").html(str);
 		$(".popup_therapy_reservation_register > table td > select[name='clinic'] > option[value='']").prop("selected", true);
@@ -4766,6 +4796,11 @@ $(function(){
 		if(btn_idx == 0){
 			update_reservation_info(storage_timetable_btn_num);
 		}else if(btn_idx == 1){
+			var rno = $(".popup_reservation_update > h2 > input[name='rno]").val();
+			var rtype = $(".popup_reservation_update > h2 > input[name='rtype']").val();
+			var info = {rno:rno, rtype:rtype};
+			post_deleteReservation(info, storage_timetable_btn_num);
+		}else if(btn_idx == 2){
 			$(".popup_reservation_update").css("display", "none");
 			$(".popup_wrap").css("display", "none");
 		}

@@ -42,4 +42,9 @@ public class ReservationUpdateRecordDaoImpl implements ReservationUpdateRecordDa
 		session.insert(namespce + ".register", vo);
 	}
 
+	@Override
+	public void deleteByRnoRtype(ReservationUpdateRecordVO vo) {
+		session.delete(namespce+".deleteByRnoRtype", vo);
+	}
+
 }

@@ -2245,8 +2245,8 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value="/smsSendGroupByDate", method=RequestMethod.POST)
-	public ResponseEntity<String> smsSendGroupByDate(@RequestBody Map<String, String> info){
-		ResponseEntity<String> entity = null;
+	public ResponseEntity<List<List<ReservationGroupVO>>> smsSendGroupByDate(@RequestBody Map<String, String> info){
+		ResponseEntity<List<List<ReservationGroupVO>>> entity = null;
 		
 		String receiveDate = info.get("date");
 		List<Integer> rgvoPnoList = new ArrayList<>();
@@ -2331,13 +2331,8 @@ public class HomeController {
 		}
 		
 		Collections.sort(rgvoList);
+
 		for(int i=0; i<rgvoList.size(); i++){
-			System.out.println(rgvoList.get(i));
-		}
-		
-		System.out.println("********************************************");
-		for(int i=0; i<rgvoList.size(); i++){
-			System.out.println("현재vo값 = "+rgvoList.get(i));
 			if(rgvoList2.size() == 0){
 				rgvoList2.add(rgvoList.get(i));
 			}else{
@@ -2372,18 +2367,13 @@ public class HomeController {
 				result.add(rgvoList2);
 			}
 		}
-		
-		for(int i=0; i<result.size(); i++){
-			for(int j=0; j<result.get(i).size(); j++){
-				System.out.println(result.get(i).get(j));
-			}
-			System.out.println("==============================");
-		}
-				
+		String content = smsService.selectOne(3).getContent();
+		System.out.println(content);
+		entity = new ResponseEntity<List<List<ReservationGroupVO>>>(result, HttpStatus.OK);
 		return entity;
 	}
 	
-	public ResponseEntity<String> sendSmsGroup(SmsRecordVO vo){
+	public ResponseEntity<String> sendSmsGroup(List<List<ReservationGroupVO>> vo){
 		logger.info("sms send Post");
 		System.out.println(vo);
 		ResponseEntity<String> resentity = null;
@@ -2411,8 +2401,8 @@ public class HomeController {
 			/******************** 인증정보 ********************/
 			
 			/******************** 전송정보 ********************/
-			sms.put("msg", vo.getContent()); // 메세지 내용
-			sms.put("receiver", vo.getPhone()); // 수신번호
+			//sms.put("msg", vo.getContent()); // 메세지 내용
+			//sms.put("receiver", vo.getPhone()); // 수신번호
 			sms.put("destination", "01111111111|담당자,01111111112|홍길동"); // 수신인 %고객명% 치환
 			sms.put("sender", ""); // 발신번호
 			sms.put("rdate", ""); // 예약일자 - 20161004 : 2016-10-04일기준
@@ -2465,7 +2455,7 @@ public class HomeController {
 			
 			System.out.println(result);
 			if(result.contains("\"success_cnt\":1")){
-				smsrService.register(vo);
+				//smsrService.register(vo);
 				SmsRemainGet srg = new SmsRemainGet();
 				System.out.println(srg.smsRemain());
 				resentity = new ResponseEntity<String>(srg.smsRemain(), HttpStatus.OK);

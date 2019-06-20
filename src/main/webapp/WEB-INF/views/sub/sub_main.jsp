@@ -3858,20 +3858,13 @@ function post_sendGroupSms(info){
 	$.ajax({
 		url:"${pageContext.request.contextPath}/smsSendGroupByDate",
 		type:"post",
-		dataType:"text",
+		dataType:"json",
 		data:JSON.stringify(info),
 		contentType : "application/json; charset=UTF-8",
 		async:false,
 		success:function(json){
-			if(json == "no"){
-				alert("새로고침(F5) 후 다시 이용하거나 문자관리에서 잔여 문자전송량을 확인하세요.");
-			}else{
-				console.log(json);
-				var smsArr = json.split("/");
-				alert("문자를 전송하였습니다.\n"+"[잔여문자안내]\n단문 이용시 "+smsArr[0]+"건 사용가능.\n장문 이용시 "+smsArr[1]+"건 사용가능");
-				$(".popup_smsSend").css("display","none");
-				$(".popup_wrap").css("display","none");
-			}
+			console.log(json);
+			
 			
 		},
 		error:function(request,status,error){

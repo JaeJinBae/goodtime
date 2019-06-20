@@ -3823,6 +3823,26 @@ function post_smsSend(vo){
 		}
 	});
 }
+
+function post_sendGroupSms(info){
+	$.ajax({
+		url:"${pageContext.request.contextPath}/smsSendGroupByDate",
+		type:"post",
+		dataType:"json",
+		data:JSON.stringify(info),
+		contentType : "application/json; charset=UTF-8",
+		async:false,
+		success:function(json){
+			console.log(json);
+			
+			
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	});
+}
+
 function get_smsRecordAll(info){
 	var dt;
 	$.ajax({
@@ -4350,9 +4370,10 @@ $(function(){
 			alert("날짜 형식이 잘못되었습니다. 다시 시도해주세요.");
 			return false;
 		}else{
-			sendConfirm = confirm(inputDate+"에 해당하는 진료, 치료 환자에게 예약안내 메세지를 전송하시겠습니까?");
+			sendConfirm = confirm(inputDate+" 날짜에 해당하는 진료, 치료 예약환자에게 예약안내 메세지를 전송하시겠습니까?");
 			if(sendConfirm == true){
-				post_sendGroupSms(inputDate);
+				var info = {date:inputDate};
+				post_sendGroupSms(info);
 			}else{
 				return false;
 			}

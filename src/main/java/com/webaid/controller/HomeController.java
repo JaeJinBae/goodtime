@@ -2012,7 +2012,60 @@ public class HomeController {
 	public ResponseEntity<String> fixOffRegister(@RequestBody FixOffVO vo){
 		ResponseEntity<String> entity = null;
 		try {
-			foService.register(vo);
+			//직원전체를 선택한 경우
+			if(vo.getEno() == 0){
+				List<EmployeeVO> empList = empService.selectAll();
+				String[] dowList = {"월", "화", "수", "목", "금", "토"};
+				if(vo.getDow().equals("월금")){
+					//직원전체를 선택하고 요일을 월~금 선택한 경우
+					for(int i=0; i<empList.size(); i++){
+						vo.setEno(empList.get(i).getEno());
+						vo.setEtype(empList.get(i).getType());
+						for(int j=0; j<5; j++){
+							vo.setDow(dowList[j]);
+							foService.register(vo);
+						}
+					}
+					
+				}else if(vo.getDow().equals("월토")){
+					//직원전체를 선택하고 요일을 월~토 선택한 경우
+					for(int i=0; i<empList.size(); i++){
+						vo.setEno(empList.get(i).getEno());
+						vo.setEtype(empList.get(i).getType());
+						for(int j=0; j<6; j++){
+							vo.setDow(dowList[j]);
+							foService.register(vo);
+						}
+					}
+				}else{
+					//직원전체를 선택하고 요일을 하나만 선택한 경우
+					for(int i=0; i<empList.size(); i++){
+						vo.setEno(empList.get(i).getEno());
+						vo.setEtype(empList.get(i).getType());
+						
+						foService.register(vo);
+					}
+				}
+			}else{
+				//직원한명만 선택한 경우
+				String[] dowList = {"월", "화", "수", "목", "금", "토"};
+				if(vo.getDow().equals("월금")){
+					//직원한명 선택에서 요일을 월~금을 선택한 경우
+					for(int j=0; j<5; j++){
+						vo.setDow(dowList[j]);
+						foService.register(vo);
+					}
+				}else if(vo.getDow().equals("월토")){
+					//직원한명 선택에서 요일을 월~토을 선택한 경우
+					for(int j=0; j<6; j++){
+						vo.setDow(dowList[j]);
+						foService.register(vo);
+					}
+				}else{
+					//직원한명 선택에서 요일 하나 선택한 경우
+					foService.register(vo);
+				}
+			}
 			entity = new ResponseEntity<String>("ok", HttpStatus.OK);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());

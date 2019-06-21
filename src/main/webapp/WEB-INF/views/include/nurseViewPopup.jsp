@@ -900,6 +900,7 @@ $(function(){
 				<td>
 					<select name="emp">
 						<option value="">선택해주세요.</option>
+						<option value="0_all">직원전체</option>
 						<c:forEach var="list" items="${doctorList}">
 							<option value="${list.eno}_${list.type}">${list.name}</option>
 						</c:forEach>
@@ -924,6 +925,8 @@ $(function(){
 						<option value="목">목</option>
 						<option value="금">금</option>
 						<option value="토">토</option>
+						<option value="월금">월~금</option>
+						<option value="월토">월~토</option>
 					</select>
 				</td>
 			</tr>

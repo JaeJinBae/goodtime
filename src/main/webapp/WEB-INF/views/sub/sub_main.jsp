@@ -4826,7 +4826,7 @@ $(function(){
 		if(btn_idx == 0){
 			update_reservation_info(storage_timetable_btn_num);
 		}else if(btn_idx ==1){
-			var rno = $(".popup_reservation_update > h2 > input[name='rno]").val();
+			var rno = $(".popup_reservation_update > h2 > input[name='rno']").val();
 			var rtype = $(".popup_reservation_update > h2 > input[name='rtype']").val();
 			var info = {rno:rno, rtype:rtype};
 			post_deleteReservation(info, storage_timetable_btn_num);

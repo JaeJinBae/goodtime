@@ -2358,13 +2358,22 @@ public class HomeController {
 		List<NormalTherapyReservationVO> ntrList = ntrService.selectByDate(receiveDate);
 		List<FixClinicReservationVO> fcrList = fcrService.selectByDate(receiveDate);
 		List<FixTherapyReservationVO> ftrList = ftrService.selectByDate(receiveDate);
-		
+		List<PatientVO> patientList = pService.selectAll();
+		String patientPhone = "";
 		for(int i=0; i<ncrList.size(); i++){
 			if(!ncrList.get(i).getResult().equals("예약취소")){
 				ReservationGroupVO rgvo = new ReservationGroupVO();
+
+				for(int j=0; j<patientList.size(); j++){
+					if(patientList.get(j).getPno() == ncrList.get(i).getPno()){
+						patientPhone = patientList.get(j).getPhone();
+						break;
+					}
+				}
 				
 				rgvo.setPno(ncrList.get(i).getPno());
 				rgvo.setPname(ncrList.get(i).getPname());
+				rgvo.setPhone(patientPhone);
 				rgvo.setChartNo(ncrList.get(i).getChart_no());
 				rgvo.setClinicName(ncrList.get(i).getClinic_name());
 				rgvo.setRtype(ncrList.get(i).getRtype());
@@ -2373,20 +2382,22 @@ public class HomeController {
 				
 				rgvoList.add(rgvo);
 				
-				/*if(!rgvoPnoList.contains(ncrList.get(i).getPno())){
-					rgvoPnoList.add(ncrList.get(i).getPno());
-					rgvoList.add(rgvo);
-				}else{
-					rgvoNonDuplicateList.add(rgvo);
-				}*/
 			}
 		}
 		for(int i=0; i<ntrList.size(); i++){
 			if(!ntrList.get(i).getResult().equals("예약취소")){
 				ReservationGroupVO rgvo = new ReservationGroupVO();
 				
+				for(int j=0; j<patientList.size(); j++){
+					if(patientList.get(j).getPno() == ntrList.get(i).getPno()){
+						patientPhone = patientList.get(j).getPhone();
+						break;
+					}
+				}
+				
 				rgvo.setPno(ntrList.get(i).getPno());
 				rgvo.setPname(ntrList.get(i).getPname());
+				rgvo.setPhone(patientPhone);
 				rgvo.setChartNo(ntrList.get(i).getChart_no());
 				rgvo.setClinicName(ntrList.get(i).getClinic_name());
 				rgvo.setRtype(ntrList.get(i).getRtype());
@@ -2400,8 +2411,16 @@ public class HomeController {
 			if(!fcrList.get(i).getResult().equals("예약취소")){
 				ReservationGroupVO rgvo = new ReservationGroupVO();
 				
+				for(int j=0; j<patientList.size(); j++){
+					if(patientList.get(j).getPno() == fcrList.get(i).getPno()){
+						patientPhone = patientList.get(j).getPhone();
+						break;
+					}
+				}
+				
 				rgvo.setPno(fcrList.get(i).getPno());
 				rgvo.setPname(fcrList.get(i).getPname());
+				rgvo.setPhone(patientPhone);
 				rgvo.setChartNo(fcrList.get(i).getChart_no());
 				rgvo.setClinicName(fcrList.get(i).getClinic_name());
 				rgvo.setRtype(fcrList.get(i).getRtype());
@@ -2416,8 +2435,16 @@ public class HomeController {
 			if(!ftrList.get(i).getResult().equals("예약취소")){
 				ReservationGroupVO rgvo = new ReservationGroupVO();
 				
+				for(int j=0; j<patientList.size(); j++){
+					if(patientList.get(j).getPno() == ftrList.get(i).getPno()){
+						patientPhone = patientList.get(j).getPhone();
+						break;
+					}
+				}
+				
 				rgvo.setPno(ftrList.get(i).getPno());
 				rgvo.setPname(ftrList.get(i).getPname());
+				rgvo.setPhone(patientPhone);
 				rgvo.setChartNo(ftrList.get(i).getChart_no());
 				rgvo.setClinicName(ftrList.get(i).getClinic_name());
 				rgvo.setRtype(ftrList.get(i).getRtype());
@@ -2429,9 +2456,20 @@ public class HomeController {
 				
 			}
 		}
-		
-		Collections.sort(rgvoList);
+		//pno 순서대로 정렬
+		Collections.sort(rgvoList, new Comparator<ReservationGroupVO>() {
 
+			@Override
+			public int compare(ReservationGroupVO o1, ReservationGroupVO o2) {
+				return o1.getPno()>o2.getPno() ? -1:o1.getPno()<o2.getPno()?1:0;
+			}
+			
+		});
+
+		for(int i=0; i<rgvoList.size(); i++){
+			System.out.println(rgvoList.get(i));
+		}
+		
 		for(int i=0; i<rgvoList.size(); i++){
 			if(rgvoList2.size() == 0){
 				rgvoList2.add(rgvoList.get(i));
@@ -2473,7 +2511,7 @@ public class HomeController {
 		return entity;
 	}
 	
-	public ResponseEntity<String> sendSmsGroup(List<List<ReservationGroupVO>> vo){
+	public ResponseEntity<String> sendSmsGroup(ReservationGroupVO vo){
 		logger.info("sms send Post");
 		System.out.println(vo);
 		ResponseEntity<String> resentity = null;
@@ -2501,8 +2539,8 @@ public class HomeController {
 			/******************** 인증정보 ********************/
 			
 			/******************** 전송정보 ********************/
-			//sms.put("msg", vo.getContent()); // 메세지 내용
-			//sms.put("receiver", vo.getPhone()); // 수신번호
+			sms.put("msg", vo.getContent()); // 메세지 내용
+			sms.put("receiver", vo.getPhone()); // 수신번호
 			sms.put("destination", "01111111111|담당자,01111111112|홍길동"); // 수신인 %고객명% 치환
 			sms.put("sender", ""); // 발신번호
 			sms.put("rdate", ""); // 예약일자 - 20161004 : 2016-10-04일기준

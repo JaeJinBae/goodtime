@@ -1,14 +1,16 @@
 package com.webaid.domain;
 
 public class ReservationGroupVO implements Comparable<ReservationGroupVO> {
-	//선택한 날짜의 모든 예약vo들을 합치기 위한 vo
+	// 선택한 날짜의 모든 예약vo들을 합치기 위한 vo
 	private int pno;
 	private String pname;
+	private String phone;
 	private int chartNo;
 	private String clinicName;
 	private String rtype;
 	private String rdate;
 	private String rtime;
+	private String content;
 
 	public ReservationGroupVO() {
 		super();
@@ -28,6 +30,14 @@ public class ReservationGroupVO implements Comparable<ReservationGroupVO> {
 
 	public void setPname(String pname) {
 		this.pname = pname;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 
 	public int getChartNo() {
@@ -70,10 +80,21 @@ public class ReservationGroupVO implements Comparable<ReservationGroupVO> {
 		this.rtime = rtime;
 	}
 
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	
+
 	@Override
 	public String toString() {
-		return "ReservationGroupVO [pno=" + pno + ", pname=" + pname + ", chartNo=" + chartNo + ", clinicName="
-				+ clinicName + ", rtype=" + rtype + ", rdate=" + rdate + ", rtime=" + rtime + "]";
+		return "ReservationGroupVO [pno=" + pno + ", pname=" + pname + ", phone=" + phone + ", chartNo=" + chartNo
+				+ ", clinicName=" + clinicName + ", rtype=" + rtype + ", rdate=" + rdate + ", rtime=" + rtime
+				+ ", content=" + content + "]";
 	}
 
 	@Override

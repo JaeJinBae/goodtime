@@ -223,6 +223,8 @@ $(function(){
 		objText = objText.replace(/\[시작시간2\]/gi,"15:50");
 		objText = objText.replace(/\[진료명3\]/gi,"초진3");
 		objText = objText.replace(/\[시작시간3\]/gi,"16:50");
+		objText = objText.replace(/\[진료명4\]/gi,"초진4");
+		objText = objText.replace(/\[시작시간4\]/gi,"17:50");
 		
 		$(obj).parent().parent().find(".preview").html(objText);
 		bytesHandler(obj);
@@ -247,6 +249,8 @@ $(function(){
 		text = text.replace(/\[시작시간2\]/gi,"15:50");
 		text = text.replace(/\[진료명3\]/gi,"초진3");
 		text = text.replace(/\[시작시간3\]/gi,"16:50");
+		text = text.replace(/\[진료명4\]/gi,"초진4");
+		text = text.replace(/\[시작시간4\]/gi,"17:50");
 		
 		$(this).parent().parent().find(".preview").html(text);
 		bytesHandler(this);

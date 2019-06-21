@@ -43,6 +43,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -2345,146 +2346,163 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value="/smsSendGroupByDate", method=RequestMethod.POST)
-	public ResponseEntity<List<List<ReservationGroupVO>>> smsSendGroupByDate(@RequestBody Map<String, String> info){
-		ResponseEntity<List<List<ReservationGroupVO>>> entity = null;
-		
-		String receiveDate = info.get("date");
-		List<Integer> rgvoPnoList = new ArrayList<>();
-		List<ReservationGroupVO> rgvoList = new ArrayList<ReservationGroupVO>();
-		List<ReservationGroupVO> rgvoList2 = new ArrayList<ReservationGroupVO>();
-		List<ReservationGroupVO> rgvoNonDuplicateList = new ArrayList<>();
-		List<List<ReservationGroupVO>> result = new ArrayList<>();
-		List<NormalClinicReservationVO> ncrList = ncrService.selectByDate(receiveDate);
-		List<NormalTherapyReservationVO> ntrList = ntrService.selectByDate(receiveDate);
-		List<FixClinicReservationVO> fcrList = fcrService.selectByDate(receiveDate);
-		List<FixTherapyReservationVO> ftrList = ftrService.selectByDate(receiveDate);
-		List<PatientVO> patientList = pService.selectAll();
-		String patientPhone = "";
-		for(int i=0; i<ncrList.size(); i++){
-			if(ncrList.get(i).getPname().contains("신환")){
-				continue;
-			}
-			if(!ncrList.get(i).getResult().equals("예약취소")){
-				ReservationGroupVO rgvo = new ReservationGroupVO();
+	public ResponseEntity<String> smsSendGroupByDate(@RequestBody Map<String, String> info){
+		ResponseEntity<String> entity = null;
+		try {
+			String receiveDate = info.get("date");
+			String sender = info.get("sender");
+			List<Integer> rgvoPnoList = new ArrayList<>();
+			List<ReservationGroupVO> rgvoList = new ArrayList<ReservationGroupVO>();
+			List<ReservationGroupVO> rgvoList2 = new ArrayList<ReservationGroupVO>();
+			List<ReservationGroupVO> rgvoNonDuplicateList = new ArrayList<>();
+			List<List<ReservationGroupVO>> result = new ArrayList<>();
+			List<NormalClinicReservationVO> ncrList = ncrService.selectByDate(receiveDate);
+			List<NormalTherapyReservationVO> ntrList = ntrService.selectByDate(receiveDate);
+			List<FixClinicReservationVO> fcrList = fcrService.selectByDate(receiveDate);
+			List<FixTherapyReservationVO> ftrList = ftrService.selectByDate(receiveDate);
+			List<PatientVO> patientList = pService.selectAll();
+			String patientPhone = "";
+			for(int i=0; i<ncrList.size(); i++){
+				if(ncrList.get(i).getPname().contains("신환")){
+					continue;
+				}
+				if(!ncrList.get(i).getResult().equals("예약취소")){
+					ReservationGroupVO rgvo = new ReservationGroupVO();
 
-				for(int j=0; j<patientList.size(); j++){
-					if(patientList.get(j).getPno() == ncrList.get(i).getPno()){
-						patientPhone = patientList.get(j).getPhone();
-						break;
+					for(int j=0; j<patientList.size(); j++){
+						if(patientList.get(j).getPno() == ncrList.get(i).getPno()){
+							patientPhone = patientList.get(j).getPhone();
+							break;
+						}
 					}
+					
+					rgvo.setPno(ncrList.get(i).getPno());
+					rgvo.setPname(ncrList.get(i).getPname());
+					rgvo.setPhone(patientPhone);
+					rgvo.setChartNo(ncrList.get(i).getChart_no());
+					rgvo.setClinicName(ncrList.get(i).getClinic_name());
+					rgvo.setRtype(ncrList.get(i).getRtype());
+					rgvo.setRdate(ncrList.get(i).getRdate());
+					rgvo.setRtime(ncrList.get(i).getRtime());
+					
+					rgvoList.add(rgvo);
+					
 				}
-				
-				rgvo.setPno(ncrList.get(i).getPno());
-				rgvo.setPname(ncrList.get(i).getPname());
-				rgvo.setPhone(patientPhone);
-				rgvo.setChartNo(ncrList.get(i).getChart_no());
-				rgvo.setClinicName(ncrList.get(i).getClinic_name());
-				rgvo.setRtype(ncrList.get(i).getRtype());
-				rgvo.setRdate(ncrList.get(i).getRdate());
-				rgvo.setRtime(ncrList.get(i).getRtime());
-				
-				rgvoList.add(rgvo);
-				
 			}
-		}
-		for(int i=0; i<ntrList.size(); i++){
-			if(ntrList.get(i).getPname().contains("신환")){
-				continue;
-			}
-			if(!ntrList.get(i).getResult().equals("예약취소")){
-				ReservationGroupVO rgvo = new ReservationGroupVO();
-				
-				for(int j=0; j<patientList.size(); j++){
-					if(patientList.get(j).getPno() == ntrList.get(i).getPno()){
-						patientPhone = patientList.get(j).getPhone();
-						break;
+			for(int i=0; i<ntrList.size(); i++){
+				if(ntrList.get(i).getPname().contains("신환")){
+					continue;
+				}
+				if(!ntrList.get(i).getResult().equals("예약취소")){
+					ReservationGroupVO rgvo = new ReservationGroupVO();
+					
+					for(int j=0; j<patientList.size(); j++){
+						if(patientList.get(j).getPno() == ntrList.get(i).getPno()){
+							patientPhone = patientList.get(j).getPhone();
+							break;
+						}
 					}
+					
+					rgvo.setPno(ntrList.get(i).getPno());
+					rgvo.setPname(ntrList.get(i).getPname());
+					rgvo.setPhone(patientPhone);
+					rgvo.setChartNo(ntrList.get(i).getChart_no());
+					rgvo.setClinicName(ntrList.get(i).getClinic_name());
+					rgvo.setRtype(ntrList.get(i).getRtype());
+					rgvo.setRdate(ntrList.get(i).getRdate());
+					rgvo.setRtime(ntrList.get(i).getRtime());
+					
+					rgvoList.add(rgvo);
 				}
-				
-				rgvo.setPno(ntrList.get(i).getPno());
-				rgvo.setPname(ntrList.get(i).getPname());
-				rgvo.setPhone(patientPhone);
-				rgvo.setChartNo(ntrList.get(i).getChart_no());
-				rgvo.setClinicName(ntrList.get(i).getClinic_name());
-				rgvo.setRtype(ntrList.get(i).getRtype());
-				rgvo.setRdate(ntrList.get(i).getRdate());
-				rgvo.setRtime(ntrList.get(i).getRtime());
-				
-				rgvoList.add(rgvo);
 			}
-		}
-		for(int i=0; i<fcrList.size(); i++){
-			if(fcrList.get(i).getPname().contains("신환")){
-				continue;
-			}
-			if(!fcrList.get(i).getResult().equals("예약취소")){
-				ReservationGroupVO rgvo = new ReservationGroupVO();
-				
-				for(int j=0; j<patientList.size(); j++){
-					if(patientList.get(j).getPno() == fcrList.get(i).getPno()){
-						patientPhone = patientList.get(j).getPhone();
-						break;
+			for(int i=0; i<fcrList.size(); i++){
+				if(fcrList.get(i).getPname().contains("신환")){
+					continue;
+				}
+				if(!fcrList.get(i).getResult().equals("예약취소")){
+					ReservationGroupVO rgvo = new ReservationGroupVO();
+					
+					for(int j=0; j<patientList.size(); j++){
+						if(patientList.get(j).getPno() == fcrList.get(i).getPno()){
+							patientPhone = patientList.get(j).getPhone();
+							break;
+						}
 					}
+					
+					rgvo.setPno(fcrList.get(i).getPno());
+					rgvo.setPname(fcrList.get(i).getPname());
+					rgvo.setPhone(patientPhone);
+					rgvo.setChartNo(fcrList.get(i).getChart_no());
+					rgvo.setClinicName(fcrList.get(i).getClinic_name());
+					rgvo.setRtype(fcrList.get(i).getRtype());
+					rgvo.setRdate(fcrList.get(i).getRdate());
+					rgvo.setRtime(fcrList.get(i).getRtime());
+					
+					rgvoList.add(rgvo);
+					
 				}
-				
-				rgvo.setPno(fcrList.get(i).getPno());
-				rgvo.setPname(fcrList.get(i).getPname());
-				rgvo.setPhone(patientPhone);
-				rgvo.setChartNo(fcrList.get(i).getChart_no());
-				rgvo.setClinicName(fcrList.get(i).getClinic_name());
-				rgvo.setRtype(fcrList.get(i).getRtype());
-				rgvo.setRdate(fcrList.get(i).getRdate());
-				rgvo.setRtime(fcrList.get(i).getRtime());
-				
-				rgvoList.add(rgvo);
-				
 			}
-		}
-		for(int i=0; i<ftrList.size(); i++){
-			if(ftrList.get(i).getPname().contains("신환")){
-				continue;
-			}
-			if(!ftrList.get(i).getResult().equals("예약취소")){
-				ReservationGroupVO rgvo = new ReservationGroupVO();
-				
-				for(int j=0; j<patientList.size(); j++){
-					if(patientList.get(j).getPno() == ftrList.get(i).getPno()){
-						patientPhone = patientList.get(j).getPhone();
-						break;
+			for(int i=0; i<ftrList.size(); i++){
+				if(ftrList.get(i).getPname().contains("신환")){
+					continue;
+				}
+				if(!ftrList.get(i).getResult().equals("예약취소")){
+					ReservationGroupVO rgvo = new ReservationGroupVO();
+					
+					for(int j=0; j<patientList.size(); j++){
+						if(patientList.get(j).getPno() == ftrList.get(i).getPno()){
+							patientPhone = patientList.get(j).getPhone();
+							break;
+						}
 					}
+					
+					rgvo.setPno(ftrList.get(i).getPno());
+					rgvo.setPname(ftrList.get(i).getPname());
+					rgvo.setPhone(patientPhone);
+					rgvo.setChartNo(ftrList.get(i).getChart_no());
+					rgvo.setClinicName(ftrList.get(i).getClinic_name());
+					rgvo.setRtype(ftrList.get(i).getRtype());
+					rgvo.setRdate(ftrList.get(i).getRdate());
+					rgvo.setRtime(ftrList.get(i).getRtime());
+					
+					rgvoList.add(rgvo);
+					
+					
 				}
-				
-				rgvo.setPno(ftrList.get(i).getPno());
-				rgvo.setPname(ftrList.get(i).getPname());
-				rgvo.setPhone(patientPhone);
-				rgvo.setChartNo(ftrList.get(i).getChart_no());
-				rgvo.setClinicName(ftrList.get(i).getClinic_name());
-				rgvo.setRtype(ftrList.get(i).getRtype());
-				rgvo.setRdate(ftrList.get(i).getRdate());
-				rgvo.setRtime(ftrList.get(i).getRtime());
-				
-				rgvoList.add(rgvo);
-				
-				
 			}
-		}
-		//pno 순서대로 정렬
-		Collections.sort(rgvoList, new Comparator<ReservationGroupVO>() {
+			//pno 순서대로 정렬
+			Collections.sort(rgvoList, new Comparator<ReservationGroupVO>() {
 
-			@Override
-			public int compare(ReservationGroupVO o1, ReservationGroupVO o2) {
-				return o1.getPno()>o2.getPno() ? -1:o1.getPno()<o2.getPno()?1:0;
-			}
+				@Override
+				public int compare(ReservationGroupVO o1, ReservationGroupVO o2) {
+					return o1.getPno()>o2.getPno() ? -1:o1.getPno()<o2.getPno()?1:0;
+				}
+				
+			});
 			
-		});
-		
-		for(int i=0; i<rgvoList.size(); i++){
-			if(rgvoList2.size() == 0){
-				rgvoList2.add(rgvoList.get(i));
-			}else{
-				if(rgvoList2.get(rgvoList2.size()-1).getPno()==rgvoList.get(i).getPno()){
+			for(int i=0; i<rgvoList.size(); i++){
+				if(rgvoList2.size() == 0){
 					rgvoList2.add(rgvoList.get(i));
 				}else{
+					if(rgvoList2.get(rgvoList2.size()-1).getPno()==rgvoList.get(i).getPno()){
+						rgvoList2.add(rgvoList.get(i));
+					}else{
+						//시간순 정렬
+						Collections.sort(rgvoList2, new Comparator<ReservationGroupVO>() {
+
+							@Override
+							public int compare(ReservationGroupVO o1, ReservationGroupVO o2) {
+								return o1.getRtime().compareTo(o2.getRtime());
+							}
+							
+						});
+						result.add(rgvoList2);
+						rgvoList2 = new ArrayList<>();
+						rgvoList2.add(rgvoList.get(i));
+					}
+				}
+				
+				if(i==rgvoList.size()-1){
 					//시간순 정렬
 					Collections.sort(rgvoList2, new Comparator<ReservationGroupVO>() {
 
@@ -2495,104 +2513,91 @@ public class HomeController {
 						
 					});
 					result.add(rgvoList2);
-					rgvoList2 = new ArrayList<>();
-					rgvoList2.add(rgvoList.get(i));
 				}
 			}
 			
-			if(i==rgvoList.size()-1){
-				//시간순 정렬
-				Collections.sort(rgvoList2, new Comparator<ReservationGroupVO>() {
-
-					@Override
-					public int compare(ReservationGroupVO o1, ReservationGroupVO o2) {
-						return o1.getRtime().compareTo(o2.getRtime());
-					}
-					
-				});
-				result.add(rgvoList2);
-			}
-		}
-		
-		ReservationGroupVO newrgvo;
-		String content = smsService.selectOne(3).getContent();
-		String c = "";
-		c=content.replace("[병원명]", "원마취통증의학과");
-		StringBuffer sb;
-		for(int i=0; i<result.size();i++){
+			ReservationGroupVO newrgvo;
+			String content = smsService.selectOne(3).getContent();
+			String c = "";
 			c=content.replace("[병원명]", "원마취통증의학과");
-			newrgvo = new ReservationGroupVO();
-			if(result.get(i).size() == 1){
-				
-				c=c.replace("[환자명]", result.get(i).get(0).getPname());
-				c=c.replace("[예약날짜]", result.get(i).get(0).getRdate());
-				c=c.replace("[진료명1]", result.get(i).get(0).getClinicName());
-				c=c.replace("[시작시간1]", calHourMinute(result.get(i).get(0).getRtime()));
-				System.out.println("개수1\n"+c);
-				sb = new StringBuffer(c);
-				sb.replace(c.indexOf(","), c.indexOf("[시작시간4]")+7, "");
-				c = sb+"";
-				result.get(i).get(0).setContent(c);
-				
-				newrgvo = result.get(i).get(0);
-				
-			}else if(result.get(i).size() == 2){
-				c=c.replace("[환자명]", result.get(i).get(0).getPname());
-				c=c.replace("[예약날짜]", result.get(i).get(0).getRdate());
-				c=c.replace("[진료명1]", result.get(i).get(0).getClinicName());
-				c=c.replace("[시작시간1]", calHourMinute(result.get(i).get(0).getRtime()));
-				c=c.replace("[진료명2]", result.get(i).get(1).getClinicName());
-				c=c.replace("[시작시간2]", calHourMinute(result.get(i).get(1).getRtime()));
-				System.out.println("개수2\n"+c);
-				sb = new StringBuffer(c);
-				sb.replace(c.indexOf(", [진료명3]"), c.indexOf("[시작시간4]")+7, "");
-				c = sb+"";
-				
+			StringBuffer sb;
+			for(int i=0; i<result.size();i++){
+				c=content.replace("[병원명]", "원마취통증의학과");
 				newrgvo = new ReservationGroupVO();
-				newrgvo.setPname(result.get(i).get(0).getPname());
-				newrgvo.setPhone(result.get(i).get(0).getPhone());
-				newrgvo.setContent(c);
-				//sendSmsGroup(newrgvo);
-			}else if(result.get(i).size() == 3){
-				c=c.replace("[환자명]", result.get(i).get(0).getPname());
-				c=c.replace("[예약날짜]", result.get(i).get(0).getRdate());
-				c=c.replace("[진료명1]", result.get(i).get(0).getClinicName());
-				c=c.replace("[시작시간1]", calHourMinute(result.get(i).get(0).getRtime()));
-				c=c.replace("[진료명2]", result.get(i).get(1).getClinicName());
-				c=c.replace("[시작시간2]", calHourMinute(result.get(i).get(1).getRtime()));
-				c=c.replace("[진료명3]", result.get(i).get(2).getClinicName());
-				c=c.replace("[시작시간3]", calHourMinute(result.get(i).get(2).getRtime()));
-				System.out.println("개수3\n"+c);
-				sb = new StringBuffer(c);
-				sb.replace(c.indexOf(", [진료명4]"), c.indexOf("[시작시간4]")+7, "");
-				c = sb+"";
-				
-				newrgvo = new ReservationGroupVO();
-				newrgvo.setPname(result.get(i).get(0).getPname());
-				newrgvo.setPhone(result.get(i).get(0).getPhone());
-				newrgvo.setContent(c);
-				//sendSmsGroup(newrgvo);
-			}else if(result.get(i).size() == 4){
-				c=c.replace("[환자명]", result.get(i).get(0).getPname());
-				c=c.replace("[예약날짜]", result.get(i).get(0).getRdate());
-				c=c.replace("[진료명1]", result.get(i).get(0).getClinicName());
-				c=c.replace("[시작시간1]", calHourMinute(result.get(i).get(0).getRtime()));
-				c=c.replace("[진료명2]", result.get(i).get(1).getClinicName());
-				c=c.replace("[시작시간2]", calHourMinute(result.get(i).get(1).getRtime()));
-				c=c.replace("[진료명3]", result.get(i).get(2).getClinicName());
-				c=c.replace("[시작시간3]", calHourMinute(result.get(i).get(2).getRtime()));
-				c=c.replace("[진료명4]", result.get(i).get(3).getClinicName());
-				c=c.replace("[시작시간4]", calHourMinute(result.get(i).get(3).getRtime()));
-				System.out.println("개수4\n"+c);
-				newrgvo = new ReservationGroupVO();
-				newrgvo.setPname(result.get(i).get(0).getPname());
-				newrgvo.setPhone(result.get(i).get(0).getPhone());
-				newrgvo.setContent(c);
-				//sendSmsGroup(newrgvo);
+				if(result.get(i).size() == 1){
+					
+					c=c.replace("[환자명]", result.get(i).get(0).getPname());
+					c=c.replace("[예약날짜]", result.get(i).get(0).getRdate());
+					c=c.replace("[진료명1]", result.get(i).get(0).getClinicName());
+					c=c.replace("[시작시간1]", calHourMinute(result.get(i).get(0).getRtime()));
+					
+					sb = new StringBuffer(c);
+					sb.replace(c.indexOf(","), c.indexOf("[시작시간4]")+7, "");
+					c = sb+"";
+					result.get(i).get(0).setContent(c);
+					
+					newrgvo = result.get(i).get(0);
+					
+				}else if(result.get(i).size() == 2){
+					c=c.replace("[환자명]", result.get(i).get(0).getPname());
+					c=c.replace("[예약날짜]", result.get(i).get(0).getRdate());
+					c=c.replace("[진료명1]", result.get(i).get(0).getClinicName());
+					c=c.replace("[시작시간1]", calHourMinute(result.get(i).get(0).getRtime()));
+					c=c.replace("[진료명2]", result.get(i).get(1).getClinicName());
+					c=c.replace("[시작시간2]", calHourMinute(result.get(i).get(1).getRtime()));
+					
+					sb = new StringBuffer(c);
+					sb.replace(c.indexOf(", [진료명3]"), c.indexOf("[시작시간4]")+7, "");
+					c = sb+"";
+					
+					newrgvo = new ReservationGroupVO();
+					newrgvo.setPname(result.get(i).get(0).getPname());
+					newrgvo.setPhone(result.get(i).get(0).getPhone());
+					newrgvo.setContent(c);
+					
+				}else if(result.get(i).size() == 3){
+					c=c.replace("[환자명]", result.get(i).get(0).getPname());
+					c=c.replace("[예약날짜]", result.get(i).get(0).getRdate());
+					c=c.replace("[진료명1]", result.get(i).get(0).getClinicName());
+					c=c.replace("[시작시간1]", calHourMinute(result.get(i).get(0).getRtime()));
+					c=c.replace("[진료명2]", result.get(i).get(1).getClinicName());
+					c=c.replace("[시작시간2]", calHourMinute(result.get(i).get(1).getRtime()));
+					c=c.replace("[진료명3]", result.get(i).get(2).getClinicName());
+					c=c.replace("[시작시간3]", calHourMinute(result.get(i).get(2).getRtime()));
+					
+					sb = new StringBuffer(c);
+					sb.replace(c.indexOf(", [진료명4]"), c.indexOf("[시작시간4]")+7, "");
+					c = sb+"";
+					
+					newrgvo = new ReservationGroupVO();
+					newrgvo.setPname(result.get(i).get(0).getPname());
+					newrgvo.setPhone(result.get(i).get(0).getPhone());
+					newrgvo.setContent(c);
+					
+				}else if(result.get(i).size() == 4){
+					c=c.replace("[환자명]", result.get(i).get(0).getPname());
+					c=c.replace("[예약날짜]", result.get(i).get(0).getRdate());
+					c=c.replace("[진료명1]", result.get(i).get(0).getClinicName());
+					c=c.replace("[시작시간1]", calHourMinute(result.get(i).get(0).getRtime()));
+					c=c.replace("[진료명2]", result.get(i).get(1).getClinicName());
+					c=c.replace("[시작시간2]", calHourMinute(result.get(i).get(1).getRtime()));
+					c=c.replace("[진료명3]", result.get(i).get(2).getClinicName());
+					c=c.replace("[시작시간3]", calHourMinute(result.get(i).get(2).getRtime()));
+					c=c.replace("[진료명4]", result.get(i).get(3).getClinicName());
+					c=c.replace("[시작시간4]", calHourMinute(result.get(i).get(3).getRtime()));
+					
+					newrgvo = new ReservationGroupVO();
+					newrgvo.setPname(result.get(i).get(0).getPname());
+					newrgvo.setPhone(result.get(i).get(0).getPhone());
+					newrgvo.setContent(c);
+					
+				}
+				sendSmsGroup(newrgvo, sender);
 			}
-			sendSmsGroup(newrgvo);
+			entity = new ResponseEntity<String>("ok", HttpStatus.OK);
+		} catch (Exception e) {
+			entity = new ResponseEntity<String>(e.getMessage(), HttpStatus.OK);
 		}
-		entity = new ResponseEntity<List<List<ReservationGroupVO>>>(result, HttpStatus.OK);
 		return entity;
 	}
 	
@@ -2606,7 +2611,7 @@ public class HomeController {
 		return time;
 	}
 	
-	public ResponseEntity<String> sendSmsGroup(ReservationGroupVO vo){
+	public void sendSmsGroup(ReservationGroupVO vo, String sender){
 		logger.info("sms send Post");
 		System.out.println(vo);
 		ResponseEntity<String> resentity = null;
@@ -2686,20 +2691,37 @@ public class HomeController {
 				in.close();
 			}
 			
-			System.out.println(result);
+			SmsRecordVO srvo = new SmsRecordVO();
 			if(result.contains("\"success_cnt\":1")){
-				//smsrService.register(vo);
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+				Date time = new Date();
+				String sendTime = sdf.format(time);
+				srvo.setNo(0);
+				srvo.setReceiver(vo.getPname());
+				srvo.setSender(sender);
+				srvo.setPhone(vo.getPhone());
+				srvo.setRdate(sendTime);
+				srvo.setState("전송성공");
+				srvo.setContent(vo.getContent());
+				smsrService.register(srvo);
 				SmsRemainGet srg = new SmsRemainGet();
-				System.out.println(srg.smsRemain());
-				resentity = new ResponseEntity<String>(srg.smsRemain(), HttpStatus.OK);
 			}else{
-				resentity = new ResponseEntity<String>("no", HttpStatus.OK);
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+				Date time = new Date();
+				String sendTime = sdf.format(time);
+				srvo.setNo(0);
+				srvo.setReceiver(vo.getPname());
+				srvo.setSender(sender);
+				srvo.setPhone(vo.getPhone());
+				srvo.setRdate(sendTime);
+				srvo.setState("전송실패");
+				srvo.setContent(vo.getContent());
+				smsrService.register(srvo);
 			}
 			
 			
 		}catch(Exception e){
 			System.out.println(e.getMessage());
 		}
-		return resentity;
 	}
 }

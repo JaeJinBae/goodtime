@@ -3891,14 +3891,16 @@ function post_sendGroupSms(info){
 	$.ajax({
 		url:"${pageContext.request.contextPath}/smsSendGroupByDate",
 		type:"post",
-		dataType:"json",
+		dataType:"text",
 		data:JSON.stringify(info),
 		contentType : "application/json; charset=UTF-8",
 		async:false,
 		success:function(json){
-			console.log(json);
-			
-			
+			if(json == "ok"){
+				alert("문자 전송이 완료되었습니다.");
+			}else{
+				alert("일부 문자 전송이 실패하였습니다.");
+			}
 		},
 		error:function(request,status,error){
 			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -4438,7 +4440,7 @@ $(function(){
 		}else{
 			sendConfirm = confirm(inputDate+" 날짜에 해당하는 진료, 치료 예약환자에게 예약안내 메세지를 전송하시겠습니까?");
 			if(sendConfirm == true){
-				var info = {date:inputDate};
+				var info = {date:inputDate, sender:$("#session_login_name").val()};
 				post_sendGroupSms(info);
 			}else{
 				return false;

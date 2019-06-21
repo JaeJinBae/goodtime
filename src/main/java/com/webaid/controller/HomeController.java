@@ -1821,7 +1821,17 @@ public class HomeController {
 	public ResponseEntity<String> normalOffRegister(@RequestBody NormalOffVO vo){
 		ResponseEntity<String> entity = null;
 		try {
-			noService.register(vo);
+			if(vo.getEno() == 0){
+				List<EmployeeVO> empList = empService.selectAll();
+				
+				for(int i=0; i<empList.size(); i++){
+					vo.setEno(empList.get(i).getEno());
+					vo.setEtype(empList.get(i).getType());
+					noService.register(vo);
+				}
+			}else{
+				noService.register(vo);
+			}
 			entity = new ResponseEntity<String>("ok", HttpStatus.OK);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());

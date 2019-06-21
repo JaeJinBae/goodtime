@@ -2361,6 +2361,9 @@ public class HomeController {
 		List<PatientVO> patientList = pService.selectAll();
 		String patientPhone = "";
 		for(int i=0; i<ncrList.size(); i++){
+			if(ncrList.get(i).getPname().contains("신환")){
+				continue;
+			}
 			if(!ncrList.get(i).getResult().equals("예약취소")){
 				ReservationGroupVO rgvo = new ReservationGroupVO();
 
@@ -2385,6 +2388,9 @@ public class HomeController {
 			}
 		}
 		for(int i=0; i<ntrList.size(); i++){
+			if(ntrList.get(i).getPname().contains("신환")){
+				continue;
+			}
 			if(!ntrList.get(i).getResult().equals("예약취소")){
 				ReservationGroupVO rgvo = new ReservationGroupVO();
 				
@@ -2408,6 +2414,9 @@ public class HomeController {
 			}
 		}
 		for(int i=0; i<fcrList.size(); i++){
+			if(fcrList.get(i).getPname().contains("신환")){
+				continue;
+			}
 			if(!fcrList.get(i).getResult().equals("예약취소")){
 				ReservationGroupVO rgvo = new ReservationGroupVO();
 				
@@ -2432,6 +2441,9 @@ public class HomeController {
 			}
 		}
 		for(int i=0; i<ftrList.size(); i++){
+			if(ftrList.get(i).getPname().contains("신환")){
+				continue;
+			}
 			if(!ftrList.get(i).getResult().equals("예약취소")){
 				ReservationGroupVO rgvo = new ReservationGroupVO();
 				
@@ -2465,10 +2477,6 @@ public class HomeController {
 			}
 			
 		});
-
-		for(int i=0; i<rgvoList.size(); i++){
-			System.out.println(rgvoList.get(i));
-		}
 		
 		for(int i=0; i<rgvoList.size(); i++){
 			if(rgvoList2.size() == 0){
@@ -2505,10 +2513,97 @@ public class HomeController {
 				result.add(rgvoList2);
 			}
 		}
+		
+		ReservationGroupVO newrgvo;
 		String content = smsService.selectOne(3).getContent();
-		System.out.println(content);
+		String c = "";
+		c=content.replace("[병원명]", "원마취통증의학과");
+		StringBuffer sb;
+		for(int i=0; i<result.size();i++){
+			c=content.replace("[병원명]", "원마취통증의학과");
+			newrgvo = new ReservationGroupVO();
+			if(result.get(i).size() == 1){
+				
+				c=c.replace("[환자명]", result.get(i).get(0).getPname());
+				c=c.replace("[예약날짜]", result.get(i).get(0).getRdate());
+				c=c.replace("[진료명1]", result.get(i).get(0).getClinicName());
+				c=c.replace("[시작시간1]", calHourMinute(result.get(i).get(0).getRtime()));
+				System.out.println("개수1\n"+c);
+				sb = new StringBuffer(c);
+				sb.replace(c.indexOf(","), c.indexOf("[시작시간4]")+7, "");
+				c = sb+"";
+				result.get(i).get(0).setContent(c);
+				
+				newrgvo = result.get(i).get(0);
+				
+			}else if(result.get(i).size() == 2){
+				c=c.replace("[환자명]", result.get(i).get(0).getPname());
+				c=c.replace("[예약날짜]", result.get(i).get(0).getRdate());
+				c=c.replace("[진료명1]", result.get(i).get(0).getClinicName());
+				c=c.replace("[시작시간1]", calHourMinute(result.get(i).get(0).getRtime()));
+				c=c.replace("[진료명2]", result.get(i).get(1).getClinicName());
+				c=c.replace("[시작시간2]", calHourMinute(result.get(i).get(1).getRtime()));
+				System.out.println("개수2\n"+c);
+				sb = new StringBuffer(c);
+				sb.replace(c.indexOf(", [진료명3]"), c.indexOf("[시작시간4]")+7, "");
+				c = sb+"";
+				
+				newrgvo = new ReservationGroupVO();
+				newrgvo.setPname(result.get(i).get(0).getPname());
+				newrgvo.setPhone(result.get(i).get(0).getPhone());
+				newrgvo.setContent(c);
+				//sendSmsGroup(newrgvo);
+			}else if(result.get(i).size() == 3){
+				c=c.replace("[환자명]", result.get(i).get(0).getPname());
+				c=c.replace("[예약날짜]", result.get(i).get(0).getRdate());
+				c=c.replace("[진료명1]", result.get(i).get(0).getClinicName());
+				c=c.replace("[시작시간1]", calHourMinute(result.get(i).get(0).getRtime()));
+				c=c.replace("[진료명2]", result.get(i).get(1).getClinicName());
+				c=c.replace("[시작시간2]", calHourMinute(result.get(i).get(1).getRtime()));
+				c=c.replace("[진료명3]", result.get(i).get(2).getClinicName());
+				c=c.replace("[시작시간3]", calHourMinute(result.get(i).get(2).getRtime()));
+				System.out.println("개수3\n"+c);
+				sb = new StringBuffer(c);
+				sb.replace(c.indexOf(", [진료명4]"), c.indexOf("[시작시간4]")+7, "");
+				c = sb+"";
+				
+				newrgvo = new ReservationGroupVO();
+				newrgvo.setPname(result.get(i).get(0).getPname());
+				newrgvo.setPhone(result.get(i).get(0).getPhone());
+				newrgvo.setContent(c);
+				//sendSmsGroup(newrgvo);
+			}else if(result.get(i).size() == 4){
+				c=c.replace("[환자명]", result.get(i).get(0).getPname());
+				c=c.replace("[예약날짜]", result.get(i).get(0).getRdate());
+				c=c.replace("[진료명1]", result.get(i).get(0).getClinicName());
+				c=c.replace("[시작시간1]", calHourMinute(result.get(i).get(0).getRtime()));
+				c=c.replace("[진료명2]", result.get(i).get(1).getClinicName());
+				c=c.replace("[시작시간2]", calHourMinute(result.get(i).get(1).getRtime()));
+				c=c.replace("[진료명3]", result.get(i).get(2).getClinicName());
+				c=c.replace("[시작시간3]", calHourMinute(result.get(i).get(2).getRtime()));
+				c=c.replace("[진료명4]", result.get(i).get(3).getClinicName());
+				c=c.replace("[시작시간4]", calHourMinute(result.get(i).get(3).getRtime()));
+				System.out.println("개수4\n"+c);
+				newrgvo = new ReservationGroupVO();
+				newrgvo.setPname(result.get(i).get(0).getPname());
+				newrgvo.setPhone(result.get(i).get(0).getPhone());
+				newrgvo.setContent(c);
+				//sendSmsGroup(newrgvo);
+			}
+			sendSmsGroup(newrgvo);
+		}
 		entity = new ResponseEntity<List<List<ReservationGroupVO>>>(result, HttpStatus.OK);
 		return entity;
+	}
+	
+	public String calHourMinute(String rtime){
+		int gettime = Integer.parseInt(rtime);
+		String hour = ((gettime/60)<10)?"0"+gettime/60:gettime/60+"";
+		String minute = ((gettime%60)<10)?"0"+gettime%60:gettime%60+"";
+		
+		String time=hour+":"+minute;
+		
+		return time;
 	}
 	
 	public ResponseEntity<String> sendSmsGroup(ReservationGroupVO vo){

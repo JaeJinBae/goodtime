@@ -4410,7 +4410,7 @@ $(function(){
 		}else{
 			sendConfirm = confirm(inputDate+" 날짜에 해당하는 진료, 치료 예약환자에게 예약안내 메세지를 전송하시겠습니까?");
 			if(sendConfirm == true){
-				var info = {date:inputDate};
+				var info = {date:inputDate, sender:$("#session_login_name").val()};
 				post_sendGroupSms(info);
 			}else{
 				return false;

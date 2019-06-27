@@ -2380,7 +2380,7 @@ public class HomeController {
 					rgvo.setPname(ncrList.get(i).getPname());
 					rgvo.setPhone(patientPhone);
 					rgvo.setChartNo(ncrList.get(i).getChart_no());
-					rgvo.setClinicName(ncrList.get(i).getClinic_name());
+					rgvo.setClinicName(cService.selectOneByCno(Integer.parseInt(ncrList.get(i).getClinic())).getCode_smsname());
 					rgvo.setRtype(ncrList.get(i).getRtype());
 					rgvo.setRdate(ncrList.get(i).getRdate());
 					rgvo.setRtime(ncrList.get(i).getRtime());
@@ -2407,7 +2407,7 @@ public class HomeController {
 					rgvo.setPname(ntrList.get(i).getPname());
 					rgvo.setPhone(patientPhone);
 					rgvo.setChartNo(ntrList.get(i).getChart_no());
-					rgvo.setClinicName(ntrList.get(i).getClinic_name());
+					rgvo.setClinicName(cService.selectOneByCno(Integer.parseInt(ntrList.get(i).getClinic())).getCode_smsname());
 					rgvo.setRtype(ntrList.get(i).getRtype());
 					rgvo.setRdate(ntrList.get(i).getRdate());
 					rgvo.setRtime(ntrList.get(i).getRtime());
@@ -2433,7 +2433,7 @@ public class HomeController {
 					rgvo.setPname(fcrList.get(i).getPname());
 					rgvo.setPhone(patientPhone);
 					rgvo.setChartNo(fcrList.get(i).getChart_no());
-					rgvo.setClinicName(fcrList.get(i).getClinic_name());
+					rgvo.setClinicName(cService.selectOneByCno(Integer.parseInt(fcrList.get(i).getClinic())).getCode_smsname());
 					rgvo.setRtype(fcrList.get(i).getRtype());
 					rgvo.setRdate(fcrList.get(i).getRdate());
 					rgvo.setRtime(fcrList.get(i).getRtime());
@@ -2460,7 +2460,7 @@ public class HomeController {
 					rgvo.setPname(ftrList.get(i).getPname());
 					rgvo.setPhone(patientPhone);
 					rgvo.setChartNo(ftrList.get(i).getChart_no());
-					rgvo.setClinicName(ftrList.get(i).getClinic_name());
+					rgvo.setClinicName(cService.selectOneByCno(Integer.parseInt(ftrList.get(i).getClinic_name())).getCode_smsname());
 					rgvo.setRtype(ftrList.get(i).getRtype());
 					rgvo.setRdate(ftrList.get(i).getRdate());
 					rgvo.setRtime(ftrList.get(i).getRtime());
@@ -2630,8 +2630,8 @@ public class HomeController {
 			
 			Map<String, String> sms = new HashMap<String, String>();
 			
-			sms.put("user_id", "1clinic"); // SMS 아이디
-			sms.put("key", "dxlaks0vqpw6579w9nuy20a3j1jnpj5s"); //인증키
+			sms.put("user_id", "bjj7425"); // SMS 아이디
+			sms.put("key", "uybnfxh6xc0wbogbgu7nqgfnbqvx8xy8"); //인증키
 			
 			//1clinic 원통증 아이디
 			// dxlaks0vqpw6579w9nuy20a3j1jnpj5s 원마취통증 인증키
@@ -2645,7 +2645,7 @@ public class HomeController {
 			sms.put("sender", ""); // 발신번호
 			sms.put("rdate", ""); // 예약일자 - 20161004 : 2016-10-04일기준
 			sms.put("rtime", ""); // 예약시간 - 1930 : 오후 7시30분
-			sms.put("testmode_yn", "n"); // Y 인경우 실제문자 전송X , 자동취소(환불) 처리
+			sms.put("testmode_yn", "Y"); // Y 인경우 실제문자 전송X , 자동취소(환불) 처리
 			sms.put("title", ""); //  LMS, MMS 제목 (미입력시 본문중 44Byte 또는 엔터 구분자 첫라인)
 			
 			String image = "";

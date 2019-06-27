@@ -173,13 +173,13 @@ function draw_clinic_table(info){
 
 	$(".aside1 > .table_wrap").empty();
 	
-	str ="<table><tr><th></th><th>코드명</th><th>설정</th><th>코드분류</th><th>진행시간(분)</th><th>색깔</th></tr>";
+	str ="<table><tr><th></th><th>코드명</th><th>문자전송코드명</th><th>설정</th><th>코드분류</th><th>진행시간(분)</th><th>색깔</th></tr>";
 	
 	if(json.clinicListAll.length == 0){
-		str += "<tr><td colspan='6'>등록된 정보가 없습니다.</td></tr>"; 
+		str += "<tr><td colspan='7'>등록된 정보가 없습니다.</td></tr>"; 
 	}else{
 		$(json.clinicListAll).each(function(){
-			str += "<tr><td><input type='hidden' name='cno' value='"+this.cno+"'></td><td>"+this.code_name+"</td><td><p class='clinic_update_btn'><img src='${pageContext.request.contextPath}/resources/images/icon_update.png'>수정</p></td>"
+			str += "<tr><td><input type='hidden' name='cno' value='"+this.cno+"'></td><td>"+this.code_name+"</td><td>"+this.code_smsname+"</td><td><p class='clinic_update_btn'><img src='${pageContext.request.contextPath}/resources/images/icon_update.png'>수정</p></td>"
 				+"<td>"+this.code_type+"</td><td>"+this.time+"</td><td style='background:"+this.color+";'>"+this.color+"</td></tr>";
 		});
 	}
@@ -228,6 +228,7 @@ function draw_clinic_update_view(cno){
 
 	$(".popup_clinic_update > input[name='cno']").val(json.cno); 
 	$(".popup_clinic_update > table tr > td > input[name='code_name']").val(json.code_name);
+	$(".popup_clinic_update > table tr > td > input[name='code_smsname']").val(json.code_smsname);
 	$(".popup_clinic_update > table tr > td > select[name='code_type'] > option[value='"+json.code_type+"']").prop("selected", true);
 	$(".popup_clinic_update > table tr > td > select[name='time'] > option[value='"+json.time+"']").prop("selected", true);
 	$(".popup_clinic_update > table tr > td > input[name='color']").val(json.color);
@@ -250,6 +251,7 @@ function post_clinic_register(vo){
 			$(".popup_wrap").css("display","none");
 			alert("코드등록이 완료되었습니다.");
 			$(".popup_clinic_register > table tr > td > input[name='code_name']").val("");
+			$(".popup_clinic_register > table tr > td > input[name='code_smsname']").val("");
 			$(".popup_clinic_register > table tr > td > select[name='code_type'] > option[value='진료']").prop("selected", true);
 			$(".popup_clinic_register > table tr > td > select[name='time'] > option[value='0']").prop("selected", true);
 			$(".popup_clinic_register > table tr > td > input[name='color']").val("");
@@ -338,12 +340,17 @@ $(function(){
 		if(idx == 0){
 			var cno = "0";
 			var code_name = $(".popup_clinic_register > table tr > td > input[name='code_name']").val();
+			var code_smsname = $(".popup_clinic_register > table tr > td > input[name='code_smsname']").val();
 			var code_type = $(".popup_clinic_register > table tr > td > select[name='code_type']").val();
 			var time = $(".popup_clinic_register > table tr > td > select[name='time']").val();
 			var color = $(".popup_clinic_register > table tr > td > input[name='color']").val();
 
 			if(code_name == ""){
 				alert("코드명을 입력해주세요.");
+				return false;
+			}
+			if(code_smsname == ""){
+				alert("문자전송코드명을 입력해주세요.");
 				return false;
 			}
 			if(time == "0"){
@@ -355,7 +362,7 @@ $(function(){
 				return false;
 			}
 			
-			var vo = {cno:cno, code_name:code_name, code_type:code_type, time:time, color:color}
+			var vo = {cno:cno, code_name:code_name, code_smsname:code_smsname, code_type:code_type, time:time, color:color}
 			post_clinic_register(vo);
 
 		}else{
@@ -377,6 +384,7 @@ $(function(){
 		if(idx == 0){
 			var cno = $(".popup_clinic_update > input[name='cno']").val();
 			var code_name = $(".popup_clinic_update > table tr > td > input[name='code_name']").val();
+			var code_smsname = $(".popup_clinic_update > table tr > td > input[name='code_smsname']").val();
 			var code_type = $(".popup_clinic_update > table tr > td > select[name='code_type']").val();
 			var time = $(".popup_clinic_update > table tr > td > select[name='time']").val();
 			var color = $(".popup_clinic_update > table tr > td > input[name='color']").val();
@@ -384,11 +392,14 @@ $(function(){
 			if(code_name == ""){
 				alert("코드명을 입력해주세요.");
 				return false;
+			}else if(code_smsname == ""){
+				alert("문자전송코드명을 입력해주세요.");
+				return false;
 			}else if(color == ""){
 				alert("색깔을 입력해주세요.");
 				return false;
 			}else{
-				var vo = {cno:cno, code_name:code_name, code_type:code_type, time:time, color:color}
+				var vo = {cno:cno, code_name:code_name, code_smsname:code_smsname, code_type:code_type, time:time, color:color}
 				
 				post_clinic_update(vo);
 			}

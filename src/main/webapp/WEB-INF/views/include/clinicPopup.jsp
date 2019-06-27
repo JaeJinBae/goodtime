@@ -168,6 +168,10 @@
 			<td><input type="text" name="code_name"></td>
 		</tr>
 		<tr>
+			<th>▶ 문자전송코드명</th>
+			<td><input type="text" name="code_smsname"></td>
+		</tr>
+		<tr>
 			<th>▶ 코드분류</th>
 			<td>
 				<select name="code_type">
@@ -208,6 +212,10 @@
 		<tr>
 			<th>▶ 코드명</th>
 			<td><input type="text" name="code_name"></td>
+		</tr>
+		<tr>
+			<th>▶ 문자전송코드명</th>
+			<td><input type="text" name="code_smsname"></td>
 		</tr>
 		<tr>
 			<th>▶ 코드분류</th>

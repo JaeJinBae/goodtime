@@ -37,11 +37,11 @@
 	</select>
 	
 	<insert id="register">
-		insert into clinic values(#{cno}, #{code_type}, #{code_name}, #{time}, #{color})
+		insert into clinic values(#{cno}, #{code_type}, #{code_name}, #{code_smsname}, #{time}, #{color})
 	</insert>
 	
 	<update id="update">
-		update clinic set code_type=#{code_type}, code_name=#{code_name}, time=#{time}, color=#{color} where cno=#{cno} 
+		update clinic set code_type=#{code_type}, code_name=#{code_name}, code_smsname=#{code_smsname}, time=#{time}, color=#{color} where cno=#{cno} 
 	</update>
 	
 	<delete id="delete">

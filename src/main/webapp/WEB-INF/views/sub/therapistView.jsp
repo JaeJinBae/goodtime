@@ -70,7 +70,7 @@
 		width: 265px;
 		height:100%;
 		float:left;
-		border-right: 1px solid lightgray;
+		border-right: 1px solid lightgray; 
 		padding-top:12px;
 	}
 	.topView_btn{

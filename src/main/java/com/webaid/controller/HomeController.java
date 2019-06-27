@@ -2613,7 +2613,6 @@ public class HomeController {
 	
 	public void sendSmsGroup(ReservationGroupVO vo, String sender){
 		logger.info("sms send Post");
-		System.out.println(vo);
 		ResponseEntity<String> resentity = null;
 
 		try{

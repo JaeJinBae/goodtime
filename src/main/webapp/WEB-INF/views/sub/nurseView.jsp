@@ -82,11 +82,13 @@
 		cursor: pointer;
 		display:inline-block;
 		font-size:15px;
-		background: #105340;
+		background: #3294c6;
 		color: #fff;
 		border-radius: 3px;
 		padding:5px;
-		border:1px solid gray;
+	}
+	.topView_btn > p:nth-child(3){
+		background: #1e866a;
 	}
 	.topView_btn > p > img{
 		width:17px;

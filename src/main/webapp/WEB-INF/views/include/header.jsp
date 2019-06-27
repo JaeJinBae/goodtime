@@ -176,6 +176,15 @@ $(function(){
 			$(".popup_wrap").css("display","none");
 		}
 	});
+	
+	$(document).keyup(function(e){
+		if(e.which == 27){
+			$(".popup_content input").val("");
+			$(".popup_content select > option").eq(0).prop("selected", true);
+			$(".popup_content").css("display", "none");
+			$(".popup_wrap").css("display", "none");
+		}
+	});
 });
 </script>
 <div class="header_wrap">

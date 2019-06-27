@@ -273,34 +273,34 @@
 		width:0;
 	}
 	.ar_tbl_wrap_1 > #inner_tbl_wrap > table tr:first-child > th:nth-child(2){
-		width:90px;
-	}
-	.ar_tbl_wrap_1 > #inner_tbl_wrap > table tr:first-child > th:nth-child(3){
-		width:60px;
-	}
-	.ar_tbl_wrap_1 > #inner_tbl_wrap > table tr:first-child > th:nth-child(4){
-		width:60px;
-	}
-	.ar_tbl_wrap_1 > #inner_tbl_wrap > table tr:first-child > th:nth-child(5){
-		width:80px;
-	}
-	.ar_tbl_wrap_1 > #inner_tbl_wrap > table tr:first-child > th:nth-child(6){
-		width:75px;
-	}
-	.ar_tbl_wrap_1 > #inner_tbl_wrap > table tr:first-child > th:nth-child(7){
 		width:70px;
 	}
-	.ar_tbl_wrap_1 > #inner_tbl_wrap > table tr:first-child > th:nth-child(8){
+	.ar_tbl_wrap_1 > #inner_tbl_wrap > table tr:first-child > th:nth-child(3){
+		width:80px;
+	}
+	.ar_tbl_wrap_1 > #inner_tbl_wrap > table tr:first-child > th:nth-child(4){
+		width:80px;
+	}
+	.ar_tbl_wrap_1 > #inner_tbl_wrap > table tr:first-child > th:nth-child(5){
+		width:120px;
+	}
+	.ar_tbl_wrap_1 > #inner_tbl_wrap > table tr:first-child > th:nth-child(6){
 		width:110px;
+	}
+	.ar_tbl_wrap_1 > #inner_tbl_wrap > table tr:first-child > th:nth-child(7){
+		
+	}
+	.ar_tbl_wrap_1 > #inner_tbl_wrap > table tr:first-child > th:nth-child(8){
+		width:70px;
 	}
 	.ar_tbl_wrap_1 > #inner_tbl_wrap > table tr:first-child > th:nth-child(9){
 		width:70px;
 	}
 	.ar_tbl_wrap_1 > #inner_tbl_wrap > table tr:first-child > th:nth-child(10){
-		width:130px;
+		width:80px;
 	}
 	.ar_tbl_wrap_1 > #inner_tbl_wrap > table tr:first-child > th:last-child{
-		width:60px;
+		width:80px;
 	}
 	.ar_tbl_wrap_1 > #inner_tbl_wrap > table tr td{
 		font-size: 14px;
@@ -899,15 +899,23 @@ function draw_patient_table(info){
 
 	$("#inner_tbl_wrap").empty();
 	
-	str ="<table><tr><th></th><th>이름</th><th>설정</th><th>예약</th><th>담당의사</th><th>회원등급</th><th>생년월일</th><th>연락처</th><th>차트번호</th><th>메모</th><th>문자</th></tr>";
+	str ="<table><tr><th></th><th>차트번호</th><th>이름</th><th>예약</th><th>연락처</th><th>생년월일</th><th>메모</th><th>담당의사</th><th>회원등급</th><th>문자</th><th>설정</th></tr>";
 	
 	if(json.patientListAll.length == 0){
 		str += "<tr><td colspan='11'>등록된 회원이 없습니다.</td></tr>";
 	}else{
 		$(json.patientListAll).each(function(){
-			str += "<tr class='patientTblTr'><td><input type='hidden' value='"+this.pno+"'></td><td>"+this.name+"</td><td><p class='patient_update_btn'><img src='${pageContext.request.contextPath}/resources/images/icon_update.png'> 수정</p></td>"
-				+"<td><p class='reservation_select_btn'><img src='${pageContext.request.contextPath}/resources/images/icon_res.png'> 선택</p></td><td>"+this.main_doctor_name+"</td><td>환자</td><td>"+this.birth+"</td>"
-				+"<td>"+this.phone+"</td><td>"+this.cno+"</td><td>"+this.memo+"</td><td><p class='sms_open_btn'><img src='${pageContext.request.contextPath}/resources/images/icon_sms.png'></p></td></tr>";
+			str += "<tr class='patientTblTr'><td><input type='hidden' value='"+this.pno+"'></td>"
+			+ "<td>"+this.cno+"</td>"
+			+ "<td>"+this.name+"</td>"
+			+ "<td><p class='reservation_select_btn'><img src='${pageContext.request.contextPath}/resources/images/icon_res.png'> 선택</p></td>"
+			+ "<td>"+this.phone+"</td>"
+			+ "<td>"+this.birth+"</td>"
+			+ "<td>"+this.memo+"</td>"
+			+ "<td>"+this.main_doctor_name+"</td>"
+			+ "<td>환자</td>"
+			+ "<td><p class='sms_open_btn'><img src='${pageContext.request.contextPath}/resources/images/icon_sms.png'></p></td>"
+			+ "<td><p class='patient_update_btn'><img src='${pageContext.request.contextPath}/resources/images/icon_update.png'> 수정</p></td></tr>";
 		});
 	}
 	str += "</table>";

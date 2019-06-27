@@ -4140,8 +4140,8 @@ $(function(){
 		$(".ar_tbl_wrap_1 > #inner_tbl_wrap > table .patientTblTr").css("background", "#fff"); 
 		$(this).parent().parent().css("background", "#a5d1de");
 		var reservation_click_pno = $(this).parent().parent().find("input[type='hidden']").val();
-		var reservation_click_cno = $(this).parent().parent().find("td").eq(8).html();
-		$("#reservation_view_btn").html($(this).parent().parent().find("td").eq(1).html()+"<input type='hidden' name='pno' value='"+reservation_click_pno+"'><input type='hidden' name='cno' value='"+reservation_click_cno+"'>");
+		var reservation_click_cno = $(this).parent().parent().find("td").eq(1).html();
+		$("#reservation_view_btn").html($(this).parent().parent().find("td").eq(2).html()+"<input type='hidden' name='pno' value='"+reservation_click_pno+"'><input type='hidden' name='cno' value='"+reservation_click_cno+"'>");
 		$("#reservation_view_btn").css("display", "inline-block");
 		//$(".reservation_register_btn").css("display", "block");
 		//ar_tbl_wrap_3 그리기

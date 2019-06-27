@@ -2321,7 +2321,6 @@ function update_reservation_therapistState(rtype, rno, state, writer, regdate, s
 		async:false,
 		success:function(json){
 			if(json == "ok"){	
-				alert(state+" 되었습니다.");
 				$(".popup_reservation_info_view").css("display", "none");
 				$(".popup_wrap").css("display","none");
 				
@@ -3262,8 +3261,8 @@ $(function(){
 		$(".ar_tbl_wrap_1 > #inner_tbl_wrap > table .patientTblTr").css("background", "#fff"); 
 		$(this).parent().parent().css("background", "#a5d1de");
 		var reservation_click_pno = $(this).parent().parent().find("input[type='hidden']").val();
-		var reservation_click_cno = $(this).parent().parent().find("td").eq(8).html();
-		$("#reservation_view_btn").html($(this).parent().parent().find("td").eq(1).html()+"<input type='hidden' name='pno' value='"+reservation_click_pno+"'><input type='hidden' name='cno' value='"+reservation_click_cno+"'>");
+		var reservation_click_cno = $(this).parent().parent().find("td").eq(1).html();
+		$("#reservation_view_btn").html($(this).parent().parent().find("td").eq(2).html()+"<input type='hidden' name='pno' value='"+reservation_click_pno+"'><input type='hidden' name='cno' value='"+reservation_click_cno+"'>");
 		$("#reservation_view_btn").css("display", "inline-block");
 		//ar_tbl_wrap_3 그리기
 		$(".timetable_btn_wrap2 > ul > li").css({"background":"none", "font-weight":"500"});

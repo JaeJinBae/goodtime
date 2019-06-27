@@ -33,6 +33,11 @@ public class PatientDaoImpl implements PatientDao {
 	}
 
 	@Override
+	public PatientVO selectInfoByCno(int cno) {
+		return session.selectOne(namespace + ".selectInfoByCno", cno);
+	}
+
+	@Override
 	public int selectByCno(int cno) {
 		return session.selectOne(namespace + ".selectByCno", cno);
 	}

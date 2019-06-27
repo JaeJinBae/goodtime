@@ -446,6 +446,16 @@ public class HomeController {
 		return entity;
 	}
 	
+	@RequestMapping(value="/patientByCno/{cno}", method=RequestMethod.GET)
+	public ResponseEntity<PatientVO> patientByCno(@PathVariable("cno") int cno){
+		ResponseEntity<PatientVO> entity = null;
+		
+		PatientVO vo = pService.selectInfoByCno(cno);
+		entity = new ResponseEntity<PatientVO>(vo, HttpStatus.OK);
+		
+		return entity;
+	}
+	
 	@RequestMapping(value="/patientCnoDuplicationChk/{cno}", method=RequestMethod.GET)
 	public ResponseEntity<String> patientCnoDuplicationChk(@PathVariable("cno") int cno){
 		ResponseEntity<String> entity = null;

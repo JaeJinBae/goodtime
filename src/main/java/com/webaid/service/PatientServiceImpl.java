@@ -60,4 +60,9 @@ public class PatientServiceImpl implements PatientService {
 		dao.register(vo);
 	}
 
+	@Override
+	public PatientVO selectInfoByCno(int cno) {
+		return dao.selectInfoByCno(cno);
+	}
+
 }

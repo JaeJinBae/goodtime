@@ -43,6 +43,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.xml.XmlAwareFormHttpMessageConverter;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -283,10 +284,12 @@ public class HomeController {
 		return "sub/statisticView";
 	}
 	
-	@RequestMapping(value="/statisticDown/{eno}/{ename}/{date}", method=RequestMethod.POST)
-	public void excelDown(@PathVariable("eno") int eno,@PathVariable("ename") String ename, @PathVariable("date") String date, HttpServletResponse response) throws IOException {
+	@RequestMapping(value="/statisticDown/{eno}/{date}", method=RequestMethod.POST)
+	public void excelDown(@PathVariable("eno") int eno, @PathVariable("date") String date, HttpServletResponse response) throws IOException {
 		logger.info("엑셀 다운 진입");
-		System.out.println(eno+"/"+date);
+		
+		String ename = empService.selectByEno(eno).getName();
+		
 		ExcelDown exdn = new ExcelDown();
 		Map<String, Object> list = new HashMap<>();
 		

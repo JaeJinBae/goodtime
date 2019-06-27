@@ -45,7 +45,7 @@
 	</update>
 	
 	<update id="updateRdateRtime">
-		update reservation_record set ename=#{ename}, rdate=#{rdate}, rtime=#{rtime} where rno=#{rno} and rtype=#{rtype}
+		update reservation_record set ename=#{ename}, rdate=#{rdate}, rtime=#{rtime}, cname=#{cname} where rno=#{rno} and rtype=#{rtype}
 	</update>
 	
 	<delete id="deleteByRnoRtype">

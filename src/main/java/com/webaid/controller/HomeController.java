@@ -1342,6 +1342,7 @@ public class HomeController {
 			rrvo.setEname(ename);
 			rrvo.setRdate(rdate);
 			rrvo.setRtime(rtime);
+			rrvo.setCname(clinic_name);
 			rrService.updateRdateRtime(rrvo);
 			
 			entity = new ResponseEntity<String>("ok", HttpStatus.OK);

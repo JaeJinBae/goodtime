@@ -2599,8 +2599,8 @@ function update_reservation_info(stbn){
 	}else if(rtype == "ft"){
 		before_reservation = get_ftReservation_byRno(rno);
 	}
-	var before_info = $(".popup_reservation_update > table tr:first-child > td").text()+" "+get_employee_byEno(before_reservation.eno).name;
-	var after_info = rdate+" "+Number(rtime1/60)+":"+((Number(rtime2)>9?'':'0')+rtime2)+" "+$(".popup_reservation_update > table tr:nth-child(4) > td > select[name='emp'] option:selected").text();
+	var before_info = $(".popup_reservation_update > table tr:first-child > td").text()+" "+before_reservation.clinic_name+"/"+get_employee_byEno(before_reservation.eno).name;
+	var after_info = rdate+" "+Number(rtime1/60)+":"+((Number(rtime2)>9?'':'0')+rtime2)+" "+clinic_name+"/"+$(".popup_reservation_update > table tr:nth-child(4) > td > select[name='emp'] option:selected").text();
 	var update_info = now.getFullYear()+"-"+(((now.getMonth()+1)>9?'':'0')+(now.getMonth()+1))+"-"+((now.getDate()>9?'':'0')+now.getDate())+" "
 					+ now.getHours()+":"+((now.getMinutes()>9?'':'0')+now.getMinutes())+" "+$("#session_login_name").val();
 	if(memo == ""){

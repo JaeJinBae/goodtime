@@ -175,6 +175,11 @@ public class ExcelDown{
 						tcnt++;
 					}
 				}
+				for(int j=0; j<ftrList.size();j++){
+					if(ftrList.get(j).getRdate().equals(date+"-"+dateVal)){
+						tcnt++;
+					}
+				}
 				
 				objCell = objRow.createCell(i);
 				objCell.setCellValue(tcnt);
@@ -222,6 +227,11 @@ public class ExcelDown{
 					tcnt=0;
 					for(int k=0; k<ntrList.size(); k++){
 						if(ntrList.get(k).getRdate().equals(date+"-"+dateVal) && ntrList.get(k).getClinic_name().equals(clinicList.get(i).getCode_name())){
+							tcnt++;
+						}
+					}
+					for(int k=0; k<ftrList.size(); k++){
+						if(ftrList.get(k).getRdate().equals(date+"-"+dateVal) && ftrList.get(k).getClinic_name().equals(clinicList.get(i).getCode_name())){
 							tcnt++;
 						}
 					}

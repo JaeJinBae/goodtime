@@ -89,6 +89,7 @@ function buildCalendar(today) {// 현재 달 달력 만들기
 				&& today.getMonth() == date.getMonth() && i == today.getDate()) {
 			// 달력에 있는 년,달과 내 컴퓨터의 로컬 년,달이 같고, 일이 오늘의 일과 같으면
 			cell.bgColor = "#e85505";// 셀의 배경색을 Green으로
+			cell.innerHTML = "<font color=#ffffff>"+i
 		}
 	}
 }

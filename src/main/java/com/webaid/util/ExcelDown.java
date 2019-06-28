@@ -38,6 +38,8 @@ public class ExcelDown{
 		List<NormalTherapyReservationVO> ntrList = (List<NormalTherapyReservationVO>) list.get("ntrList");
 		List<FixTherapyReservationVO> ftrList = (List<FixTherapyReservationVO>) list.get("ftrList");
 		List<ClinicVO> clinicList = (List<ClinicVO>) list.get("clinicList");
+		int ntrListSize = ntrList.size();
+		int ftrListSize = ftrList.size();
 		
 		Collections.sort(ntrList);
 		Collections.sort(ftrList);
@@ -126,10 +128,11 @@ public class ExcelDown{
 			//환자별 날짜에 받은 치료 입력
 			String selectCell;
 			String selectCellVal;
+			
 			for(int i=0;i<pList.size(); i++){
 				objRow = objSheet.getRow(i+2);
 				selectCell = objRow.getCell(2).getStringCellValue();
-				for(int j=0;j<ntrList.size(); j++){
+				for(int j=0;j<ntrListSize; j++){
 					if(selectCell.equals(ntrList.get(j).getChart_no()+"")){
 						int idx = Integer.parseInt(ntrList.get(j).getRdate().split("-")[2]);
 						selectCellVal = objRow.getCell(idx+2).getStringCellValue();
@@ -141,7 +144,7 @@ public class ExcelDown{
 						
 					}
 				}
-				for(int j=0;j<ftrList.size(); j++){
+				for(int j=0;j<ftrListSize; j++){
 					if(selectCell.equals(ftrList.get(j).getChart_no()+"")){
 						int idx = Integer.parseInt(ftrList.get(j).getRdate().split("-")[2]);
 						selectCellVal = objRow.getCell(idx+2).getStringCellValue();
@@ -170,12 +173,12 @@ public class ExcelDown{
 			for(int i=3; i<objSheet.getRow(1).getLastCellNum(); i++){
 				dateVal = (i-2<10)?"0"+(i-2):(i-2)+"";
 				tcnt=0;
-				for(int j=0; j<ntrList.size();j++){
+				for(int j=0; j<ntrListSize;j++){
 					if(ntrList.get(j).getRdate().equals(date+"-"+dateVal)){
 						tcnt++;
 					}
 				}
-				for(int j=0; j<ftrList.size();j++){
+				for(int j=0; j<ftrListSize;j++){
 					if(ftrList.get(j).getRdate().equals(date+"-"+dateVal)){
 						tcnt++;
 					}
@@ -225,12 +228,12 @@ public class ExcelDown{
 				for(int j=3; j<objSheet.getRow(1).getLastCellNum(); j++){
 					dateVal = (j-2<10)?"0"+(j-2):(j-2)+"";
 					tcnt=0;
-					for(int k=0; k<ntrList.size(); k++){
+					for(int k=0; k<ntrListSize; k++){
 						if(ntrList.get(k).getRdate().equals(date+"-"+dateVal) && ntrList.get(k).getClinic_name().equals(clinicList.get(i).getCode_name())){
 							tcnt++;
 						}
 					}
-					for(int k=0; k<ftrList.size(); k++){
+					for(int k=0; k<ftrListSize; k++){
 						if(ftrList.get(k).getRdate().equals(date+"-"+dateVal) && ftrList.get(k).getClinic_name().equals(clinicList.get(i).getCode_name())){
 							tcnt++;
 						}

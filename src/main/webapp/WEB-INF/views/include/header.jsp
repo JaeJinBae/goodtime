@@ -124,6 +124,8 @@ $(function(){
 		location.replace("${pageContext.request.contextPath}/");
 	}
 	
+	$("input").attr("autocomplete", "off");
+	
 	$(".header_inner2 > ul > li:last-child > a").click(function(e){
 		e.preventDefault();
 		window.open($(this).prop("href"),"","");

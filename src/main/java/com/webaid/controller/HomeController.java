@@ -2546,7 +2546,7 @@ public class HomeController {
 					c=c.replace("[시작시간1]", calHourMinute(result.get(i).get(0).getRtime()));
 					
 					sb = new StringBuffer(c);
-					sb.replace(c.indexOf(","), c.indexOf("[시작시간4]")+7, "");
+					sb.replace(c.indexOf(","), c.indexOf("[시작시간4]")+8, "");
 					c = sb+"";
 					result.get(i).get(0).setContent(c);
 					
@@ -2561,7 +2561,7 @@ public class HomeController {
 					c=c.replace("[시작시간2]", calHourMinute(result.get(i).get(1).getRtime()));
 					
 					sb = new StringBuffer(c);
-					sb.replace(c.indexOf(", [진료명3]"), c.indexOf("[시작시간4]")+7, "");
+					sb.replace(c.indexOf(", [진료명3]"), c.indexOf("[시작시간4]")+8, "");
 					c = sb+"";
 					
 					newrgvo = new ReservationGroupVO();
@@ -2580,7 +2580,7 @@ public class HomeController {
 					c=c.replace("[시작시간3]", calHourMinute(result.get(i).get(2).getRtime()));
 					
 					sb = new StringBuffer(c);
-					sb.replace(c.indexOf(", [진료명4]"), c.indexOf("[시작시간4]")+7, "");
+					sb.replace(c.indexOf(", [진료명4]"), c.indexOf("[시작시간4]")+8, "");
 					c = sb+"";
 					
 					newrgvo = new ReservationGroupVO();
@@ -2738,9 +2738,9 @@ public class HomeController {
 		}
 	}
 	
-	public void sendSmsGroup2(ReservationGroupVO vo, String sender){
+	public void sendSmsGroup2(List<ReservationGroupVO> smsList, String sender){
 		logger.info("sms send Post");
-		System.out.println(vo);
+		
 		ResponseEntity<String> resentity = null;
 
 		try{
@@ -2767,13 +2767,13 @@ public class HomeController {
 			sms.put("rdate", ""); // 예약일자 - 20161004 : 2016-10-04일기준
 			sms.put("rtime", ""); // 예약시간 - 1930 : 오후 7시30분
 			sms.put("testmode_yn", "Y"); // Y 인경우 실제문자 전송X , 자동취소(환불) 처리
-			sms.put("msg_type", "SMS"); // SMS(단문) , LMS(장문), MMS(그림문자)  = 필수항목
+			sms.put("msg_type", "LMS"); // SMS(단문) , LMS(장문), MMS(그림문자)  = 필수항목
 			
-			String msg = "(광고)알리고\n회원님 알리고를 추천드려요!!\n무료거부:080xxxxxxxxx"; // 메세지 내용
-			int cnt = 500;
+			String msg = ""; // 메세지 내용
+			int cnt = smsList.size();
 			for(int i=1; i<=cnt; i++){
-				sms.put("rec_" + i, "01100000" + (i<100 ? (i<10 ? "00"+i : "0"+i) : i) ); // 수신번호_$i 번째  = 필수항목
-				sms.put("msg_" + i, msg.replaceFirst("회원님", "회원" + i + "님")); // 내용_$i번째  = 필수항목
+				sms.put("rec_" + i, smsList.get(i-1).getPhone()); // 수신번호_$i 번째  = 필수항목
+				sms.put("msg_" + i, smsList.get(i-1).getContent()); // 내용_$i번째  = 필수항목
 			}
 			
 			sms.put("cnt", String.valueOf(cnt));

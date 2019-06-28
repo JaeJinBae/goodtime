@@ -284,7 +284,7 @@ public class HomeController {
 		return "sub/statisticView";
 	}
 	
-	@RequestMapping(value="/statisticDown/{eno}/{date}", method=RequestMethod.POST)
+	@RequestMapping(value="/statisticDown/{eno}/{date}", method=RequestMethod.GET)
 	public void excelDown(@PathVariable("eno") int eno, @PathVariable("date") String date, HttpServletResponse response) throws IOException {
 		logger.info("엑셀 다운 진입");
 		

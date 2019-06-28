@@ -23,7 +23,7 @@ import com.webaid.domain.ClinicVO;
 import com.webaid.domain.FixTherapyReservationVO;
 import com.webaid.domain.NormalTherapyReservationVO;
 
-public class ExcelDown{
+public class ExcelDown_backup20190628{
 
 	
 	public void excelDown(int eno, String ename, String date, Map<String, Object> list, HttpServletResponse response) throws IOException {
@@ -125,32 +125,21 @@ public class ExcelDown{
 			
 			//환자별 날짜에 받은 치료 입력
 			String selectCell;
-			String selectCellVal;
 			for(int i=0;i<pList.size(); i++){
 				objRow = objSheet.getRow(i+2);
 				selectCell = objRow.getCell(2).getStringCellValue();
 				for(int j=0;j<ntrList.size(); j++){
 					if(selectCell.equals(ntrList.get(j).getChart_no()+"")){
 						int idx = Integer.parseInt(ntrList.get(j).getRdate().split("-")[2]);
-						selectCellVal = objRow.getCell(idx+2).getStringCellValue();
-						if(selectCellVal.equals("")){
-							objRow.getCell(idx+2).setCellValue(ntrList.get(j).getClinic_name());
-						}else{
-							objRow.getCell(idx+2).setCellValue(selectCellVal+", "+ntrList.get(j).getClinic_name());
-						}
 						
+						objRow.getCell(idx+2).setCellValue(ntrList.get(j).getClinic_name());
 					}
 				}
 				for(int j=0;j<ftrList.size(); j++){
 					if(selectCell.equals(ftrList.get(j).getChart_no()+"")){
 						int idx = Integer.parseInt(ftrList.get(j).getRdate().split("-")[2]);
-						selectCellVal = objRow.getCell(idx+2).getStringCellValue();
-						if(selectCellVal.equals("")){
-							objRow.getCell(idx+2).setCellValue(ftrList.get(j).getClinic_name());
-						}else{
-							objRow.getCell(idx+2).setCellValue(selectCellVal+", "+ftrList.get(j).getClinic_name());
-						}
 						
+						objRow.getCell(idx+2).setCellValue(ftrList.get(j).getClinic_name());
 					}
 				}
 			}
@@ -163,24 +152,15 @@ public class ExcelDown{
 			
 			String sCell;
 			String eCell;
-			int tcnt = 0;
-			String dateVal = "";
 			int eRowNum = objSheet.getLastRowNum()-1;//치료종류별 현황에 반복문에 쓰려고 미리 생성
 			//날짜별 치료 합계
 			for(int i=3; i<objSheet.getRow(1).getLastCellNum(); i++){
-				dateVal = (i-2<10)?"0"+(i-2):(i-2)+"";
-				tcnt=0;
-				for(int j=0; j<ntrList.size();j++){
-					if(ntrList.get(j).getRdate().equals(date+"-"+dateVal)){
-						tcnt++;
-					}
-				}
-				
+				sCell = objSheet.getRow(2).getCell(i).getReference();
+				eCell = objSheet.getRow(eRowNum).getCell(i).getReference();
 				objCell = objRow.createCell(i);
-				objCell.setCellValue(tcnt);
+				objCell.setCellFormula("COUNTA("+sCell+":"+eCell+")");
 				objCell.setCellStyle(objStyle);
 			}
-			
 			
 			//치료 종류별 현황 제목
 			objRow = objSheet.createRow(objSheet.getLastRowNum()+2); 
@@ -218,17 +198,10 @@ public class ExcelDown{
 				objCell = objRow.createCell(2);
 				objCell.setCellStyle(objStyle);
 				for(int j=3; j<objSheet.getRow(1).getLastCellNum(); j++){
-					dateVal = (j-2<10)?"0"+(j-2):(j-2)+"";
-					tcnt=0;
-					for(int k=0; k<ntrList.size(); k++){
-						if(ntrList.get(k).getRdate().equals(date+"-"+dateVal) && ntrList.get(k).getClinic_name().equals(clinicList.get(i).getCode_name())){
-							tcnt++;
-						}
-					}
 					sCell = objSheet.getRow(2).getCell(j).getReference();
 					eCell = objSheet.getRow(eRowNum).getCell(j).getReference();
 					objCell = objRow.createCell(j);
-					objCell.setCellValue(tcnt);
+					objCell.setCellFormula("COUNTIF("+sCell+":"+eCell+",\""+clinicList.get(i).getCode_name()+"\")");
 					objCell.setCellStyle(objStyle);
 				}
 				objRow.getCell(2).setCellFormula("SUM("+objRow.getCell(3).getReference()+":"+objRow.getCell(objRow.getLastCellNum()-1).getReference()+")");

@@ -285,15 +285,6 @@ $(function(){
 		draw_cureCnt(selYear+"-"+selMonth);
 	});
 	
-	$(document).on("click", ".aside1 > .table_wrap > table tr > td > button", function(){
-		var eno = $(this).parent().parent().find("input[name='eno']").val();
-		var selYear = $(".aside1_selectBox_wrap > select[name='sb_year']").val();
-		var selMonth = $(".aside1_selectBox_wrap > select[name='sb_month']").val();
-		selMonth=(selMonth>9?'':'0')+selMonth;
-		
-		excelDown(eno, selYear+"-"+selMonth);
-	});
-	
 	$(".excelDownF").submit(function(e){
 		//e.preventDefault();
 		var eno = $(this).parent().parent().find("input[name='eno']").val();
@@ -361,7 +352,6 @@ $(function(){
 				</div>
 				<div class="aside1_selectBox_wrap">
 					<select name="sb_year">
-						<option value="2019">2019년</option>
 						<c:forEach var="idx" begin="2019" end="2080">
 							<option value="${idx}">${idx}년</option>
 						</c:forEach>
@@ -396,7 +386,7 @@ $(function(){
 								<td class="${item.eno}_ftr"></td>
 								<td class="${item.eno}_total"></td>
 								<td>
-									<form class="excelDownF" method="post" action="statisticDown/">
+									<form class="excelDownF" method="GET" action="statisticDown/">
 										<input type="submit" value="">
 									</form>
 								</td>

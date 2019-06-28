@@ -932,7 +932,6 @@ function get_patient_all(info){
 		dataType:"json",
 		success:function(json){			
 			dt = json;
-			console.log(json);
 		},
 		error:function(request,status,error){
 			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -4057,11 +4056,11 @@ $(function(){
 	
 	$(".topView_btn > #patient_view_btn").click(function(){
 		if($(this).css("color") == "rgb(255, 255, 255)"){
-			$(this).css({"background":"#fff", "color":"#105340"});
+			$(this).css({"background":"#fff", "color":"#105340", "border":"1px solid lightgray"});
 			$(this).find("img").prop("src","${pageContext.request.contextPath}/resources/images/icon_person.png");
 			$(".ar_tbl_wrap_1").css("display","none");
 		}else{
-			$(this).css({"background":"#105340", "color":"#fff"});
+			$(this).css({"background":"#3294c6", "color":"#fff"});
 			$(this).find("img").prop("src","${pageContext.request.contextPath}/resources/images/icon_person_white.png");
 			$(".ar_tbl_wrap_1").css("display","block");
 		}
@@ -4069,11 +4068,11 @@ $(function(){
 	
 	$(".topView_btn > #reservation1_view_btn").click(function(){
 		if($(this).css("color") == "rgb(255, 255, 255)"){
-			$(this).css({"background":"#fff", "color":"#105340"});
+			$(this).css({"background":"#fff", "color":"#105340", "border":"1px solid lightgray"});
 			$(this).find("img").prop("src","${pageContext.request.contextPath}/resources/images/icon_clock.png");
 			$(".ar_tbl_wrap_2").css("display","none");
 		}else{
-			$(this).css({"background":"#105340", "color":"#fff"});
+			$(this).css({"background":"#3294c6", "color":"#fff"});
 			$(this).find("img").prop("src","${pageContext.request.contextPath}/resources/images/icon_clock_white.png");
 			$(".ar_tbl_wrap_2").css("display","block");
 		}

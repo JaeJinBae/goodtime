@@ -2394,7 +2394,7 @@ function open_reservation_info_view(type, rno){
 	$(".popup_reservation_info_view > h2").html(str);
 	$(".popup_reservation_info_view > table tr:first-child > td > span").html(pData.phone);
 	$(".popup_reservation_info_view > table tr:nth-child(2) > td > span").html(rData.rdate+" "+hour+":"+minute);
-	$(".popup_reservation_info_view > table tr:nth-child(3) > td > span").html(cData.code_name+" / "+eData.name);
+	$(".popup_reservation_info_view > table tr:nth-child(3) > td > span").html(cData.code_name+" / "+eData.name+"<input type='hidden' name='csn' value='"+cData.code_smsname+"'>");
 	$(".popup_reservation_info_view > table tr:nth-child(3) > td > span").css({"background":cData.color, "padding":"2px 4px", "color":"#fefefe"});
 	$(".popup_reservation_info_view > table tr:nth-child(4) > td > span").html(rData.memo);
 	
@@ -4271,6 +4271,7 @@ $(function(){
 		var phone = $(this).parent().find("span").text();
 		var clinic = $(".popup_reservation_info_view > table tr:nth-child(3) td > span").text().split("/");
 		var clinic_name = clinic[0];
+		var clinic_smsname = $(".popup_reservation_info_view > table tr:nth-child(3) td > span > input[name='csn']").val();
 		var rdate_rtime = $(".popup_reservation_info_view > table tr:nth-child(2) td > span").text().split(" ");
 		var rdate = rdate_rtime[0];
 		var rtime = rdate_rtime[1];
@@ -4289,7 +4290,7 @@ $(function(){
 		
 		smsTemplate = smsTemplate.replace("[병원명]", "원마취통증의학과");
 		smsTemplate = smsTemplate.replace("[환자명]", name);
-		smsTemplate = smsTemplate.replace("[진료명]", clinic_name);
+		smsTemplate = smsTemplate.replace("[진료명]", clinic_smsname);
 		smsTemplate = smsTemplate.replace("[예약날짜]", rdate);
 		smsTemplate = smsTemplate.replace("[시작시간]", rtime);
 		

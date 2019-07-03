@@ -3907,6 +3907,9 @@ function post_smsSend(vo){
 				console.log(json);
 				var smsArr = json.split("/");
 				alert("문자를 전송하였습니다.\n"+"[잔여문자안내]\n단문 이용시 "+smsArr[0]+"건 사용가능.\n장문 이용시 "+smsArr[1]+"건 사용가능");
+				$(".popup_smsSend > table tr > td > input[name='phone']").val("");
+				$(".popup_smsSend > table tr > td > textarea").val("");
+				$(".popup_smsSend > table tr > td > input[name='name']").val("");
 				$(".popup_smsSend").css("display","none");
 				$(".popup_wrap").css("display","none");
 			}
@@ -4350,8 +4353,8 @@ $(function(){
 	
 	//환자테이블에서 문자 클릭
 	$(document).on("click", ".sms_open_btn", function(){
-		var name = $(this).parent().parent().find("td").eq(1).text();
-		var phone = $(this).parent().parent().find("td").eq(7).text(); 
+		var name = $(this).parent().parent().find("td").eq(2).text();
+		var phone = $(this).parent().parent().find("td").eq(4).text(); 
 		
 		$(".popup_smsSend > table tr > td > input[name='name']").val(name);
 		$(".popup_smsSend > table tr > td > input[name='phone']").val(phone);
@@ -4375,6 +4378,7 @@ $(function(){
 			
 			post_smsSend(vo);
 		}else{
+			$(".popup_smsSend > table tr > td > textarea").val("");
 			if($(".popup_reservation_info_view").css("display") == "block"){
 				$(".popup_smsSend").css("display","none");
 			}else{

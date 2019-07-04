@@ -4495,6 +4495,7 @@ $(function(){
 		$(".popup_clinic_reservation_register > table td > select[name='clinic'] > option[value='']").prop("selected", true);
 		$(".popup_clinic_reservation_register > table td > select[name='eno'] > option[value='"+eno+"']").prop("selected", true);
 		$(".popup_clinic_reservation_register > table td > select[name='rtype'] > option[value='nc']").prop("selected", true);
+		$(".popup_clinic_reservation_register > table td > select[name='rtype'] > option[value='wr']").css("display", "block");
 		$(".popup_reservation_register_date").text($(".calendar_select_date").val()+" "+time);
 		$(".popup_clinic_reservation_register > table tr > td > input[name='memo']").val("");
 		$(".popup_clinic_reservation_register > table tr > td > select[name='fix_day'] > option[value='"+select_day+"']").prop("selected", true);
@@ -4533,6 +4534,7 @@ $(function(){
 		$(".popup_therapy_reservation_register > table td > select[name='clinic'] > option[value='']").prop("selected", true);
 		$(".popup_therapy_reservation_register > table td > select[name='eno'] > option[value='"+eno+"']").prop("selected", true);
 		$(".popup_therapy_reservation_register > table td > select[name='rtype'] > option[value='nc']").prop("selected", true);
+		$(".popup_therapy_reservation_register > table td > select[name='rtype'] > option[value='wr']").css("display", "block");
 		$(".popup_reservation_register_date").text($(".calendar_select_date").val()+" "+time);
 		$(".popup_therapy_reservation_register > table tr > td > input[name='memo']").val("");
 		$(".popup_therapy_reservation_register > table tr > td > select[name='fix_day'] > option[value='"+select_day+"']").prop("selected", true);
@@ -4759,11 +4761,19 @@ $(function(){
 		var wrVO = get_waitingReservation_byNo(no);
 		var patientVO =  get_patient_by_pno(wrVO.pno);
 		if(wrVO.rtype == 'nc'){
-			$(".popup_clinic_reservation_register > h2 > span").html(wrVO.pname+"("+wrVO.chart_no+")님");
-			$(".popup_clinic_reservation_register > h2").append("<input type='hidden' name='pno' value='"+wrVO.pno+"'><input type='hidden' name='pname' value='"+wrVO.pname+"'><input type='hidden' name='chart_no' value='"+wrVO.chart_no+"'>");
+			var trBtnCnt = $(".popup_clinic_reservation_register > .popup_reservation_register_btn_wrap > p").length;
+			if(trBtnCnt >= 4){
+				for(var i=trBtnCnt-1; i>=3; i--){
+					$(".popup_clinic_reservation_register > .popup_reservation_register_btn_wrap > p").eq(i).remove();
+				}
+			}
+			
+			str = "<span>"+wrVO.pname+"("+wrVO.chart_no+")님</span> 진료일정추가<input type='hidden' name='pno' value='"+wrVO.pno+"'><input type='hidden' name='pname' value='"+wrVO.pname+"'><input type='hidden' name='chart_no' value='"+wrVO.chart_no+"'>";
+			$(".popup_clinic_reservation_register > h2").html(str);
 			$(".popup_clinic_reservation_register > table td > select[name='clinic'] > option[value='"+wrVO.clinic+"']").prop("selected", true);
 			$(".popup_clinic_reservation_register > table td > select[name='eno'] > option[value='"+wrVO.eno+"']").prop("selected", true);
 			$(".popup_clinic_reservation_register > table td > select[name='rtype'] > option[value='nc']").prop("selected", true);
+			$(".popup_clinic_reservation_register > table td > select[name='rtype'] > option[value='wr']").css("display", "none");
 			$(".popup_clinic_reservation_register > table tr > td > .popup_reservation_register_date").text(wrVO.rdate+" "+parseInt(wrVO.rtime/60));
 			$(".popup_clinic_reservation_register > table td > select[name='rtime_minute'] > option[value='"+wrVO.rtime%60+"']").prop("selected", true);
 			$(".popup_clinic_reservation_register > table tr > td > input[name='memo']").val(wrVO.memo);
@@ -4773,11 +4783,19 @@ $(function(){
 			$(".popup_wrap").css("display", "block");
 			$(".popup_clinic_reservation_register").css("display", "block");
 		}else if(wrVO.rtype == 'nt'){
-			$(".popup_therapy_reservation_register > h2 > span").html(wrVO.pname+"("+wrVO.chart_no+")님");
-			$(".popup_therapy_reservation_register > h2").append("<input type='hidden' name='pno' value='"+wrVO.pno+"'><input type='hidden' name='pname' value='"+wrVO.pname+"'><input type='hidden' name='chart_no' value='"+wrVO.chart_no+"'>");
+			var trBtnCnt = $(".popup_therapy_reservation_register > .popup_reservation_register_btn_wrap > p").length;
+			if(trBtnCnt >= 4){
+				for(var i=trBtnCnt-1; i>=3; i--){
+					$(".popup_therapy_reservation_register > .popup_reservation_register_btn_wrap > p").eq(i).remove();
+				}
+			}
+			
+			str = "<span>"+wrVO.pname+"("+wrVO.chart_no+")님</span> 치료일정추가<input type='hidden' name='pno' value='"+wrVO.pno+"'><input type='hidden' name='pname' value='"+wrVO.pname+"'><input type='hidden' name='chart_no' value='"+wrVO.chart_no+"'>";
+			$(".popup_therapy_reservation_register > h2").html(str);
 			$(".popup_therapy_reservation_register > table td > select[name='clinic'] > option[value='"+wrVO.clinic+"']").prop("selected", true);
 			$(".popup_therapy_reservation_register > table td > select[name='eno'] > option[value='"+wrVO.eno+"']").prop("selected", true);
 			$(".popup_therapy_reservation_register > table td > select[name='rtype'] > option[value='nt']").prop("selected", true);
+			$(".popup_therapy_reservation_register > table td > select[name='rtype'] > option[value='wr']").css("display", "none");
 			$(".popup_therapy_reservation_register > table tr > td > .popup_reservation_register_date").text(wrVO.rdate+" "+parseInt(wrVO.rtime/60));
 			$(".popup_therapy_reservation_register > table td > select[name='rtime_minute'] > option[value='"+wrVO.rtime%60+"']").prop("selected", true);
 			$(".popup_therapy_reservation_register > table tr > td > input[name='memo']").val(wrVO.memo);

@@ -2494,7 +2494,8 @@ function draw_reservation_update_view(rno, rtype){
 	$(".popup_reservation_update > h2").html(type+" "+patient.name+"("+patient.cno+")님 <input type='hidden' name='rno' value='"+rno+"'><input type='hidden' name='rtype' value='"+rtype+"'><input type='hidden' name='pno' value='"+json.pno+"'>");
 	$(".popup_reservation_update > table tr:first-child > td").text(rdate_rtime);
 	$(".popup_reservation_update > table tr:nth-child(2) > td > input[name='rdate']").val(json.rdate);
-	$(".popup_reservation_update > table tr:nth-child(3) > td select[name='rtime1'] > option[value='"+parseInt(Number(json.rtime))+"']").prop("selected",true);
+	$(".popup_reservation_update > table tr:nth-child(3) > td select[name='rtime1'] > option[value='"+parseInt(Number(json.rtime)/60)*60+"']").prop("selected",true);
+	$(".popup_reservation_update > table tr:nth-child(3) > td select[name='rtime2'] > option[value='"+Number(json.rtime)%60+"']").prop("selected",true);
 	$(".popup_reservation_update > table tr:nth-child(4) > td select[name='emp'] > option[value='"+json.eno+"']").prop("selected",true);
 	$(".popup_reservation_update > table tr:nth-child(5) > td select[name='clinic'] > option[value='"+json.clinic+"']").prop("selected",true);
 	$(".popup_reservation_update > table tr:nth-child(6) > td >input[name='memo']").val(json.memo);

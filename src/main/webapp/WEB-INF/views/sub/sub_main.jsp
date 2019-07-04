@@ -2456,12 +2456,16 @@ function open_reservation_info_view(type, rno){
 	}
 	
 	$(".popup_reservation_info_btn_wrap > p").css({"background":"#353c46", "color":"#fff"});
+	$(".popup_reservation_info_view > table tr:nth-child(5)").css("display", "none");
+	$(".popup_reservation_info_view > table tr:nth-child(5) > td > span").html("");
 	if(rData.result =="예약완료"){
 		$(".popup_reservation_info_btn_wrap > p").eq(0).css({"background":"#1e866a", "color":"#fff"});
 	}else if(rData.result == "접수완료" || rData.result == "치료완료"){
 		$(".popup_reservation_info_btn_wrap > p").eq(1).css({"background":"#1e866a", "color":"#fff"});
 	}else if(rData.result == "예약취소"){
 		$(".popup_reservation_info_btn_wrap > p").eq(2).css({"background":"#1e866a", "color":"#fff"});
+		$(".popup_reservation_info_view > table tr:nth-child(5)").css("display", "block");
+		$(".popup_reservation_info_view > table tr:nth-child(5) > td > span").html(rData.result_memo);
 	}else{
 		$(".popup_reservation_info_btn_wrap > p").eq(0).css({"background":"#1e866a", "color":"#fff"});
 	}
@@ -2481,6 +2485,8 @@ function open_reservation_info_view(type, rno){
 	$(".popup_reservation_info_view > table tr:nth-child(3) > td > span").html(cData.code_name+" / "+eData.name+"<input type='hidden' name='csn' value='"+cData.code_smsname+"'>");
 	$(".popup_reservation_info_view > table tr:nth-child(3) > td > span").css({"background":cData.color, "padding":"2px 4px", "color":"#fefefe"});
 	$(".popup_reservation_info_view > table tr:nth-child(4) > td > span").html(rData.memo);
+	
+	
 	
 	var other_res = get_reservationList_byPnoDate(rData.pno, rData.rdate);
 	str = "";
@@ -2527,7 +2533,7 @@ function open_reservation_info_view(type, rno){
 		
 	});
 	
-	$(".popup_reservation_info_view > table tr:nth-child(5) > td").html(str);
+	$(".popup_reservation_info_view > table tr:nth-child(6) > td").html(str);
 	
 	$(".popup_reservation_info_view").css("display", "block");
 	$(".popup_wrap").css("display", "block");
@@ -2666,7 +2672,10 @@ function update_reservation_deskState(rtype, rno, state, writer, regdate, stbn){
 	if(reason == ""){
 		reason = "_";
 	}
-
+	
+	$(".popup_reservation_info_view > table tr:nth-child(5)").css("display", "none");
+	$(".popup_reservation_info_view > table tr:nth-child(5) > td > span").html("");
+	
 	var info = {rtype:rtype, rno:rno, state:state, writer:writer, regdate:regdate, reason:reason};
 	$.ajax({
 		url:"${pageContext.request.contextPath}/updateReservationDeskState",
@@ -2681,8 +2690,11 @@ function update_reservation_deskState(rtype, rno, state, writer, regdate, stbn){
 				alert(state+" 되었습니다.");
 				$(".popup_reservation_info_view .cancel_reason > td > textarea[name='cancel_reason']").val("");
 				$(".popup_reservation_info_view .cancel_reason").css("display","none");
-				/* $(".popup_reservation_info_view").css("display", "none");
-				$(".popup_wrap").css("display","none"); */
+				
+				if(state == "예약취소"){
+					$(".popup_reservation_info_view > table tr:nth-child(5)").css("display", "block");
+					$(".popup_reservation_info_view > table tr:nth-child(5) > td > span").html(reason);
+				}
 				
 				draw_time_table_by_case(stbn);
 			}else{

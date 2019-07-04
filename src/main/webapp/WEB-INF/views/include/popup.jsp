@@ -157,15 +157,18 @@
 .popup_reservation_info_view > h2 > span{
 	cursor: pointer;
 }
-.popup_reservation_info_view > table tr:nth-child(5) > td{
+.popup_reservation_info_view > table tr:nth-child(5){
+	display: none;
+}
+.popup_reservation_info_view > table tr:nth-child(6) > td{
 	text-align: left;
 }
-.popup_reservation_info_view > table tr:nth-child(5) > td > p{
+.popup_reservation_info_view > table tr:nth-child(6) > td > p{
 	font-size: 15px;
 	margin-bottom: 5px;
 	cursor: pointer;
 }
-.popup_reservation_info_view > table tr:nth-child(5) > td > p:hover{
+.popup_reservation_info_view > table tr:nth-child(6) > td > p:hover{
 	font-weight: bold;
 }
 .popup_reservation_info_view > .popup_reservation_info_btn_wrap{
@@ -716,6 +719,10 @@ function inputPhoneNumber(obj) {
 			</tr>
 			<tr>
 				<th>▶ 메모</th>
+				<td><span></span></td>
+			</tr>
+			<tr class="cancelMemo">
+				<th>▶ 취소메모</th>
 				<td><span></span></td>
 			</tr>
 			<tr>

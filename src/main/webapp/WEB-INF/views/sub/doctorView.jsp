@@ -2382,6 +2382,14 @@ function open_reservation_info_view(type, rno){
 		rtype="고정치료예약";
 	}
 	
+	$(".popup_reservation_info_view > table tr:nth-child(5)").css("display", "none");
+	$(".popup_reservation_info_view > table tr:nth-child(5) > td > span").html("");
+	
+	if(rData.result == "예약취소"){
+		$(".popup_reservation_info_view > table tr:nth-child(5)").css("display", "block");
+		$(".popup_reservation_info_view > table tr:nth-child(5) > td > span").html(rData.result_memo);
+	}
+	
 	pData = get_patient_by_pno(rData.pno);
 	eData = get_employee_byEno(rData.eno);
 	cData = get_clinic_by_cno(rData.clinic);
@@ -2443,7 +2451,7 @@ function open_reservation_info_view(type, rno){
 		
 	});
 	
-	$(".popup_reservation_info_view > table tr:nth-child(5) > td").html(str);
+	$(".popup_reservation_info_view > table tr:nth-child(6) > td").html(str);
 	
 	$(".popup_reservation_info_view").css("display", "block");
 	$(".popup_wrap").css("display", "block");

@@ -561,11 +561,18 @@ function inputPhoneNumber(obj) {
 					<span class="popup_reservation_register_date"></span>시
 					<select name="rtime_minute">
 						<option value="0">00분</option>
+						<option value="5">05분</option>
 						<option value="10">10분</option>
+						<option value="15">15분</option>
 						<option value="20">20분</option>
+						<option value="25">25분</option>
 						<option value="30">30분</option>
+						<option value="35">35분</option>
 						<option value="40">40분</option>
+						<option value="45">45분</option>
 						<option value="50">50분</option>
+						<option value="55">55분</option>
+						<option value="60">60분</option>
 					</select>
 				</td>
 			</tr>
@@ -643,11 +650,18 @@ function inputPhoneNumber(obj) {
 					<span class="popup_reservation_register_date"></span>시
 					<select name="rtime_minute">
 						<option value="0">00분</option>
+						<option value="5">05분</option>
 						<option value="10">10분</option>
+						<option value="15">15분</option>
 						<option value="20">20분</option>
+						<option value="25">25분</option>
 						<option value="30">30분</option>
+						<option value="35">35분</option>
 						<option value="40">40분</option>
+						<option value="45">45분</option>
 						<option value="50">50분</option>
+						<option value="55">55분</option>
+						<option value="60">60분</option>
 					</select>
 				</td>
 			</tr>
@@ -754,11 +768,18 @@ function inputPhoneNumber(obj) {
 					</select>
 					<select name="rtime2">
 						<option value="0">00분</option>
+						<option value="5">05분</option>
 						<option value="10">10분</option>
+						<option value="15">15분</option>
 						<option value="20">20분</option>
+						<option value="25">25분</option>
 						<option value="30">30분</option>
+						<option value="35">35분</option>
 						<option value="40">40분</option>
+						<option value="45">45분</option>
 						<option value="50">50분</option>
+						<option value="55">55분</option>
+						<option value="60">60분</option>
 					</select>
 				</td>
 			</tr>

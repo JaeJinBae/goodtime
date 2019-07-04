@@ -3621,9 +3621,12 @@ function draw_patient_week_timetable(type, idxx){
 	
 	$(".patient_time_table_wrap").html(str); 
 	
-	var pno = $("#reservation_view_btn").find("input[name='pno']").val();
-	console.log(pno+"/"+arrDate+"/"+type);
-	draw_patient_week_reservation(pno, arrDate, type);
+	var btnState = $("#reservation_view_btn").css("display");
+	if(btnState == "block"){
+		var pno = $("#reservation_view_btn").find("input[name='pno']").val();
+		draw_patient_week_reservation(pno, arrDate, type);
+	}
+	
 }
 
 function get_reservationList_byWeekPno(pno, week, rtype){
@@ -4616,7 +4619,7 @@ $(function(){
 					}
 					vo = {pno:pno, pname:pname, chart_no:chart_no, eno:eno, rtype:rtype, rdate:rdate, rtime:rtime, clinic:clinic, clinic_name:clinic_name, memo:memo, writer:writer, regdate:regdate, desk_state:desk_state, desk_state_writer:desk_state_writer, desk_state_regdate:desk_state_regdate, result:result, result_memo:""};
 					post_ncReservation_register(vo, storage_timetable_btn_num, storage_timetable2_btn_num);
-					console.log(vo);
+					
 					if($(".popup_clinic_reservation_register > .popup_reservation_register_btn_wrap > p:last-child").text() != "닫기"){
 						var no = $(".popup_clinic_reservation_register > .popup_reservation_register_btn_wrap > p:last-child > input[name='no']").val();
 						$(".popup_clinic_reservation_register > .popup_reservation_register_btn_wrap > p:last-child").remove();

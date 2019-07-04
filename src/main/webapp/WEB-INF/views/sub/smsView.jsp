@@ -209,7 +209,7 @@ function bytesHandler(obj){
 $(function(){
 	
 	//진료, 치료 저장내용 byte 표기
-	for(var i=1; i<4; i++){
+	for(var i=1; i<5; i++){
 		var obj = $(".templateWrap:nth-child("+i+") > ul > li > textarea");
 		var objText = obj.text();
 		objText = objText.replace(/\[병원명\]/gi,"원마취통증의학과");
@@ -266,8 +266,10 @@ $(function(){
 			content = $(".templateWrap:nth-child(1) > ul > li > textarea").val();
 		}else if(num ==2){
 			content = $(".templateWrap:nth-child(2) > ul > li > textarea").val();
-		}else{
+		}else if(num == 3){
 			content = $(".templateWrap:nth-child(3) > ul > li > textarea").val();
+		}else{
+			content = $(".templateWrap:nth-child(4) > ul > li > textarea").val();
 		}
 		var vo = {no:num, content:content};
 		post_smsTamplate_update(vo);
@@ -333,6 +335,23 @@ $(function(){
 						<ul>
 							<li>
 								<textarea>${smsTherapy.content}</textarea>
+								<p><span>195</span>/2000 Byte</p>
+							</li>
+							<li>
+								<textarea class="preview" readonly></textarea>
+								<p><span>195</span>/2000 Byte</p>
+							</li>
+						</ul>
+					</div><!-- templateWrap end -->
+					<div class="templateWrap">
+						<h4>대기예약<input type="hidden" name="no" value="3"> <button>저 장</button></h4>
+						<div class="tempTitle">
+							<p>-탬플릿-</p>
+							<p>-미리보기-</p>
+						</div>
+						<ul>
+							<li>
+								<textarea>${smsWaiting.content}</textarea>
 								<p><span>195</span>/2000 Byte</p>
 							</li>
 							<li>

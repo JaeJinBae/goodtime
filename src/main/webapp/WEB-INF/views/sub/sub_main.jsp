@@ -3622,7 +3622,7 @@ function draw_patient_week_timetable(type, idxx){
 	$(".patient_time_table_wrap").html(str); 
 	
 	var pno = $("#reservation_view_btn").find("input[name='pno']").val();
-
+	console.log(pno+"/"+arrDate+"/"+type);
 	draw_patient_week_reservation(pno, arrDate, type);
 }
 
@@ -4557,7 +4557,7 @@ $(function(){
 		var pname = $("#reservation_view_btn").text();
 		var chart_no = $("#reservation_view_btn > input[name='cno']").val();
 		
-		str = "<span>"+pname+"("+chart_no+")님</span><input type='hidden' name='pno' value='"+pno+"'><input type='hidden' name='pname' value='"+pname+"'><input type='hidden' name='chart_no' value='"+chart_no+"'>";
+		str = "<span>"+pname+"("+chart_no+")님 치료일정추가</span><input type='hidden' name='pno' value='"+pno+"'><input type='hidden' name='pname' value='"+pname+"'><input type='hidden' name='chart_no' value='"+chart_no+"'>";
 		$(".popup_therapy_reservation_register > h2").html(str);
 		$(".popup_therapy_reservation_register > table td > select[name='clinic'] > option[value='']").prop("selected", true);
 		$(".popup_therapy_reservation_register > table td > select[name='eno'] > option[value='"+eno+"']").prop("selected", true);
@@ -4616,7 +4616,7 @@ $(function(){
 					}
 					vo = {pno:pno, pname:pname, chart_no:chart_no, eno:eno, rtype:rtype, rdate:rdate, rtime:rtime, clinic:clinic, clinic_name:clinic_name, memo:memo, writer:writer, regdate:regdate, desk_state:desk_state, desk_state_writer:desk_state_writer, desk_state_regdate:desk_state_regdate, result:result, result_memo:""};
 					post_ncReservation_register(vo, storage_timetable_btn_num, storage_timetable2_btn_num);
-					
+					console.log(vo);
 					if($(".popup_clinic_reservation_register > .popup_reservation_register_btn_wrap > p:last-child").text() != "닫기"){
 						var no = $(".popup_clinic_reservation_register > .popup_reservation_register_btn_wrap > p:last-child > input[name='no']").val();
 						$(".popup_clinic_reservation_register > .popup_reservation_register_btn_wrap > p:last-child").remove();
@@ -4787,9 +4787,10 @@ $(function(){
 		var no = $(this).find("input[name='no']").val();
 		var wrVO = get_waitingReservation_byNo(no);
 		var patientVO =  get_patient_by_pno(wrVO.pno);
+		var str = "";
 		if(wrVO.rtype == 'nc'){
-			$(".popup_clinic_reservation_register > h2 > span").html(wrVO.pname+"("+wrVO.chart_no+")님");
-			$(".popup_clinic_reservation_register > h2").append("<input type='hidden' name='pno' value='"+wrVO.pno+"'><input type='hidden' name='pname' value='"+wrVO.pname+"'><input type='hidden' name='chart_no' value='"+wrVO.chart_no+"'>");
+			str = "<span>"+wrVO.pname+"("+wrVO.chart_no+")님</span> 진료일정추가<input type='hidden' name='pno' value='"+wrVO.pno+"'><input type='hidden' name='pname' value='"+wrVO.pname+"'><input type='hidden' name='chart_no' value='"+wrVO.chart_no+"'>";
+			$(".popup_clinic_reservation_register > h2").html(str);
 			$(".popup_clinic_reservation_register > table td > select[name='clinic'] > option[value='"+wrVO.clinic+"']").prop("selected", true);
 			$(".popup_clinic_reservation_register > table td > select[name='eno'] > option[value='"+wrVO.eno+"']").prop("selected", true);
 			$(".popup_clinic_reservation_register > table td > select[name='rtype'] > option[value='nc']").prop("selected", true);
@@ -4802,8 +4803,8 @@ $(function(){
 			$(".popup_wrap").css("display", "block");
 			$(".popup_clinic_reservation_register").css("display", "block");
 		}else if(wrVO.rtype == 'nt'){
-			$(".popup_therapy_reservation_register > h2 > span").html(wrVO.pname+"("+wrVO.chart_no+")님");
-			$(".popup_therapy_reservation_register > h2").append("<input type='hidden' name='pno' value='"+wrVO.pno+"'><input type='hidden' name='pname' value='"+wrVO.pname+"'><input type='hidden' name='chart_no' value='"+wrVO.chart_no+"'>");
+			str = "<span>"+wrVO.pname+"("+wrVO.chart_no+")님</span> 치료일정추가<input type='hidden' name='pno' value='"+wrVO.pno+"'><input type='hidden' name='pname' value='"+wrVO.pname+"'><input type='hidden' name='chart_no' value='"+wrVO.chart_no+"'>";
+			$(".popup_therapy_reservation_register > h2").html(str);
 			$(".popup_therapy_reservation_register > table td > select[name='clinic'] > option[value='"+wrVO.clinic+"']").prop("selected", true);
 			$(".popup_therapy_reservation_register > table td > select[name='eno'] > option[value='"+wrVO.eno+"']").prop("selected", true);
 			$(".popup_therapy_reservation_register > table td > select[name='rtype'] > option[value='nt']").prop("selected", true);
@@ -4879,7 +4880,7 @@ $(function(){
 	});
 	
 	//당일예약현황 리스트에서 항목 클릭했을 때
-	$(document).on("click", ".popup_reservation_info_view > table tr:nth-child(5) > td > .res_info_view_today_list", function(){
+	$(document).on("click", ".popup_reservation_info_view > table tr:nth-child(6) > td > .res_info_view_today_list", function(){
 		var rno = $(this).find("input[name='rno']").val();
 		var rtype = $(this).find("input[name='rtype']").val();
 		

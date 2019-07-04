@@ -4313,7 +4313,7 @@ $(function(){
 	});
 	
 	//당일예약현황 리스트에서 항목 눌렀을 때
-	$(document).on("click", ".popup_reservation_info_view > table tr:nth-child(5) > td > .res_info_view_today_list", function(){
+	$(document).on("click", ".popup_reservation_info_view > table tr:nth-child(6) > td > .res_info_view_today_list", function(){
 		var rno = $(this).find("input[name='rno']").val();
 		var rtype = $(this).find("input[name='rtype']").val();
 		

@@ -4488,7 +4488,7 @@ $(function(){
 		var pname = $("#reservation_view_btn").text();
 		var chart_no = $("#reservation_view_btn > input[name='cno']").val();
 		
-		str = "<span>"+pname+"("+chart_no+")님</span><input type='hidden' name='pno' value='"+pno+"'><input type='hidden' name='pname' value='"+pname+"'><input type='hidden' name='chart_no' value='"+chart_no+"'>";
+		str = "<span>"+pname+"("+chart_no+")님 진료일정추가</span><input type='hidden' name='pno' value='"+pno+"'><input type='hidden' name='pname' value='"+pname+"'><input type='hidden' name='chart_no' value='"+chart_no+"'>";
 		$(".popup_clinic_reservation_register > h2").html(str);
 		$(".popup_clinic_reservation_register > table td > select[name='clinic'] > option[value='']").prop("selected", true);
 		$(".popup_clinic_reservation_register > table td > select[name='eno'] > option[value='"+eno+"']").prop("selected", true);
@@ -4526,7 +4526,7 @@ $(function(){
 		var pname = $("#reservation_view_btn").text();
 		var chart_no = $("#reservation_view_btn > input[name='cno']").val();
 		
-		str = "<span>"+pname+"("+chart_no+")님</span><input type='hidden' name='pno' value='"+pno+"'><input type='hidden' name='pname' value='"+pname+"'><input type='hidden' name='chart_no' value='"+chart_no+"'>";
+		str = "<span>"+pname+"("+chart_no+")님 치료일정추가</span><input type='hidden' name='pno' value='"+pno+"'><input type='hidden' name='pname' value='"+pname+"'><input type='hidden' name='chart_no' value='"+chart_no+"'>";
 		$(".popup_therapy_reservation_register > h2").html(str);
 		$(".popup_therapy_reservation_register > table td > select[name='clinic'] > option[value='']").prop("selected", true);
 		$(".popup_therapy_reservation_register > table td > select[name='eno'] > option[value='"+eno+"']").prop("selected", true);
@@ -4848,7 +4848,7 @@ $(function(){
 	});
 	
 	//당일예약현황 리스트에서 항목 클릭했을 때
-	$(document).on("click", ".popup_reservation_info_view > table tr:nth-child(5) > td > .res_info_view_today_list", function(){
+	$(document).on("click", ".popup_reservation_info_view > table tr:nth-child(6) > td > .res_info_view_today_list", function(){
 		var rno = $(this).find("input[name='rno']").val();
 		var rtype = $(this).find("input[name='rtype']").val();
 		

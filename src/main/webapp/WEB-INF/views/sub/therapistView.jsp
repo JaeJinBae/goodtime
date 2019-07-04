@@ -3412,7 +3412,7 @@ $(function(){
 		
 	});	
 	
-	$(document).on("click", ".popup_reservation_info_view > table tr:nth-child(5) > td > .res_info_view_today_list", function(){
+	$(document).on("click", ".popup_reservation_info_view > table tr:nth-child(6) > td > .res_info_view_today_list", function(){
 		var rno = $(this).find("input[name='rno']").val();
 		var rtype = $(this).find("input[name='rtype']").val();
 		

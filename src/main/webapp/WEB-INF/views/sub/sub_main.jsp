@@ -191,11 +191,11 @@
 	}
 	#tbl_simple_reservation tr > td .patient_simple_record{
 		width: 100%;
-		max-height:100px;
+		max-height:200px;
 		overflow: auto;
 	}
 	#tbl_simple_reservation tr > td .patient_simple_record > p{
-		margin-bottom:5px;
+		margin-bottom:20px;
 	}
 	#tbl_simple_reservation tr > td .patient_simple_record > p > span{
 		font-size: 14px;
@@ -1864,7 +1864,10 @@ function draw_simple_reservation_view(type, rno){
 	if(res_record.length != 0){
 		str += "<tr><th class='tbl_content_title'>- 이력</th></tr><tr><td class='tbl_content'><div class='patient_simple_record'>";
 		for(var k=res_record.length-1; k>=0; k--){
-			str += "<p><span>"+res_record[k].rdate+"</span>&nbsp;&nbsp;<span>"+res_record[k].cname+"/"+res_record[k].ename+"</span></p>";
+			hour = parseInt(Number(res_record[k].rtime)/60);
+			minute = Number(res_record[k].rtime)%60;
+			minute = (minute > 9)?minute:"0"+minute;
+			str += "<p><span>"+res_record[k].rdate+"&nbsp;"+hour+":"+minute+"</span><br><span style='padding-left:20px;'>"+res_record[k].cname+"/"+res_record[k].ename+"</span></p>";
 		}
 		str += "</div></td></tr>";
 	}

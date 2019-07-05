@@ -436,7 +436,7 @@
 			<tr>
 				<th>▶ 치료사</th>
 				<td>
-					<select name="eno" disabled>
+					<select name="eno">
 						<c:forEach var="item" items="${therapistList}">
 							<option value="${item.eno}">${item.name}</option>
 						</c:forEach>
@@ -446,7 +446,7 @@
 			<tr>
 				<th>▶ 치료종류</th>
 				<td>
-					<select name="clinic" disabled>
+					<select name="clinic">
 						<option value="">선택없음</option>
 						<c:forEach var="item" items="${therapyList}"> 
 							<option value="${item.cno}">${item.code_name}</option>
@@ -457,9 +457,7 @@
 			<tr>
 				<th>▶ 예약구분</th>
 				<td>
-					<select name="rtype" disabled>
-						<option value="nt">일반예약</option>
-						<option value="ft">고정예약</option>
+					<select name="rtype" >
 						<option value="wr">대기예약</option>
 					</select>
 				</td>
@@ -468,7 +466,7 @@
 				<th>▶ 예약시간</th>
 				<td>
 					<span class="popup_reservation_register_date"></span>시
-					<select name="rtime_minute" disabled>
+					<select name="rtime_minute">
 						<option value="0">00분</option>
 						<option value="5">05분</option>
 						<option value="10">10분</option>
@@ -509,10 +507,12 @@
 			</tr>
 			<tr>
 				<th>▶ 메모</th>
-				<td><input type="text" name="memo" value="" readonly></td>
+				<td><input type="text" name="memo" value=""></td>
 			</tr>
 		</table>
 		<div class="popup_reservation_register_btn_wrap">
+			<p>예약등록</p>
+			<p>예약취소</p>
 			<p>닫기</p>
 		</div>
 	</div><!-- popup_therapy_reservation_register end -->

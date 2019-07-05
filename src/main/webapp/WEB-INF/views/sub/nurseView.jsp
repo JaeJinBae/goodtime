@@ -2622,7 +2622,7 @@ function draw_reservation_update_view(rno, rtype){
 	
 }
 
-function update_reservation_info(stbn){
+function update_reservation_info(stbn, stbn2){
 	var now = new Date();
 	
 	var pno = $(".popup_reservation_update > h2 > input[name='pno']").val();
@@ -2685,6 +2685,11 @@ function update_reservation_info(stbn){
 				$(".popup_reservation_update").css("display", "none");
 				$(".popup_wrap").css("display", "none");
 				draw_time_table_by_case(stbn);
+				
+				var btnState = $("#reservation_view_btn").css("display");
+				if(btnState == "inline-block"){
+					draw_patient_reservation_byCase(stbn2);
+				}
 			}else{
 				alert("예약등록이 정상적으로 등록되지 않았습니다. 다시 한번 등록하세요.");
 			}
@@ -2743,7 +2748,7 @@ function update_reservation_state(idxx, rtype, rno, state, writer, regdate, stbn
 	}
 }
 
-function post_deleteReservation(info, stbn){
+function post_deleteReservation(info, stbn, stbn2){
 	$.ajax({
 		url:"${pageContext.request.contextPath}/deleteReservation",
 		type:"post",
@@ -2766,6 +2771,10 @@ function post_deleteReservation(info, stbn){
 				$(".popup_wrap").css("display", "none");
 				draw_time_table_by_case(stbn);
 				
+				var btnState = $("#reservation_view_btn").css("display");
+				if(btnState == "inline-block"){
+					draw_patient_reservation_byCase(stbn2);
+				}
 			}
 		},
 		error:function(request,status,error){
@@ -4906,16 +4915,16 @@ $(function(){
 		open_reservation_info_view(rtype, rno);
 	});
 	
-	//예약일정 변경 저장 클릭
+	//예약일정 변경, 예약삭제, 닫기 클릭
 	$(".popup_res_update_btn_wrap > p").click(function(){
 		var btn_idx = $(this).index();
 		if(btn_idx == 0){
-			update_reservation_info(storage_timetable_btn_num);
+			update_reservation_info(storage_timetable_btn_num, storage_timetable2_btn_num);
 		}else if(btn_idx == 1){
 			var rno = $(".popup_reservation_update > h2 > input[name='rno']").val();
 			var rtype = $(".popup_reservation_update > h2 > input[name='rtype']").val();
 			var info = {rno:rno, rtype:rtype};
-			post_deleteReservation(info, storage_timetable_btn_num);
+			post_deleteReservation(info, storage_timetable_btn_num, storage_timetable2_btn_num);
 		}else if(btn_idx == 2){
 			$(".popup_reservation_update").css("display", "none");
 			$(".popup_wrap").css("display", "none");

@@ -1880,7 +1880,12 @@ function post_ncReservation_register(vo, stbn, stbn2){
 				$(".popup_wrap").css("display","none");
 				
 				draw_time_table_by_case(stbn);
-				draw_patient_reservation_byCase(stbn2);
+				
+				var btnState = $("#reservation_view_btn").css("display");
+				if(btnState == "inline-block"){
+					draw_patient_reservation_byCase(stbn2);
+				}
+				
 			}else{
 				alert("예약등록이 정상적으로 등록되지 않았습니다. 다시 한번 등록하세요.");
 			}
@@ -1905,7 +1910,11 @@ function post_ntReservation_register(vo, stbn, stbn2){
 				$(".popup_wrap").css("display","none");
 				
 				draw_time_table_by_case(stbn);
-				draw_patient_reservation_byCase(stbn2);
+				
+				var btnState = $("#reservation_view_btn").css("display");
+				if(btnState == "inline-block"){
+					draw_patient_reservation_byCase(stbn2);
+				}
 			}else{
 				alert("예약등록이 정상적으로 등록되지 않았습니다. 다시 한번 등록하세요.");
 			}
@@ -1931,7 +1940,11 @@ function post_fcReservation_register(vo, stbn, stbn2){
 				$(".popup_wrap").css("display","none");
 				
 				draw_time_table_by_case(stbn);
-				draw_patient_reservation_byCase(stbn2);
+				
+				var btnState = $("#reservation_view_btn").css("display");
+				if(btnState == "inline-block"){
+					draw_patient_reservation_byCase(stbn2);
+				}
 			}else{
 				alert("예약등록이 정상적으로 등록되지 않았습니다. 다시 한번 등록하세요.");
 			}
@@ -1960,7 +1973,11 @@ function post_ftReservation_register(vo, stbn, stbn2){
 				$(".popup_wrap").css("display","none");
 				
 				draw_time_table_by_case(stbn);
-				draw_patient_reservation_byCase(stbn2);
+				
+				var btnState = $("#reservation_view_btn").css("display");
+				if(btnState == "inline-block"){
+					draw_patient_reservation_byCase(stbn2);
+				}
 			}else{
 				alert("예약등록이 정상적으로 등록되지 않았습니다. 다시 한번 등록하세요.");
 			}
@@ -3619,14 +3636,10 @@ function draw_patient_week_timetable(type, idxx){
 	}
 	str += "</table>";
 	
-	$(".patient_time_table_wrap").html(str); 
+	$(".patient_time_table_wrap").html(str);
 	
-	var btnState = $("#reservation_view_btn").css("display");
-	if(btnState == "block"){
-		var pno = $("#reservation_view_btn").find("input[name='pno']").val();
-		draw_patient_week_reservation(pno, arrDate, type);
-	}
-	
+	var pno = $("#reservation_view_btn").find("input[name='pno']").val();
+	draw_patient_week_reservation(pno, arrDate, type);
 }
 
 function get_reservationList_byWeekPno(pno, week, rtype){
@@ -3674,7 +3687,7 @@ function draw_patient_week_reservation(pno, week, rtype){
 		if(minute == 0){
 			minute = "0"+minute;
 		}
-	
+		
 		target_tag = "."+this.rdate+"_"+parseInt(Number(this.rtime)/60);
 		if(this.result == "예약취소"){
 			str = "<p class='patient_p_tag' style='background:#e9e9e9;color:gray;'>"+minute+"~"+end_time+" "+empvo.name

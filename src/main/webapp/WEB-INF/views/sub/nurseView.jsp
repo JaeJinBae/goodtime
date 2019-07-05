@@ -3587,14 +3587,11 @@ function draw_patient_week_timetable(type, idxx){
 		str += "</tr>";
 	}
 	str += "</table>";
+
+	$(".patient_time_table_wrap").html(str);
 	
-	$(".patient_time_table_wrap").html(str); 
-	
-	var btnState = $("#reservation_view_btn").css("display");
-	if(btnState == "block"){
-		var pno = $("#reservation_view_btn").find("input[name='pno']").val();
-		draw_patient_week_reservation(pno, arrDate, type);
-	}
+	var pno = $("#reservation_view_btn").find("input[name='pno']").val();
+	draw_patient_week_reservation(pno, arrDate, type);
 }
 
 function get_reservationList_byWeekPno(pno, week, rtype){

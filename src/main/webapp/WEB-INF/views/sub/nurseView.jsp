@@ -1880,7 +1880,11 @@ function post_ncReservation_register(vo, stbn, stbn2){
 				$(".popup_wrap").css("display","none");
 				
 				draw_time_table_by_case(stbn);
-				draw_patient_reservation_byCase(stbn2);
+				
+				var btnState = $("#reservation_view_btn").css("display");
+				if(btnState == "inline-block"){
+					draw_patient_reservation_byCase(stbn2);
+				}
 			}else{
 				alert("예약등록이 정상적으로 등록되지 않았습니다. 다시 한번 등록하세요.");
 			}
@@ -1905,7 +1909,11 @@ function post_ntReservation_register(vo, stbn, stbn2){
 				$(".popup_wrap").css("display","none");
 				
 				draw_time_table_by_case(stbn);
-				draw_patient_reservation_byCase(stbn2);
+				
+				var btnState = $("#reservation_view_btn").css("display");
+				if(btnState == "inline-block"){
+					draw_patient_reservation_byCase(stbn2);
+				}
 			}else{
 				alert("예약등록이 정상적으로 등록되지 않았습니다. 다시 한번 등록하세요.");
 			}
@@ -1931,7 +1939,11 @@ function post_fcReservation_register(vo, stbn, stbn2){
 				$(".popup_wrap").css("display","none");
 				
 				draw_time_table_by_case(stbn);
-				draw_patient_reservation_byCase(stbn2);
+				
+				var btnState = $("#reservation_view_btn").css("display");
+				if(btnState == "inline-block"){
+					draw_patient_reservation_byCase(stbn2);
+				}
 			}else{
 				alert("예약등록이 정상적으로 등록되지 않았습니다. 다시 한번 등록하세요.");
 			}
@@ -1960,7 +1972,11 @@ function post_ftReservation_register(vo, stbn, stbn2){
 				$(".popup_wrap").css("display","none");
 				
 				draw_time_table_by_case(stbn);
-				draw_patient_reservation_byCase(stbn2);
+				
+				var btnState = $("#reservation_view_btn").css("display");
+				if(btnState == "inline-block"){
+					draw_patient_reservation_byCase(stbn2);
+				}
 			}else{
 				alert("예약등록이 정상적으로 등록되지 않았습니다. 다시 한번 등록하세요.");
 			}
@@ -4492,6 +4508,7 @@ $(function(){
 		$(".popup_clinic_reservation_register > table td > select[name='clinic'] > option[value='']").prop("selected", true);
 		$(".popup_clinic_reservation_register > table td > select[name='eno'] > option[value='"+eno+"']").prop("selected", true);
 		$(".popup_clinic_reservation_register > table td > select[name='rtype'] > option[value='nc']").prop("selected", true);
+		$(".popup_clinic_reservation_register > table td > select[name='rtype'] > option[value='fc']").css("display", "block");
 		$(".popup_clinic_reservation_register > table td > select[name='rtype'] > option[value='wr']").css("display", "block");
 		$(".popup_reservation_register_date").text($(".calendar_select_date").val()+" "+time);
 		$(".popup_clinic_reservation_register > table tr > td > input[name='memo']").val("");
@@ -4530,7 +4547,8 @@ $(function(){
 		$(".popup_therapy_reservation_register > h2").html(str);
 		$(".popup_therapy_reservation_register > table td > select[name='clinic'] > option[value='']").prop("selected", true);
 		$(".popup_therapy_reservation_register > table td > select[name='eno'] > option[value='"+eno+"']").prop("selected", true);
-		$(".popup_therapy_reservation_register > table td > select[name='rtype'] > option[value='nc']").prop("selected", true);
+		$(".popup_therapy_reservation_register > table td > select[name='rtype'] > option[value='nt']").prop("selected", true);
+		$(".popup_therapy_reservation_register > table td > select[name='rtype'] > option[value='ft']").css("display", "block");
 		$(".popup_therapy_reservation_register > table td > select[name='rtype'] > option[value='wr']").css("display", "block");
 		$(".popup_reservation_register_date").text($(".calendar_select_date").val()+" "+time);
 		$(".popup_therapy_reservation_register > table tr > td > input[name='memo']").val("");

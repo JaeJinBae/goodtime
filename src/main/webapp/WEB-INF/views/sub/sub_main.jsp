@@ -4540,6 +4540,7 @@ $(function(){
 		$(".popup_clinic_reservation_register > table td > select[name='clinic'] > option[value='']").prop("selected", true);
 		$(".popup_clinic_reservation_register > table td > select[name='eno'] > option[value='"+eno+"']").prop("selected", true);
 		$(".popup_clinic_reservation_register > table td > select[name='rtype'] > option[value='nc']").prop("selected", true);
+		$(".popup_clinic_reservation_register > table td > select[name='rtype'] > option[value='fc']").css("display", "block");
 		$(".popup_clinic_reservation_register > table td > select[name='rtype'] > option[value='wr']").css("display", "block");
 		$(".popup_reservation_register_date").text($(".calendar_select_date").val()+" "+time);
 		$(".popup_clinic_reservation_register > table tr > td > input[name='memo']").val("");
@@ -4578,7 +4579,8 @@ $(function(){
 		$(".popup_therapy_reservation_register > h2").html(str);
 		$(".popup_therapy_reservation_register > table td > select[name='clinic'] > option[value='']").prop("selected", true);
 		$(".popup_therapy_reservation_register > table td > select[name='eno'] > option[value='"+eno+"']").prop("selected", true);
-		$(".popup_therapy_reservation_register > table td > select[name='rtype'] > option[value='nc']").prop("selected", true);
+		$(".popup_therapy_reservation_register > table td > select[name='rtype'] > option[value='nt']").prop("selected", true);
+		$(".popup_therapy_reservation_register > table td > select[name='rtype'] > option[value='ft']").css("display", "block");
 		$(".popup_therapy_reservation_register > table td > select[name='rtype'] > option[value='wr']").css("display", "block");
 		$(".popup_reservation_register_date").text($(".calendar_select_date").val()+" "+time);
 		$(".popup_therapy_reservation_register > table tr > td > input[name='memo']").val("");
@@ -4820,6 +4822,7 @@ $(function(){
 			$(".popup_clinic_reservation_register > table td > select[name='clinic'] > option[value='"+wrVO.clinic+"']").prop("selected", true);
 			$(".popup_clinic_reservation_register > table td > select[name='eno'] > option[value='"+wrVO.eno+"']").prop("selected", true);
 			$(".popup_clinic_reservation_register > table td > select[name='rtype'] > option[value='nc']").prop("selected", true);
+			$(".popup_clinic_reservation_register > table td > select[name='rtype'] > option[value='fc']").css("display", "none");
 			$(".popup_clinic_reservation_register > table td > select[name='rtype'] > option[value='wr']").css("display", "none");
 			$(".popup_clinic_reservation_register > table tr > td > .popup_reservation_register_date").text(wrVO.rdate+" "+parseInt(wrVO.rtime/60));
 			$(".popup_clinic_reservation_register > table td > select[name='rtime_minute'] > option[value='"+wrVO.rtime%60+"']").prop("selected", true);
@@ -4842,6 +4845,7 @@ $(function(){
 			$(".popup_therapy_reservation_register > table td > select[name='clinic'] > option[value='"+wrVO.clinic+"']").prop("selected", true);
 			$(".popup_therapy_reservation_register > table td > select[name='eno'] > option[value='"+wrVO.eno+"']").prop("selected", true);
 			$(".popup_therapy_reservation_register > table td > select[name='rtype'] > option[value='nt']").prop("selected", true);
+			$(".popup_therapy_reservation_register > table td > select[name='rtype'] > option[value='ft']").css("display", "none");
 			$(".popup_therapy_reservation_register > table td > select[name='rtype'] > option[value='wr']").css("display", "none");
 			$(".popup_therapy_reservation_register > table tr > td > .popup_reservation_register_date").text(wrVO.rdate+" "+parseInt(wrVO.rtime/60));
 			$(".popup_therapy_reservation_register > table td > select[name='rtime_minute'] > option[value='"+wrVO.rtime%60+"']").prop("selected", true);

@@ -190,11 +190,11 @@
 	}
 	#tbl_simple_reservation tr > td .patient_simple_record{
 		width: 100%;
-		max-height:100px;
+		max-height:200px;
 		overflow: auto;
 	}
 	#tbl_simple_reservation tr > td .patient_simple_record > p{
-		margin-bottom:5px;
+		margin-bottom:20px;
 	}
 	#tbl_simple_reservation tr > td .patient_simple_record > p > span{
 		font-size: 14px;

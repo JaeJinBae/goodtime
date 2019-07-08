@@ -1494,7 +1494,7 @@ function draw_reservation(date){
 			target_tag = ".doctor_"+this.eno+"_"+hour;
 			txt = "<p class='patient_p_tag' style='background:#fff;border: 3px solid "+clinic.color+";color:"+clinic.color+";font-weight:bold;'>"+minute+"~"+end_time+" "+this.pname;
 			if(this.desk_state == "접수완료"){
-				txt += "<img class='footImg' src='${pageContext.request.contextPath}/resources/images/foot.png'>";
+				txt += "<img class='footImg' src='${pageContext.request.contextPath}/resources/images/foot2.png'>";
 			}
 			txt	+= "<input type='hidden' name='rno' value='"+this.rno+"'><input type='hidden' name='type' value='fc'></p>";
 			$(target_tag).append(txt);
@@ -1540,10 +1540,10 @@ function draw_reservation(date){
 			target_tag = ".therapist_"+this.eno+"_"+hour;
 			txt = "<p class='patient_p_tag' style='background:#fff;border:3px solid "+clinic.color+";color:"+clinic.color+";font-weight:bold;'>"+minute+"~"+end_time+" "+this.pname;
 			if(this.desk_state == "접수완료"){
-				txt += "<img class='footImg' src='${pageContext.request.contextPath}/resources/images/foot.png'>";
+				txt += "<img class='footImg' src='${pageContext.request.contextPath}/resources/images/foot2.png'>";
 			}
 			if(this.result == "치료완료"){
-				txt += "<img class='handImg' src='${pageContext.request.contextPath}/resources/images/hand.png'>";
+				txt += "<img class='handImg' src='${pageContext.request.contextPath}/resources/images/hand2.png'>";
 			}
 			txt	+= "<input type='hidden' name='rno' value='"+this.rno+"'><input type='hidden' name='type' value='ft'></p>";
 			$(target_tag).append(txt);
@@ -1969,7 +1969,7 @@ function draw_week_reservation(week, etype, eno, idxx){
 						target_tag = "."+cs+"_"+hour;
 						str = "<p class='patient_p_tag' style='background:#fff;border: 3px solid "+clinic.color+";color:"+clinic.color+";font-weight:bold;'>"+minute+"~"+end_time+" "+this.pname;
 						if(this.desk_state == "접수완료"){
-							str += "<img class='footImg' src='${pageContext.request.contextPath}/resources/images/foot.png'>";
+							str += "<img class='footImg' src='${pageContext.request.contextPath}/resources/images/foot2.png'>";
 						}
 						str	+= "<input type='hidden' name='rno' value='"+this.rno+"'><input type='hidden' name='type' value='"+this.rtype+"'></p>";
 						$(target_tag).append(str);
@@ -2016,10 +2016,10 @@ function draw_week_reservation(week, etype, eno, idxx){
 						target_tag = "."+cs+"_"+hour;
 						str = "<p class='patient_p_tag' style='background:#fff;border: 3px solid "+clinic.color+";color:"+clinic.color+";font-weight:bold;'>"+minute+"~"+end_time+" "+this.pname;
 						if(this.desk_state == "접수완료"){
-							str += "<img class='footImg' src='${pageContext.request.contextPath}/resources/images/foot.png'>";
+							str += "<img class='footImg' src='${pageContext.request.contextPath}/resources/images/foot2.png'>";
 						}
 						if(this.result == "치료완료"){
-							str += "<img class='handImg' src='${pageContext.request.contextPath}/resources/images/hand.png'>";
+							str += "<img class='handImg' src='${pageContext.request.contextPath}/resources/images/hand2.png'>";
 						}
 						str	+= "<input type='hidden' name='rno' value='"+this.rno+"'><input type='hidden' name='type' value='"+this.rtype+"'></p>";
 						$(target_tag).append(str);
@@ -2112,7 +2112,7 @@ function draw_week_reservation(week, etype, eno, idxx){
 						target_tag = "."+cs+"_"+hour;
 						str = "<p class='patient_p_tag' style='background:#fff;border: 3px solid "+clinic.color+";color:"+clinic.color+";font-weight:bold;'>"+minute+"~"+end_time+" "+this.pname;
 						if(this.desk_state == "접수완료"){
-							str += "<img class='footImg' src='${pageContext.request.contextPath}/resources/images/foot.png'>";
+							str += "<img class='footImg' src='${pageContext.request.contextPath}/resources/images/foot2.png'>";
 						}
 						str	+= "<input type='hidden' name='rno' value='"+this.rno+"'><input type='hidden' name='type' value='"+this.rtype+"'></p>";
 						$(target_tag).append(str);
@@ -2202,10 +2202,10 @@ function draw_week_reservation(week, etype, eno, idxx){
 						target_tag = "."+cs+"_"+hour;
 						str = "<p class='patient_p_tag' style='background:#fff;border: 3px solid "+clinic.color+";color:"+clinic.color+";font-weight:bold;'>"+minute+"~"+end_time+" "+this.pname;
 						if(this.desk_state == "접수완료"){
-							str += "<img class='footImg' src='${pageContext.request.contextPath}/resources/images/foot.png'>";
+							str += "<img class='footImg' src='${pageContext.request.contextPath}/resources/images/foot2.png'>";
 						}
 						if(this.result == "치료완료"){
-							str += "<img class='handImg' src='${pageContext.request.contextPath}/resources/images/hand.png'>";
+							str += "<img class='handImg' src='${pageContext.request.contextPath}/resources/images/hand2.png'>";
 						}
 						str	+= "<input type='hidden' name='rno' value='"+this.rno+"'><input type='hidden' name='type' value='"+this.rtype+"'></p>";
 						$(target_tag).append(str);
@@ -2928,10 +2928,10 @@ function draw_patient_week_reservation(pno, week, rtype){
 		}else{
 			str = "<p class='patient_p_tag' style='background:#fff;border:3px solid "+clinic.color+";color:"+clinic.color+";font-weight:bold;'>"+minute+"~"+end_time+" "+empvo.name;
 			if(this.desk_state == "접수완료"){
-				str += "<img class='footImg' src='${pageContext.request.contextPath}/resources/images/foot.png'>";
+				str += "<img class='footImg' src='${pageContext.request.contextPath}/resources/images/foot2.png'>";
 			}
 			if(this.result == "치료완료"){
-				str += "<img class='handImg' src='${pageContext.request.contextPath}/resources/images/hand.png'>";
+				str += "<img class='handImg' src='${pageContext.request.contextPath}/resources/images/hand2.png'>";
 			}
 			str	+= "<input type='hidden' name='rno' value='"+this.rno+"'><input type='hidden' name='type' value='"+this.rtype+"'></p>";
 			$(target_tag).append(str);

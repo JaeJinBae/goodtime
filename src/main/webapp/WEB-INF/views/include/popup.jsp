@@ -366,26 +366,26 @@ function inputPhoneNumber(obj) {
 	obj.value = phone;
 }
 
-	$(function(){
-		$(".popup_clinic_reservation_register > table tr:nth-child(3) > td > select[name='rtype']").change(function(){
-			var rtype=$(this).val();
-			if(rtype == "fc"){
-				$(".fix_clinic_res_tr").css("display","block");
-			}else{
-				$(".fix_clinic_res_tr").css("display","none");
-			}
-		});
-		
-		$(".popup_therapy_reservation_register > table tr:nth-child(3) > td > select[name='rtype']").change(function(){
-			var rtype=$(this).val();
-			if(rtype == "ft"){
-				$(".fix_therapy_res_tr").css("display","block");
-			}else{
-				$(".fix_therapy_res_tr").css("display","none");
-			}
-		});
-		
+$(function(){
+	$(".popup_clinic_reservation_register > table tr:nth-child(3) > td > select[name='rtype']").change(function(){
+		var rtype=$(this).val();
+		if(rtype == "fc"){
+			$(".fix_clinic_res_tr").css("display","block");
+		}else{
+			$(".fix_clinic_res_tr").css("display","none");
+		}
 	});
+	
+	$(".popup_therapy_reservation_register > table tr:nth-child(3) > td > select[name='rtype']").change(function(){
+		var rtype=$(this).val();
+		if(rtype == "ft"){
+			$(".fix_therapy_res_tr").css("display","block");
+		}else{
+			$(".fix_therapy_res_tr").css("display","none");
+		}
+	});
+	
+});
 </script>
 	<div class="popup_bg">
 	</div>

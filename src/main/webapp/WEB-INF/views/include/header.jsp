@@ -118,6 +118,7 @@ function post_employee_update2(employee){
 }
 
 $(function(){
+	
 	var session_id=$("#session_value").val();
 	
 	if(session_id == null || session_id == ""){
@@ -186,6 +187,10 @@ $(function(){
 			$(".popup_content").css("display", "none");
 			$(".popup_wrap").css("display", "none");
 		}
+	});
+	
+	$(window).scroll(function(){
+		$(".all_wrap").css("margin-left", 0-$(this).scrollLeft());
 	});
 });
 </script>

@@ -205,7 +205,7 @@
 		position:fixed;
 		left: 265px;
 		/* float:left; */ 
-		min-width:1100px;
+		min-width:1155px;
 		height:100%;
 		overflow: auto;
 		/* padding-bottom:100px;

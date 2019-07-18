@@ -2684,8 +2684,8 @@ public class HomeController {
 			
 			Map<String, String> sms = new HashMap<String, String>();
 			
-			sms.put("user_id", "1clinic"); // SMS 아이디
-			sms.put("key", "dxlaks0vqpw6579w9nuy20a3j1jnpj5s"); //인증키
+			sms.put("user_id", "bjj7425"); // SMS 아이디
+			sms.put("key", "uybnfxh6xc0wbogbgu7nqgfnbqvx8xy8"); //인증키
 			
 			//1clinic 원통증 아이디
 			// dxlaks0vqpw6579w9nuy20a3j1jnpj5s 원마취통증 인증키

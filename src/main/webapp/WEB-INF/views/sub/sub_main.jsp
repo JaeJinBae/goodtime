@@ -4050,6 +4050,7 @@ function post_sendGroupSms(info){
 			if(json == "ok"){
 				alert("문자 전송이 완료되었습니다.");
 			}else{
+				console.log(json);
 				alert("일부 문자 전송이 실패하였습니다.");
 			}
 		},

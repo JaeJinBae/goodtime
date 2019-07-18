@@ -1910,6 +1910,8 @@ function post_fcReservation_register(vo, stbn){
 		success:function(json){
 			if(json == "OK"){
 				alert("예약등록이 완료되었습니다.");
+				$(".popup_clinic_reservation_register .fix_clinic_res_tr").css("display", "none");
+				$(".popup_therapy_reservation_register .fix_therapy_res_tr").css("display", "none");
 				$(".popup_clinic_reservation_register").css("display", "none");
 				$(".popup_therapy_reservation_register").css("display", "none");
 				$(".popup_wrap").css("display","none");
@@ -1938,6 +1940,8 @@ function post_ftReservation_register(vo, stbn){
 		success:function(json){
 			if(json == "OK"){
 				alert("예약등록이 완료되었습니다.");
+				$(".popup_clinic_reservation_register .fix_clinic_res_tr").css("display", "none");
+				$(".popup_therapy_reservation_register .fix_therapy_res_tr").css("display", "none");
 				$(".popup_clinic_reservation_register").css("display", "none");
 				$(".popup_therapy_reservation_register").css("display", "none");
 				$(".popup_wrap").css("display","none");

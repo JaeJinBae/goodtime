@@ -10,6 +10,7 @@ public interface ReservationRecordService {
 	public List<ReservationRecordVO> selectByPno(int pno);
 	public List<ReservationRecordVO> selectCompleteTherapyByPno(int pno);
 	public List<ReservationRecordVO> selectCompleteClinicByPno(int pno);
+	public List<ReservationRecordVO> selectByKeyword(SearchCriteriaRR cri);
 	public List<ReservationRecordVO> listSearch(SearchCriteriaRR cri);
 	public int listSearchCount(SearchCriteriaRR cri);
 	public void register(ReservationRecordVO vo);

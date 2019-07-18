@@ -38,6 +38,11 @@ public class ReservationRecordDaoImpl implements ReservationRecordDao {
 	}
 
 	@Override
+	public List<ReservationRecordVO> selectByKeyword(SearchCriteriaRR cri) {
+		return session.selectList(namespace + ".selectByKeyword", cri);
+	}
+
+	@Override
 	public List<ReservationRecordVO> listSearch(SearchCriteriaRR cri) {
 		return session.selectList(namespace + ".listSearch", cri);
 	}
@@ -69,7 +74,7 @@ public class ReservationRecordDaoImpl implements ReservationRecordDao {
 
 	@Override
 	public void deleteByRnoRtype(ReservationRecordVO vo) {
-		session.delete(namespace+".deleteByRnoRtype", vo);
+		session.delete(namespace + ".deleteByRnoRtype", vo);
 	}
 
 }

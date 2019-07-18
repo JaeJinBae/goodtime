@@ -10,6 +10,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.text.ParseException;
@@ -29,6 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.codec.Decoder;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -43,8 +45,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.xml.XmlAwareFormHttpMessageConverter;
-import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -94,6 +94,7 @@ import com.webaid.service.SmsTemplateService;
 import com.webaid.service.WaitingReservationService;
 import com.webaid.util.DayGetUtil;
 import com.webaid.util.ExcelDown;
+import com.webaid.util.RrExcelDown;
 import com.webaid.util.SmsRemainGet;
 
 
@@ -1654,6 +1655,47 @@ public class HomeController {
 		return entity;
 	}
 	
+	@RequestMapping(value="/rrExcelDown/{keyword1}/{keyword2}/{keyword3}/{keyword4}", method=RequestMethod.GET)
+	public void rrExcelDown(@PathVariable("keyword1") String keyword1, @PathVariable("keyword2") String keyword2, @PathVariable("keyword3") String keyword3, @PathVariable("keyword4") String keyword4, HttpServletResponse response) throws IOException {
+		logger.info("예약이력 엑셀 다운 진입");
+		String k1 = URLDecoder.decode(keyword1, "UTF-8");
+		String k2 = URLDecoder.decode(keyword2, "UTF-8");
+		String k3 = URLDecoder.decode(keyword3, "UTF-8");
+		String k4 = URLDecoder.decode(keyword4, "UTF-8");
+		
+		SearchCriteriaRR cri = new SearchCriteriaRR();
+		
+		if(k1.equals("0")){
+			cri.setKeyword1("");
+		}else{
+			cri.setKeyword1(k1);
+		}
+		if(k2.equals("0")){
+			cri.setKeyword2("");
+		}else{
+			cri.setKeyword2(k2);
+		}
+		if(k3.equals("0")){
+			cri.setKeyword3("");
+		}else{
+			cri.setKeyword3(k3);
+		}
+		if(k4.equals("0")){
+			cri.setKeyword4("");
+		}else{
+			cri.setKeyword4(k4);
+		}
+		System.out.println(cri);
+		
+		
+		List<ReservationRecordVO> list = rrService.selectByKeyword(cri);
+				
+		RrExcelDown exdn = new RrExcelDown();
+		
+		exdn.excelDown(list, response);
+		
+	}
+	
 	@RequestMapping(value="/reservationUpdateRecordGetAll", method=RequestMethod.POST)
 	public ResponseEntity<Map<String, Object>> reservationUpdateRecordGetAll(@RequestBody Map<String, String> info){
 		logger.info("reservation update record get all");
@@ -2539,7 +2581,6 @@ public class HomeController {
 				c=content.replace("[병원명]", "원마취통증의학과");
 				newrgvo = new ReservationGroupVO();
 				if(result.get(i).size() == 1){
-					
 					c=c.replace("[환자명]", result.get(i).get(0).getPname());
 					c=c.replace("[예약날짜]", result.get(i).get(0).getRdate());
 					c=c.replace("[진료명1]", result.get(i).get(0).getClinicName());

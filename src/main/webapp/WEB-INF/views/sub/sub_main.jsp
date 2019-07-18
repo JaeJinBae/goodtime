@@ -389,6 +389,20 @@
 	.ar_tbl_wrap_2 > .time_table_wrap > table tr > td{
 		padding:5px 3px;
 	}
+	.rrExcelDown{
+		display: inline-block;
+	}
+	.rrExcelDown > input{
+		font-size: 15px;
+		padding: 5px 10px;
+		margin-left: 10px;
+		letter-spacing: 1px;
+		background: #1e866a;
+		border-radius: 3px;
+		color: #fff;
+		border: 0;
+		vertical-align: middle;
+	}
 	.tbl_reservation_record tr > th{
 		border-top:2px solid #5e5e5e;
 		border-bottom:2px solid #5e5e5e;
@@ -1949,6 +1963,8 @@ function post_fcReservation_register(vo, stbn, stbn2){
 		success:function(json){
 			if(json == "OK"){
 				alert("예약등록이 완료되었습니다.");
+				$(".popup_clinic_reservation_register .fix_clinic_res_tr").css("display", "none");
+				$(".popup_therapy_reservation_register .fix_therapy_res_tr").css("display", "none");
 				$(".popup_clinic_reservation_register").css("display", "none");
 				$(".popup_therapy_reservation_register").css("display", "none");
 				$(".popup_wrap").css("display","none");
@@ -1982,6 +1998,8 @@ function post_ftReservation_register(vo, stbn, stbn2){
 		success:function(json){
 			if(json == "OK"){
 				alert("예약등록이 완료되었습니다.");
+				$(".popup_clinic_reservation_register .fix_clinic_res_tr").css("display", "none");
+				$(".popup_therapy_reservation_register .fix_therapy_res_tr").css("display", "none");
 				$(".popup_clinic_reservation_register").css("display", "none");
 				$(".popup_therapy_reservation_register").css("display", "none");
 				$(".popup_wrap").css("display","none");
@@ -4763,6 +4781,9 @@ $(function(){
 			if($(".popup_therapy_reservation_register > .popup_reservation_register_btn_wrap > p:last-child").text() != "닫기"){
 				$(".popup_therapy_reservation_register > .popup_reservation_register_btn_wrap > p:last-child").remove();
 			} 
+			
+			$(".popup_clinic_reservation_register .fix_clinic_res_tr").css("display", "none");
+			$(".popup_therapy_reservation_register .fix_therapy_res_tr").css("display", "none");
 			$(".popup_clinic_reservation_register").css("display", "none");
 			$(".popup_therapy_reservation_register").css("display", "none");
 			$(".popup_content").css("display", "none");
@@ -4998,7 +5019,7 @@ $(function(){
 	});
 	
 	//예약이력에서 검색 눌렀을 때
-	$(".reservation_record_selectBox_wrap > button").click(function(){
+	$(".reservation_record_selectBox_wrap > #rrBtn1").click(function(){ 
 		var page=1;
 		var perPageNum=10;
 		/* encodeURIComponent */
@@ -5008,7 +5029,29 @@ $(function(){
 		var keyword4 = $(".reservation_record_selectBox_wrap > select[name='result']").val();
 		
 		var info = {page:page, perPageNum:perPageNum, keyword1:keyword1, keyword2:keyword2, keyword3:keyword3, keyword4:keyword4};
+		
 		draw_reservation_record_table(info);
+	});
+	
+	$(".rrExcelDown").submit(function(e){ 
+		//e.preventDefault();
+		var keyword1 = encodeURIComponent($(".reservation_record_selectBox_wrap > input[name='rdate']").val());
+		var keyword2 = encodeURIComponent($(".reservation_record_selectBox_wrap > select[name='employee']").val());
+		var keyword3 = encodeURIComponent($(".reservation_record_selectBox_wrap > select[name='rtype']").val());
+		var keyword4 = encodeURIComponent($(".reservation_record_selectBox_wrap > select[name='result']").val());
+		if(keyword1.length == 0){
+			keyword1 = "0";
+		}
+		if(keyword2.length == 0){
+			keyword2 = "0";
+		}
+		if(keyword3.length == 0){
+			keyword3 = "0";
+		}
+		if(keyword4.length == 0){
+			keyword4 = "0";
+		}
+		$(this).prop("action","${pageContext.request.contextPath}/rrExcelDown/"+keyword1+"/"+keyword2+"/"+keyword3+"/"+keyword4);
 	});
 	
 	//예약이력 테이블 페이지 클릭
@@ -5469,7 +5512,10 @@ $(function(){
 							<option value="예약취소">예약취소</option>
 							<option value="치료완료">치료완료</option>
 						</select>
-						<button>검색</button>
+						<button id="rrBtn1">검색</button>
+						<form class="rrExcelDown" method="GET" action="rrExcelDown/">
+							<input type="submit" value="엑셀다운">
+						</form>
 					</div><!-- reservation_record_selectBox_wrap -->
 					<div class="reservation_update_record_selectBox_wrap selectBox_wrap">
 						<select name="rtype">

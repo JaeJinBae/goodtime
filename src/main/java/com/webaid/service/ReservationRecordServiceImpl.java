@@ -31,6 +31,11 @@ public class ReservationRecordServiceImpl implements ReservationRecordService {
 	}
 
 	@Override
+	public List<ReservationRecordVO> selectByKeyword(SearchCriteriaRR cri) {
+		return dao.selectByKeyword(cri);
+	}
+
+	@Override
 	public List<ReservationRecordVO> listSearch(SearchCriteriaRR cri) {
 		return dao.listSearch(cri);
 	}

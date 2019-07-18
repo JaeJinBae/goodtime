@@ -20,6 +20,10 @@
 		select * from reservation_record where pno=#{pno} and result='접수완료' and rtype not in (select rtype from reservation_record where rtype='ft' and rtype='nt')
 	</select>
 	
+	<select id="selectByKeyword" resultType="ReservationRecordVO">
+		select * from reservation_record where rdate like concat('%',#{keyword1},'%') and ename like concat('%',#{keyword2},'%') and rtype like concat('%',#{keyword3},'%') and result like concat('%',#{keyword4},'%') order by no desc
+	</select>
+	
 	<select id="listSearch" resultType="ReservationRecordVO">
 		select * from reservation_record where rdate like concat('%',#{keyword1},'%') and ename like concat('%',#{keyword2},'%') and rtype like concat('%',#{keyword3},'%') and result like concat('%',#{keyword4},'%') order by no desc limit #{pageStart},#{perPageNum}
 	</select>

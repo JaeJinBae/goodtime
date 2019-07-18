@@ -402,6 +402,7 @@
 		color: #fff;
 		border: 0;
 		vertical-align: middle;
+		cursor: pointer;
 	}
 	.tbl_reservation_record tr > th{
 		border-top:2px solid #5e5e5e;
@@ -893,6 +894,26 @@
 	}
 </style>
 <script>
+function inputBirthChk(obj) {
+	var number = obj.value.replace(/[^0-9]/g, "");
+	var birth = "";
+	
+	if(number.length < 5) {
+		return number;
+	} else if(number.length < 7) {
+		birth += number.substr(0, 4);
+		birth += "-";
+		birth += number.substr(4);
+	}else {
+		birth += number.substr(0, 4);
+		birth += "-";
+		birth += number.substr(4, 2);
+		birth += "-";
+		birth += number.substr(6);
+	}
+	
+	obj.value = birth;
+}
 
 //달력에 각 일마다 요일 표시
 function write_yoil(){
@@ -5518,7 +5539,7 @@ $(function(){
 						</select>
 					</div><!-- week_select_box_wrap end -->
 					<div class="reservation_record_selectBox_wrap selectBox_wrap">
-						<input name="rdate" type="text" value="" placeholder="ex) 2019-01-01">
+						<input name="rdate" type="text" value="" placeholder="ex) 2019-01-01" onKeyup="inputBirthChk(this);" maxlength="10">
 						<select name="employee">
 							<option value="">직원 전체</option>
 							<c:forEach var="list" items="${doctorList}">

@@ -398,11 +398,11 @@ $(function(){
 			</tr>
 			<tr>
 				<th>▶ 생년월일</th>
-				<td><input type="text" name="birth" placeholder="ex) 010-1111-1111"></td>
+				<td><input type="text" name="birth" placeholder="ex) 1999-09-09"></td>
 			</tr>
 			<tr>
 				<th>▶ 연락처</th>
-				<td><input type="text" name="phone" placeholder="ex) 1999-09-09" onKeyup="inputPhoneNumber(this);" maxlength="13"></td>
+				<td><input type="text" name="phone" placeholder="ex) 010-1111-1111" onKeyup="inputPhoneNumber(this);" maxlength="13"></td>
 			</tr>
 			<tr>
 				<th>▶ 아이디</th>

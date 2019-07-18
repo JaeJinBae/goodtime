@@ -74,8 +74,8 @@ public class RrExcelDown{
 			objCell.setCellValue("취소사유");
 			objCell.setCellStyle(objStyle);
 			
-			for(int i=1; i<list.size(); i++){
-				objRow = objSheet.createRow(i);
+			for(int i=0; i<list.size(); i++){
+				objRow = objSheet.createRow(i+1);
 				objSheet.setColumnWidth(3, 15*256);
 				objSheet.setColumnWidth(4, 16*256);
 				objSheet.setColumnWidth(5, 25*256);
@@ -95,7 +95,16 @@ public class RrExcelDown{
 				objCell.setCellValue(list.get(i).getEname());
 				objCell.setCellStyle(objStyle);
 				objCell = objRow.createCell(2);
-				objCell.setCellValue(list.get(i).getRtype());
+				if(list.get(i).getRtype().equals("nt")){
+					objCell.setCellValue("일반치료");
+				}else if(list.get(i).getRtype().equals("nc")){
+					objCell.setCellValue("일반진료");
+				}else if(list.get(i).getRtype().equals("ft")){
+					objCell.setCellValue("고정치료");
+				}else if(list.get(i).getRtype().equals("fc")){
+					objCell.setCellValue("고정진료");
+				}
+				
 				objCell.setCellStyle(objStyle);
 				objCell = objRow.createCell(3);
 				objCell.setCellValue(list.get(i).getCname());
@@ -123,7 +132,7 @@ public class RrExcelDown{
 			
 			response.setContentType("Application/Msexcel");
 			response.setHeader("Content-Disposition",
-					"ATTachment; Filename=" + URLEncoder.encode("원마취통증의학과 예약이력", "UTF-8") + ".xlsx");
+					"ATTachment; Filename=" + URLEncoder.encode("원마취통증의학과_예약이력", "UTF-8") + ".xlsx");
 
 			OutputStream fileOut = response.getOutputStream();
 			objWorkBook.write(fileOut);

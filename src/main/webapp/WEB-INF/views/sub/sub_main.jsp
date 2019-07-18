@@ -1903,6 +1903,10 @@ function post_ncReservation_register(vo, stbn, stbn2){
 		success:function(json){
 			if(json == "OK"){
 				alert("예약등록이 완료되었습니다.");
+				$(".popup_clinic_reservation_register > table tr > td > input").val("");
+				$(".popup_therapy_reservation_register > table tr > td > input").val("");
+				$(".popup_clinic_reservation_register > table tr > td > section > option").eq(0).prop("selected", true);
+				$(".popup_therapy_reservation_register > table tr > td > section > option").eq(0).prop("selected", true);
 				$(".popup_clinic_reservation_register").css("display", "none");
 				$(".popup_therapy_reservation_register").css("display", "none");
 				$(".popup_wrap").css("display","none");
@@ -1933,6 +1937,10 @@ function post_ntReservation_register(vo, stbn, stbn2){
 		success:function(json){
 			if(json == "OK"){
 				alert("예약등록이 완료되었습니다.");
+				$(".popup_clinic_reservation_register > table tr > td > input").val("");
+				$(".popup_therapy_reservation_register > table tr > td > input").val("");
+				$(".popup_clinic_reservation_register > table tr > td > section > option").eq(0).prop("selected", true);
+				$(".popup_therapy_reservation_register > table tr > td > section > option").eq(0).prop("selected", true);
 				$(".popup_clinic_reservation_register").css("display", "none");
 				$(".popup_therapy_reservation_register").css("display", "none");
 				$(".popup_wrap").css("display","none");
@@ -1963,6 +1971,10 @@ function post_fcReservation_register(vo, stbn, stbn2){
 		success:function(json){
 			if(json == "OK"){
 				alert("예약등록이 완료되었습니다.");
+				$(".popup_clinic_reservation_register > table tr > td > input").val("");
+				$(".popup_therapy_reservation_register > table tr > td > input").val("");
+				$(".popup_clinic_reservation_register > table tr > td > section > option").eq(0).prop("selected", true);
+				$(".popup_therapy_reservation_register > table tr > td > section > option").eq(0).prop("selected", true);
 				$(".popup_clinic_reservation_register .fix_clinic_res_tr").css("display", "none");
 				$(".popup_therapy_reservation_register .fix_therapy_res_tr").css("display", "none");
 				$(".popup_clinic_reservation_register").css("display", "none");
@@ -1998,6 +2010,10 @@ function post_ftReservation_register(vo, stbn, stbn2){
 		success:function(json){
 			if(json == "OK"){
 				alert("예약등록이 완료되었습니다.");
+				$(".popup_clinic_reservation_register > table tr > td > input").val("");
+				$(".popup_therapy_reservation_register > table tr > td > input").val("");
+				$(".popup_clinic_reservation_register > table tr > td > section > option").eq(0).prop("selected", true);
+				$(".popup_therapy_reservation_register > table tr > td > section > option").eq(0).prop("selected", true);
 				$(".popup_clinic_reservation_register .fix_clinic_res_tr").css("display", "none");
 				$(".popup_therapy_reservation_register .fix_therapy_res_tr").css("display", "none");
 				$(".popup_clinic_reservation_register").css("display", "none");
@@ -2029,6 +2045,12 @@ function post_waitingReservation_register(vo, stbn){
 		success:function(json){
 			if(json == "OK"){
 				alert("대기예약 등록이 완료되었습니다.");
+				$(".popup_clinic_reservation_register > table tr > td > input").val("");
+				$(".popup_therapy_reservation_register > table tr > td > input").val("");
+				$(".popup_clinic_reservation_register > table tr > td > section > option").eq(0).prop("selected", true);
+				$(".popup_therapy_reservation_register > table tr > td > section > option").eq(0).prop("selected", true);
+				$(".popup_clinic_reservation_register .fix_clinic_res_tr").css("display", "none");
+				$(".popup_therapy_reservation_register .fix_therapy_res_tr").css("display", "none");
 				$(".popup_clinic_reservation_register").css("display", "none");
 				$(".popup_therapy_reservation_register").css("display", "none");
 				$(".popup_wrap").css("display","none");
@@ -2050,6 +2072,10 @@ function post_waitingReservation_delete(no, stbn){
 		success:function(json){
 			if(json == "ok"){
 				//alert("대기예약 취소가 완료되었습니다.");
+				$(".popup_clinic_reservation_register > table tr > td > input").val("");
+				$(".popup_therapy_reservation_register > table tr > td > input").val("");
+				$(".popup_clinic_reservation_register > table tr > td > section > option").eq(0).prop("selected", true);
+				$(".popup_therapy_reservation_register > table tr > td > section > option").eq(0).prop("selected", true);
 				$(".popup_clinic_reservation_register").css("display", "none");
 				$(".popup_therapy_reservation_register").css("display", "none");
 				$(".popup_wrap").css("display","none");

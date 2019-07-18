@@ -184,6 +184,8 @@ $(function(){
 		if(e.which == 27){
 			$(".popup_content input").val("");
 			$(".popup_content select > option").eq(0).prop("selected", true);
+			$(".popup_clinic_reservation_register .fix_clinic_res_tr").css("display", "none");
+			$(".popup_therapy_reservation_register .fix_therapy_res_tr").css("display", "none");
 			$(".popup_content").css("display", "none");
 			$(".popup_wrap").css("display", "none");
 		}

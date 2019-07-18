@@ -4967,10 +4967,10 @@ $(function(){
 	$(".reservation_record_selectBox_wrap > button").click(function(){
 		var page=1;
 		var perPageNum=10;
-		var keyword1 = encodeURIComponent($(".reservation_record_selectBox_wrap > input[name='rdate']").val());
-		var keyword2 = encodeURIComponent($(".reservation_record_selectBox_wrap > select[name='employee']").val());
-		var keyword3 = encodeURIComponent($(".reservation_record_selectBox_wrap > select[name='rtype']").val());
-		var keyword4 = encodeURIComponent($(".reservation_record_selectBox_wrap > select[name='result']").val());
+		var keyword1 = $(".reservation_record_selectBox_wrap > input[name='rdate']").val();
+		var keyword2 = $(".reservation_record_selectBox_wrap > select[name='employee']").val();
+		var keyword3 = $(".reservation_record_selectBox_wrap > select[name='rtype']").val();
+		var keyword4 = $(".reservation_record_selectBox_wrap > select[name='result']").val();
 		
 		var info = {page:page, perPageNum:perPageNum, keyword1:keyword1, keyword2:keyword2, keyword3:keyword3, keyword4:keyword4};
 		draw_reservation_record_table(info);

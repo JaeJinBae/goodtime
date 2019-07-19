@@ -2505,7 +2505,7 @@ function open_reservation_info_view(type, rno){
 		minute = (Number(this.rtime)%60 >9?'':'0')+Number(this.rtime)%60;
 		eData = get_employee_byEno(this.eno);
 		if(this.rtype == "fc" || this.rtype == "ft"){
-			str += "<p class='res_info_view_today_list' style='background:#ffaf7a;padding:3px 4px; color:#fefefe;'>"+this.rdate+" "+hour+":"+minute+" "
+			str += "<p class='res_info_view_today_list' style='background:#f3f3f3;border:2px solid "+cData.color+";padding:3px 4px; color:"+cData.color+";'>"+this.rdate+" "+hour+":"+minute+" "
 				+this.clinic_name+"/"+eData.name+"<input type='hidden' name='rtype' value='"+this.rtype+"'><input type='hidden' name='rno' value='"+this.rno+"'></p>";
 		}else{
 			str += "<p class='res_info_view_today_list' style='background:"+cData.color+"; color:#fefefe;padding:3px 4px;'>"+this.rdate+" "+hour+":"+minute+" "

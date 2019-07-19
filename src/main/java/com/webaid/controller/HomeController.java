@@ -2700,7 +2700,7 @@ public class HomeController {
 			sms.put("sender", ""); // 발신번호
 			sms.put("rdate", ""); // 예약일자 - 20161004 : 2016-10-04일기준
 			sms.put("rtime", ""); // 예약시간 - 1930 : 오후 7시30분
-			sms.put("testmode_yn", "Y"); // Y 인경우 실제문자 전송X , 자동취소(환불) 처리
+			sms.put("testmode_yn", "n"); // Y 인경우 실제문자 전송X , 자동취소(환불) 처리
 			sms.put("title", ""); //  LMS, MMS 제목 (미입력시 본문중 44Byte 또는 엔터 구분자 첫라인)
 			
 			String image = "";

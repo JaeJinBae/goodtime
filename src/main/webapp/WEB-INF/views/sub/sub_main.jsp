@@ -5045,6 +5045,8 @@ $(function(){
 		$(this).css("background","#1e866a");
 		var btn_idx = $(this).index();
 		if(btn_idx == 3){
+			$(".cancel_reason").css("display", "none");
+			$(".cancel_reason > td > textarea").val("");
 			$(".popup_reservation_info_view").css("display","none");
 			$(".popup_wrap").css("display", "none");
 			return false;
@@ -5067,7 +5069,8 @@ $(function(){
 		var writer = $("#session_login_name").val();
 		var nowDate = new Date();
 		var regdate = nowDate.getFullYear()+"-"+(((nowDate.getMonth()+1)>9?'':'0')+(nowDate.getMonth()+1))+"-"+((nowDate.getDate()>9?'':'0')+nowDate.getDate())+" "+nowDate.getHours()+":"+((nowDate.getMinutes()>9?'':'0')+nowDate.getMinutes());
-		update_reservation_deskState(rtype, rno, state, writer, regdate, storage_timetable_btn_num)
+		update_reservation_deskState(rtype, rno, state, writer, regdate, storage_timetable_btn_num);
+		
 	});
 	
 	//예약이력에서 검색 눌렀을 때

@@ -30,7 +30,8 @@ public class RrExcelDown{
 	
 	public void excelDown(List<ReservationRecordVO> list, HttpServletResponse response) throws IOException {
 		System.out.println("예약이력 엑셀다운 Util 진입");
-		
+		String hour = "";
+		String minute = "";
 		try {
 			XSSFWorkbook objWorkBook = new XSSFWorkbook();
 			XSSFSheet objSheet = null;
@@ -81,7 +82,7 @@ public class RrExcelDown{
 				objSheet.setColumnWidth(5, 25*256);
 				objSheet.setColumnWidth(6, 35*256);
 				objSheet.setColumnWidth(7, 25*256);
-				objSheet.setColumnWidth(8, 25*256);
+				objSheet.setColumnWidth(8, 35*256);
 				objSheet.setColumnWidth(9, 25*256);
 				
 				// 행 높이 지
@@ -108,9 +109,14 @@ public class RrExcelDown{
 				objCell.setCellStyle(objStyle);
 				objCell = objRow.createCell(3);
 				objCell.setCellValue(list.get(i).getCname());
+				
+				hour = Integer.parseInt(list.get(i).getRtime())/60 + "";
+				hour = (Integer.parseInt(hour)>9)?hour:"0"+hour;
+				minute = Integer.parseInt(list.get(i).getRtime())%60 + "";
+				minute = (Integer.parseInt(minute)>9)?minute:"0"+minute;
 				objCell.setCellStyle(objStyle);
 				objCell = objRow.createCell(4);
-				objCell.setCellValue(list.get(i).getRdate());
+				objCell.setCellValue(list.get(i).getRdate()+" "+hour+":"+minute);
 				objCell.setCellStyle(objStyle);
 				objCell = objRow.createCell(5);
 				objCell.setCellValue(list.get(i).getRegister_info());

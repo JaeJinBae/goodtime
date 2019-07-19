@@ -4994,6 +4994,8 @@ $(function(){
 		$(this).css("background","#1e866a");
 		var btn_idx = $(this).index();
 		if(btn_idx == 3){
+			$(".cancel_reason").css("display", "none");
+			$(".cancel_reason > td > textarea").val("");
 			$(".popup_reservation_info_view").css("display","none");
 			$(".popup_wrap").css("display", "none");
 			return false;

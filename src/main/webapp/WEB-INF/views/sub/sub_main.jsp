@@ -182,7 +182,7 @@
 		padding-top:15px;
 	}
 	#tbl_simple_reservation .tbl_content {
-		padding-left:10px;
+		padding-left:7px;
 		padding-top:5px;
 	}
 	#tbl_simple_reservation .tbl_content_pName{
@@ -195,10 +195,10 @@
 		overflow: auto;
 	}
 	#tbl_simple_reservation tr > td .patient_simple_record > p{
-		margin-bottom:20px;
+		margin-bottom: 15px;
 	}
 	#tbl_simple_reservation tr > td .patient_simple_record > p > span{
-		font-size: 14px;
+		font-size: 13px;
 		font-weight: bold; 
 	}
 	.aside_right {
@@ -1897,12 +1897,22 @@ function draw_simple_reservation_view(type, rno){
 			+"<tr><td class='tbl_content'>"+json.memo+"</td></tr>";
 	}
 	if(res_record.length != 0){
+		var dd = "";
+		var d1 = "";
+		var d2 = "";
+		var d3 = "";
 		str += "<tr><th class='tbl_content_title'>- 이력</th></tr><tr><td class='tbl_content'><div class='patient_simple_record'>";
 		for(var k=res_record.length-1; k>=0; k--){
+			dd = res_record[k].rdate;
+			d1 = dd.split("-")[0];
+			d1 = d1.substring(2,4);
+			d2 = dd.split("-")[1];
+			d3 = dd.split("-")[2];
 			hour = parseInt(Number(res_record[k].rtime)/60);
 			minute = Number(res_record[k].rtime)%60;
 			minute = (minute > 9)?minute:"0"+minute;
-			str += "<p><span>"+res_record[k].rdate+"&nbsp;"+hour+":"+minute+"</span><br><span style='padding-left:20px;'>"+res_record[k].cname+"/"+res_record[k].ename+"</span></p>";
+			str += "<p><span>"+d1+"-"+d2+"-"+d3+"&nbsp;"+hour+":"+minute+"</span><span style='padding-left:5px;'>"+res_record[k].cname+"/"+res_record[k].ename+"</span></p>";
+			/* res_record[k].rdate */
 		}
 		str += "</div></td></tr>";
 	}

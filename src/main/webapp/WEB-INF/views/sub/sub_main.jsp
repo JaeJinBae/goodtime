@@ -1912,7 +1912,7 @@ function draw_simple_reservation_view(type, rno){
 			minute = Number(res_record[k].rtime)%60;
 			minute = (minute > 9)?minute:"0"+minute;
 			str += "<p><span>"+d1+"-"+d2+"-"+d3+"&nbsp;"+hour+":"+minute+"</span><span style='padding-left:5px;'>"+res_record[k].cname+"/"+res_record[k].ename+"</span></p>";
-			/* res_record[k].rdate */
+			/* res_record[k].rdate */ 
 		}
 		str += "</div></td></tr>";
 	}

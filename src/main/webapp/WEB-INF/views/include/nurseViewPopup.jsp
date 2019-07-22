@@ -708,7 +708,7 @@ $(function(){
 			</tr>
 			<tr>
 				<th>▶ 일정일시</th>
-				<td><span></span><button>변경</button></td>
+				<td><span></span><button id="upResBtn">예약변경</button><button id="upSchBtn">일정변경</button></td>
 			</tr>
 			<tr>
 				<th>▶ 치료내용</th>

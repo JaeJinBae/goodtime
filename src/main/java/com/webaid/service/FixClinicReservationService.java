@@ -2,6 +2,7 @@ package com.webaid.service;
 
 import java.util.List;
 
+import com.webaid.domain.DelFixSchVO;
 import com.webaid.domain.FixClinicReservationVO;
 import com.webaid.domain.SelectByDateEmployeeVO;
 
@@ -16,4 +17,5 @@ public interface FixClinicReservationService {
 	public void updateInfo(FixClinicReservationVO vo);
 	public void cancel(FixClinicReservationVO vo);
 	public void deleteByRno(int rno);
+	public void deleteSchedule(DelFixSchVO vo);
 }

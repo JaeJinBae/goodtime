@@ -215,6 +215,24 @@
 	border-radius: 4px;
 	letter-spacing: 1px;
 }
+.popup_reservation_schedule_update{
+	display:none;
+}
+.popup_reservation_schedule_update > .popup_sch_update_btn_wrap{
+	width:100%;
+	margin: 15px auto;
+}
+.popup_reservation_schedule_update > .popup_sch_update_btn_wrap > p{
+	display: inline-block;
+	padding:8px 10px;
+	font-size:15px;
+	margin: 0 10px;
+	cursor: pointer;
+	background: #353c46;
+	color: #fff;
+	border-radius: 4px;
+	letter-spacing: 1px;
+}
 .popup_normal_off_register{
 	display:none;
 }
@@ -813,11 +831,99 @@ $(function(){
 			</tr>
 		</table>
 		<div class="popup_res_update_btn_wrap">
-			<p>변경일정저장</p>
+			<p>변경저장</p>
 			<p>예약삭제</p>
 			<p>닫기</p>
 		</div>
 	</div><!-- popup_normal_reservation_update -->
+	
+	<div class="popup_reservation_schedule_update popup_content">
+		<h2><span></span>일정변경</h2>
+		<table>
+			<tr>
+				<th>▶ 변경 전 일정</th>
+				<td><span></span><input type="hidden" name="fix_day_start"><input type="hidden" name="fix_day_end"></td>
+			</tr>
+			<tr>
+				<th>▶ 변경 기간</th>
+				<td><input type="date" name="req_day_start" value=""><br> ~ <input type="date" name="req_day_end" value=""></td>
+			</tr>
+			<tr>
+				<th>▶ 변경 일시</th>
+				<td>
+					<select name="fix_day">
+						<option value="월">월</option>
+						<option value="화">화</option>
+						<option value="수">수</option>
+						<option value="목">목</option>
+						<option value="금">금</option>
+						<option value="토">토</option>
+					</select>
+					<select name="rtime1">
+						<option value="480">08시</option>
+						<option value="540">09시</option>
+						<option value="600">10시</option>
+						<option value="660">11시</option>
+						<option value="720">12시</option>
+						<option value="780">13시</option>
+						<option value="840">14시</option>
+						<option value="900">15시</option>
+						<option value="960">16시</option>
+						<option value="1020">17시</option>
+						<option value="1080">18시</option>
+						<option value="1140">19시</option>
+						<option value="1200">20시</option>
+						<option value="1260">21시</option>
+						<option value="1320">22시</option>
+					</select>
+					<select name="rtime2">
+						<option value="0">00분</option>
+						<option value="5">05분</option>
+						<option value="10">10분</option>
+						<option value="15">15분</option>
+						<option value="20">20분</option>
+						<option value="25">25분</option>
+						<option value="30">30분</option>
+						<option value="35">35분</option>
+						<option value="40">40분</option>
+						<option value="45">45분</option>
+						<option value="50">50분</option>
+						<option value="55">55분</option>
+						<option value="60">60분</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th>▶ 의사/치료사</th>
+				<td>
+					<select name="emp">
+						
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th>▶ 진료종류</th>
+				<td>
+					<select name="clinic">
+					
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th>▶ 메모</th>
+				<td><input type="text" name="memo" value=""></td>
+			</tr>
+			<tr>
+				<th>▶ 변경사유</th>
+				<td><input type="text" name="updateMemo" value="" style="border:1px solid #f44e21;"></td>
+			</tr>
+		</table>
+		<div class="popup_sch_update_btn_wrap">
+			<p>변경일정저장</p>
+			<p>예약삭제</p>
+			<p>닫기</p>
+		</div>
+	</div><!-- popup_reservation_schedule_update end -->
 	
 	<div class="popup_normal_off_register popup_content">
 		<h2>일반휴무 추가</h2>

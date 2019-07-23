@@ -53,6 +53,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.webaid.domain.ClinicVO;
+import com.webaid.domain.DelFixSchVO;
 import com.webaid.domain.EmployeeVO;
 import com.webaid.domain.FixClinicReservationVO;
 import com.webaid.domain.FixOffVO;
@@ -1569,6 +1570,37 @@ public class HomeController {
 		
 		
 		
+		return entity;
+	}
+	
+	@RequestMapping(value="/deleteSchedule", method=RequestMethod.POST)
+	public ResponseEntity<String> deleteSchedule(@RequestBody Map<String, String> info){
+		logger.info("deleteSchedule post");
+		ResponseEntity<String> entity = null;
+		
+		try {
+			DelFixSchVO vo = new DelFixSchVO();
+			String rtype = info.get("rtype");
+			vo.setPno(Integer.parseInt(info.get("pno")));
+			vo.setFix_day(info.get("fix_day"));
+			vo.setFix_day_start(info.get("fix_day_start"));
+			vo.setFix_day_end(info.get("fix_day_end"));
+			vo.setRtime(Integer.parseInt(info.get("rtime")));
+			vo.setReq_day_start(info.get("req_day_start"));
+			vo.setReq_day_end(info.get("req_day_end"));
+			vo.setClinic(Integer.parseInt(info.get("clinic")));
+			vo.setRtype(rtype);
+			vo.setReception_info(info.get("reception_info"));
+			
+			if(rtype.equals("fc")){
+				fcrService.deleteSchedule(vo);
+			}else if(rtype.equals("ft")){
+				ftrService.deleteSchedule(vo);
+			}
+			entity = new ResponseEntity<String>("ok", HttpStatus.OK);
+		} catch (Exception e) {
+			entity = new ResponseEntity<String>(e.getMessage(), HttpStatus.OK);
+		}
 		return entity;
 	}
 	

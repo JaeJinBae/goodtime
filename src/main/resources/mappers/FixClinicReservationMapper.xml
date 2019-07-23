@@ -43,4 +43,8 @@
 	<delete id="deleteByRno">
 		delete from fix_clinic_reservation where rno=#{rno}
 	</delete>
+	
+	<delete id="deleteSchedule">
+		delete from fix_clinic_reservation where pno=#{pno} and fix_day_start=#{fix_day_start} and fix_day_end=#{fix_day_end} and fix_day=#{fix_day} and rtime=#{rtime} and date(rdate) between date(#{req_day_start}) and date(#{req_day_end})
+	</delete>
 </mapper>

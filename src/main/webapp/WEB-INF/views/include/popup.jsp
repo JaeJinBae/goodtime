@@ -220,11 +220,11 @@
 .popup_reservation_schedule_update{
 	display:none;
 }
-.popup_reservation_schedule_update > .popup_res_update_btn_wrap{
+.popup_reservation_schedule_update > .popup_sch_update_btn_wrap{
 	width:100%;
 	margin: 15px auto;
 }
-.popup_reservation_schedule_update > .popup_res_update_btn_wrap > p{
+.popup_reservation_schedule_update > .popup_sch_update_btn_wrap > p{
 	display: inline-block;
 	padding:8px 10px;
 	font-size:15px;
@@ -835,7 +835,7 @@ $(function(){
 			</tr>
 		</table>
 		<div class="popup_res_update_btn_wrap">
-			<p>변경일정저장</p>
+			<p>변경저장</p>
 			<p>예약삭제</p>
 			<p>닫기</p>
 		</div>
@@ -845,16 +845,24 @@ $(function(){
 		<h2><span></span>일정변경</h2>
 		<table>
 			<tr>
-				<th>▶ 변경 전 일시</th>
-				<td></td>
+				<th>▶ 변경 전 일정</th>
+				<td><span></span><input type="hidden" name="fix_day_start"><input type="hidden" name="fix_day_end"></td>
 			</tr>
 			<tr>
-				<th>▶ 변경 날짜</th>
-				<td><input type="date" name="fix_day_start" value=""><br> ~ <input type="date" name="fix_day_end" value=""></td>
+				<th>▶ 변경 기간</th>
+				<td><input type="date" name="req_day_start" value=""><br> ~ <input type="date" name="req_day_end" value=""></td>
 			</tr>
 			<tr>
-				<th>▶ 변경 시간</th>
+				<th>▶ 변경 일시</th>
 				<td>
+					<select name="fix_day">
+						<option value="월">월</option>
+						<option value="화">화</option>
+						<option value="수">수</option>
+						<option value="목">목</option>
+						<option value="금">금</option>
+						<option value="토">토</option>
+					</select>
 					<select name="rtime1">
 						<option value="480">08시</option>
 						<option value="540">09시</option>
@@ -914,7 +922,7 @@ $(function(){
 				<td><input type="text" name="updateMemo" value="" style="border:1px solid #f44e21;"></td>
 			</tr>
 		</table>
-		<div class="popup_res_update_btn_wrap">
+		<div class="popup_sch_update_btn_wrap">
 			<p>변경일정저장</p>
 			<p>예약삭제</p>
 			<p>닫기</p>

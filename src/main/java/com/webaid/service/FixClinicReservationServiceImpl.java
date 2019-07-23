@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.webaid.domain.DelFixSchVO;
 import com.webaid.domain.FixClinicReservationVO;
 import com.webaid.domain.SelectByDateEmployeeVO;
 import com.webaid.persistence.FixClinicReservationDao;
@@ -63,6 +64,11 @@ public class FixClinicReservationServiceImpl implements FixClinicReservationServ
 	@Override
 	public void deleteByRno(int rno) {
 		dao.deleteByRno(rno);
+	}
+
+	@Override
+	public void deleteSchedule(DelFixSchVO vo) {
+		dao.deleteSchedule(vo);
 	}
 
 }

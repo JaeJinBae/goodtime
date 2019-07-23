@@ -2,6 +2,7 @@ package com.webaid.persistence;
 
 import java.util.List;
 
+import com.webaid.domain.DelFixSchVO;
 import com.webaid.domain.FixTherapyReservationVO;
 import com.webaid.domain.SelectByDateEmployeeVO;
 
@@ -19,4 +20,5 @@ public interface FixTherapyReservationDao {
 	public void updateInfo(FixTherapyReservationVO vo);
 	public void cancel(FixTherapyReservationVO vo);
 	public void deleteByRno(int rno);
+	public void deleteSchedule(DelFixSchVO vo);
 }

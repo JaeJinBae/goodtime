@@ -2921,6 +2921,44 @@ function draw_schedule_update_view(rno, rtype){
 	
 }
 
+function post_updateSchedule(info, stbn, stbn2){
+	$.ajax({
+		url:"${pageContext.request.contextPath}/updateSchedule",
+		type:"post",
+		data:JSON.stringify(info),
+		async:false,
+		contentType : "application/json; charset=UTF-8",
+		dataType:"text",
+		success:function(json){
+			if(json == "ok"){
+				alert("예약일정이 변경되었습니다.");
+				
+				$(".popup_reservation_schedule_update > h2 > input[name='pno']").val("");
+				$(".popup_reservation_schedule_update > h2 > input[name='rno']").val("");
+				$(".popup_reservation_schedule_update > h2 > input[name='rtype']").val("");
+				$(".popup_reservation_schedule_update > table tr:first-child > td > input[name='fix_day_start']").val("");
+				$(".popup_reservation_schedule_update > table tr:first-child > td > input[name='fix_day_end']").val("");
+				$(".popup_reservation_schedule_update > table tr:nth-child(2) > td > input[name='req_day_start']").val("");
+				$(".popup_reservation_schedule_update > table tr:nth-child(2) > td > input[name='req_day_end']").val("");
+				$(".popup_reservation_schedule_update > table tr:nth-child(6) > td > input[name='memo']").val("");
+				$(".popup_reservation_schedule_update > table tr:nth-child(7) > td > input[name='updateMemo']").val("");
+				
+				$(".popup_reservation_schedule_update").css("display", "none");
+				$(".popup_wrap").css("display", "none");
+				draw_time_table_by_case(stbn);
+				
+				var btnState = $("#reservation_view_btn").css("display");
+				if(btnState == "inline-block"){
+					draw_patient_reservation_byCase(stbn2);
+				}
+			}
+		},
+		error:function(request,status,error){
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		}
+	});
+}
+
 function post_deleteSchedule(info, stbn, stbn2){
 	$.ajax({
 		url:"${pageContext.request.contextPath}/deleteSchedule",
@@ -5149,7 +5187,42 @@ $(function(){
 	$(".popup_sch_update_btn_wrap > p").click(function(){
 		var btn_idx = $(this).index();
 		if(btn_idx == 0){
-			alert("추후 업데이트 예정");
+			var pno = $(".popup_reservation_schedule_update > h2 > input[name='pno']").val();
+			var rtype = $(".popup_reservation_schedule_update > h2 > input[name='rtype']").val();
+			var fix_day_start = $(".popup_reservation_schedule_update > table tr:first-child > td > input[name='fix_day_start']").val();
+			var fix_day_end = $(".popup_reservation_schedule_update > table tr:first-child > td > input[name='fix_day_end']").val();
+			var req_day_start = $(".popup_reservation_schedule_update > table tr:nth-child(2) > td > input[name='req_day_start']").val();
+			var req_day_end = $(".popup_reservation_schedule_update > table tr:nth-child(2) > td > input[name='req_day_end']").val();
+			var fix_day = $(".popup_reservation_schedule_update > table tr:nth-child(3) > td select[name='fix_day']").val();
+			var rtime1 = $(".popup_reservation_schedule_update > table tr:nth-child(3) > td select[name='rtime1']").val();
+			var rtime2 = $(".popup_reservation_schedule_update > table tr:nth-child(3) > td select[name='rtime2']").val();
+			var rtime = Number(rtime1)+Number(rtime2); 
+			var emp = $(".popup_reservation_schedule_update > table tr:nth-child(4) > td select[name='emp']").val();
+			var ename = $(".popup_reservation_schedule_update > table tr:nth-child(4) > td select[name='emp'] > option:selected").text();
+			var clinic = $(".popup_reservation_schedule_update > table tr:nth-child(5) > td select[name='clinic']").val();
+			var clinic_name = $(".popup_reservation_schedule_update > table tr:nth-child(5) > td select[name='clinic'] > option:selected").text();
+			var result_memo = $(".popup_reservation_schedule_update > table tr:nth-child(7) > td > input[name='updateMemo']").val();
+	
+			var nowDate = new Date();
+			var regDate = nowDate.getFullYear()+"-"+(((nowDate.getMonth()+1)>9?'':'0')+(nowDate.getMonth()+1))+"-"+((nowDate.getDate()>9?'':'0')+nowDate.getDate());
+			var regTime = ((nowDate.getHours()>9?'':'0')+nowDate.getHours())+":"+((nowDate.getMinutes()>9?'':'0')+nowDate.getMinutes());
+			var reception_info = regDate+" "+regTime+" "+$("#session_login_name").val();
+			
+			if(req_day_start == ""){
+				alert("변경기간 시작일을 선택해주세요.")
+				return false;
+			}
+			if(req_day_end == ""){
+				alert("변경기간 종료일을 선택해주세요.")
+				return false;
+			}
+			if(result_memo == ""){
+				alert("변경사유를 입력해주세요.");
+				return false;
+			}
+			var info = {pno:pno, rtype:rtype, fix_day_start:fix_day_start, fix_day_end:fix_day_end, req_day_start:req_day_start, req_day_end:req_day_end, fix_day:fix_day, rtime:rtime, eno:emp, ename:ename, clinic:clinic, clinic_name:clinic_name, reception_info:reception_info, result_memo:result_memo};
+			console.log(info);
+			post_updateSchedule(info, storage_timetable_btn_num, storage_timetable2_btn_num);
 		}else if(btn_idx ==1){
 			var pno = $(".popup_reservation_schedule_update > h2 > input[name='pno']").val();
 			var rtype = $(".popup_reservation_schedule_update > h2 > input[name='rtype']").val();
@@ -5162,6 +5235,7 @@ $(function(){
 			var rtime2 = $(".popup_reservation_schedule_update > table tr:nth-child(3) > td select[name='rtime2']").val();
 			var rtime = Number(rtime1)+Number(rtime2);
 			var emp = $(".popup_reservation_schedule_update > table tr:nth-child(4) > td select[name='emp']").val();
+			var ename = $(".popup_reservation_schedule_update > table tr:nth-child(4) > td select[name='emp'] > option:selected").text();
 			var clinic = $(".popup_reservation_schedule_update > table tr:nth-child(5) > td select[name='clinic']").val();
 			var result_memo = $(".popup_reservation_schedule_update > table tr:nth-child(7) > td > input[name='updateMemo']").val();
 			
@@ -5182,7 +5256,7 @@ $(function(){
 				alert("변경사유를 입력해주세요.");
 				return false;
 			}
-			var info = {pno:pno, rtype:rtype, fix_day_start:fix_day_start, fix_day_end:fix_day_end, req_day_start:req_day_start, req_day_end:req_day_end, fix_day:fix_day, rtime:rtime, eno:emp, clinic:clinic, reception_info:reception_info, result_memo:result_memo};
+			var info = {pno:pno, rtype:rtype, fix_day_start:fix_day_start, fix_day_end:fix_day_end, req_day_start:req_day_start, req_day_end:req_day_end, fix_day:fix_day, rtime:rtime, eno:emp, ename:ename, clinic:clinic, reception_info:reception_info, result_memo:result_memo};
 			
 			post_deleteSchedule(info, storage_timetable_btn_num, storage_timetable2_btn_num);
 		}else if(btn_idx == 2){

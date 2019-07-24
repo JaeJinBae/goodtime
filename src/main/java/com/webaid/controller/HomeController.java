@@ -1573,6 +1573,130 @@ public class HomeController {
 		return entity;
 	}
 	
+	@RequestMapping(value="/updateSchedule", method=RequestMethod.POST)
+	public ResponseEntity<String> updateSchedule(@RequestBody Map<String, String> info){
+		logger.info("updateSchedule post");
+		ResponseEntity<String> entity = null;
+		System.out.println("info값은 \n"+info);
+		try {
+			
+			int pno = Integer.parseInt(info.get("pno"));
+			String fix_day_start = info.get("fix_day_start");
+			String fix_day_end = info.get("fix_day_end");
+			String fix_day = info.get("fix_day");
+			int rtime = Integer.parseInt(info.get("rtime"));
+			String req_day_start = info.get("req_day_start");
+			String req_day_end = info.get("req_day_end");
+			int clinic = Integer.parseInt(info.get("clinic"));
+			String clinic_name = info.get("clinic_name");
+			int eno = Integer.parseInt(info.get("eno"));
+			String ename = info.get("ename");
+			String rtype = info.get("rtype");
+			String reception_info = info.get("reception_info");
+			
+			DelFixSchVO vo = new DelFixSchVO();
+			vo.setPno(pno);
+			vo.setFix_day(fix_day);
+			vo.setFix_day_start(fix_day_start);
+			vo.setFix_day_end(fix_day_end);
+			vo.setRtime(rtime);
+			vo.setReq_day_start(req_day_start);
+			vo.setReq_day_end(req_day_end);
+			vo.setClinic(clinic);
+			vo.setClinic_name(clinic_name);
+			vo.setRtype(rtype);
+			vo.setReception_info(reception_info);
+			vo.setEno(eno);
+			vo.setEname(ename);
+			System.out.println(vo);
+			ReservationRecordVO rrvo;
+			ReservationUpdateRecordVO rurvo;
+			
+			
+			String raHour = ((rtime/60)<10)?"0"+rtime/60:rtime/60+"";
+			String raMinute = ((rtime%60)<10)?"0"+rtime%60:rtime%60+"";
+			
+			if(rtype.equals("fc")){
+				List<FixClinicReservationVO> fcrList = fcrService.selectByFixInfo(vo);
+				
+				String pname = fcrList.get(0).getPname();
+				vo.setPname(pname);
+				String before_ename = empService.selectByEno(fcrList.get(0).getEno()).getName();
+				int beforeTime = Integer.parseInt(fcrList.get(0).getRtime()); 
+				String rbHour = ((beforeTime/60)<10)?"0"+beforeTime/60:beforeTime/60+"";
+				String rbMinute = ((beforeTime%60)<10)?"0"+beforeTime%60:beforeTime%60+""; 
+				for(int i=0; i<fcrList.size(); i++){
+					rrvo = new ReservationRecordVO();
+					rrvo.setRno(fcrList.get(i).getRno());
+					rrvo.setRtype(rtype);
+					rrvo.setEname(ename);
+					rrvo.setRdate(fcrList.get(i).getRdate());
+					rrvo.setRtime(rtime+"");
+					rrvo.setCname(clinic_name);
+
+					rrService.updateRdateRtime(rrvo);
+					
+					rurvo = new ReservationUpdateRecordVO();
+					rurvo.setRno(fcrList.get(i).getRno());
+					rurvo.setRtype(rtype);
+					rurvo.setPno(pno);
+					rurvo.setPname(pname);
+					rurvo.setBefore_info(fcrList.get(i).getRdate()+" "+rbHour+":"+rbMinute+fcrList.get(i).getClinic_name()+"/"+before_ename);
+					rurvo.setAfter_info(fcrList.get(i).getRdate()+" "+raHour+":"+raMinute+" "+info.get("clinic_name")+"/"+info.get("ename"));
+					rurvo.setUpdate_type("일정변경");
+					rurvo.setUpdate_info(info.get("reception_info"));
+					rurvo.setUpdate_memo(info.get("result_memo"));
+					rurService.register(rurvo);
+				}
+				
+				fcrService.updateInfoGroup(vo);
+			}else if(rtype.equals("ft")){
+				System.out.println("rtype=ft 진입");
+				List<FixTherapyReservationVO> ftrList = ftrService.selectByFixInfo(vo);
+				System.out.println(ftrList);
+				String pname = ftrList.get(0).getPname();
+				vo.setPname(pname);
+				String before_ename = empService.selectByEno(ftrList.get(0).getEno()).getName();
+				int beforeTime = Integer.parseInt(ftrList.get(0).getRtime()); 
+				String rbHour = ((beforeTime/60)<10)?"0"+beforeTime/60:beforeTime/60+"";
+				String rbMinute = ((beforeTime%60)<10)?"0"+beforeTime%60:beforeTime%60+"";
+				
+				for(int i=0; i<ftrList.size(); i++){
+					rrvo = new ReservationRecordVO();
+					rrvo.setRno(ftrList.get(i).getRno());
+					rrvo.setRtype(rtype);
+					rrvo.setEname(ename);
+					rrvo.setRdate(ftrList.get(i).getRdate());
+					rrvo.setRtime(rtime+"");
+					rrvo.setCname(clinic_name);
+					
+					System.out.println(rrvo);
+					rrService.updateRdateRtime(rrvo);
+
+					rurvo = new ReservationUpdateRecordVO();
+					rurvo.setRno(ftrList.get(i).getRno());
+					rurvo.setRtype(rtype);
+					rurvo.setPno(pno);
+					rurvo.setPname(pname);
+					rurvo.setBefore_info(ftrList.get(i).getRdate()+" "+rbHour+":"+rbMinute+ftrList.get(i).getClinic_name()+"/"+before_ename);
+					rurvo.setAfter_info(ftrList.get(i).getRdate()+" "+raHour+":"+raMinute+" "+info.get("clinic_name")+"/"+info.get("ename"));
+					rurvo.setUpdate_type("일정변경");
+					rurvo.setUpdate_info(info.get("reception_info"));
+					rurvo.setUpdate_memo(info.get("result_memo"));
+					
+					rurService.register(rurvo);
+				}
+				ftrService.updateInfoGroup(vo);
+			}
+			
+			entity = new ResponseEntity<String>("ok", HttpStatus.OK);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			entity = new ResponseEntity<String>(e.getMessage(), HttpStatus.OK);
+		}
+		return entity;
+	}
+	
 	@RequestMapping(value="/deleteSchedule", method=RequestMethod.POST)
 	public ResponseEntity<String> deleteSchedule(@RequestBody Map<String, String> info){
 		logger.info("deleteSchedule post");

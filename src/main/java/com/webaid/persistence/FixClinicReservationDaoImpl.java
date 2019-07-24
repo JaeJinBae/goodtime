@@ -63,6 +63,11 @@ public class FixClinicReservationDaoImpl implements FixClinicReservationDao {
 	}
 
 	@Override
+	public void updateInfoGroup(DelFixSchVO vo) {
+		session.update(namespace + ".updateInfoGroup", vo);
+	}
+
+	@Override
 	public void cancel(FixClinicReservationVO vo) {
 		session.update(namespace + ".cancel", vo);
 	}

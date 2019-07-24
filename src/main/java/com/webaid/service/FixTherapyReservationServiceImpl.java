@@ -52,6 +52,7 @@ public class FixTherapyReservationServiceImpl implements FixTherapyReservationSe
 
 	@Override
 	public List<FixTherapyReservationVO> selectByFixInfo(DelFixSchVO vo) {
+		System.out.println(vo);
 		return dao.selectByFixInfo(vo);
 	}
 
@@ -73,6 +74,11 @@ public class FixTherapyReservationServiceImpl implements FixTherapyReservationSe
 	@Override
 	public void updateInfo(FixTherapyReservationVO vo) {
 		dao.updateInfo(vo);
+	}
+
+	@Override
+	public void updateInfoGroup(DelFixSchVO vo) {
+		dao.updateInfoGroup(vo);
 	}
 
 	@Override

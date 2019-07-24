@@ -20,6 +20,7 @@ public interface FixTherapyReservationService {
 	public void updateDeskState(FixTherapyReservationVO vo);
 	public void updateTherapistState(FixTherapyReservationVO vo);
 	public void updateInfo(FixTherapyReservationVO vo);
+	public void updateInfoGroup(DelFixSchVO vo);
 	public void cancel(FixTherapyReservationVO vo);
 	public void deleteByRno(int rno);
 	public void deleteSchedule(DelFixSchVO vo);

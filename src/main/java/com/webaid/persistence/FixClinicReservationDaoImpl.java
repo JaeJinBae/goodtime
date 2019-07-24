@@ -43,6 +43,11 @@ public class FixClinicReservationDaoImpl implements FixClinicReservationDao {
 	}
 
 	@Override
+	public List<FixClinicReservationVO> selectByFixInfo(DelFixSchVO vo) {
+		return session.selectList(namespace + ".selectByFixInfo", vo);
+	}
+
+	@Override
 	public void register(FixClinicReservationVO vo) {
 		session.insert(namespace + ".register", vo);
 	}
@@ -64,12 +69,12 @@ public class FixClinicReservationDaoImpl implements FixClinicReservationDao {
 
 	@Override
 	public void deleteByRno(int rno) {
-		session.delete(namespace+".deleteByRno", rno);
+		session.delete(namespace + ".deleteByRno", rno);
 	}
 
 	@Override
 	public void deleteSchedule(DelFixSchVO vo) {
-		session.delete(namespace+".deleteSchedule", vo);
+		session.delete(namespace + ".deleteSchedule", vo);
 	}
 
 }

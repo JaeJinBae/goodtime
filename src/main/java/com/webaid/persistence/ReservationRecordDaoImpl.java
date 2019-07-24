@@ -77,4 +77,9 @@ public class ReservationRecordDaoImpl implements ReservationRecordDao {
 		session.delete(namespace + ".deleteByRnoRtype", vo);
 	}
 
+	@Override
+	public List<ReservationRecordVO> selectByRnoRType(ReservationRecordVO vo) {
+		return session.selectList(namespace+".selectByRnoRtype", vo);
+	}
+
 }

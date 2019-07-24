@@ -26,6 +26,11 @@ public class ReservationRecordServiceImpl implements ReservationRecordService {
 	}
 
 	@Override
+	public List<ReservationRecordVO> selectByRnoRType(ReservationRecordVO vo) {
+		return dao.selectByRnoRType(vo);
+	}
+
+	@Override
 	public List<ReservationRecordVO> selectCompleteTherapyByPno(int pno) {
 		return dao.selectCompleteTherapyByPno(pno);
 	}

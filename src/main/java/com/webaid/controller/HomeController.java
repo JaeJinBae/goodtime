@@ -1591,14 +1591,40 @@ public class HomeController {
 			vo.setClinic(Integer.parseInt(info.get("clinic")));
 			vo.setRtype(rtype);
 			vo.setReception_info(info.get("reception_info"));
+			vo.setEno(Integer.parseInt(info.get("eno")));
 			
+			System.out.println("DelFixSchVO = "+vo);
+			
+			ReservationRecordVO rrvo = null;
 			if(rtype.equals("fc")){
+				List<FixClinicReservationVO> fcrList = fcrService.selectByFixInfo(vo);
+				for(int i=0; i<fcrList.size(); i++){
+					rrvo = new ReservationRecordVO();
+					rrvo.setRno(fcrList.get(i).getRno());
+					rrvo.setRtype("fc");
+					rrvo.setReception_info(info.get("reception_info"));
+					rrvo.setResult("예약삭제");
+					rrvo.setResult_memo(info.get("result_memo"));
+					rrService.updateReceptionInfo(rrvo);
+				}
+				
 				fcrService.deleteSchedule(vo);
 			}else if(rtype.equals("ft")){
+				List<FixTherapyReservationVO> ftrList = ftrService.selectByFixInfo(vo);
+				for(int i=0; i<ftrList.size(); i++){
+					rrvo = new ReservationRecordVO();
+					rrvo.setRno(ftrList.get(i).getRno());
+					rrvo.setRtype("ft");
+					rrvo.setReception_info(info.get("reception_info"));
+					rrvo.setResult("예약삭제");
+					rrvo.setResult_memo(info.get("result_memo"));
+					rrService.updateReceptionInfo(rrvo);
+				}
 				ftrService.deleteSchedule(vo);
 			}
 			entity = new ResponseEntity<String>("ok", HttpStatus.OK);
 		} catch (Exception e) {
+			System.out.println(e.getMessage());
 			entity = new ResponseEntity<String>(e.getMessage(), HttpStatus.OK);
 		}
 		return entity;

@@ -2932,11 +2932,14 @@ function post_deleteSchedule(info, stbn, stbn2){
 		success:function(json){
 			if(json == "ok"){
 				alert("예약일정이 삭제되었습니다.");
-
+				
 				$(".popup_reservation_schedule_update > h2 > input[name='pno']").val("");
 				$(".popup_reservation_schedule_update > h2 > input[name='rno']").val("");
 				$(".popup_reservation_schedule_update > h2 > input[name='rtype']").val("");
-				$(".popup_reservation_schedule_update > table tr:nth-child(2) > td > input[name='rdate']").val("");
+				$(".popup_reservation_schedule_update > table tr:first-child > td > input[name='fix_day_start']").val("");
+				$(".popup_reservation_schedule_update > table tr:first-child > td > input[name='fix_day_end']").val("");
+				$(".popup_reservation_schedule_update > table tr:nth-child(2) > td > input[name='req_day_start']").val("");
+				$(".popup_reservation_schedule_update > table tr:nth-child(2) > td > input[name='req_day_end']").val("");
 				$(".popup_reservation_schedule_update > table tr:nth-child(6) > td > input[name='memo']").val("");
 				$(".popup_reservation_schedule_update > table tr:nth-child(7) > td > input[name='updateMemo']").val("");
 				
@@ -4378,7 +4381,7 @@ $(function(){
 		var splitList = href_txt.split("&");
 		
 		for(var i=0; i<splitList.length; i++){
-			console.log(splitList[i].split("=")[1]);
+			//console.log(splitList[i].split("=")[1]);
 			if(i==0){
 				page=splitList[i].split("=")[1];
 			}else if(i==1){
@@ -5146,7 +5149,7 @@ $(function(){
 	$(".popup_sch_update_btn_wrap > p").click(function(){
 		var btn_idx = $(this).index();
 		if(btn_idx == 0){
-			
+			alert("추후 업데이트 예정");
 		}else if(btn_idx ==1){
 			var pno = $(".popup_reservation_schedule_update > h2 > input[name='pno']").val();
 			var rtype = $(".popup_reservation_schedule_update > h2 > input[name='rtype']").val();
@@ -5160,11 +5163,13 @@ $(function(){
 			var rtime = Number(rtime1)+Number(rtime2);
 			var emp = $(".popup_reservation_schedule_update > table tr:nth-child(4) > td select[name='emp']").val();
 			var clinic = $(".popup_reservation_schedule_update > table tr:nth-child(5) > td select[name='clinic']").val();
+			var result_memo = $(".popup_reservation_schedule_update > table tr:nth-child(7) > td > input[name='updateMemo']").val();
 			
 			var nowDate = new Date();
 			var regDate = nowDate.getFullYear()+"-"+(((nowDate.getMonth()+1)>9?'':'0')+(nowDate.getMonth()+1))+"-"+((nowDate.getDate()>9?'':'0')+nowDate.getDate());
 			var regTime = ((nowDate.getHours()>9?'':'0')+nowDate.getHours())+":"+((nowDate.getMinutes()>9?'':'0')+nowDate.getMinutes());
 			var reception_info = "예약삭제"+" "+regDate+" "+regTime+" "+$("#session_login_name").val();
+			
 			if(req_day_start == ""){
 				alert("변경기간 시작일을 선택해주세요.")
 				return false;
@@ -5173,7 +5178,11 @@ $(function(){
 				alert("변경기간 종료일을 선택해주세요.")
 				return false;
 			}
-			var info = {pno:pno, rtype:rtype, fix_day_start:fix_day_start, fix_day_end:fix_day_end, req_day_start:req_day_start, req_day_end:req_day_end, fix_day:fix_day, rtime:rtime, clinic:clinic, reception_info:reception_info};
+			if(result_memo == ""){
+				alert("변경사유를 입력해주세요.");
+				return false;
+			}
+			var info = {pno:pno, rtype:rtype, fix_day_start:fix_day_start, fix_day_end:fix_day_end, req_day_start:req_day_start, req_day_end:req_day_end, fix_day:fix_day, rtime:rtime, eno:emp, clinic:clinic, reception_info:reception_info, result_memo:result_memo};
 			
 			post_deleteSchedule(info, storage_timetable_btn_num, storage_timetable2_btn_num);
 		}else if(btn_idx == 2){
@@ -5275,7 +5284,7 @@ $(function(){
 		var splitList = href_txt.split("&");
 		
 		for(var i=0; i<splitList.length; i++){
-			console.log(splitList[i].split("=")[1]);
+			//console.log(splitList[i].split("=")[1]);
 			if(i==0){
 				page=splitList[i].split("=")[1];
 			}else if(i==1){

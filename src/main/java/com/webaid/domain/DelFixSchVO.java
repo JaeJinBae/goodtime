@@ -9,6 +9,7 @@ public class DelFixSchVO {
 	private String req_day_start;
 	private String req_day_end;
 	private int clinic;
+	private int eno;
 	private String rtype;
 	private String reception_info;
 
@@ -80,6 +81,14 @@ public class DelFixSchVO {
 		this.clinic = clinic;
 	}
 
+	public int getEno() {
+		return eno;
+	}
+
+	public void setEno(int eno) {
+		this.eno = eno;
+	}
+
 	public String getRtype() {
 		return rtype;
 	}
@@ -100,7 +109,8 @@ public class DelFixSchVO {
 	public String toString() {
 		return "DelFixSchVO [pno=" + pno + ", fix_day_start=" + fix_day_start + ", fix_day_end=" + fix_day_end
 				+ ", fix_day=" + fix_day + ", rtime=" + rtime + ", req_day_start=" + req_day_start + ", req_day_end="
-				+ req_day_end + ", clinic=" + clinic + ", rtype=" + rtype + ", reception_info=" + reception_info + "]";
+				+ req_day_end + ", clinic=" + clinic + ", eno=" + eno + ", rtype=" + rtype + ", reception_info="
+				+ reception_info + "]";
 	}
 
 }

@@ -12,6 +12,7 @@ public interface FixClinicReservationService {
 	public FixClinicReservationVO selectByRno(int rno);
 	public List<FixClinicReservationVO> selectByDateEno(SelectByDateEmployeeVO vo);
 	public List<FixClinicReservationVO> selectByDatePno(FixClinicReservationVO vo);
+	public List<FixClinicReservationVO> selectByFixInfo(DelFixSchVO vo);
 	public void register(FixClinicReservationVO vo);
 	public void updateDeskState(FixClinicReservationVO vo);
 	public void updateInfo(FixClinicReservationVO vo);

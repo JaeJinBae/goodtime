@@ -5188,6 +5188,7 @@ $(function(){
 		var btn_idx = $(this).index();
 		if(btn_idx == 0){
 			var pno = $(".popup_reservation_schedule_update > h2 > input[name='pno']").val();
+			var rno = $(".popup_reservation_schedule_update > h2 > input[name='rno']").val();
 			var rtype = $(".popup_reservation_schedule_update > h2 > input[name='rtype']").val();
 			var fix_day_start = $(".popup_reservation_schedule_update > table tr:first-child > td > input[name='fix_day_start']").val();
 			var fix_day_end = $(".popup_reservation_schedule_update > table tr:first-child > td > input[name='fix_day_end']").val();
@@ -5220,7 +5221,7 @@ $(function(){
 				alert("변경사유를 입력해주세요.");
 				return false;
 			}
-			var info = {pno:pno, rtype:rtype, fix_day_start:fix_day_start, fix_day_end:fix_day_end, req_day_start:req_day_start, req_day_end:req_day_end, fix_day:fix_day, rtime:rtime, eno:emp, ename:ename, clinic:clinic, clinic_name:clinic_name, reception_info:reception_info, result_memo:result_memo};
+			var info = {pno:pno, rno:rno, rtype:rtype, fix_day_start:fix_day_start, fix_day_end:fix_day_end, req_day_start:req_day_start, req_day_end:req_day_end, fix_day:fix_day, rtime:rtime, eno:emp, ename:ename, clinic:clinic, clinic_name:clinic_name, reception_info:reception_info, result_memo:result_memo};
 			console.log(info);
 			post_updateSchedule(info, storage_timetable_btn_num, storage_timetable2_btn_num);
 		}else if(btn_idx ==1){

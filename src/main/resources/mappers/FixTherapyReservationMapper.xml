@@ -33,7 +33,7 @@
 	</select>
 	
 	<select id="selectByFixInfo" resultType="FixTherapyReservationVO">
-		select * from fix_therapy_reservation where pno=#{pno} and eno=#{eno} and clinic=#{clinic} and fix_day_start=#{fix_day_start} and fix_day_end=#{fix_day_end} and fix_day=#{fix_day} and rtime=#{rtime} and date(rdate) between date(#{req_day_start}) and date(#{req_day_end})
+		select * from fix_therapy_reservation where pno=#{pno} and eno=#{eno} and clinic=#{clinic} and fix_day_start=#{fix_day_start} and fix_day_end=#{fix_day_end} and fix_day=#{fix_day} and rtime=#{prevRtime} and date(rdate) between date(#{req_day_start}) and date(#{req_day_end})
 	</select>
 	
 	<insert id="register" useGeneratedKeys="true" keyProperty="rno">
@@ -53,7 +53,7 @@
 	</update>
 	
 	<update id="updateInfoGroup">
-		update fix_therapy_reservation set rtime=#{rtime}, eno=#{eno}, clinic=#{clinic}, clinic_name=#{clinic_name} where pno=#{pno} and fix_day_start=#{fix_day_start} and fix_day_end=#{fix_day_end} and fix_day=#{fix_day} and rtime=#{rtime} and date(rdate) between date(#{req_day_start}) and date(#{req_day_end})
+		update fix_therapy_reservation set rtime=#{newRtime}, eno=#{eno}, clinic=#{clinic}, clinic_name=#{clinic_name} where pno=#{pno} and fix_day_start=#{fix_day_start} and fix_day_end=#{fix_day_end} and fix_day=#{fix_day} and rtime=#{prevRtime} and date(rdate) between date(#{req_day_start}) and date(#{req_day_end})
 	</update>
 	
 	<update id="cancel">
@@ -65,6 +65,6 @@
 	</delete>
 	
 	<delete id="deleteSchedule">
-		delete from fix_therapy_reservation where pno=#{pno} and fix_day_start=#{fix_day_start} and fix_day_end=#{fix_day_end} and fix_day=#{fix_day} and rtime=#{rtime} and date(rdate) between date(#{req_day_start}) and date(#{req_day_end})
+		delete from fix_therapy_reservation where pno=#{pno} and fix_day_start=#{fix_day_start} and fix_day_end=#{fix_day_end} and fix_day=#{fix_day} and rtime=#{prevRtime} and date(rdate) between date(#{req_day_start}) and date(#{req_day_end})
 	</delete>
 </mapper>

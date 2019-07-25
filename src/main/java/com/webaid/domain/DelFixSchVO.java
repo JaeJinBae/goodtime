@@ -6,7 +6,8 @@ public class DelFixSchVO {
 	private String fix_day_start;
 	private String fix_day_end;
 	private String fix_day;
-	private int rtime;
+	private int prevRtime;
+	private int newRtime;
 	private String req_day_start;
 	private String req_day_end;
 	private int clinic;
@@ -60,12 +61,20 @@ public class DelFixSchVO {
 		this.fix_day = fix_day;
 	}
 
-	public int getRtime() {
-		return rtime;
+	public int getPrevRtime() {
+		return prevRtime;
 	}
 
-	public void setRtime(int rtime) {
-		this.rtime = rtime;
+	public void setPrevRtime(int prevRtime) {
+		this.prevRtime = prevRtime;
+	}
+
+	public int getNewRtime() {
+		return newRtime;
+	}
+
+	public void setNewRtime(int newRtime) {
+		this.newRtime = newRtime;
 	}
 
 	public String getReq_day_start() {
@@ -135,9 +144,10 @@ public class DelFixSchVO {
 	@Override
 	public String toString() {
 		return "DelFixSchVO [pno=" + pno + ", pname=" + pname + ", fix_day_start=" + fix_day_start + ", fix_day_end="
-				+ fix_day_end + ", fix_day=" + fix_day + ", rtime=" + rtime + ", req_day_start=" + req_day_start
-				+ ", req_day_end=" + req_day_end + ", clinic=" + clinic + ", clinic_name=" + clinic_name + ", eno="
-				+ eno + ", ename=" + ename + ", rtype=" + rtype + ", reception_info=" + reception_info + "]";
+				+ fix_day_end + ", fix_day=" + fix_day + ", prevRtime=" + prevRtime + ", newRtime=" + newRtime
+				+ ", req_day_start=" + req_day_start + ", req_day_end=" + req_day_end + ", clinic=" + clinic
+				+ ", clinic_name=" + clinic_name + ", eno=" + eno + ", ename=" + ename + ", rtype=" + rtype
+				+ ", reception_info=" + reception_info + "]";
 	}
 
 }

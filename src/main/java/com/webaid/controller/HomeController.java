@@ -1581,6 +1581,7 @@ public class HomeController {
 		try {
 			
 			int pno = Integer.parseInt(info.get("pno"));
+			int rno = Integer.parseInt(info.get("rno"));
 			String fix_day_start = info.get("fix_day_start");
 			String fix_day_end = info.get("fix_day_end");
 			String fix_day = info.get("fix_day");
@@ -1594,21 +1595,24 @@ public class HomeController {
 			String rtype = info.get("rtype");
 			String reception_info = info.get("reception_info");
 			
-			DelFixSchVO vo = new DelFixSchVO();
-			vo.setPno(pno);
-			vo.setFix_day(fix_day);
-			vo.setFix_day_start(fix_day_start);
-			vo.setFix_day_end(fix_day_end);
-			vo.setRtime(rtime);
-			vo.setReq_day_start(req_day_start);
-			vo.setReq_day_end(req_day_end);
-			vo.setClinic(clinic);
-			vo.setClinic_name(clinic_name);
-			vo.setRtype(rtype);
-			vo.setReception_info(reception_info);
-			vo.setEno(eno);
-			vo.setEname(ename);
-			System.out.println(vo);
+			DelFixSchVO vo1 = new DelFixSchVO();
+			DelFixSchVO vo2 = new DelFixSchVO();			
+
+			vo2.setPno(pno);
+			vo2.setFix_day(fix_day);
+			vo2.setFix_day_start(fix_day_start);
+			vo2.setFix_day_end(fix_day_end);
+			
+			vo2.setNewRtime(rtime);
+			vo2.setReq_day_start(req_day_start);
+			vo2.setReq_day_end(req_day_end);
+			vo2.setClinic(clinic);
+			vo2.setClinic_name(clinic_name);
+			vo2.setRtype(rtype);
+			vo2.setReception_info(reception_info);
+			vo2.setEno(eno);
+			vo2.setEname(ename);
+			
 			ReservationRecordVO rrvo;
 			ReservationUpdateRecordVO rurvo;
 			
@@ -1617,10 +1621,21 @@ public class HomeController {
 			String raMinute = ((rtime%60)<10)?"0"+rtime%60:rtime%60+"";
 			
 			if(rtype.equals("fc")){
-				List<FixClinicReservationVO> fcrList = fcrService.selectByFixInfo(vo);
+				FixClinicReservationVO fcrVO = fcrService.selectByRno(rno);
+				vo1.setPno(fcrVO.getPno());
+				vo1.setFix_day(fcrVO.getFix_day());
+				vo1.setFix_day_start(fcrVO.getFix_day_start());
+				vo1.setFix_day_end(fcrVO.getFix_day_end());
+				vo1.setPrevRtime(Integer.parseInt(fcrVO.getRtime()));
+				vo1.setReq_day_start(req_day_start);
+				vo1.setReq_day_end(req_day_end);
+				vo1.setClinic(Integer.parseInt(fcrVO.getClinic()));
+				vo1.setEno(fcrVO.getEno());
+				List<FixClinicReservationVO> fcrList = fcrService.selectByFixInfo(vo1);
 				
 				String pname = fcrList.get(0).getPname();
-				vo.setPname(pname);
+				vo2.setPname(pname);
+				vo2.setPrevRtime(Integer.parseInt(fcrVO.getRtime()));
 				String before_ename = empService.selectByEno(fcrList.get(0).getEno()).getName();
 				int beforeTime = Integer.parseInt(fcrList.get(0).getRtime()); 
 				String rbHour = ((beforeTime/60)<10)?"0"+beforeTime/60:beforeTime/60+"";
@@ -1649,13 +1664,23 @@ public class HomeController {
 					rurService.register(rurvo);
 				}
 				
-				fcrService.updateInfoGroup(vo);
+				fcrService.updateInfoGroup(vo2);
 			}else if(rtype.equals("ft")){
-				System.out.println("rtype=ft 진입");
-				List<FixTherapyReservationVO> ftrList = ftrService.selectByFixInfo(vo);
-				System.out.println(ftrList);
+				FixTherapyReservationVO ftrVO = ftrService.selectByRno(rno);
+				vo1.setPno(ftrVO.getPno());
+				vo1.setFix_day(ftrVO.getFix_day());
+				vo1.setFix_day_start(ftrVO.getFix_day_start());
+				vo1.setFix_day_end(ftrVO.getFix_day_end());
+				vo1.setPrevRtime(Integer.parseInt(ftrVO.getRtime()));
+				vo1.setReq_day_start(req_day_start);
+				vo1.setReq_day_end(req_day_end);
+				vo1.setClinic(Integer.parseInt(ftrVO.getClinic()));
+				vo1.setEno(ftrVO.getEno());
+				List<FixTherapyReservationVO> ftrList = ftrService.selectByFixInfo(vo1);
+				
 				String pname = ftrList.get(0).getPname();
-				vo.setPname(pname);
+				vo2.setPname(pname);
+				vo2.setPrevRtime(Integer.parseInt(ftrVO.getRtime()));
 				String before_ename = empService.selectByEno(ftrList.get(0).getEno()).getName();
 				int beforeTime = Integer.parseInt(ftrList.get(0).getRtime()); 
 				String rbHour = ((beforeTime/60)<10)?"0"+beforeTime/60:beforeTime/60+"";
@@ -1670,7 +1695,6 @@ public class HomeController {
 					rrvo.setRtime(rtime+"");
 					rrvo.setCname(clinic_name);
 					
-					System.out.println(rrvo);
 					rrService.updateRdateRtime(rrvo);
 
 					rurvo = new ReservationUpdateRecordVO();
@@ -1686,7 +1710,7 @@ public class HomeController {
 					
 					rurService.register(rurvo);
 				}
-				ftrService.updateInfoGroup(vo);
+				ftrService.updateInfoGroup(vo2);
 			}
 			
 			entity = new ResponseEntity<String>("ok", HttpStatus.OK);
@@ -1709,7 +1733,7 @@ public class HomeController {
 			vo.setFix_day(info.get("fix_day"));
 			vo.setFix_day_start(info.get("fix_day_start"));
 			vo.setFix_day_end(info.get("fix_day_end"));
-			vo.setRtime(Integer.parseInt(info.get("rtime")));
+			vo.setPrevRtime(Integer.parseInt(info.get("rtime")));
 			vo.setReq_day_start(info.get("req_day_start"));
 			vo.setReq_day_end(info.get("req_day_end"));
 			vo.setClinic(Integer.parseInt(info.get("clinic")));

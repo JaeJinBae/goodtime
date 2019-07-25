@@ -5117,7 +5117,20 @@ $(function(){
 		}else if(btn_idx == 1){
 			var rno = $(".popup_reservation_update > h2 > input[name='rno']").val();
 			var rtype = $(".popup_reservation_update > h2 > input[name='rtype']").val();
-			var info = {rno:rno, rtype:rtype};
+			
+			var nowDate = new Date();
+			var regDate = nowDate.getFullYear()+"-"+(((nowDate.getMonth()+1)>9?'':'0')+(nowDate.getMonth()+1))+"-"+((nowDate.getDate()>9?'':'0')+nowDate.getDate());
+			var regTime = ((nowDate.getHours()>9?'':'0')+nowDate.getHours())+":"+((nowDate.getMinutes()>9?'':'0')+nowDate.getMinutes());
+			var result_memo = $(".popup_reservation_update > table tr:nth-child(7) > td > input[name='updateMemo']").val();
+			var reception_info = "예약삭제"+" "+regDate+" "+regTime+" "+$("#session_login_name").val();
+			
+			if(result_memo == ""){
+				alert("변경사유를 입력해주세요.");
+				return false;
+			}
+			
+			var info = {rno:rno, rtype:rtype, reception_info:reception_info, result_memo:result_memo};
+			
 			post_deleteReservation(info, storage_timetable_btn_num, storage_timetable2_btn_num);
 		}else if(btn_idx == 2){
 			$(".popup_reservation_update").css("display", "none");

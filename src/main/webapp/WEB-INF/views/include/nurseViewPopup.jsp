@@ -40,13 +40,14 @@
 	color: #494949; 
 	font-weight: bold;
 	letter-spacing: 0.3px;
-	padding: 15px 0;
 	padding-left: 10px;
 	text-align: left;
 }
 .popup_content > table tr > td{
 	font-size:15px;
+	padding: 15px 0;
 	padding-left: 20px;
+	text-align: left;
 }
 .popup_content > table tr > td > span{
 	vertical-align: middle;
@@ -233,6 +234,7 @@
 	border-radius: 4px;
 	letter-spacing: 1px;
 }
+
 .popup_normal_off_register{
 	display:none;
 }
@@ -846,12 +848,12 @@ $(function(){
 			</tr>
 			<tr>
 				<th>▶ 변경 기간</th>
-				<td><input type="date" name="req_day_start" value=""><br> ~ <input type="date" name="req_day_end" value=""></td>
+				<td>시작일: <input type="date" name="req_day_start" value=""><br>종료일: <input type="date" name="req_day_end" value=""></td>
 			</tr>
-			<tr>
+			<tr> 
 				<th>▶ 변경 일시</th>
 				<td>
-					<select name="fix_day">
+					<select name="fix_day" disabled>
 						<option value="월">월</option>
 						<option value="화">화</option>
 						<option value="수">수</option>

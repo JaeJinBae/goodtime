@@ -1553,14 +1553,12 @@ public class HomeController {
 				ftrService.deleteByRno(rno);
 			}
 			ReservationRecordVO rrvo = new ReservationRecordVO();
-			rrvo.setRno(rno);
+			rrvo.setRno(Integer.parseInt(info.get("rno")));
 			rrvo.setRtype(rtype);
-			rrService.deleteByRnoRtype(rrvo);
-			
-			ReservationUpdateRecordVO rurvo = new ReservationUpdateRecordVO();
-			rurvo.setRno(rno);
-			rurvo.setRtype(rtype);
-			rurService.deleteByRnoRtype(rurvo);
+			rrvo.setReception_info(info.get("reception_info"));
+			rrvo.setResult("예약삭제");
+			rrvo.setResult_memo(info.get("result_memo"));
+			rrService.updateReceptionInfo(rrvo);
 			
 			entity = new ResponseEntity<String>("ok", HttpStatus.OK);
 		} catch (Exception e) {

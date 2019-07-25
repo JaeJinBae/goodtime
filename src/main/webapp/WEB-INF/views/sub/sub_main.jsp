@@ -5222,7 +5222,7 @@ $(function(){
 				return false;
 			}
 			var info = {pno:pno, rno:rno, rtype:rtype, fix_day_start:fix_day_start, fix_day_end:fix_day_end, req_day_start:req_day_start, req_day_end:req_day_end, fix_day:fix_day, rtime:rtime, eno:emp, ename:ename, clinic:clinic, clinic_name:clinic_name, reception_info:reception_info, result_memo:result_memo};
-			console.log(info);
+			
 			post_updateSchedule(info, storage_timetable_btn_num, storage_timetable2_btn_num);
 		}else if(btn_idx ==1){
 			var pno = $(".popup_reservation_schedule_update > h2 > input[name='pno']").val();

@@ -6,6 +6,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -48,11 +49,13 @@ public class ExcelDown{
 		ArrayList<String> pnoList = new ArrayList<String>();
 		ArrayList<String> pList = new ArrayList<String>();
 		for(int i=0; i<ntrList.size(); i++){
-			pnoList.add(ntrList.get(i).getPname()+"-"+ntrList.get(i).getChart_no());
+			pnoList.add((ntrList.get(i).getPname()+"-"+ntrList.get(i).getChart_no()).trim());
 		}
 		for(int i=0; i<ftrList.size(); i++){
-			pnoList.add(ftrList.get(i).getPname()+"-"+ftrList.get(i).getChart_no());
+			pnoList.add((ftrList.get(i).getPname()+"-"+ftrList.get(i).getChart_no()).trim());
 		}
+		//환자명 가나다 순으로 정렬
+		Collections.sort(pnoList);
 		
 		for(int i=0; i< pnoList.size(); i++){
 			if(!pList.contains(pnoList.get(i))){
@@ -260,6 +263,5 @@ public class ExcelDown{
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-		
 	}
 }

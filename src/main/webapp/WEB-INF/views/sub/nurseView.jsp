@@ -3238,27 +3238,27 @@ function draw_normalOff_in_timetable(date){
 		if(this.startdate == date && this.enddate == date){
 			for(var i=sTime; i<eTime; i++){
 				timeTableClass = "."+this.etype+"_"+this.eno+"_"+i;
-				$(timeTableClass).html("");
-				$(timeTableClass).append("<p class='normal_off' style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>");
+				/* $(timeTableClass).html(""); */
+				$(timeTableClass).prepend("<p class='normal_off' style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>");
 			}
 		}else{
 			if(this.startdate == date){
 				for(var i=sTime; i<23; i++){
 					timeTableClass = "."+this.etype+"_"+this.eno+"_"+i;
-					$(timeTableClass).html("");
-					$(timeTableClass).append("<p class='normal_off' style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>");
+					/* $(timeTableClass).html(""); */
+					$(timeTableClass).prepend("<p class='normal_off' style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>");
 				}
 			}else if(this.enddate == date){
 				for(var i=7; i<eTime; i++){
 					timeTableClass = "."+this.etype+"_"+this.eno+"_"+i;
-					$(timeTableClass).html("");
-					$(timeTableClass).append("<p class='normal_off' style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>");
+					/* $(timeTableClass).html(""); */
+					$(timeTableClass).prepend("<p class='normal_off' style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>");
 				}
 			}else{
 				for(var i=7; i<23; i++){
 					timeTableClass = "."+this.etype+"_"+this.eno+"_"+i;
-					$(timeTableClass).html("");
-					$(timeTableClass).append("<p class='normal_off' style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>");
+					/* $(timeTableClass).html(""); */
+					$(timeTableClass).prepend("<p class='normal_off' style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>");
 				}
 			}
 		}
@@ -3300,27 +3300,27 @@ function draw_normalOff_in_weektable(){
 			if(this.startdate == arrWeek[i] && this.enddate == arrWeek[i]){
 				for(var n=sTime; n<eTime; n++){
 					target_class = "."+this.eno+"_"+arrWeek[i]+"_"+n;
-					$(target_class).html("");
-					$(target_class).append("<p class='normal_off' style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>");
+					/* $(target_class).html(""); */
+					$(target_class).prepend("<p class='normal_off' style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>");
 				}
 			}else{
 				if(this.startdate == arrWeek[i]){
 					for(var n=sTime; n<23; n++){
 						target_class = "."+this.eno+"_"+arrWeek[i]+"_"+n;
-						$(target_class).html("");
-						$(target_class).append("<p class='normal_off' style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>");
+						/* $(target_class).html(""); */
+						$(target_class).prepend("<p class='normal_off' style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>");
 					}
 				}else if(this.enddate == arrWeek[i]){
 					for(var n=7; n<eTime; n++){
 						target_class = "."+this.eno+"_"+arrWeek[i]+"_"+n;
-						$(target_class).html("");
-						$(target_class).append("<p class='normal_off' style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>");
+						/* $(target_class).html(""); */
+						$(target_class).prepend("<p class='normal_off' style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>");
 					}
 				}else{
 					for(var n=7; n<23; n++){
 						target_class = "."+this.eno+"_"+arrWeek[i]+"_"+n;
-						$(target_class).html("");
-						$(target_class).append("<p class='normal_off' style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>");
+						/* $(target_class).html(""); */
+						$(target_class).prepend("<p class='normal_off' style='background:#e8f5e9; color:#acb1b4;'>"+this.offtype+"</p>");
 					}
 				}
 			}

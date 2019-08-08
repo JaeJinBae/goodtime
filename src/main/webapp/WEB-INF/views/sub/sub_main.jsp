@@ -4509,6 +4509,14 @@ $(function(){
 			
 			post_patient_register(patient);
 		}else{
+			$(".popup_patient_register > table tr td > input[name='cno']").val("");
+			$(".popup_patient_register > table tr:first-child > td > input[name='dupliChkNum']").val("0")
+			$(".popup_patient_register > table tr td > input[name='name']").val("");
+			$(".popup_patient_register > table tr td > input[name='phone']").val("");
+			$(".popup_patient_register > table tr td > input[name='birth']").val("");
+			$(".popup_patient_register > table tr td > select[name='gender'] > option:first-child").prop("selected", true);
+			$(".popup_patient_register > table tr td > select[name='main_doctor'] > option:first-child").prop("selected", true);
+			$(".popup_patient_register > table tr td > input[name='memo']").val("");
 			$(".popup_patient_register").css("display", "none");
 			$(".popup_wrap").css("display","none");
 		}
@@ -5184,6 +5192,7 @@ $(function(){
 			
 			post_deleteReservation(info, storage_timetable_btn_num, storage_timetable2_btn_num);
 		}else if(btn_idx == 2){
+			$(".popup_reservation_update > table tr:nth-child(7) > td > input[name='updateMemo']").val("");
 			$(".popup_reservation_update").css("display", "none");
 			$(".popup_wrap").css("display", "none");
 		}
@@ -5274,6 +5283,8 @@ $(function(){
 			
 			post_deleteSchedule(info, storage_timetable_btn_num, storage_timetable2_btn_num);
 		}else if(btn_idx == 2){
+			$(".popup_reservation_schedule_update > table tr:nth-child(2) > td > input[name='req_day_end']").val("");
+			$(".popup_reservation_schedule_update > table tr:nth-child(7) > td > input[name='updateMemo']").val("");
 			$(".popup_reservation_schedule_update").css("display", "none");
 			$(".popup_wrap").css("display", "none");
 		}

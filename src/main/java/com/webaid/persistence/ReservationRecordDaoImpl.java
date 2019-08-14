@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.webaid.domain.PatientVO;
 import com.webaid.domain.ReservationRecordVO;
 import com.webaid.domain.SearchCriteriaRR;
 
@@ -73,13 +74,18 @@ public class ReservationRecordDaoImpl implements ReservationRecordDao {
 	}
 
 	@Override
+	public void updatePatientInfo(PatientVO vo) {
+		session.update(namespace + ".updatePatientInfo", vo);
+	}
+
+	@Override
 	public void deleteByRnoRtype(ReservationRecordVO vo) {
 		session.delete(namespace + ".deleteByRnoRtype", vo);
 	}
 
 	@Override
 	public List<ReservationRecordVO> selectByRnoRType(ReservationRecordVO vo) {
-		return session.selectList(namespace+".selectByRnoRtype", vo);
+		return session.selectList(namespace + ".selectByRnoRtype", vo);
 	}
 
 }

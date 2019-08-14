@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.webaid.domain.PatientVO;
 import com.webaid.domain.ReservationUpdateRecordVO;
 import com.webaid.domain.SearchCriteria;
 
@@ -43,8 +44,13 @@ public class ReservationUpdateRecordDaoImpl implements ReservationUpdateRecordDa
 	}
 
 	@Override
+	public void updatePatientInfo(PatientVO vo) {
+		session.update(namespce + ".updatePatientInfo", vo);
+	}
+
+	@Override
 	public void deleteByRnoRtype(ReservationUpdateRecordVO vo) {
-		session.delete(namespce+".deleteByRnoRtype", vo);
+		session.delete(namespce + ".deleteByRnoRtype", vo);
 	}
 
 }

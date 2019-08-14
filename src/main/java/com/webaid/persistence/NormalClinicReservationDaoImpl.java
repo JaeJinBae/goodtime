@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.webaid.domain.NormalClinicReservationVO;
+import com.webaid.domain.PatientVO;
 import com.webaid.domain.SelectByDateEmployeeVO;
 
 @Repository
@@ -53,18 +54,23 @@ public class NormalClinicReservationDaoImpl implements NormalClinicReservationDa
 	}
 
 	@Override
+	public void updatePatientInfo(PatientVO vo) {
+		session.update(namespace + ".updatePatientInfo", vo);
+	}
+
+	@Override
 	public void cancel(NormalClinicReservationVO vo) {
 		session.update(namespace + ".cancel", vo);
 	}
 
 	@Override
 	public List<NormalClinicReservationVO> selectByDatePno(NormalClinicReservationVO vo) {
-		return session.selectList(namespace+".selectByDatePno", vo);
+		return session.selectList(namespace + ".selectByDatePno", vo);
 	}
 
 	@Override
 	public void deleteByRno(int rno) {
-		session.delete(namespace+".deleteByRno", rno);
+		session.delete(namespace + ".deleteByRno", rno);
 	}
 
 }

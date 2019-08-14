@@ -20,6 +20,10 @@
 		insert into waiting_reservation values(0, #{pno}, #{pname}, #{chart_no}, #{eno}, #{memo}, #{clinic}, #{clinic_name}, #{rtype}, #{rdate}, #{rtime}, #{writer})
 	</insert>
 	
+	<update id="updatePatientInfo">
+		update waiting_reservation set pname=#{name}, chart_no=#{cno} where pno=#{pno}
+	</update>
+	
 	<update id="delete">
 		delete from waiting_reservation where no=#{no}
 	</update>

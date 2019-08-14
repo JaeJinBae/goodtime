@@ -6,6 +6,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.webaid.domain.PatientVO;
 import com.webaid.domain.WaitingReservationVO;
 
 @Repository
@@ -33,6 +34,11 @@ public class WaitingReservationDaoImpl implements WaitingReservationDao {
 	@Override
 	public void register(WaitingReservationVO vo) {
 		session.insert(namespace + ".register", vo);
+	}
+
+	@Override
+	public void updatePatientInfo(PatientVO vo) {
+		session.update(namespace + ".updatePatientInfo", vo);
 	}
 
 	@Override

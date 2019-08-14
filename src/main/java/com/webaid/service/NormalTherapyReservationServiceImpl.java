@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.webaid.domain.NormalTherapyReservationVO;
+import com.webaid.domain.PatientVO;
 import com.webaid.domain.SelectByDateEmployeeVO;
 import com.webaid.persistence.NormalTherapyReservationDao;
 
@@ -77,6 +78,11 @@ public class NormalTherapyReservationServiceImpl implements NormalTherapyReserva
 	@Override
 	public void deleteByRno(int rno) {
 		dao.deleteByRno(rno);
+	}
+
+	@Override
+	public void updatePatientInfo(PatientVO vo) {
+		dao.updatePatientInfo(vo);
 	}
 
 }

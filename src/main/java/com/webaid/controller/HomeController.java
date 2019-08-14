@@ -501,6 +501,13 @@ public class HomeController {
 		
 		try {
 			pService.update(patient);
+			ncrService.updatePatientInfo(patient);
+			ntrService.updatePatientInfo(patient);
+			fcrService.updatePatientInfo(patient);
+			ftrService.updatePatientInfo(patient);
+			rrService.updatePatientInfo(patient);
+			rurService.updatePatientInfo(patient);
+			wrService.updatePatientInfo(patient);
 			entity = new ResponseEntity<String>("ok", HttpStatus.OK);
 		} catch (Exception e) {
 			entity = new ResponseEntity<String>("no",HttpStatus.OK);

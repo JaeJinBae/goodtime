@@ -3,6 +3,7 @@ package com.webaid.service;
 import java.util.List;
 
 import com.webaid.domain.NormalTherapyReservationVO;
+import com.webaid.domain.PatientVO;
 import com.webaid.domain.SelectByDateEmployeeVO;
 
 public interface NormalTherapyReservationService {
@@ -17,6 +18,7 @@ public interface NormalTherapyReservationService {
 	public void updateDeskState(NormalTherapyReservationVO vo);
 	public void updateTherapistState(NormalTherapyReservationVO vo);
 	public void updateInfo(NormalTherapyReservationVO vo);
+	public void updatePatientInfo(PatientVO vo);
 	public void cancel(NormalTherapyReservationVO vo);
 	public void deleteByRno(int rno);
 }

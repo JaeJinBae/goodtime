@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.webaid.domain.PatientVO;
 import com.webaid.domain.WaitingReservationVO;
 import com.webaid.persistence.WaitingReservationDao;
 
@@ -13,7 +14,7 @@ public class WaitingReservationServiceImpl implements WaitingReservationService 
 
 	@Autowired
 	private WaitingReservationDao dao;
-	
+
 	@Override
 	public List<WaitingReservationVO> selectAll() {
 		return dao.selectAll();
@@ -32,6 +33,11 @@ public class WaitingReservationServiceImpl implements WaitingReservationService 
 	@Override
 	public void register(WaitingReservationVO vo) {
 		dao.register(vo);
+	}
+
+	@Override
+	public void updatePatientInfo(PatientVO vo) {
+		dao.updatePatientInfo(vo);
 	}
 
 	@Override

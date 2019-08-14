@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.webaid.domain.DelFixSchVO;
 import com.webaid.domain.FixTherapyReservationVO;
+import com.webaid.domain.PatientVO;
 import com.webaid.domain.SelectByDateEmployeeVO;
 
 @Repository
@@ -81,6 +82,11 @@ public class FixTherapyReservationDaoImpl implements FixTherapyReservationDao {
 	@Override
 	public void updateInfoGroup(DelFixSchVO vo) {
 		session.update(namespace + ".updateInfoGroup", vo);
+	}
+
+	@Override
+	public void updatePatientInfo(PatientVO vo) {
+		session.update(namespace + ".updatePatientInfo", vo);
 	}
 
 	@Override

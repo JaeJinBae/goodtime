@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.webaid.domain.PatientVO;
 import com.webaid.domain.ReservationUpdateRecordVO;
 import com.webaid.domain.SearchCriteria;
 import com.webaid.persistence.ReservationUpdateRecordDao;
@@ -38,6 +39,11 @@ public class ReservationUpdateRecordServiceImpl implements ReservationUpdateReco
 	@Override
 	public void register(ReservationUpdateRecordVO vo) {
 		dao.register(vo);
+	}
+
+	@Override
+	public void updatePatientInfo(PatientVO vo) {
+		dao.updatePatientInfo(vo);
 	}
 
 	@Override

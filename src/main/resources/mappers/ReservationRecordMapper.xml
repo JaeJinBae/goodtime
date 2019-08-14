@@ -56,6 +56,10 @@
 		update reservation_record set ename=#{ename}, rdate=#{rdate}, rtime=#{rtime}, cname=#{cname} where rno=#{rno} and rtype=#{rtype}
 	</update>
 	
+	<update id="updatePatientInfo">
+		update reservation_record set pname=#{name} where pno=#{pno}
+	</update>
+	
 	<delete id="deleteByRnoRtype">
 		delete from reservation_record where rno=#{rno} and rtype=#{rtype}
 	</delete>

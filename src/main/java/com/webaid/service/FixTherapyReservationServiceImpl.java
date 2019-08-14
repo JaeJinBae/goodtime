@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.webaid.domain.DelFixSchVO;
 import com.webaid.domain.FixTherapyReservationVO;
+import com.webaid.domain.PatientVO;
 import com.webaid.domain.SelectByDateEmployeeVO;
 import com.webaid.persistence.FixTherapyReservationDao;
 
@@ -79,6 +80,11 @@ public class FixTherapyReservationServiceImpl implements FixTherapyReservationSe
 	@Override
 	public void updateInfoGroup(DelFixSchVO vo) {
 		dao.updateInfoGroup(vo);
+	}
+
+	@Override
+	public void updatePatientInfo(PatientVO vo) {
+		dao.updatePatientInfo(vo);
 	}
 
 	@Override

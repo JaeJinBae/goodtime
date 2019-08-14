@@ -5,6 +5,7 @@ import java.util.List;
 import com.webaid.domain.DelFixSchVO;
 import com.webaid.domain.FixClinicReservationVO;
 import com.webaid.domain.FixTherapyReservationVO;
+import com.webaid.domain.PatientVO;
 import com.webaid.domain.SelectByDateEmployeeVO;
 
 public interface FixTherapyReservationService {
@@ -21,6 +22,7 @@ public interface FixTherapyReservationService {
 	public void updateTherapistState(FixTherapyReservationVO vo);
 	public void updateInfo(FixTherapyReservationVO vo);
 	public void updateInfoGroup(DelFixSchVO vo);
+	public void updatePatientInfo(PatientVO vo);
 	public void cancel(FixTherapyReservationVO vo);
 	public void deleteByRno(int rno);
 	public void deleteSchedule(DelFixSchVO vo);

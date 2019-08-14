@@ -30,6 +30,10 @@
 		insert into reservation_update_record values(0, #{rno}, #{rtype}, #{pno}, #{pname}, #{before_info}, #{after_info}, #{update_type}, #{update_info}, #{update_memo})
 	</insert>
 	
+	<update id="updatePatientInfo">
+		update reservation_update_record set pname=#{name} where pno=#{pno}
+	</update>
+	
 	<delete id="deleteByRnoRtype">
 		delete from reservation_update_record where rno=#{rno} and rtype=#{rtype}
 	</delete>

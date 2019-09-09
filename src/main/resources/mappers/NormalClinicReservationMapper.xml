@@ -9,7 +9,7 @@
 	</select>
 	
 	<select id="selectByDate" resultType="NormalClinicReservationVO">
-		select * from normal_clinic_reservation where rdate=#{rdate} order by rtime asc
+		select * from normal_clinic_reservation where rdate=#{rdate} order by cast(rtime as unsigned) asc
 	</select>
 	
 	<select id="selectByRno" resultType="NormalClinicReservationVO">

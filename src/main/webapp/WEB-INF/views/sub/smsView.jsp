@@ -361,7 +361,7 @@ $(function(){
 						</ul>
 					</div><!-- templateWrap end -->
 					<div class="templateWrap">
-						<h4>단체전송<input type="hidden" name="no" value="3"> <button>저 장</button></h4>
+						<h4>단체전송<input type="hidden" name="no" value="4"> <button>저 장</button></h4>
 						<div class="tempTitle">
 							<p>-탬플릿-</p>
 							<p>-미리보기-</p>

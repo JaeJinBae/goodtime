@@ -2460,6 +2460,9 @@ function open_reservation_info_view(type, rno){
 	var minute = Number(rData.rtime)%60;
 	minute = (minute>9?'':'0')+minute;
 	
+	$(".popup_reservation_info_view > .simplePatientInfo > ul > li > .spi_birth").text(pData.birth);
+	$(".popup_reservation_info_view > .simplePatientInfo > ul > li > .spi_memo").text(pData.memo);
+	
 	var str = rtype+"<span> "+pData.name+"("+pData.cno+")님</span><input type='hidden' name='rtype' value='"+rData.rtype+"'>"
 			+"<input type='hidden' name='rno' value='"+rData.rno+"'>";
 	$(".popup_reservation_info_view > h2").html(str);
@@ -2496,7 +2499,7 @@ function open_reservation_info_view(type, rno){
 	
 	//예약 시간순서 정렬
 	resArr.sort(function(a,b){
-		return a.rtime < b.rtime ? -1: a.rtime>b.rtime?1:0;
+		return Number(a.rtime) < Number(b.rtime) ? -1: Number(a.rtime)>Number(b.rtime)?1:0;
 	});
 	
 	$(resArr).each(function(){

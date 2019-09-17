@@ -5,15 +5,39 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <style>
 .popup_content{
-		width:450px;
-		background: #f3f3f3;
-		margin:0 auto;
-		margin-top:100px;
-		position: relative;
-		z-index: 999;
-		text-align: center;
-		padding-bottom: 1px;
-	}
+	width:450px;
+	background: #f3f3f3;
+	margin:0 auto;
+	margin-top:100px;
+	position: relative;
+	z-index: 999;
+	text-align: center;
+	padding-bottom: 1px;
+}
+.popup_content > .simplePatientInfo{
+	position: absolute;
+	right: -200px;
+	width: 200px;
+	background: #fff;
+}
+.popup_content > .simplePatientInfo > ul{
+	width: 100%;
+}
+.popup_content > .simplePatientInfo > ul > li{
+	width: 100%;
+	text-align: left;
+	padding: 5px;
+	font-size: 14px;
+}
+.popup_content > .simplePatientInfo > ul > li > .spi_t{
+	display: inline-block;
+	width: 60x;
+}
+.popup_content > .simplePatientInfo > ul > li > .spi_memo{
+	display: inline-block;
+	width: 125px;
+	vertical-align: top;
+}
 .popup_content > h2{
 	width:100%;
 	padding: 10px 0;
@@ -518,6 +542,12 @@
 	</div><!-- popup_therapy_reservation_register end -->
 	
 	<div class="popup_reservation_info_view popup_content">
+		<div class="simplePatientInfo">
+			<ul>
+				<li><span class="spi_t">생년월일 :</span><span class="spi_birth"></span></li>
+				<li><span class="spi_t">환자메모 :</span><span class="spi_memo"></span></li>
+			</ul>
+		</div>
 		<h2></h2>
 		<table>
 			<tr>

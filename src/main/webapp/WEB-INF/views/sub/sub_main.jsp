@@ -5965,6 +5965,7 @@ $(function(){
 							<option value='07'>07월</option>
 							<option value='08'>08월</option>
 							<option value='09'>09월</option>
+							<option value='10'>10월</option>
 							<option value='11'>11월</option>
 							<option value='12'>12월</option>
 						</select>

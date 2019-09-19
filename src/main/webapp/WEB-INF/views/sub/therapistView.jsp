@@ -1882,6 +1882,8 @@ function draw_week_calendar(date, emp, type, idxx){
 	$(".week_select_box_wrap > select[name='employee']").html(str);
 	str="";
 	
+	$(".week_select_box_wrap > select[name='employee'] > option[value='"+$("#session_eno").val()+"']").prop("selected", true); 
+	
 	makeWeekSelectOptions(type, idxx);
 	
 }

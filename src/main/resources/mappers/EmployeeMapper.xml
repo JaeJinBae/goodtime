@@ -5,7 +5,7 @@
 <mapper namespace="com.webaid.mappers.EmployeeMapper">
 
 	<select id="selectAll" resultType="EmployeeVO">
-		select * from employee order by eno desc
+		select * from employee order by level asc, eno desc
 	</select>
 	
 	<select id="selectOneById" resultType="EmployeeVO">
@@ -13,7 +13,7 @@
 	</select>
 	
 	<select id="selectByType" resultType="EmployeeVO">
-		select * from employee where type=#{type}
+		select * from employee where type=#{type} order by level asc
 	</select>
 	
 	<select id="selectByEno" resultType="EmployeeVO">
@@ -21,7 +21,7 @@
 	</select>
 	
 	<select id="listSearch" resultType="EmployeeVO">
-		select * from employee <include refid="search"></include> order by eno desc limit #{pageStart},#{perPageNum}  
+		select * from employee <include refid="search"></include> order by level asc, eno desc limit #{pageStart},#{perPageNum}  
 	</select>
 	
 	<sql id="search">

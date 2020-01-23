@@ -90,7 +90,7 @@ public class RrExcelDown{
 
 				// 셀에 데이터 넣지
 				objCell = objRow.createCell(0);
-				objCell.setCellValue(list.get(i).getPname());
+				objCell.setCellValue(list.get(i).getPname()+"("+list.get(i).getPno()+")");
 				objCell.setCellStyle(objStyle);
 				objCell = objRow.createCell(1);
 				objCell.setCellValue(list.get(i).getEname());

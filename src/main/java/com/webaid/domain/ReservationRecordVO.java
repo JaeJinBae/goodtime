@@ -4,6 +4,7 @@ public class ReservationRecordVO implements Comparable<ReservationRecordVO> {
 	private int no;
 	private int pno;
 	private String pname;
+	private String phone;
 	private String ename;
 	private int rno;
 	private String rtype;
@@ -43,6 +44,14 @@ public class ReservationRecordVO implements Comparable<ReservationRecordVO> {
 
 	public void setPname(String pname) {
 		this.pname = pname;
+	}
+	
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 
 	public String getEname() {
@@ -143,11 +152,11 @@ public class ReservationRecordVO implements Comparable<ReservationRecordVO> {
 
 	@Override
 	public String toString() {
-		return "ReservationRecordVO [no=" + no + ", pno=" + pno + ", pname=" + pname + ", ename=" + ename + ", rno="
-				+ rno + ", rtype=" + rtype + ", cname=" + cname + ", rdate=" + rdate + ", rtime=" + rtime
-				+ ", reception_info=" + reception_info + ", reception_memo=" + reception_memo + ", therapy_info="
-				+ therapy_info + ", register_info=" + register_info + ", result=" + result + ", result_memo="
-				+ result_memo + "]";
+		return "ReservationRecordVO [no=" + no + ", pno=" + pno + ", pname=" + pname + ", phone=" + phone + ", ename="
+				+ ename + ", rno=" + rno + ", rtype=" + rtype + ", cname=" + cname + ", rdate=" + rdate + ", rtime="
+				+ rtime + ", reception_info=" + reception_info + ", reception_memo=" + reception_memo
+				+ ", therapy_info=" + therapy_info + ", register_info=" + register_info + ", result=" + result
+				+ ", result_memo=" + result_memo + "]";
 	}
 
 	@Override

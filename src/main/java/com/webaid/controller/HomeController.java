@@ -1085,11 +1085,14 @@ public class HomeController {
 		ReservationRecordVO rrvo = new ReservationRecordVO();
 		EmployeeVO evo = empService.selectByEno(vo.getEno());
 		
+		PatientVO pvo = pService.selectByPno(vo.getPno()+"");
+		
 		try {
 			ncrService.register(vo);
 			rrvo.setNo(0);
 			rrvo.setPno(vo.getPno());
 			rrvo.setPname(vo.getPname());
+			rrvo.setPhone(pvo.getPhone());
 			rrvo.setEname(evo.getName());
 			rrvo.setRno(vo.getRno());
 			rrvo.setRtype(vo.getRtype());
@@ -1122,11 +1125,15 @@ public class HomeController {
 		ResponseEntity<String> entity= null;
 		ReservationRecordVO rrvo = new ReservationRecordVO();
 		EmployeeVO evo = empService.selectByEno(vo.getEno());
+		
+		PatientVO pvo = pService.selectByPno(vo.getPno()+"");
+		
 		try {
 			ntrService.register(vo);
 			rrvo.setNo(0);
 			rrvo.setPno(vo.getPno());
 			rrvo.setPname(vo.getPname());
+			rrvo.setPhone(pvo.getPhone());
 			rrvo.setEname(evo.getName());
 			rrvo.setRno(vo.getRno());
 			rrvo.setRtype(vo.getRtype());
@@ -1167,7 +1174,9 @@ public class HomeController {
 		
 		ReservationRecordVO rrvo = new ReservationRecordVO();
 		EmployeeVO evo = empService.selectByEno(vo.getEno());
-		System.out.println(vo);
+		
+		PatientVO pvo = pService.selectByPno(vo.getPno()+"");
+		
 		try {
 			for(int i=0; i<splitDate.length; i++){
 				vo.setRdate(splitDate[i]);
@@ -1175,6 +1184,7 @@ public class HomeController {
 				rrvo.setNo(0);
 				rrvo.setPno(vo.getPno());
 				rrvo.setPname(vo.getPname());
+				rrvo.setPhone(pvo.getPhone());
 				rrvo.setEname(evo.getName());
 				rrvo.setRno(vo.getRno());
 				rrvo.setRtype(vo.getRtype());
@@ -1218,6 +1228,8 @@ public class HomeController {
 		ReservationRecordVO rrvo = new ReservationRecordVO();
 		EmployeeVO evo = empService.selectByEno(vo.getEno());
 		
+		PatientVO pvo = pService.selectByPno(vo.getPno()+"");
+		
 		try {
 			for(int i=0; i<splitDate.length; i++){
 				vo.setRdate(splitDate[i]);
@@ -1225,6 +1237,7 @@ public class HomeController {
 				rrvo.setNo(0);
 				rrvo.setPno(vo.getPno());
 				rrvo.setPname(vo.getPname());
+				rrvo.setPhone(pvo.getPhone());
 				rrvo.setEname(evo.getName());
 				rrvo.setRno(vo.getRno());
 				rrvo.setRtype(vo.getRtype());

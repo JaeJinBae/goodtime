@@ -41,7 +41,7 @@
 	</select>
 	
 	<insert id="register">
-		insert into reservation_record values(0, #{pno}, #{pname}, #{ename}, #{rno}, #{rtype}, #{cname}, #{rdate}, #{rtime}, #{reception_info}, #{reception_memo}, #{therapy_info}, #{register_info}, #{result}, #{result_memo})
+		insert into reservation_record values(0, #{pno}, #{pname}, #{phone}, #{ename}, #{rno}, #{rtype}, #{cname}, #{rdate}, #{rtime}, #{reception_info}, #{reception_memo}, #{therapy_info}, #{register_info}, #{result}, #{result_memo})
 	</insert>
 	
 	<update id="updateReceptionInfo">

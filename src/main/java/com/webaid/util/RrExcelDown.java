@@ -23,7 +23,10 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import com.webaid.domain.ClinicVO;
 import com.webaid.domain.FixTherapyReservationVO;
 import com.webaid.domain.NormalTherapyReservationVO;
+import com.webaid.domain.PatientVO;
 import com.webaid.domain.ReservationRecordVO;
+import com.webaid.domain.SearchCriteria5;
+import com.webaid.service.PatientService;
 
 public class RrExcelDown{
 
@@ -94,7 +97,7 @@ public class RrExcelDown{
 
 				// 셀에 데이터 넣지
 				objCell = objRow.createCell(0);
-				objCell.setCellValue(list.get(i).getPname()+"("+list.get(i).getPno()+")");
+				objCell.setCellValue(list.get(i).getPname());
 				objCell.setCellStyle(objStyle);
 				objCell = objRow.createCell(1);
 				objCell.setCellValue(list.get(i).getPhone());

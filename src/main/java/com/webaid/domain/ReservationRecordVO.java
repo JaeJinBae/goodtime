@@ -3,6 +3,7 @@ package com.webaid.domain;
 public class ReservationRecordVO implements Comparable<ReservationRecordVO> {
 	private int no;
 	private int pno;
+	private int chartno;
 	private String pname;
 	private String phone;
 	private String ename;
@@ -38,6 +39,14 @@ public class ReservationRecordVO implements Comparable<ReservationRecordVO> {
 		this.pno = pno;
 	}
 
+	public int getChartno() {
+		return chartno;
+	}
+
+	public void setChartno(int chartno) {
+		this.chartno = chartno;
+	}
+
 	public String getPname() {
 		return pname;
 	}
@@ -45,7 +54,7 @@ public class ReservationRecordVO implements Comparable<ReservationRecordVO> {
 	public void setPname(String pname) {
 		this.pname = pname;
 	}
-	
+
 	public String getPhone() {
 		return phone;
 	}
@@ -152,11 +161,11 @@ public class ReservationRecordVO implements Comparable<ReservationRecordVO> {
 
 	@Override
 	public String toString() {
-		return "ReservationRecordVO [no=" + no + ", pno=" + pno + ", pname=" + pname + ", phone=" + phone + ", ename="
-				+ ename + ", rno=" + rno + ", rtype=" + rtype + ", cname=" + cname + ", rdate=" + rdate + ", rtime="
-				+ rtime + ", reception_info=" + reception_info + ", reception_memo=" + reception_memo
-				+ ", therapy_info=" + therapy_info + ", register_info=" + register_info + ", result=" + result
-				+ ", result_memo=" + result_memo + "]";
+		return "ReservationRecordVO [no=" + no + ", pno=" + pno + ", chartno=" + chartno + ", pname=" + pname
+				+ ", phone=" + phone + ", ename=" + ename + ", rno=" + rno + ", rtype=" + rtype + ", cname=" + cname
+				+ ", rdate=" + rdate + ", rtime=" + rtime + ", reception_info=" + reception_info + ", reception_memo="
+				+ reception_memo + ", therapy_info=" + therapy_info + ", register_info=" + register_info + ", result="
+				+ result + ", result_memo=" + result_memo + "]";
 	}
 
 	@Override

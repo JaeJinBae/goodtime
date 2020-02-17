@@ -1091,7 +1091,7 @@ public class HomeController {
 			ncrService.register(vo);
 			rrvo.setNo(0);
 			rrvo.setPno(vo.getPno());
-			rrvo.setPname(vo.getPname());
+			rrvo.setPname(vo.getPname()+"("+vo.getChart_no()+")");
 			rrvo.setPhone(pvo.getPhone());
 			rrvo.setEname(evo.getName());
 			rrvo.setRno(vo.getRno());
@@ -1132,7 +1132,7 @@ public class HomeController {
 			ntrService.register(vo);
 			rrvo.setNo(0);
 			rrvo.setPno(vo.getPno());
-			rrvo.setPname(vo.getPname());
+			rrvo.setPname(vo.getPname()+"("+vo.getChart_no()+")");
 			rrvo.setPhone(pvo.getPhone());
 			rrvo.setEname(evo.getName());
 			rrvo.setRno(vo.getRno());
@@ -1183,7 +1183,7 @@ public class HomeController {
 				fcrService.register(vo);
 				rrvo.setNo(0);
 				rrvo.setPno(vo.getPno());
-				rrvo.setPname(vo.getPname());
+				rrvo.setPname(vo.getPname()+"("+vo.getChart_no()+")");
 				rrvo.setPhone(pvo.getPhone());
 				rrvo.setEname(evo.getName());
 				rrvo.setRno(vo.getRno());
@@ -1236,7 +1236,7 @@ public class HomeController {
 				ftrService.register(vo);
 				rrvo.setNo(0);
 				rrvo.setPno(vo.getPno());
-				rrvo.setPname(vo.getPname());
+				rrvo.setPname(vo.getPname()+"("+vo.getChart_no()+")");
 				rrvo.setPhone(pvo.getPhone());
 				rrvo.setEname(evo.getName());
 				rrvo.setRno(vo.getRno());

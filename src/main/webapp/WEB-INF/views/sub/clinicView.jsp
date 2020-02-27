@@ -17,7 +17,7 @@
 	}
 	.header_inner2 > ul > li:nth-child(3) > a{
 		color: #fff; 
-		font-weight: bold;
+		font-weight: bold; 
 	}
 	.aside1{
 		width:1000px;

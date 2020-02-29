@@ -51,46 +51,50 @@ public class RrExcelDown{
 			objCell.setCellValue("환자명");
 			objCell.setCellStyle(objStyle);
 			objCell = objRow.createCell(1);
-			objCell.setCellValue("연락처");
+			objCell.setCellValue("등록번호");
 			objCell.setCellStyle(objStyle);
 			objCell = objRow.createCell(2);
-			objCell.setCellValue("담당자");
+			objCell.setCellValue("연락처");
 			objCell.setCellStyle(objStyle);
 			objCell = objRow.createCell(3);
-			objCell.setCellValue("분류");
+			objCell.setCellValue("담당자");
 			objCell.setCellStyle(objStyle);
 			objCell = objRow.createCell(4);
-			objCell.setCellValue("종류");
+			objCell.setCellValue("분류");
 			objCell.setCellStyle(objStyle);
 			objCell = objRow.createCell(5);
-			objCell.setCellValue("예정일시");
+			objCell.setCellValue("종류");
 			objCell.setCellStyle(objStyle);
 			objCell = objRow.createCell(6);
-			objCell.setCellValue("최초등록일시");
+			objCell.setCellValue("예정일시");
 			objCell.setCellStyle(objStyle);
 			objCell = objRow.createCell(7);
-			objCell.setCellValue("접수일시");
+			objCell.setCellValue("최초등록일시");
 			objCell.setCellStyle(objStyle);
 			objCell = objRow.createCell(8);
-			objCell.setCellValue("치료완료일시");
+			objCell.setCellValue("접수일시");
 			objCell.setCellStyle(objStyle);
 			objCell = objRow.createCell(9);
-			objCell.setCellValue("예약메모");
+			objCell.setCellValue("치료완료일시");
 			objCell.setCellStyle(objStyle);
 			objCell = objRow.createCell(10);
+			objCell.setCellValue("예약메모");
+			objCell.setCellStyle(objStyle);
+			objCell = objRow.createCell(11);
 			objCell.setCellValue("취소사유");
 			objCell.setCellStyle(objStyle);
 			
 			for(int i=0; i<list.size(); i++){
 				objRow = objSheet.createRow(i+1);
 				objSheet.setColumnWidth(3, 25*256);
-				objSheet.setColumnWidth(4, 15*256);
-				objSheet.setColumnWidth(5, 16*256);
-				objSheet.setColumnWidth(6, 25*256);
-				objSheet.setColumnWidth(7, 35*256);
-				objSheet.setColumnWidth(8, 25*256);
-				objSheet.setColumnWidth(9, 35*256);
-				objSheet.setColumnWidth(10, 25*256);
+				objSheet.setColumnWidth(4, 25*256);
+				objSheet.setColumnWidth(5, 15*256);
+				objSheet.setColumnWidth(6, 16*256);
+				objSheet.setColumnWidth(7, 25*256);
+				objSheet.setColumnWidth(8, 35*256);
+				objSheet.setColumnWidth(9, 25*256);
+				objSheet.setColumnWidth(10, 35*256);
+				objSheet.setColumnWidth(11, 25*256);
 				
 				// 행 높이 지
 				objRow.setHeight((short) 0x150);
@@ -100,12 +104,15 @@ public class RrExcelDown{
 				objCell.setCellValue(list.get(i).getPname());
 				objCell.setCellStyle(objStyle);
 				objCell = objRow.createCell(1);
-				objCell.setCellValue(list.get(i).getPhone());
+				objCell.setCellValue(list.get(i).getPno());
 				objCell.setCellStyle(objStyle);
 				objCell = objRow.createCell(2);
-				objCell.setCellValue(list.get(i).getEname());
+				objCell.setCellValue(list.get(i).getPhone());
 				objCell.setCellStyle(objStyle);
 				objCell = objRow.createCell(3);
+				objCell.setCellValue(list.get(i).getEname());
+				objCell.setCellStyle(objStyle);
+				objCell = objRow.createCell(4);
 				if(list.get(i).getRtype().equals("nt")){
 					objCell.setCellValue("일반치료");
 				}else if(list.get(i).getRtype().equals("nc")){
@@ -117,7 +124,7 @@ public class RrExcelDown{
 				}
 				
 				objCell.setCellStyle(objStyle);
-				objCell = objRow.createCell(4);
+				objCell = objRow.createCell(5);
 				objCell.setCellValue(list.get(i).getCname());
 				
 				hour = Integer.parseInt(list.get(i).getRtime())/60 + "";
@@ -125,22 +132,22 @@ public class RrExcelDown{
 				minute = Integer.parseInt(list.get(i).getRtime())%60 + "";
 				minute = (Integer.parseInt(minute)>9)?minute:"0"+minute;
 				objCell.setCellStyle(objStyle);
-				objCell = objRow.createCell(5);
+				objCell = objRow.createCell(6);
 				objCell.setCellValue(list.get(i).getRdate()+" "+hour+":"+minute);
 				objCell.setCellStyle(objStyle);
-				objCell = objRow.createCell(6);
+				objCell = objRow.createCell(7);
 				objCell.setCellValue(list.get(i).getRegister_info());
 				objCell.setCellStyle(objStyle);
-				objCell = objRow.createCell(7);
+				objCell = objRow.createCell(8);
 				objCell.setCellValue(list.get(i).getReception_info());
 				objCell.setCellStyle(objStyle);
-				objCell = objRow.createCell(8);
+				objCell = objRow.createCell(9);
 				objCell.setCellValue(list.get(i).getTherapy_info());
 				objCell.setCellStyle(objStyle);
-				objCell = objRow.createCell(9);
+				objCell = objRow.createCell(10);
 				objCell.setCellValue(list.get(i).getReception_memo());
 				objCell.setCellStyle(objStyle);
-				objCell = objRow.createCell(10);
+				objCell = objRow.createCell(11);
 				objCell.setCellValue(list.get(i).getResult_memo());
 				objCell.setCellStyle(objStyle);
 				
